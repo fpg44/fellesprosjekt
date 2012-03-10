@@ -16,8 +16,6 @@ import no.ntnu.fp.net.cl.ClException;
 import no.ntnu.fp.net.cl.ClSocket;
 import no.ntnu.fp.net.cl.KtnDatagram;
 import no.ntnu.fp.net.cl.KtnDatagram.Flag;
-import no.ntnu.fp.net.co.ClSocketReceiver;
-import no.ntnu.fp.net.co.Connection;
 
 /**
  * @author mariubje A partial implementation of the Connection-interface. It
@@ -57,7 +55,7 @@ public abstract class AbstractConnection implements Connection {
      * you are doing, as this may hang the implementation or cause
      * BindExceptions in A2 - you are warned!
      */
-    private boolean isReceiving;
+    private boolean  isReceiving;
 
     /**
      * Unhandled internal packets. Packets are put in this queue when waiting
@@ -561,7 +559,9 @@ public abstract class AbstractConnection implements Connection {
                     }
                 }
                 // If no packet arrived, see if timeout has expired.
-                else if ((after - before) > TIMEOUT) {
+                
+                //FIXME: Should be >= ? MODIFIED from >  by gr44
+                else if ((after - before) >= TIMEOUT) {
                     return null;
                 }
             }

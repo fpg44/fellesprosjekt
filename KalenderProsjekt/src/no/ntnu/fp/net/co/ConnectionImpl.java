@@ -72,6 +72,13 @@ public class ConnectionImpl extends AbstractConnection {
      */
     public void connect(InetAddress remoteAddress, int remotePort) throws IOException,
             SocketTimeoutException {
+    	
+    	//make syn packet
+    	//synack = sendDataPacketWithRetransmit(synpacket);
+    	//check synack
+    	//simplysend ack
+    	//set connection state to established
+    	//and init variables
         throw new NotImplementedException();
     }
 
@@ -82,6 +89,9 @@ public class ConnectionImpl extends AbstractConnection {
      * @see Connection#accept()
      */
     public Connection accept() throws IOException, SocketTimeoutException {
+    	//Listen for syn packet
+    	//respond with synack with retransmit
+    	//init vars
         throw new NotImplementedException();
     }
 
@@ -98,6 +108,15 @@ public class ConnectionImpl extends AbstractConnection {
      * @see no.ntnu.fp.net.co.Connection#send(String)
      */
     public void send(String msg) throws ConnectException, IOException {
+//    	check connection state
+    	//make packet
+   //	send with retransmit
+    	//isvalid ACK
+    	//check ACK
+    	//
+    	//WHAT IF WRONG ACK?!!!
+    	// RecieveAck
+    //	Throw exceptions if something goes wrong.
         throw new NotImplementedException();
     }
 
@@ -110,6 +129,7 @@ public class ConnectionImpl extends AbstractConnection {
      * @see AbstractConnection#sendAck(KtnDatagram, boolean)
      */
     public String receive() throws ConnectException, IOException {
+    	receivePacket(false);
         throw new NotImplementedException();
     }
 

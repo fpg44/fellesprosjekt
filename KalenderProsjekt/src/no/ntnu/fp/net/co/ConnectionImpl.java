@@ -129,7 +129,9 @@ public class ConnectionImpl extends AbstractConnection {
      * @see AbstractConnection#sendAck(KtnDatagram, boolean)
      */
     public String receive() throws ConnectException, IOException {
-    	receivePacket(false);
+    	//receivePacket(false);
+    	//check packet
+    	//extract and return payload as String
         throw new NotImplementedException();
     }
 
@@ -139,6 +141,7 @@ public class ConnectionImpl extends AbstractConnection {
      * @see Connection#close()
      */
     public void close() throws IOException {
+    	//Go through fin stages
         throw new NotImplementedException();
     }
 
@@ -151,6 +154,7 @@ public class ConnectionImpl extends AbstractConnection {
      * @return true if packet is free of errors, false otherwise.
      */
     protected boolean isValid(KtnDatagram packet) {
+//    	return packet.calculateChecksum() == packet.getChecksum();
         throw new NotImplementedException();
     }
     

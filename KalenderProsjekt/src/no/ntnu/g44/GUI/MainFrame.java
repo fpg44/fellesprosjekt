@@ -1,4 +1,4 @@
-package no.ntnu.g44.GUI;
+package no.ntnu.g44.gui;
 
 import java.awt.Color;
 import java.awt.Insets;

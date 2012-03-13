@@ -83,6 +83,7 @@ public class MainFrame extends JPanel{
 		//calendar.setBackground(Color.GRAY);
 		personnelList.setVisible(true);
 		personnelList.addMouseListener(listener);
+		personnelList.addKeyListener(listener);
 		calendarPersons.setVisible(true);
 		personnelScroll.setVisible(true);
 		calendarScroll.setVisible(true);
@@ -194,13 +195,23 @@ public class MainFrame extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if(personnelList.getSelectedValue() != null){
-				Object o = personnelList.getSelectedValue();
-				personnelModel.removeElement(o);
-				calendarModel.addElement(o);			
+				Object o[] = personnelList.getSelectedValues();
+				for(int i = 0; i < o.length; i++){
+					personnelModel.removeElement(o[i]);
+					calendarModel.addElement(o[i]);
+				}			
 			}
 		}
 		@Override
 		public void keyPressed(KeyEvent e) {
+			if(e.getSource() == personnelList && e.getKeyChar() == KeyEvent.VK_ENTER){
+				Object o[] = personnelList.getSelectedValues();
+				for(int i = 0; i < o.length; i++){
+					personnelModel.removeElement(o[i]);
+					calendarModel.addElement(o[i]);
+				}
+				
+			}
 			if(e.getSource() == searchField){
 				for(int i = 0; i < personnelModel.size(); i++){
 					
@@ -221,7 +232,6 @@ public class MainFrame extends JPanel{
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if(e.getClickCount() == 2 && e.getSource() == personnelList){
-				System.out.println("double");
 				if(personnelList.getSelectedValue() != null){
 					Object o = personnelList.getSelectedValue();
 					personnelModel.removeElement(o);

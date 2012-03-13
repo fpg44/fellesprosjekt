@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -94,9 +95,9 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 		removeLabel.setIcon(i);
 	}
 	
-	public Point getIconPosition(){
+	public Rectangle getIconPosition(){
 		
-		return removeLabel.getLocation();
+		return removeLabel.getBounds();
 	}
 
 	/**
@@ -119,7 +120,7 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 	private class HoverMouseHandler extends MouseAdapter{
 
 		private final JList list;
-		private Point iconPoint;
+		private Rectangle iconPoint;
 
 		public HoverMouseHandler(JList list){
 			this.list = list;
@@ -142,9 +143,10 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 			if(list.getModel().getSize() > 0){
 				int index = list.locationToIndex(e.getPoint());	
 				setHoverIndex(list.getCellBounds(index, index).contains(e.getPoint()) ? index : -1);					
-				
-				if(e.getPoint() == iconPoint){
+				System.out.println(e.getX()+ " " + e.getY() + " " + iconPoint.getX() + " " + iconPoint.getY());
+				if(e.getX() > iconPoint.getX() && e.getX() < (iconPoint.getX() + iconPoint.getWidth()) && e.getY() > iconPoint.getY() && e.getY() < (iconPoint.getY() + iconPoint.getHeight())){
 					((DefaultListModel)list.getModel()).removeElementAt(list.getSelectedIndex());
+					System.out.println("hei");
 				}
 			}
 		}

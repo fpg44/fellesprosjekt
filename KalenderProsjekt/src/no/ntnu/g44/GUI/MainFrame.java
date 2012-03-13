@@ -25,18 +25,18 @@ import no.ntnu.g44.components.ListRenderer;
 public class MainFrame extends JPanel{
 	MouseListener listener = new MouseListener();
 	Insets insets;
-	JFrame ramme;
+	JFrame frame;
 	JButton newEvent = new JButton("New Event");
 	JButton editEvent = new JButton("Edit Event");
 	JButton deleteEvent = new JButton("Delete Event");
 	JButton arrowButton = new JButton("^   ^   ^   ^   ^   ^   ^   ^");
 	JTextField searchField = new JTextField("Search...");
-	DefaultListModel personellModel = new DefaultListModel();
-	DefaultListModel kalendarModel = new DefaultListModel();
-	JList personellList = new JList(personellModel);
-	JList kalendarPersons = new JList(kalendarModel);
-	JScrollPane personellScroll = new JScrollPane(personellList);
-	JScrollPane kalendarScroll = new JScrollPane(kalendarPersons);
+	DefaultListModel personnelModel = new DefaultListModel();
+	DefaultListModel calendarModel = new DefaultListModel();
+	JList personnelList = new JList(personnelModel);
+	JList calendarPersons = new JList(calendarModel);
+	JScrollPane personnelScroll = new JScrollPane(personnelList);
+	JScrollPane calendarScroll = new JScrollPane(calendarPersons);
 	JComboBox notifBox = new JComboBox();
 	JButton backArrow = new JButton(" < < ");
 	JButton todayButton = new JButton(" Today ");
@@ -46,9 +46,9 @@ public class MainFrame extends JPanel{
 	ListRenderer renderer = new ListRenderer();
 	
 	public MainFrame(){
-		kalendarPersons.setCellRenderer(renderer);
-		kalendarPersons.addMouseListener(renderer.getHandler(kalendarPersons));  
-		kalendarPersons.addMouseMotionListener(renderer.getHandler(kalendarPersons)); 
+		calendarPersons.setCellRenderer(renderer);
+		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
+		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
 		
 		fillModel();
 		fillModel();
@@ -57,14 +57,14 @@ public class MainFrame extends JPanel{
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
 		addMouseMotionListener(listener);
-		ramme = new JFrame("Test");
+		frame = new JFrame("Test");
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		ramme.setBounds(0, 0, (int)dim.getWidth()-60, (int)dim.getHeight()-60);
-		ramme.setExtendedState(Frame.MAXIMIZED_BOTH);
-		ramme.getContentPane().add(this);
-		ramme.setVisible(true);
-		ramme.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		insets = ramme.getInsets();
+		frame.setBounds(0, 0, (int)dim.getWidth()-60, (int)dim.getHeight()-60);
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+		frame.getContentPane().add(this);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		insets = frame.getInsets();
 		
 		addMouseMotionListener(listener);
 		editEvent.setVisible(true);
@@ -75,10 +75,10 @@ public class MainFrame extends JPanel{
 		searchField.setVisible(true);
 		calendar.setVisible(true);
 		//calendar.setBackground(Color.GRAY);
-		personellList.setVisible(true);
-		kalendarPersons.setVisible(true);
-		personellScroll.setVisible(true);
-		kalendarScroll.setVisible(true);
+		personnelList.setVisible(true);
+		calendarPersons.setVisible(true);
+		personnelScroll.setVisible(true);
+		calendarScroll.setVisible(true);
 		backArrow.setVisible(true);
 		
 		todayButton.setVisible(true);
@@ -86,8 +86,8 @@ public class MainFrame extends JPanel{
 		notifBox.setVisible(true);
 		weeknumber.setVisible(true);
 		
-		add(personellScroll);
-		add(kalendarScroll);
+		add(personnelScroll);
+		add(calendarScroll);
 		add(newEvent);
 		add(editEvent);
 		add(deleteEvent);
@@ -99,8 +99,8 @@ public class MainFrame extends JPanel{
 		add(nextArrow);
 		add(notifBox);
 		add(weeknumber);
-		//add(personellList);
-		//add(kalendarPersons);
+		//add(personnelList);
+		//add(calendarPersons);
 		resizing();
 	}
 	@Override
@@ -141,23 +141,23 @@ public class MainFrame extends JPanel{
 		weeknumber.setSize(newEvent.getWidth(), backArrow.getHeight());
 		weeknumber.setLocation(calendar.getX() + calendar.getWidth() - newEvent.getWidth(), 16);
 		
-		kalendarScroll.setSize(newEvent.getWidth(), (int)((getHeight() - 40 - 32 -(newEvent.getHeight() * 3.5)))/2);
-		kalendarScroll.setLocation(newEvent.getX(), deleteEvent.getY() + deleteEvent.getHeight() + 24);
+		calendarScroll.setSize(newEvent.getWidth(), (int)((getHeight() - 40 - 32 -(newEvent.getHeight() * 3.5)))/2);
+		calendarScroll.setLocation(newEvent.getX(), deleteEvent.getY() + deleteEvent.getHeight() + 24);
 		
 		arrowButton.setSize(newEvent.getWidth(), 22);
-		arrowButton.setLocation(newEvent.getX(), kalendarScroll.getY() + kalendarScroll.getHeight() + 1);
+		arrowButton.setLocation(newEvent.getX(), calendarScroll.getY() + calendarScroll.getHeight() + 1);
 		
-		personellScroll.setSize(newEvent.getWidth(), kalendarScroll.getHeight());
-		personellScroll.setLocation(newEvent.getX(), kalendarScroll.getY() + kalendarScroll.getHeight() + 24);
+		personnelScroll.setSize(newEvent.getWidth(), calendarScroll.getHeight());
+		personnelScroll.setLocation(newEvent.getX(), calendarScroll.getY() + calendarScroll.getHeight() + 24);
 		
-		//kalendarPersons.setSize(newEvent.getWidth(), (int)((getHeight() - 40 - 32 -(newEvent.getHeight() * 3.5)))/2);
-		//kalendarPersons.setLocation(newEvent.getX(), deleteEvent.getY() + deleteEvent.getHeight() + 24);
+		//calendarPersons.setSize(newEvent.getWidth(), (int)((getHeight() - 40 - 32 -(newEvent.getHeight() * 3.5)))/2);
+		//calendarPersons.setLocation(newEvent.getX(), deleteEvent.getY() + deleteEvent.getHeight() + 24);
 		
-		//personellList.setSize(newEvent.getWidth(), kalendarPersons.getHeight());
-		//personellList.setLocation(newEvent.getX(), kalendarPersons.getY() + kalendarPersons.getHeight() + 24);
+		//personnelList.setSize(newEvent.getWidth(), calendarPersons.getHeight());
+		//personnelList.setLocation(newEvent.getX(), calendarPersons.getY() + calendarPersons.getHeight() + 24);
 		
 		searchField.setSize(newEvent.getWidth(), newEvent.getHeight() /2);
-		searchField.setLocation(newEvent.getX(), personellScroll.getY() + personellScroll.getHeight());
+		searchField.setLocation(newEvent.getX(), personnelScroll.getY() + personnelScroll.getHeight());
 		
 		
 		
@@ -168,10 +168,10 @@ public class MainFrame extends JPanel{
 		MainFrame panel = new MainFrame();
 	}
 	public void fillModel(){
-		personellModel.addElement("Kari");
-		personellModel.addElement("Per");
-		personellModel.addElement("Andreas");
-		personellModel.addElement("Per-Olav");
+		personnelModel.addElement("Kari");
+		personnelModel.addElement("Per");
+		personnelModel.addElement("Andreas");
+		personnelModel.addElement("Per-Olav");
 	}
 	public class MouseListener implements MouseMotionListener, ActionListener{
 		public void mouseDragged(MouseEvent e) {
@@ -186,10 +186,10 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			if(personellList.getSelectedValue() != null){
-				Object o = personellList.getSelectedValue();
-				personellModel.removeElement(o);
-				kalendarModel.addElement(o);			
+			if(personnelList.getSelectedValue() != null){
+				Object o = personnelList.getSelectedValue();
+				personnelModel.removeElement(o);
+				calendarModel.addElement(o);			
 			}
 		}
 	}

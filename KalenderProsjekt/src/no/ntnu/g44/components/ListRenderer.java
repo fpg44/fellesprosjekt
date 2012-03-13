@@ -34,11 +34,11 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 	private JLabel textLabel = new JLabel();
 	private MouseAdapter handler;
 	private int hoverIndex = -1;
-	private JList list;
+	public JList list2;
 
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		this.list = list;
+		this.list2 = list;
 		//Sets the text to be shown in the list
 		textLabel.setText(value.toString());
 
@@ -76,10 +76,11 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 		setIcon(index == hoverIndex ? iconRemoveMouseOver : iconRemove);
 
 		removeLabel.addMouseListener(new MouseAdapter() {
-
+			
 			@Override
-			public void mouseReleased(MouseEvent e) {
-
+			public void mouseClicked(MouseEvent e){
+				DefaultListModel m  = (DefaultListModel)list2.getModel();
+				m.removeElementAt(list2.getSelectedIndex());
 			}
 		});
 
@@ -146,6 +147,11 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 			}
 			hoverIndex = index;
 			list.repaint();
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e){
+			
 		}
 	}
 }

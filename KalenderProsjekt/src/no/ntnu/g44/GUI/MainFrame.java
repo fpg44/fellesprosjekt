@@ -82,6 +82,7 @@ public class MainFrame extends JPanel{
 		calendar.setVisible(true);
 		//calendar.setBackground(Color.GRAY);
 		personnelList.setVisible(true);
+		personnelList.addMouseListener(listener);
 		calendarPersons.setVisible(true);
 		personnelScroll.setVisible(true);
 		calendarScroll.setVisible(true);
@@ -219,6 +220,14 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			if(e.getClickCount() == 2 && e.getSource() == personnelList){
+				System.out.println("double");
+				if(personnelList.getSelectedValue() != null){
+					Object o = personnelList.getSelectedValue();
+					personnelModel.removeElement(o);
+					calendarModel.addElement(o);			
+				}
+			}
 			if(e.getSource() == searchField){
 				searchField.selectAll();
 			}

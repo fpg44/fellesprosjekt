@@ -195,9 +195,11 @@ public class MainFrame extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if(personnelList.getSelectedValue() != null){
-				Object o = personnelList.getSelectedValue();
-				personnelModel.removeElement(o);
-				calendarModel.addElement(o);			
+				Object o[] = personnelList.getSelectedValues();
+				for(int i = 0; i < o.length; i++){
+					personnelModel.removeElement(o[i]);
+					calendarModel.addElement(o[i]);
+				}			
 			}
 		}
 		@Override

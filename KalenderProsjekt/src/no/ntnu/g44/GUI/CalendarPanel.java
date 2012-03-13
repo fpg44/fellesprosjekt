@@ -2,13 +2,16 @@ package no.ntnu.g44.gui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 
-public class CalendarPanel extends JPanel {
+public class CalendarPanel extends JPanel implements MouseWheelListener {
 	String[] weekdays = new String[]{"Monday","Tuesday","Wednesday",
 			"Thursday","Friday","Saturday","Sunday"};
 	private float startTime = 8f;
@@ -17,6 +20,10 @@ public class CalendarPanel extends JPanel {
 	int margin = 10;
 	int topArea = margin+textPos;
 	
+	
+	public CalendarPanel() {
+		addMouseWheelListener(this);
+	}
 	
 	/**Offset to make room for displaying times	 */
 	private int leftOffset = 50;
@@ -38,9 +45,11 @@ public class CalendarPanel extends JPanel {
 		int height = getHeight() - topArea;
 		//Split all the full hours and show time
 		
-
+		int hourGap = (int) (height/hoursShown);
+		int partialHourOffset = (int) ((startTime - Math.floor(startTime))*hourGap);
+		
 		for (int i = 0; i < hoursShown; i++) {
-			int ypos = (int) (i*height/hoursShown) + topArea;
+			int ypos =  i*hourGap + topArea+partialHourOffset;
 			g2d.drawLine(0, ypos, getWidth(), ypos);
 			int hour = (int)(startTime+i);
 			g2d.drawString((hour<10?"0":"")+hour+":00",
@@ -59,8 +68,8 @@ public class CalendarPanel extends JPanel {
 		
 		for (int i = 0; i < hoursShown; i++) {
 			
-			int ypos = (int) (i*height/hoursShown + 
-								topArea+0.5*height/hoursShown);
+			int ypos = (int) (i*hourGap + partialHourOffset+
+								topArea+0.5*hourGap);
 			
 			g2d.drawLine(leftOffset, ypos, getWidth(), ypos);
 			
@@ -83,11 +92,25 @@ public class CalendarPanel extends JPanel {
 		
 		
 		//Add day text
+		Font prefont = g2d.getFont();
+		Font f = new Font("Helvetica",Font.BOLD, 16);
+		g2d.setFont(f);
 		for(int i = 0; i < 7; i++){
 			int xPos = Math.round(width*i/7f) + margin+leftOffset;	
 			g2d.drawChars(weekdays[i].toCharArray(), 0, weekdays[i].toCharArray().length, xPos, textPos );
 			
 		}
 		g2d.drawLine(0, topArea, getWidth(), topArea);
+		g2d.setFont(prefont); //reset font
 	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		startTime += 0.5f*e.getPreciseWheelRotation();
+		startTime = Math.max(0, Math.min(startTime,24-hoursShown));
+		System.out.println("startTime = "+startTime);
+		repaint();		
+	}
+	
+	
 }

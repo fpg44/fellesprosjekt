@@ -1,7 +1,8 @@
-package no.ntnu.g44.GUI;
+package no.ntnu.g44.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -38,7 +39,7 @@ public class MainFrame extends JPanel{
 	JButton backArrow = new JButton(" < < ");
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
-	JPanel calendar = new JPanel();
+	CalendarPanel calendar = new CalendarPanel();
 	JLabel weeknumber = new JLabel("UKE 12");
 	public MainFrame(){
 		fillModel();
@@ -51,6 +52,7 @@ public class MainFrame extends JPanel{
 		ramme = new JFrame("Test");
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		ramme.setBounds(0, 0, (int)dim.getWidth()-60, (int)dim.getHeight()-60);
+		ramme.setExtendedState(Frame.MAXIMIZED_BOTH);
 		ramme.getContentPane().add(this);
 		ramme.setVisible(true);
 		ramme.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,7 +66,7 @@ public class MainFrame extends JPanel{
 		arrowButton.addActionListener(listener);
 		searchField.setVisible(true);
 		calendar.setVisible(true);
-		calendar.setBackground(Color.GRAY);
+		//calendar.setBackground(Color.GRAY);
 		personellList.setVisible(true);
 		kalendarPersons.setVisible(true);
 		personellScroll.setVisible(true);

@@ -182,6 +182,7 @@ public class MainFrame extends JPanel{
 		personnel.add("Per");
 		personnel.add("Andreas");
 		personnel.add("Per-Olav");
+		personnelModel.removeAllElements();
 		for(int i = 0; i < personnel.size(); i++){
 			personnelModel.addElement(personnel.get(i));
 		}
@@ -210,7 +211,7 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void keyPressed(KeyEvent e) {
-			if(e.getSource() == personnelList && e.getKeyChar() == KeyEvent.VK_ENTER){
+			if((e.getSource() == personnelList || e.getSource() == searchField)&& e.getKeyChar() == KeyEvent.VK_ENTER){
 				Object o[] = personnelList.getSelectedValues();
 				for(int i = 0; i < o.length; i++){
 					personnelModel.removeElement(o[i]);
@@ -219,8 +220,20 @@ public class MainFrame extends JPanel{
 				
 			}
 			if(e.getSource() == searchField){
-				for(int i = 0; i < personnelModel.size(); i++){
-					
+				personnelModel.removeAllElements();
+				for(int i = 0; i < personnel.size(); i++){
+					if(personnel.get(i).length() < searchField.getText().length()+1){
+						continue;
+					}
+					if(e.getKeyChar() == KeyEvent.VK_ENTER || e.getKeyChar() == KeyEvent.VK_CONTROL || e.getKeyChar() == KeyEvent.VK_SHIFT){
+						if(personnel.get(i).startsWith(searchField.getText())){
+							personnelModel.addElement(personnel.get(i));
+							continue;
+						}
+					}
+					if(personnel.get(i).startsWith(searchField.getText() + e.getKeyChar())){
+						personnelModel.addElement(personnel.get(i));
+					}
 				}
 			}
 			

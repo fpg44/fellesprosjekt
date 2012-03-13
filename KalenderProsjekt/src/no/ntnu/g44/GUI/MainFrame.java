@@ -7,7 +7,10 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.DefaultListModel;
@@ -23,7 +26,7 @@ import javax.swing.JTextField;
 import no.ntnu.g44.components.ListRenderer;
 
 public class MainFrame extends JPanel{
-	MouseListener listener = new MouseListener();
+	MouseListening listener = new MouseListening();
 	Insets insets;
 	JFrame frame;
 	JButton newEvent = new JButton("New Event");
@@ -54,6 +57,7 @@ public class MainFrame extends JPanel{
 		fillModel();
 		fillModel();
 		fillModel();
+		notifBox.addItem(new String("There is no notifications"));
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
 		addMouseMotionListener(listener);
@@ -73,9 +77,12 @@ public class MainFrame extends JPanel{
 		arrowButton.setVisible(true);
 		arrowButton.addActionListener(listener);
 		searchField.setVisible(true);
+		searchField.addMouseListener(listener);
+		searchField.addKeyListener(listener);
 		calendar.setVisible(true);
 		//calendar.setBackground(Color.GRAY);
 		personnelList.setVisible(true);
+		personnelList.addMouseListener(listener);
 		calendarPersons.setVisible(true);
 		personnelScroll.setVisible(true);
 		calendarScroll.setVisible(true);
@@ -136,7 +143,7 @@ public class MainFrame extends JPanel{
 		notifBox.setSize(backArrow.getX() - calendar.getX() - 12, backArrow.getHeight());
 		notifBox.setLocation(calendar.getX(), newEvent.getY());
 		notifBox.setBackground(Color.getHSBColor((float)0.4, (float)0.2, (float) 0.95));
-		notifBox.addItem(new String("There is no notifications"));
+		
 		
 		weeknumber.setSize(newEvent.getWidth(), backArrow.getHeight());
 		weeknumber.setLocation(calendar.getX() + calendar.getWidth() - newEvent.getWidth(), 16);
@@ -173,7 +180,7 @@ public class MainFrame extends JPanel{
 		personnelModel.addElement("Andreas");
 		personnelModel.addElement("Per-Olav");
 	}
-	public class MouseListener implements MouseMotionListener, ActionListener{
+	public class MouseListening implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		public void mouseDragged(MouseEvent e) {
 		}
 		public void mouseMoved(MouseEvent e) {
@@ -191,6 +198,60 @@ public class MainFrame extends JPanel{
 				personnelModel.removeElement(o);
 				calendarModel.addElement(o);			
 			}
+		}
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if(e.getSource() == searchField){
+				for(int i = 0; i < personnelModel.size(); i++){
+					
+				}
+			}
+			
+		}
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if(e.getClickCount() == 2 && e.getSource() == personnelList){
+				System.out.println("double");
+				if(personnelList.getSelectedValue() != null){
+					Object o = personnelList.getSelectedValue();
+					personnelModel.removeElement(o);
+					calendarModel.addElement(o);			
+				}
+			}
+			if(e.getSource() == searchField){
+				searchField.selectAll();
+			}
+			
+		}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 }

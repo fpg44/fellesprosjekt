@@ -47,11 +47,10 @@ public class CalendarPanel extends JPanel implements MouseWheelListener {
 		
 		int hourGap = (int) (height/hoursShown);
 		int partialHourOffset = (int) ((startTime - Math.floor(startTime))*hourGap);
-		
 		for (int i = 0; i < hoursShown; i++) {
 			int ypos =  i*hourGap + topArea+partialHourOffset;
 			g2d.drawLine(0, ypos, getWidth(), ypos);
-			int hour = (int)(startTime+i);
+			int hour = (int)(Math.ceil(startTime)+i);
 			g2d.drawString((hour<10?"0":"")+hour+":00",
 					10, ypos+15);
 		}

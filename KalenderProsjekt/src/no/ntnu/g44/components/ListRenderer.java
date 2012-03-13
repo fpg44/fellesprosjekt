@@ -26,7 +26,7 @@ import org.w3c.dom.views.AbstractView;
  * A ListCellRenderer for elements with a text-label and an ImageIcon
  * @author Robin
  */
-public class ListRenderer extends JPanel implements ListCellRenderer{
+public class ListRenderer extends JPanel implements ListCellRenderer, MouseMotionListener{
 
 	private static final Color HOVER_COLOR = new Color(194, 222, 211);
 	private static final Color SELECTED_COLOR = new Color(194, 222, 242);
@@ -36,9 +36,14 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 	private JLabel textLabel = new JLabel();
 	private MouseAdapter handler;
 	private int hoverIndex = -1;
+	private JList l;
 
 	@Override
 	public Component getListCellRendererComponent(final JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		l = list;
+		
+		l.addMouseMotionListener(this);
+		
 		//Sets the text to be shown in the list
 		textLabel.setText(value.toString());
 
@@ -69,20 +74,13 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 			//if the hoverIndex is the same as the list index, an item is being hovered
 			//else set the background to default
 			setBackground(index == hoverIndex ? HOVER_COLOR : list.getBackground());  
+			
 		}
+		
+		setIcon(index == hoverIndex ? iconRemoveMouseOver : iconRemove);
 
 		//Sets the remove-icon to "mouse over" or "normal"
 		//If the hoverIndex is the same as the list index, an item is being hovered
-		setIcon(index == hoverIndex ? iconRemoveMouseOver : iconRemove);
-//
-//		removeLabel.addMouseListener(new MouseAdapter() {
-//			
-//			@Override
-//			public void mouseClicked(MouseEvent e){
-//
-//			}
-//		});
-
 
 		return this;
 	}
@@ -143,11 +141,6 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 			if(list.getModel().getSize() > 0){
 				int index = list.locationToIndex(e.getPoint());	
 				setHoverIndex(list.getCellBounds(index, index).contains(e.getPoint()) ? index : -1);					
-				System.out.println(e.getX()+ " " + e.getY() + " " + iconPoint.getX() + " " + iconPoint.getY());
-				if(e.getX() > iconPoint.getX() && e.getX() < (iconPoint.getX() + iconPoint.getWidth()) && e.getY() > iconPoint.getY() && e.getY() < (iconPoint.getY() + iconPoint.getHeight())){
-					((DefaultListModel)list.getModel()).removeElementAt(list.getSelectedIndex());
-					System.out.println("hei");
-				}
 			}
 		}
 
@@ -164,6 +157,24 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 		@Override
 		public void mouseReleased(MouseEvent e){
 			
+		}
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		
+		if(l.getModel().getSize() > 0){
+			Rectangle iconPoint = removeLabel.getBounds();
+			if(e.getX() > iconPoint.getX() && e.getX() < (iconPoint.getX() + iconPoint.getWidth()) && e.getY() > iconPoint.getY() && e.getY() < (iconPoint.getY() + iconPoint.getHeight())){
+				((DefaultListModel)l.getModel()).removeElementAt(l.getSelectedIndex());
+				System.out.println("hei");
+			}
 		}
 	}
 }

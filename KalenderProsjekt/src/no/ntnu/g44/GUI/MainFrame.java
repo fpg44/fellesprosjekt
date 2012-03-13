@@ -113,10 +113,10 @@ public class MainFrame extends JPanel{
 		deleteEvent.setLocation(newEvent.getX(), editEvent.getY() + editEvent.getHeight());
 		deleteEvent.setSize(newEvent.getSize());
 		
-		calendar.setSize(newEvent.getWidth() * 7, getHeight() - newEvent.getHeight() - 16 - 12);
-		calendar.setLocation(editEvent.getX() + editEvent.getWidth() + 12, editEvent.getY());
+		calendar.setSize(newEvent.getWidth() * 7, getHeight() - 35 - 16 - 12 - 12);
+		calendar.setLocation(editEvent.getX() + editEvent.getWidth() + 12, 35 + 16 + 12);
 		
-		backArrow.setSize(calendar.getWidth() / 9, newEvent.getHeight() - 12);
+		backArrow.setSize(calendar.getWidth() / 9, 35);
 		backArrow.setLocation(calendar.getX() + (calendar.getWidth() / 3), 16);
 		
 		todayButton.setSize(backArrow.getSize());

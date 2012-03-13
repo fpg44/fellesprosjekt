@@ -37,6 +37,7 @@ import no.ntnu.fp.net.cl.KtnDatagram.Flag;
 public class ConnectionImpl extends AbstractConnection {
 
 	private static final int CONNECTION_TRIES = 3;
+	private static int nextPort = 6600;
 	/** Keeps track of the used ports for each server port. */
 	private static Map<Integer, Boolean> usedPorts = Collections.synchronizedMap(new HashMap<Integer, Boolean>());
 	
@@ -57,7 +58,7 @@ public class ConnectionImpl extends AbstractConnection {
 	}
 
 	public ConnectionImpl() {
-		// TODO Auto-generated constructor stub
+		this(nextPort++);
 	}
 
 	private String getIPv4Address() {
@@ -72,9 +73,9 @@ public class ConnectionImpl extends AbstractConnection {
 	/**
 	 * Establish a connection to a remote location.
 	 * 
-	 * @param remoteAddress
+	 * @param pRemoteAddress
 	 *            - the remote IP-address to connect to
-	 * @param remotePort
+	 * @param pRemotePort
 	 *            - the remote portnumber to connect to
 	 * @throws IOException
 	 *             If there's an I/O error.
@@ -82,10 +83,10 @@ public class ConnectionImpl extends AbstractConnection {
 	 *             If timeout expires before connection is completed.
 	 * @see Connection#connect(InetAddress, int)
 	 */
-	public void connect(InetAddress remoteAddress, int remotePort) throws IOException,
+	public void connect(InetAddress pRemoteAddress, int pRemotePort) throws IOException,
 	SocketTimeoutException {
-		this.remoteAddress = remoteAddress.getHostAddress();
-		this.remotePort = remotePort;
+		this.remoteAddress = pRemoteAddress.getHostAddress();
+		this.remotePort = pRemotePort;
 
 		KtnDatagram syn = constructInternalPacket(Flag.SYN);
 		KtnDatagram syn_ack = null;
@@ -103,21 +104,23 @@ public class ConnectionImpl extends AbstractConnection {
 			//recieveAck will block for a while.
 			syn_ack = receiveAck();
 			timer.cancel();
+			System.out.println("Recieved syn-ack " + syn_ack);
 			
 			
-		}while(!validAck(syn, syn_ack));
+		}while(syn_ack == null /*|| !validAck(syn, syn_ack)*/);
 
 		//We have now recieved a valid syn-ack
-		assert validAck(syn,syn_ack);
-		
-		sendAck(syn_ack, false);
+		//assert validAck(syn,syn_ack);
 		nextExpectedSeqNr = syn_ack.getSeq_nr()+1;
+		this.remotePort = syn_ack.getSrc_port();
+		sendAck(syn_ack, false);
 		
 		state = State.ESTABLISHED;
 	}
 
 	private boolean validAck(KtnDatagram datagram, KtnDatagram ack) {
-		return datagram.getSeq_nr() == ack.getAck() && isValid(ack) && isValid(datagram);
+		boolean value = datagram.getSeq_nr() == ack.getAck() && isValid(ack);
+		return value;
 	}
 
 	/**
@@ -160,8 +163,9 @@ public class ConnectionImpl extends AbstractConnection {
 		KtnDatagram ack = null;
 		do{
 			sendAck(syn, true);
-			ack = receiveAck();
-		}while(ack == null || !isValidAndExpectedSeq(ack) || validAck(syn, ack) );
+			//ack = receiveAck();
+			//System.out.println("Recieved ack " + ack);
+		}while(false/*ack == null /*|| !isValidAndExpectedSeq(ack) || validAck(syn, ack)*/ );
 		nextExpectedSeqNr++;
 		state = State.ESTABLISHED;
 	}
@@ -207,6 +211,7 @@ public class ConnectionImpl extends AbstractConnection {
 	public String receive() throws ConnectException, IOException {
 		KtnDatagram datagram = receivePacket(false);
 		nextExpectedSeqNr++;
+		sendAck(datagram, false);
 		//TODO:check packet
 		return (String) datagram.getPayload();
 	}

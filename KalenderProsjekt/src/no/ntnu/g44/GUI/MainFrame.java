@@ -1,14 +1,15 @@
-package no.ntnu.g44.gui;
+package no.ntnu.g44.GUI;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -33,7 +34,7 @@ public class MainFrame extends JPanel{
 	JList kalendarPersons = new JList(kalendarModel);
 	JScrollPane personellScroll = new JScrollPane(personellList);
 	JScrollPane kalendarScroll = new JScrollPane(kalendarPersons);
-	JComboBox<String> notifBox = new JComboBox<String>();
+	JComboBox notifBox = new JComboBox();
 	JButton backArrow = new JButton(" < < ");
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
@@ -48,7 +49,8 @@ public class MainFrame extends JPanel{
 		setBackground(Color.LIGHT_GRAY);
 		addMouseMotionListener(listener);
 		ramme = new JFrame("Test");
-		ramme.setBounds(0, 0, 1200, 700);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		ramme.setBounds(0, 0, (int)dim.getWidth()-60, (int)dim.getHeight()-60);
 		ramme.getContentPane().add(this);
 		ramme.setVisible(true);
 		ramme.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

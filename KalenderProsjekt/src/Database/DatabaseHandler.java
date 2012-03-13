@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import models.Event;
+
 public class DatabaseHandler {
 
 	private Connection con = null;
@@ -50,5 +52,9 @@ public class DatabaseHandler {
 		}catch( SQLException e){
 			System.out.println("Failed to close database connection");
 		}
+	}
+	
+	public void insertIntoDatabase(Event event){
+		
 	}
 }

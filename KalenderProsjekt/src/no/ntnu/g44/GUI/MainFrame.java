@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import no.ntnu.g44.components.ListRenderer;
+
 public class MainFrame extends JPanel{
 	MouseListener listener = new MouseListener();
 	Insets insets;
@@ -41,7 +43,13 @@ public class MainFrame extends JPanel{
 	JButton nextArrow = new JButton(" > > ");
 	CalendarPanel calendar = new CalendarPanel();
 	JLabel weeknumber = new JLabel("UKE 12");
+	ListRenderer renderer = new ListRenderer();
+	
 	public MainFrame(){
+		personellList.setCellRenderer(renderer);
+		personellList.addMouseListener(renderer.getHandler(personellList));  
+		personellList.addMouseMotionListener(renderer.getHandler(personellList)); 
+		
 		fillModel();
 		fillModel();
 		fillModel();

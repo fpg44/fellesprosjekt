@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
 
 import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.views.AbstractView;
@@ -33,10 +34,11 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 	private JLabel textLabel = new JLabel();
 	private MouseAdapter handler;
 	private int hoverIndex = -1;
+	private JList list;
 
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-
+		this.list = list;
 		//Sets the text to be shown in the list
 		textLabel.setText(value.toString());
 
@@ -72,6 +74,15 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 		//Sets the remove-icon to "mouse over" or "normal"
 		//If the hoverIndex is the same as the list index, an item is being hovered
 		setIcon(index == hoverIndex ? iconRemoveMouseOver : iconRemove);
+		
+		removeLabel.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				
+			}
+		});
+		
 
 		return this;
 	}

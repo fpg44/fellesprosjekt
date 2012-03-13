@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import models.Event;
+import no.ntnu.g44.models.Event;
+
 
 public class DatabaseHandler {
 

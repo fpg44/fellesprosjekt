@@ -1,0 +1,8 @@
+package no.ntnu.g44.models;
+
+public enum NotificationType {
+	EVENT_INVITATION,
+	EVENT_TIME_CHANGED,
+	EVENT_CANCELLED,
+	PARTICIPANT_DECLINED_INVITATION
+}

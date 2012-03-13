@@ -1,9 +1,9 @@
 package no.ntnu.g44.server;
 
 import no.ntnu.fp.net.admin.Log;
-import no.ntnu.fp.net.co.Connection;
-import no.ntnu.fp.net.co.ConnectionImpl;
 import no.ntnu.g44.database.DatabaseHandler;
+import no.ntnu.g44.net.co.Connection;
+import no.ntnu.g44.net.co.ConnectionImpl;
 
 public class Server{
 

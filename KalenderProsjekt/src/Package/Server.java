@@ -44,9 +44,11 @@ public class Server{
 			e.printStackTrace();
 			
 		}
-		
 	}
 
+	/**
+	 * When some changes are done in the calendar-application, this will notify the other online users.
+	 */
 	private  void notfyOnlineListeners(){
 		
 	}

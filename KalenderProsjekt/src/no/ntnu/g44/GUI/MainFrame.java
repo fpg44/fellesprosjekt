@@ -46,9 +46,9 @@ public class MainFrame extends JPanel{
 	ListRenderer renderer = new ListRenderer();
 	
 	public MainFrame(){
-		personellList.setCellRenderer(renderer);
-		personellList.addMouseListener(renderer.getHandler(personellList));  
-		personellList.addMouseMotionListener(renderer.getHandler(personellList)); 
+		kalendarPersons.setCellRenderer(renderer);
+		kalendarPersons.addMouseListener(renderer.getHandler(kalendarPersons));  
+		kalendarPersons.addMouseMotionListener(renderer.getHandler(kalendarPersons)); 
 		
 		fillModel();
 		fillModel();

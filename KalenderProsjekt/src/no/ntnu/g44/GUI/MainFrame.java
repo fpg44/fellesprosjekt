@@ -12,6 +12,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -35,6 +36,7 @@ public class MainFrame extends JPanel{
 	JButton arrowButton = new JButton("^   ^   ^   ^   ^   ^   ^   ^");
 	JTextField searchField = new JTextField("Search...");
 	DefaultListModel personnelModel = new DefaultListModel();
+	ArrayList<String> personnel = new ArrayList<String>();
 	DefaultListModel calendarModel = new DefaultListModel();
 	JList personnelList = new JList(personnelModel);
 	JList calendarPersons = new JList(calendarModel);
@@ -176,10 +178,14 @@ public class MainFrame extends JPanel{
 		MainFrame panel = new MainFrame();
 	}
 	public void fillModel(){
-		personnelModel.addElement("Kari");
-		personnelModel.addElement("Per");
-		personnelModel.addElement("Andreas");
-		personnelModel.addElement("Per-Olav");
+		personnel.add("Kari");
+		personnel.add("Per");
+		personnel.add("Andreas");
+		personnel.add("Per-Olav");
+		for(int i = 0; i < personnel.size(); i++){
+			personnelModel.addElement(personnel.get(i));
+		}
+		
 	}
 	public class MouseListening implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		public void mouseDragged(MouseEvent e) {

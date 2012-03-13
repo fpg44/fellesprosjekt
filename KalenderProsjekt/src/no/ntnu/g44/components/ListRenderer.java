@@ -65,7 +65,7 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 
 		//Sets the background-color to hover or normal
 		if (!isSelected) {  
-			
+
 			//if the hoverIndex is the same as the list index, an item is being hovered
 			//else set the background to default
 			setBackground(index == hoverIndex ? HOVER_COLOR : list.getBackground());  
@@ -74,15 +74,15 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 		//Sets the remove-icon to "mouse over" or "normal"
 		//If the hoverIndex is the same as the list index, an item is being hovered
 		setIcon(index == hoverIndex ? iconRemoveMouseOver : iconRemove);
-		
+
 		removeLabel.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				
+
 			}
 		});
-		
+
 
 		return this;
 	}
@@ -129,14 +129,16 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 		Checks the location to the mouse and checks if the list contains an element at that point
 		If so, the hoverIndex is set to the list index at that position, 
 		else the index is set to -1 (indicates no hovering effect) 
-		*/
+		 */
 		@Override
 		public void mouseMoved(MouseEvent e){
-			int index = list.locationToIndex(e.getPoint());
-			setHoverIndex(list.getCellBounds(index, index).contains(e.getPoint()) ? index : -1);
+			if(list.getModel().getSize() > 0){
+				int index = list.locationToIndex(e.getPoint());
+				setHoverIndex(list.getCellBounds(index, index).contains(e.getPoint()) ? index : -1);								
+			}
 		}
 
-		
+
 		//Checks what element the mouse is hovering over
 		private void setHoverIndex(int index){
 			if(hoverIndex == index){

@@ -1,7 +1,9 @@
 package no.ntnu.g44.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -48,7 +50,8 @@ public class MainFrame extends JPanel{
 		setBackground(Color.LIGHT_GRAY);
 		addMouseMotionListener(listener);
 		ramme = new JFrame("Test");
-		ramme.setBounds(0, 0, 1200, 700);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		ramme.setBounds(0, 0, (int)dim.getWidth(), (int)dim.getHeight());
 		ramme.getContentPane().add(this);
 		ramme.setVisible(true);
 		ramme.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

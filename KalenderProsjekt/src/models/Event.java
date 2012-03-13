@@ -16,7 +16,7 @@ public class Event {
 	private Room room;
 
 	/**
-	 * 
+	 * Creates a new Event
 	 * @param eventTitle
 	 * @param participants
 	 * @param eventTime

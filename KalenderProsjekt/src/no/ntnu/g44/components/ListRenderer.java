@@ -144,6 +144,7 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 				setHoverIndex(list.getCellBounds(index, index).contains(e.getPoint()) ? index : -1);					
 				
 				if(e.getPoint() == iconPoint){
+					((DefaultListModel)list.getModel()).removeElementAt(list.getSelectedIndex());
 				}
 			}
 		}

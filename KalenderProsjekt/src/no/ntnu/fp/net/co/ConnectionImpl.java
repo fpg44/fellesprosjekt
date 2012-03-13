@@ -37,9 +37,14 @@ import no.ntnu.fp.net.cl.KtnDatagram.Flag;
 public class ConnectionImpl extends AbstractConnection {
 
 	private static final int CONNECTION_TRIES = 3;
+	private static int nextPort = 6600;
 	/** Keeps track of the used ports for each server port. */
 	private static Map<Integer, Boolean> usedPorts = Collections.synchronizedMap(new HashMap<Integer, Boolean>());
+	
 
+	/**Next sequence number we expect from the other side*/
+	private int nextExpectedSeqNr;
+	
 	/**
 	 * Initialise initial sequence number and setup state machine.
 	 * 
@@ -47,7 +52,13 @@ public class ConnectionImpl extends AbstractConnection {
 	 *            - the local port to associate with this connection
 	 */
 	public ConnectionImpl(int myPort) {
-		throw new NotImplementedException();
+		this.myPort = myPort;
+		usedPorts.put(myPort, true);
+		this.myAddress = getIPv4Address();
+	}
+
+	public ConnectionImpl() {
+		this(nextPort++);
 	}
 
 	private String getIPv4Address() {
@@ -62,9 +73,9 @@ public class ConnectionImpl extends AbstractConnection {
 	/**
 	 * Establish a connection to a remote location.
 	 * 
-	 * @param remoteAddress
+	 * @param pRemoteAddress
 	 *            - the remote IP-address to connect to
-	 * @param remotePort
+	 * @param pRemotePort
 	 *            - the remote portnumber to connect to
 	 * @throws IOException
 	 *             If there's an I/O error.
@@ -72,32 +83,44 @@ public class ConnectionImpl extends AbstractConnection {
 	 *             If timeout expires before connection is completed.
 	 * @see Connection#connect(InetAddress, int)
 	 */
-	public void connect(InetAddress remoteAddress, int remotePort) throws IOException,
+	public void connect(InetAddress pRemoteAddress, int pRemotePort) throws IOException,
 	SocketTimeoutException {
-
+		this.remoteAddress = pRemoteAddress.getHostAddress();
+		this.remotePort = pRemotePort;
 
 		KtnDatagram syn = constructInternalPacket(Flag.SYN);
-		KtnDatagram ack = null;
+		KtnDatagram syn_ack = null;
 		int tries = 0;
+		
+		//Send syn and wait for the synack
 		do{
+			if(tries++ >= CONNECTION_TRIES){
+				throw new SocketTimeoutException("Could not get a syn_ack after "+CONNECTION_TRIES+" tries.");
+			}
+			
 			Timer timer = new Timer();
 			timer.scheduleAtFixedRate(new SendTimer(new ClSocket(), syn), 0, RETRANSMIT);
 
-			ack = receiveAck();
+			//recieveAck will block for a while.
+			syn_ack = receiveAck();
 			timer.cancel();
-		}while(!validAck(syn, ack) && tries++ < CONNECTION_TRIES);
+			System.out.println("Recieved syn-ack " + syn_ack);
+			
+			
+		}while(syn_ack == null /*|| !validAck(syn, syn_ack)*/);
 
-		//make syn packet
-		//synack = sendDataPacketWithRetransmit(synpacket);
-		//check synack
-		//simplysend ack
-		//set connection state to established
-		//and init variables
-		throw new NotImplementedException();
+		//We have now recieved a valid syn-ack
+		//assert validAck(syn,syn_ack);
+		nextExpectedSeqNr = syn_ack.getSeq_nr()+1;
+		this.remotePort = syn_ack.getSrc_port();
+		sendAck(syn_ack, false);
+		
+		state = State.ESTABLISHED;
 	}
 
 	private boolean validAck(KtnDatagram datagram, KtnDatagram ack) {
-		return datagram.getSeq_nr() == ack.getAck();
+		boolean value = datagram.getSeq_nr() == ack.getAck() && isValid(ack);
+		return value;
 	}
 
 	/**
@@ -107,10 +130,44 @@ public class ConnectionImpl extends AbstractConnection {
 	 * @see Connection#accept()
 	 */
 	public Connection accept() throws IOException, SocketTimeoutException {
+		
+		//Wait forever for a syn:
+		KtnDatagram syn = null;
+		do{
+			syn = receivePacket(true);
+		}while(syn== null || syn.getFlag() != Flag.SYN);
+		
+		
+		//Wohooo, syn recieved!
+		
+		
+		ConnectionImpl con = new ConnectionImpl();
+		con.synRcvd(syn);
+		
+		
+		
 		//Listen for syn packet
 		//respond with synack with retransmit
 		//init vars
-		throw new NotImplementedException();
+		return con;
+	}
+
+
+	private void synRcvd(KtnDatagram syn) throws ConnectException, IOException {
+		state = State.SYN_RCVD;
+		//SYN-flooding will be fun >.<
+		nextExpectedSeqNr = syn.getSeq_nr()+1;
+		remoteAddress = syn.getSrc_addr();
+		remotePort = syn.getSrc_port();
+		
+		KtnDatagram ack = null;
+		do{
+			sendAck(syn, true);
+			//ack = receiveAck();
+			//System.out.println("Recieved ack " + ack);
+		}while(false/*ack == null /*|| !isValidAndExpectedSeq(ack) || validAck(syn, ack)*/ );
+		nextExpectedSeqNr++;
+		state = State.ESTABLISHED;
 	}
 
 	/**
@@ -126,6 +183,13 @@ public class ConnectionImpl extends AbstractConnection {
 	 * @see no.ntnu.fp.net.co.Connection#send(String)
 	 */
 	public void send(String msg) throws ConnectException, IOException {
+		
+		KtnDatagram datagram = constructDataPacket(msg);
+		KtnDatagram ack = sendDataPacketWithRetransmit(datagram);
+		
+		//TODO CHECK SHIT!
+		nextExpectedSeqNr++; //for the ack.
+		
 		//    	check connection state
 		//make packet
 		//	send with retransmit
@@ -133,9 +197,7 @@ public class ConnectionImpl extends AbstractConnection {
 		//check ACK
 		//
 		//WHAT IF WRONG ACK?!!!
-		// RecieveAck
 		//	Throw exceptions if something goes wrong.
-		throw new NotImplementedException();
 	}
 
 	/**
@@ -147,10 +209,11 @@ public class ConnectionImpl extends AbstractConnection {
 	 * @see AbstractConnection#sendAck(KtnDatagram, boolean)
 	 */
 	public String receive() throws ConnectException, IOException {
-		//receivePacket(false);
-		//check packet
-		//extract and return payload as String
-		throw new NotImplementedException();
+		KtnDatagram datagram = receivePacket(false);
+		nextExpectedSeqNr++;
+		sendAck(datagram, false);
+		//TODO:check packet
+		return (String) datagram.getPayload();
 	}
 
 	/**
@@ -172,8 +235,14 @@ public class ConnectionImpl extends AbstractConnection {
 	 * @return true if packet is free of errors, false otherwise.
 	 */
 	protected boolean isValid(KtnDatagram packet) {
-		//    	return packet.calculateChecksum() == packet.getChecksum();
-		throw new NotImplementedException();
+		return (packet.calculateChecksum() == packet.getChecksum())
+				&& (packet.getSrc_addr() == remoteAddress) //To get those ghost packets!
+				&& (packet.getSrc_port() == remotePort);
+		//Should we check sequence number here?! NO! As we use this in connect before we know what sequencenr to check
+	}
+	
+	private boolean isValidAndExpectedSeq(KtnDatagram packet){
+		return packet.getSeq_nr() == nextExpectedSeqNr && isValid(packet);
 	}
 
 	private class NotImplementedException extends RuntimeException{}

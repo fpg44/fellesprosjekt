@@ -10,9 +10,12 @@ public class Room {
 	private String roomName;
 	private boolean isOccupied;
 	
+	/**
+	 * Creates a new Room
+	 * @param roomName
+	 */
 	public Room(String roomName) {
 		this.roomName = roomName;
-		
 	}
 	
 	public void setRoomName(String name) {

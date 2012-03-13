@@ -10,6 +10,7 @@ public class Person {
 	private String firstName, lastName, userName;
 	
 	/**
+	 * Creates a new Person
 	 * @param firstName
 	 * @param lastName
 	 * @param userName

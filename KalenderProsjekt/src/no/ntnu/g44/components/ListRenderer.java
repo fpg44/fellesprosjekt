@@ -27,8 +27,8 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 
 	private static final Color HOVER_COLOR = new Color(194, 222, 211);
 	private static final Color SELECTED_COLOR = new Color(194, 222, 242);
-	protected static final ImageIcon iconRemove = new ImageIcon("src/Components/x.png");
-	protected static final ImageIcon iconRemoveMouseOver = new ImageIcon("src/Components/x2.png");
+	protected static final ImageIcon iconRemove = new ImageIcon("src/no/ntnu/g44/components/x.png");
+	protected static final ImageIcon iconRemoveMouseOver = new ImageIcon("src/no/ntnu/g44/components/x2.png");
 	private JLabel removeLabel = new JLabel(iconRemove);
 	private JLabel textLabel = new JLabel();
 	private MouseAdapter handler;

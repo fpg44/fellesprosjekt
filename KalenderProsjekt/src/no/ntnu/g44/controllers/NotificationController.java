@@ -15,7 +15,7 @@ public class NotificationController {
 		unseenNotifications.add(new Notification(NotificationType.EVENT_INVITATION));
 	}
 	
-	public ArrayList<NotificationType> getUnseenNotifications() {
+	public ArrayList<Notification> getUnseenNotifications() {
 		return unseenNotifications;
 	}
 

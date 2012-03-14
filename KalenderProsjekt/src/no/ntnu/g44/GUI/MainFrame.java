@@ -70,7 +70,7 @@ public class MainFrame extends JPanel{
 		//notifBox.addItem(new String("There is no notifications"));
 		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
-		notifBox.setRenderer(new NotificationListCellRenderer());
+		//notifBox.setRenderer(new NotificationListCellRenderer());
 
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
@@ -261,7 +261,7 @@ public class MainFrame extends JPanel{
 			if(e.getSource() == searchField){
 				
 				String search = searchField.getText();
-				if((e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z') || (e.getKeyChar() >= 'A' && e.getKeyChar() <= 'Z') || e.getKeyChar() == '-' || e.getKeyChar() == 'ø' || e.getKeyChar() == 'å' || e.getKeyChar() == 'æ' || e.getKeyChar() == 'Å' || e.getKeyChar() == 'Ø' || e.getKeyChar() == 'Æ'){
+				if(Character.isLetter(e.getKeyChar()) || e.getKeyChar() == '-'){
 					search += e.getKeyChar();
 				}
 				else if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE && search.length() > 0){

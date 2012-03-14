@@ -103,6 +103,7 @@ public class MainFrame extends JPanel{
 		searchField.addMouseListener(listener);
 		searchField.addKeyListener(listener);
 		calendar.setVisible(true);
+		calendar.addMouseListener(listener);
 		//calendar.setBackground(Color.GRAY);
 		personnelList.setVisible(true);
 		personnelList.addMouseListener(listener);
@@ -169,9 +170,21 @@ public class MainFrame extends JPanel{
 
 		editEvent.setSize(newEvent.getSize());
 		editEvent.setLocation(newEvent.getX(), newEvent.getY() + newEvent.getHeight());
+		if(calendar.getSelectedEvent() != null){
+			editEvent.setEnabled(true);
+		}
+		else{
+			editEvent.setEnabled(false);
+		}
 
 		deleteEvent.setLocation(newEvent.getX(), editEvent.getY() + editEvent.getHeight());
 		deleteEvent.setSize(newEvent.getSize());
+		if(calendar.getSelectedEvent() != null){
+			deleteEvent.setEnabled(true);
+		}
+		else{
+			deleteEvent.setEnabled(false);
+		}
 
 		calendar.setSize(newEvent.getWidth() * 7, getHeight() - 35 - 16 - 12 - 12);
 		calendar.setLocation(editEvent.getX() + editEvent.getWidth() + 12, 35 + 16 + 12);
@@ -270,6 +283,7 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void keyPressed(KeyEvent e) {
+			
 			if((e.getSource() == personnelList || e.getSource() == searchField)&& e.getKeyChar() == KeyEvent.VK_ENTER){
 				addPersons();
 				return;
@@ -378,8 +392,9 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			if(e.getSource() == calendar){
+				resizing();
+			}
 		}
 	}
 }

@@ -39,6 +39,8 @@ public class Person {
 	 * the <code>Group</code> class.
 	 */
 	private PropertyChangeSupport propChangeSupp;
+
+	private String username;
 	
 	/**
 	 * Constant used when calling 
@@ -97,6 +99,11 @@ public class Person {
 		this.name = name;
 		this.email = email;
 		this.dateOfBirth = dateOfBirth;
+	}
+	
+	public Person(String name, String username){
+		this.name = name;
+		this.username = username;
 	}
 	
 	/**

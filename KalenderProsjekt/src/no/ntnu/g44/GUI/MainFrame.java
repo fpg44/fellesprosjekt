@@ -40,8 +40,8 @@ public class MainFrame extends JPanel{
 	JButton newEvent = new JButton("New Event");
 	JButton editEvent = new JButton("Edit Event");
 	JButton deleteEvent = new JButton("Delete Event");
-	JButton arrowButton = new JButton("^  ^  ^  ^");
-	JButton removeButton = new JButton("Remove");
+	JButton arrowButton = new JButton("^ ^ ^");
+	JButton removeButton = new JButton("X");
 	JTextField searchField = new JTextField("Search...");
 	DefaultListModel personnelModel = new DefaultListModel();
 	ArrayList<String> personnel = new ArrayList<String>();

@@ -40,7 +40,8 @@ public class MainFrame extends JPanel{
 	JButton newEvent = new JButton("New Event");
 	JButton editEvent = new JButton("Edit Event");
 	JButton deleteEvent = new JButton("Delete Event");
-	JButton arrowButton = new JButton("^   ^   ^   ^   ^   ^   ^   ^");
+	JButton arrowButton = new JButton("^  ^  ^  ^");
+	JButton removeButton = new JButton("Remove");
 	JTextField searchField = new JTextField("Search...");
 	DefaultListModel personnelModel = new DefaultListModel();
 	ArrayList<String> personnel = new ArrayList<String>();
@@ -56,6 +57,10 @@ public class MainFrame extends JPanel{
 	CalendarPanel calendar = new CalendarPanel();
 	JLabel weeknumber = new JLabel("UKE 12");
 	ListRenderer renderer = new ListRenderer();
+	
+	//Used by actionListener to check if the list of notifications is empty
+	NotificationController notificationController = new NotificationController();
+	ArrayList unseenNotifications = notificationController.getUnseenNotifications();
 
 	public MainFrame(){
 		calendarPersons.setCellRenderer(renderer);
@@ -68,12 +73,10 @@ public class MainFrame extends JPanel{
 		fillModel();
 
 		//notifBox.addItem(new String("There is no notifications"));
+//		notifBox.setSelectedIndex(0);
 		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
-		notifBox.setMaximumRowCount(10);
-		notifBox.setRenderer(new NotificationListCellRenderer());
-
-
+		
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
 		addMouseMotionListener(listener);
@@ -92,6 +95,8 @@ public class MainFrame extends JPanel{
 		deleteEvent.setVisible(true);
 		arrowButton.setVisible(true);
 		arrowButton.addActionListener(listener);
+		removeButton.setVisible(true);
+		removeButton.addActionListener(listener);
 		searchField.setVisible(true);
 		searchField.addMouseListener(listener);
 		searchField.addKeyListener(listener);
@@ -100,7 +105,6 @@ public class MainFrame extends JPanel{
 		personnelList.setVisible(true);
 		personnelList.addMouseListener(listener);
 		personnelList.addKeyListener(listener);
-		calendarPersons.setVisible(true);
 		personnelScroll.setVisible(true);
 		calendarScroll.setVisible(true);
 		backArrow.setVisible(true);
@@ -115,6 +119,7 @@ public class MainFrame extends JPanel{
 		add(editEvent);
 		add(deleteEvent);
 		add(arrowButton);
+		add(removeButton);
 		add(searchField);
 		add(calendar);
 		add(backArrow);
@@ -136,8 +141,6 @@ public class MainFrame extends JPanel{
 	 */
 	public void checkForNewNotifications() {
 		int notifCounter = 0;
-		NotificationController notificationController = new NotificationController();
-		ArrayList unseenNotifications = notificationController.getUnseenNotifications();
 
 		if (!unseenNotifications.isEmpty()) {
 			for (int i = 0; i < unseenNotifications.size(); i++) {
@@ -147,7 +150,9 @@ public class MainFrame extends JPanel{
 			for (int i = 0; i < unseenNotifications.size(); i++) {
 				notifBox.addItem((unseenNotifications.get(i)));
 			}
+			notifBox.setRenderer(new NotificationListCellRenderer());
 		}
+		
 		else {
 			notifBox.addItem(new String ("There is no new notifications"));
 		}
@@ -190,8 +195,11 @@ public class MainFrame extends JPanel{
 		calendarScroll.setSize(newEvent.getWidth(), (int)((getHeight() - 40 - 32 -(newEvent.getHeight() * 3.5)))/2);
 		calendarScroll.setLocation(newEvent.getX(), deleteEvent.getY() + deleteEvent.getHeight() + 24);
 
-		arrowButton.setSize(newEvent.getWidth(), 22);
+		arrowButton.setSize((newEvent.getWidth() / 2)-1, 22);
 		arrowButton.setLocation(newEvent.getX(), calendarScroll.getY() + calendarScroll.getHeight() + 1);
+		
+		removeButton.setSize(arrowButton.getSize());
+		removeButton.setLocation(newEvent.getX() + arrowButton.getWidth() + 2, arrowButton.getY());
 
 		personnelScroll.setSize(newEvent.getWidth(), calendarScroll.getHeight());
 		personnelScroll.setLocation(newEvent.getX(), calendarScroll.getY() + calendarScroll.getHeight() + 24);
@@ -246,11 +254,17 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == notifBox) {
-				System.out.println(((Notification) notifBox.getSelectedItem()).getMessage());
+			if (!unseenNotifications.isEmpty()){
+				if (e.getSource() == notifBox) {
+//					System.out.println(((Notification) notifBox.getSelectedItem()).getMessage());
+					notifBox.setSelectedIndex(0);
+				}
 			}
-			else if(personnelList.getSelectedValue() != null){
+			else if(e.getSource() == arrowButton && personnelList.getSelectedValue() != null){
 				addPersons();			
+			}
+			else if(e.getSource() == removeButton && calendarPersons.getSelectedValue() != null){
+				calendarModel.removeElement(calendarPersons.getSelectedValue());
 			}
 		}
 		@Override
@@ -332,7 +346,6 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void keyTyped(KeyEvent e) {
-			
 
 		}
 		@Override
@@ -356,7 +369,6 @@ public class MainFrame extends JPanel{
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
-
 		}
 		@Override
 		public void mousePressed(MouseEvent e) {

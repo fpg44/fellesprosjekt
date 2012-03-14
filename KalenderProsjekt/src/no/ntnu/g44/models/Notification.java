@@ -40,5 +40,8 @@ public class Notification {
 		else if (type == NotificationType.EVENT_TIME_CHANGED) return "Event time changed";
 		else return "Participant declined invitation";
 	}
-	
+	@Override
+	public String toString() {
+		return message;
+	}
 }

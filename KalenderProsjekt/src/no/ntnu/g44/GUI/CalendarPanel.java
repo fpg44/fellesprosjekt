@@ -200,7 +200,20 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
 		for(Event event : testEvents){
 			EventView ev = new EventView(event);
 			ev.set(startHour, pixlsPerHour, dayWidth, leftOffset,topArea);
@@ -213,18 +226,6 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		selectedEvent = null;
 		repaint();
 	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-
-	@Override
-	public void mouseExited(MouseEvent e) {}
-
-	@Override
-	public void mousePressed(MouseEvent e) {}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {}
 
 
 }

@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -14,6 +15,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import no.ntnu.g44.models.Person;
 
 public class NewEventPanel extends JPanel {
 
@@ -30,26 +33,27 @@ public class NewEventPanel extends JPanel {
 	private JLabel customLocationLabel;
 	private JTextField customLocation;
 	private JLabel eventDescriptionLabel;
-	private JScrollPane eventDescriptionScrolling;
+	private JScrollPane eventDescriptionScroller;
 	private JTextArea eventDescription;
 	
 	// (invited) participants--the right side of our prototype
 	private JPanel participantsPanel;
-	private JLabel addPersonLabel;
 	private JTextField searchField;
 	private JList searchList;
+	private JScrollPane searchListScroller;
 	private JLabel invitedPersonsLabel;
 	private JList invitedList;
+	private JScrollPane invitedListScroller;
 	
 	// 'Save Event' and 'Cancel' buttons
 	private JPanel buttonPanel;
 	private JButton saveButton;
 	private JButton cancelButton;
 	
-	public NewEventPanel() {
+	public NewEventPanel(Person owner) {
 		eventInformationPanel = new JPanel();
 		ownerLabel = new JLabel("Arranged by");
-		this.eventOwner = new JLabel("Ola Nordmann");
+		eventOwner = new JLabel(owner.getName());
 		eventStartLabel = new JLabel("From");
 		eventStartTime = new JSpinner();
 		eventEndLabel = new JLabel("To");
@@ -58,6 +62,9 @@ public class NewEventPanel extends JPanel {
 		location = new JComboBox();
 		customLocationLabel = new JLabel("Custom location");
 		customLocation = new JTextField(20);		// 20 columns
+		// customLocation should only be enabled when 'Other' is selected
+		// in the location JComboBox
+		customLocation.setEnabled(false);
 		eventDescriptionLabel = new JLabel("Description");
 		eventDescription = new JTextArea(4, 20);	// 4 rows, 20 columns
 		
@@ -65,18 +72,20 @@ public class NewEventPanel extends JPanel {
 		eventDescription.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 		// put the description in a JScrollPane so scrollbars are added rather
 		// than the textearea resizing itself when a lot of text is entered
-		eventDescriptionScrolling = new JScrollPane(eventDescription);
+		eventDescriptionScroller = new JScrollPane(eventDescription);
 	
 		participantsPanel = new JPanel();
-		addPersonLabel = new JLabel("Find person");
-		searchField = new JTextField();
-		searchList = new JList();
+		searchField = new JTextField("Search", 20);	// 20 columns
+		searchList = new JList(new DefaultListModel());
+		searchListScroller = new JScrollPane(searchList);
 		invitedPersonsLabel = new JLabel("Invited persons");
-		invitedList = new JList();
+		invitedList = new JList(new DefaultListModel());
+		invitedListScroller = new JScrollPane(invitedList);
 	
 		buttonPanel = new JPanel();
 		saveButton = new JButton("Save Event");
 		cancelButton = new JButton("Cancel");
+		
 		
 		eventInformationPanel.setBorder(BorderFactory.createTitledBorder(
 				"Event information"));
@@ -84,8 +93,7 @@ public class NewEventPanel extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.WEST;
-		c.gridx = 0;
-		c.gridy = 0;
+		c.gridx = c.gridy = 0;
 		eventInformationPanel.add(ownerLabel, c);
 		c.gridy = 1;
 		eventInformationPanel.add(eventStartLabel, c);
@@ -100,7 +108,7 @@ public class NewEventPanel extends JPanel {
 		c.anchor = GridBagConstraints.EAST;
 		c.gridx = 1;
 		c.gridy = 0;
-		eventInformationPanel.add(this.eventOwner, c);
+		eventInformationPanel.add(eventOwner, c);
 		c.gridy = 1;
 		eventInformationPanel.add(eventStartTime, c);
 		c.gridy = 2;
@@ -110,21 +118,44 @@ public class NewEventPanel extends JPanel {
 		c.gridy = 4;
 		eventInformationPanel.add(customLocation, c);
 		c.gridy = 5;
-		eventInformationPanel.add(eventDescriptionScrolling, c);
+		eventInformationPanel.add(eventDescriptionScroller, c);
 		
 		participantsPanel.setBorder(BorderFactory.createTitledBorder(
 				"Add or remove participants"));
+		participantsPanel.setLayout(new GridBagLayout());
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = c.gridy = 0;
+		participantsPanel.add(searchField, c);
+		c.gridy = 1;
+		participantsPanel.add(searchList, c);
+		c.anchor = GridBagConstraints.EAST;
+		c.gridx = 1;
+		c.gridy = 0;
+		participantsPanel.add(invitedPersonsLabel, c);
+		c.gridy = 1;
+		participantsPanel.add(invitedList, c);
 		
-		// add margin
-		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		// add contents
-		add(eventInformationPanel);
+		buttonPanel.add(saveButton);
+		buttonPanel.add(cancelButton);
+		
+		setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3)); // add padding
+		setLayout(new GridBagLayout());
+		c.anchor = GridBagConstraints.NORTH;
+		c.gridx = c.gridy = 0;
+		add(eventInformationPanel, c);
+		c.gridx = 1;
+		add(participantsPanel, c);
+		c.anchor = GridBagConstraints.EAST;
+		c.gridx = c.gridy = 1;
+		add(buttonPanel, c);
 	}
 	
 	// for testing purposes
 	public static void main(String[] args) {
+		Person person = new Person("Foo Bar", "foobar");
 		JFrame frame = new JFrame();
-		frame.getContentPane().add(new NewEventPanel());
+		NewEventPanel panel = new NewEventPanel(person);
+		frame.getContentPane().add(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);

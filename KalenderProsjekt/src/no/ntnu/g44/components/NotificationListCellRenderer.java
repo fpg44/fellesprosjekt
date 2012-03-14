@@ -12,17 +12,32 @@ import sun.font.TextLabel;
 
 import no.ntnu.g44.models.Notification;
 
-public class NotificationListCellRenderer implements ListCellRenderer {
-	
+public class NotificationListCellRenderer extends JLabel implements ListCellRenderer {
+
 	JLabel textLabel;
-	DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
-	
+
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value,
 			int index, boolean isSelected, boolean cellHasFocus) {
-		textLabel = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-		textLabel.setText(((Notification) value).getMessage());
-		return null;
+
+		//		int selectedIndex = ((Integer)value).intValue();
+
+		if (isSelected) {
+			setBackground(list.getSelectionBackground());
+			setForeground(list.getSelectionForeground());
+		} else {
+			setBackground(list.getBackground());
+			setForeground(list.getForeground());
+		}
+
+		if(index > 0){
+			Notification not =((Notification)value);
+
+			String s = not.getMessage(); 
+			setText(s);
+		}
+
+		return this;
 	}
 
 }

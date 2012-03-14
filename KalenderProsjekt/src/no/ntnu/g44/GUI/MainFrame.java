@@ -70,6 +70,7 @@ public class MainFrame extends JPanel{
 		//notifBox.addItem(new String("There is no notifications"));
 		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
+		notifBox.setMaximumRowCount(10);
 		notifBox.setRenderer(new NotificationListCellRenderer());
 
 		setLayout(null);
@@ -143,7 +144,7 @@ public class MainFrame extends JPanel{
 			}
 			notifBox.addItem(new String ("You have " + notifCounter + " new notifications."));
 			for (int i = 0; i < unseenNotifications.size(); i++) {
-				notifBox.addItem(((Notification) unseenNotifications.get(i)));
+				notifBox.addItem((unseenNotifications.get(i)));
 			}
 		}
 		else {

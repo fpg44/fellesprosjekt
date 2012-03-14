@@ -214,6 +214,10 @@ public class Person {
 	public String getName() {
 		return name;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
 
 	/**
 	 * Returns the person's email address.
@@ -286,10 +290,6 @@ public class Person {
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-		String s = "Name: " + name + "; ";
-		s += "Email: " + email + "; ";
-		if (dateOfBirth != null)
-			s += "Date of birth: " + dateOfBirth.toString();
-		return s;
+		return name;
 	}
 }

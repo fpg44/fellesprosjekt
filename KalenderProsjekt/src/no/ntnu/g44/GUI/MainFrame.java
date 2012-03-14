@@ -64,9 +64,9 @@ public class MainFrame extends JPanel{
 	ArrayList unseenNotifications = notificationController.getUnseenNotifications();
 
 	public MainFrame(){
-		calendarPersons.setCellRenderer(renderer);
-		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
-		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
+//		calendarPersons.setCellRenderer(renderer);
+//		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
+//		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
 
 		fillModel();
 		fillModel();

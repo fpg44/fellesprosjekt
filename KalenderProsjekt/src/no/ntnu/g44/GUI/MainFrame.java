@@ -232,8 +232,8 @@ public class MainFrame extends JPanel{
 			calendarModel.addElement(o[i]);
 		}
 	}
-	public class ListeningClass implements MouseMotionListener, ActionListener, 
-		MouseListener, KeyListener{
+	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
+		boolean shift = false;
 		public void mouseDragged(MouseEvent e) {
 		}
 		public void mouseMoved(MouseEvent e) {
@@ -257,10 +257,48 @@ public class MainFrame extends JPanel{
 		public void keyPressed(KeyEvent e) {
 			if((e.getSource() == personnelList || e.getSource() == searchField)&& e.getKeyChar() == KeyEvent.VK_ENTER){
 				addPersons();
-
 			}
 			if(e.getSource() == searchField){
-				
+				if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+					shift = true;
+					return;
+				}
+				//arrow
+				if(e.getKeyCode() == KeyEvent.VK_DOWN){
+					int index = personnelList.getLeadSelectionIndex();
+					if(index == personnelModel.getSize() -1){
+						if(shift){
+							personnelList.addSelectionInterval(index, 0);
+							return;
+						}
+						personnelList.setSelectedIndex(0);
+						return;
+					}
+					if(shift){
+						personnelList.addSelectionInterval(index, index+1);
+						return;
+					}
+					personnelList.setSelectedIndex(index + 1);
+					return;
+				}
+				if(e.getKeyCode() == KeyEvent.VK_UP){
+					int index = personnelList.getSelectedIndex();
+					if(index == 0){
+						if(shift){
+							personnelList.addSelectionInterval(index, personnelModel.size() -1);
+							return;
+						}
+						personnelList.setSelectedIndex(personnelModel.size() -1);
+						return;
+					}
+					if(shift){
+						personnelList.addSelectionInterval(index, index -1);
+						return;
+					}
+					personnelList.setSelectedIndex(index -1);
+					return;
+				}
+				//search
 				String search = searchField.getText();
 				if(Character.isLetter(e.getKeyChar()) || e.getKeyChar() == '-'){
 					search += e.getKeyChar();
@@ -287,16 +325,18 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
-
+			if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+				shift = false;
+			}
 		}
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
+			
 
 		}
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			
 			if(e.getClickCount() == 2 && e.getSource() == personnelList){
 				if(personnelList.getSelectedValue() != null){
 					addPersons();			

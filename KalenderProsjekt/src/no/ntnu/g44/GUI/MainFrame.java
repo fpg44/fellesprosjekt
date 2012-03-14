@@ -12,6 +12,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -35,6 +36,7 @@ public class MainFrame extends JPanel{
 	JButton arrowButton = new JButton("^   ^   ^   ^   ^   ^   ^   ^");
 	JTextField searchField = new JTextField("Search...");
 	DefaultListModel personnelModel = new DefaultListModel();
+	ArrayList<String> personnel = new ArrayList<String>();
 	DefaultListModel calendarModel = new DefaultListModel();
 	JList personnelList = new JList(personnelModel);
 	JList calendarPersons = new JList(calendarModel);
@@ -175,10 +177,15 @@ public class MainFrame extends JPanel{
 		MainFrame panel = new MainFrame();
 	}
 	public void fillModel(){
-		personnelModel.addElement("Kari");
-		personnelModel.addElement("Per");
-		personnelModel.addElement("Andreas");
-		personnelModel.addElement("Per-Olav");
+		personnel.add("Kari");
+		personnel.add("Per");
+		personnel.add("Andreas");
+		personnel.add("Per-Olav");
+		personnelModel.removeAllElements();
+		for(int i = 0; i < personnel.size(); i++){
+			personnelModel.addElement(personnel.get(i));
+		}
+		
 	}
 	public class MouseListening implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		public void mouseDragged(MouseEvent e) {
@@ -203,7 +210,7 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void keyPressed(KeyEvent e) {
-			if(e.getSource() == personnelList && e.getKeyChar() == KeyEvent.VK_ENTER){
+			if((e.getSource() == personnelList || e.getSource() == searchField)&& e.getKeyChar() == KeyEvent.VK_ENTER){
 				Object o[] = personnelList.getSelectedValues();
 				for(int i = 0; i < o.length; i++){
 					personnelModel.removeElement(o[i]);
@@ -212,8 +219,20 @@ public class MainFrame extends JPanel{
 				
 			}
 			if(e.getSource() == searchField){
-				for(int i = 0; i < personnelModel.size(); i++){
-					
+				personnelModel.removeAllElements();
+				for(int i = 0; i < personnel.size(); i++){
+					if(personnel.get(i).length() < searchField.getText().length()+1){
+						continue;
+					}
+					if(e.getKeyChar() == KeyEvent.VK_ENTER || e.getKeyChar() == KeyEvent.VK_CONTROL || e.getKeyChar() == KeyEvent.VK_SHIFT){
+						if(personnel.get(i).startsWith(searchField.getText())){
+							personnelModel.addElement(personnel.get(i));
+							continue;
+						}
+					}
+					if(personnel.get(i).startsWith(searchField.getText() + e.getKeyChar())){
+						personnelModel.addElement(personnel.get(i));
+					}
 				}
 			}
 			

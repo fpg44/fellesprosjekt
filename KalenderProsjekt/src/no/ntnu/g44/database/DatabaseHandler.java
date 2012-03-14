@@ -105,10 +105,16 @@ public class DatabaseHandler {
 				
 			}while(rsE.next());
 
+			rsP = null;
+			rsE = null;
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-
 		return events;
+	}
+	
+	public void updateEvents(ArrayList<Event> events){
+		
+		
 	}
 }

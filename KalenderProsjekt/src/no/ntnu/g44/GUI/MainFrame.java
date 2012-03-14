@@ -59,8 +59,8 @@ public class MainFrame extends JPanel{
 
 	public MainFrame(){
 		calendarPersons.setCellRenderer(renderer);
-//		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
-//		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
+		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
+		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
 
 		fillModel();
 		fillModel();

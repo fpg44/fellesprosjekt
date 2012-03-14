@@ -25,6 +25,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import no.ntnu.g44.components.ListRenderer;
+import no.ntnu.g44.models.NotificationType;
+import no.ntnu.g44.models.Notification;
+import no.ntnu.g44.controllers.NotificationController;
 
 public class MainFrame extends JPanel{
 	MouseListening listener = new MouseListening();
@@ -59,7 +62,10 @@ public class MainFrame extends JPanel{
 		fillModel();
 		fillModel();
 		fillModel();
-		notifBox.addItem(new String("There is no notifications"));
+		
+//		notifBox.addItem(new String("There is no notifications"));
+		checkForNewNotifications();
+		
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
 		addMouseMotionListener(listener);
@@ -116,6 +122,29 @@ public class MainFrame extends JPanel{
 	public void repaint(){
 		resizing();
 	}
+	
+	/**
+	 * Checks for new notifications and puts them in 'notifBox'
+	 */
+	public void checkForNewNotifications() {
+		int notifCounter = 0;
+		NotificationController notificationController = new NotificationController();
+		ArrayList unseenNotifications = notificationController.getUnseenNotifications();
+		
+		if (!unseenNotifications.isEmpty()) {
+			for (int i = 0; i < unseenNotifications.size(); i++) {
+				notifCounter++;
+			}
+			notifBox.addItem(new String ("You have " + notifCounter + " new notifications."));
+			for (int i = 0; i < unseenNotifications.size(); i++) {
+				notifBox.addItem(((Notification) unseenNotifications.get(i)).getMessage());
+			}
+		}
+		else {
+			notifBox.addItem(new String ("There is no new notifications"));
+		}
+	}
+	
 	public void resizing(){
 		if(insets == null){
 			return;

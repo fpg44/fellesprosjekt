@@ -5,7 +5,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Stroke;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Rectangle2D;
@@ -18,7 +21,7 @@ import javax.swing.JPanel;
 
 import no.ntnu.g44.models.Event;
 
-public class CalendarPanel extends JPanel implements MouseWheelListener {
+public class CalendarPanel extends JPanel implements MouseWheelListener, MouseListener {
 	String[] weekdays = new String[]{"Monday","Tuesday","Wednesday",
 			"Thursday","Friday","Saturday","Sunday"};
 	private float startHour = 8f;
@@ -27,13 +30,35 @@ public class CalendarPanel extends JPanel implements MouseWheelListener {
 	int margin = 10;
 	int topArea = margin+textPos;
 	int pixlsPerHour = (int) ((getHeight() -topArea)/hoursShown);
-	Event[] events = new Event[3];
+	Event[] testEvents = new Event[3];
+	
+	private Event selectedEvent = null;
 
 	public CalendarPanel() {
 		addMouseWheelListener(this);
-		events = new Event[]{
-				new Event("test",null, new Date(2012,3,14,10,15),
-						new Date(2012,3,14,12,6), null,null)};
+		addMouseListener(this);
+		testEvents = new Event[]{
+				new Event("Ting 15.",null, new Date(2012,3,15,11,15),
+					new Date(2012,3,15,13,6), null,null),
+					
+				new Event("haha 16",null, new Date(2012,3,16,10,15),
+					new Date(2012,3,16,45,6), null,null),
+					
+				new Event("hoho 14",null, new Date(2012,3,14,10,15),
+					new Date(2012,3,14,12,6), null,null),
+					
+				new Event("test",null, new Date(2012,3,17,10,15),
+					new Date(2012,3,17,12,6), null,null),
+					
+				new Event("test",null, new Date(2012,3,18,10,15),
+					new Date(2012,3,18,12,6), null,null),
+					
+				new Event("test",null, new Date(2012,3,19,10,15),
+					new Date(2012,3,19,12,6), null,null),
+					
+				new Event("test",null, new Date(2012,3,20,10,15),
+					new Date(2012,3,20,12,6), null,null),
+		};
 	}
 
 	/**Offset to make room for displaying times	 */
@@ -48,6 +73,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener {
 		paintHours(g2d);
 		paintFrame(g2d);
 		paintEvents(g2d);
+		paintNowLine(g2d);
 	}
 
 	private void paintFrame(Graphics2D g2d) {
@@ -122,34 +148,45 @@ public class CalendarPanel extends JPanel implements MouseWheelListener {
 	@SuppressWarnings("deprecation")
 	private void paintEvents(Graphics2D g2d){
 		g2d.setStroke(new BasicStroke(2));
-		int eventMargin = 15;
-		int roundCorners = 30;
-		for(Event e:events){
-			Date startTime = e.getEventStartTime();
-			int startY = (int) (((startTime.getHours()-this.startHour)+
-							startTime.getMinutes()/60) * pixlsPerHour) + topArea;
-			Date endTime = e.getEventEndTime();
-			int endY = (int) (((endTime.getHours()-this.startHour)+
-					endTime.getMinutes()/60) * pixlsPerHour) + topArea;
-			
-			int startX = startTime.getDay() *dayWidth + leftOffset + eventMargin;
-			int endX = startTime.getDay() *dayWidth +dayWidth+ leftOffset - eventMargin;
-			
-			g2d.drawRoundRect(startX,startY,endX - startX , endY - startY,roundCorners,roundCorners);
-			g2d.setPaint(Color.white);
-			g2d.fill(new RoundRectangle2D.Double(
-					startX,startY,endX - startX , endY - startY,roundCorners,roundCorners));
 		
-			//Draw the text
-			g2d.setPaint(Color.black);
-			Font prefont = g2d.getFont();
-			Font f = new Font("Helvetica",Font.BOLD, 12);
-			g2d.setFont(f);
-			g2d.drawString(e.getEventTitle(), startX+15, startY+20);
-			g2d.setFont(prefont); //reset font
-			g2d.drawLine(startX, startY+30, endX, startY+30);
-		
+		for(Event e:testEvents){
+			EventView ev = new EventView(e);
+			ev.set(startHour,pixlsPerHour,dayWidth, leftOffset,topArea);
+			ev.paint(g2d, selectedEvent == e);
+
 		}
+	}
+	
+	/**
+	 * @return the selected event. Or null if none is selected.
+	 */
+	public Event getSelectedEvent(){
+		return selectedEvent;
+	}
+	
+	
+	private void paintNowLine(Graphics2D g2d){
+		Calendar nowTime = Calendar.getInstance();
+		nowTime.setTime(new Date());
+		
+		
+		int Y = (int) ((((nowTime.get(Calendar.HOUR_OF_DAY)-this.startHour)+
+				nowTime.get(Calendar.MINUTE)/60f) * pixlsPerHour) + topArea);
+		
+		int startX = (nowTime.get(Calendar.DAY_OF_WEEK)  +8)%7 *dayWidth + leftOffset;
+		int endX = (nowTime.get(Calendar.DAY_OF_WEEK) + 8)%7 *dayWidth +dayWidth+ leftOffset;
+
+		
+		Paint p = g2d.getPaint();
+		Stroke s = g2d.getStroke();
+		g2d.setStroke(new BasicStroke(2));
+		g2d.setPaint(Color.red);
+		
+		g2d.drawLine(startX, Y, endX, Y);
+		
+		//reset
+		g2d.setStroke(s);
+		g2d.setPaint(p);
 	}
 
 
@@ -158,7 +195,36 @@ public class CalendarPanel extends JPanel implements MouseWheelListener {
 		startHour += 0.5f*e.getPreciseWheelRotation();
 		startHour = Math.max(0, Math.min(startHour,24-hoursShown));
 		System.out.println("startTime = "+startHour);
+		
 		repaint();		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+		for(Event event : testEvents){
+			EventView ev = new EventView(event);
+			ev.set(startHour, pixlsPerHour, dayWidth, leftOffset,topArea);
+			if(ev.isAtPosition(e.getX(), e.getY())){
+				selectedEvent = event;
+				repaint();
+				return;
+			}
+		}
+		selectedEvent = null;
+		repaint();
 	}
 
 

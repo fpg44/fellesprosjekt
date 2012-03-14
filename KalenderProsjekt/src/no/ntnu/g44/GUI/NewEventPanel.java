@@ -2,6 +2,7 @@ package no.ntnu.g44.gui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -39,11 +40,17 @@ public class NewEventPanel extends JPanel {
 	// (invited) participants--the right side of our prototype
 	private JPanel participantsPanel;
 	private JTextField searchField;
-	private JList searchList;
+	private JList<Person> searchList;
 	private JScrollPane searchListScroller;
 	private JLabel invitedPersonsLabel;
-	private JList invitedList;
+	private JList<Person> invitedList;
 	private JScrollPane invitedListScroller;
+	// this model should contain all Person objects
+	private DefaultListModel<Person> personsModel;
+	// this ArrayList should be filled with the names of all persons
+	private ArrayList<String> persons;
+	// this model should contain the persons to invite
+	private DefaultListModel<Person> participantsModel;
 	
 	// 'Save Event' and 'Cancel' buttons
 	private JPanel buttonPanel;
@@ -75,17 +82,22 @@ public class NewEventPanel extends JPanel {
 		eventDescriptionScroller = new JScrollPane(eventDescription);
 	
 		participantsPanel = new JPanel();
+		personsModel = new DefaultListModel<Person>();
+		participantsModel = new DefaultListModel<Person>();
 		searchField = new JTextField("Search", 20);	// 20 columns
-		searchList = new JList(new DefaultListModel());
+		searchList = new JList<Person>(personsModel);
 		searchListScroller = new JScrollPane(searchList);
 		invitedPersonsLabel = new JLabel("Invited persons");
-		invitedList = new JList(new DefaultListModel());
+		invitedList = new JList<Person>(participantsModel);
 		invitedListScroller = new JScrollPane(invitedList);
+		
+		persons = new ArrayList<String>();
+		populatePersonsModel();
+		populatePersonsArray();
 	
 		buttonPanel = new JPanel();
 		saveButton = new JButton("Save Event");
 		cancelButton = new JButton("Cancel");
-		
 		
 		eventInformationPanel.setBorder(BorderFactory.createTitledBorder(
 				"Event information"));
@@ -127,13 +139,17 @@ public class NewEventPanel extends JPanel {
 		c.gridx = c.gridy = 0;
 		participantsPanel.add(searchField, c);
 		c.gridy = 1;
-		participantsPanel.add(searchList, c);
+		c.fill = GridBagConstraints.BOTH;
+		participantsPanel.add(searchListScroller, c);
+		c.fill = GridBagConstraints.NONE;		// NONE is the default value
 		c.anchor = GridBagConstraints.EAST;
 		c.gridx = 1;
 		c.gridy = 0;
 		participantsPanel.add(invitedPersonsLabel, c);
 		c.gridy = 1;
-		participantsPanel.add(invitedList, c);
+		c.fill = GridBagConstraints.BOTH;
+		participantsPanel.add(invitedListScroller, c);
+		c.fill = GridBagConstraints.NONE;
 		
 		buttonPanel.add(saveButton);
 		buttonPanel.add(cancelButton);
@@ -159,5 +175,21 @@ public class NewEventPanel extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
+	}
+	
+	private void populatePersonsModel() {
+		String[] names = {	"Anders Andersen", "Bjørn Bjørnson",
+							"Charlie Cleese", "Dolly Delta" };
+		for (String name : names) {
+			String username = name.toLowerCase().replace(" ", "_");
+			personsModel.addElement(new Person(name, username));
+		}
+	}
+	
+	private void populatePersonsArray() {
+		for (int i = 0; i < personsModel.getSize(); i++)
+			if (personsModel.get(i) != null) {
+				persons.add(personsModel.get(i).getName());
+			}
 	}
 }

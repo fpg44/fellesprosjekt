@@ -40,7 +40,8 @@ public class MainFrame extends JPanel{
 	JButton newEvent = new JButton("New Event");
 	JButton editEvent = new JButton("Edit Event");
 	JButton deleteEvent = new JButton("Delete Event");
-	JButton arrowButton = new JButton("^   ^   ^   ^   ^   ^   ^   ^");
+	JButton arrowButton = new JButton("^  ^  ^  ^");
+	JButton removeButton = new JButton("Remove");
 	JTextField searchField = new JTextField("Search...");
 	DefaultListModel personnelModel = new DefaultListModel();
 	ArrayList<String> personnel = new ArrayList<String>();
@@ -94,6 +95,8 @@ public class MainFrame extends JPanel{
 		deleteEvent.setVisible(true);
 		arrowButton.setVisible(true);
 		arrowButton.addActionListener(listener);
+		removeButton.setVisible(true);
+		removeButton.addActionListener(listener);
 		searchField.setVisible(true);
 		searchField.addMouseListener(listener);
 		searchField.addKeyListener(listener);
@@ -102,7 +105,6 @@ public class MainFrame extends JPanel{
 		personnelList.setVisible(true);
 		personnelList.addMouseListener(listener);
 		personnelList.addKeyListener(listener);
-		calendarPersons.setVisible(true);
 		personnelScroll.setVisible(true);
 		calendarScroll.setVisible(true);
 		backArrow.setVisible(true);
@@ -117,6 +119,7 @@ public class MainFrame extends JPanel{
 		add(editEvent);
 		add(deleteEvent);
 		add(arrowButton);
+		add(removeButton);
 		add(searchField);
 		add(calendar);
 		add(backArrow);
@@ -192,8 +195,11 @@ public class MainFrame extends JPanel{
 		calendarScroll.setSize(newEvent.getWidth(), (int)((getHeight() - 40 - 32 -(newEvent.getHeight() * 3.5)))/2);
 		calendarScroll.setLocation(newEvent.getX(), deleteEvent.getY() + deleteEvent.getHeight() + 24);
 
-		arrowButton.setSize(newEvent.getWidth(), 22);
+		arrowButton.setSize((newEvent.getWidth() / 2)-1, 22);
 		arrowButton.setLocation(newEvent.getX(), calendarScroll.getY() + calendarScroll.getHeight() + 1);
+		
+		removeButton.setSize(arrowButton.getSize());
+		removeButton.setLocation(newEvent.getX() + arrowButton.getWidth() + 2, arrowButton.getY());
 
 		personnelScroll.setSize(newEvent.getWidth(), calendarScroll.getHeight());
 		personnelScroll.setLocation(newEvent.getX(), calendarScroll.getY() + calendarScroll.getHeight() + 24);
@@ -227,8 +233,15 @@ public class MainFrame extends JPanel{
 		}
 
 	}
-	public class ListeningClass implements MouseMotionListener, ActionListener, 
-		MouseListener, KeyListener{
+	public void addPersons(){
+		Object o[] = personnelList.getSelectedValues();
+		for(int i = 0; i < o.length; i++){
+			personnelModel.removeElement(o[i]);
+			calendarModel.addElement(o[i]);
+		}
+	}
+	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
+		boolean shift = false;
 		public void mouseDragged(MouseEvent e) {
 		}
 		public void mouseMoved(MouseEvent e) {
@@ -247,26 +260,60 @@ public class MainFrame extends JPanel{
 					notifBox.setSelectedIndex(0);
 				}
 			}
-			else if(personnelList.getSelectedValue() != null){
-				Object o[] = personnelList.getSelectedValues();
-				for(int i = 0; i < o.length; i++){
-					personnelModel.removeElement(o[i]);
-					calendarModel.addElement(o[i]);
-				}			
+			else if(e.getSource() == arrowButton && personnelList.getSelectedValue() != null){
+				addPersons();			
+			}
+			else if(e.getSource() == removeButton && calendarPersons.getSelectedValue() != null){
+				calendarModel.removeElement(calendarPersons.getSelectedValue());
 			}
 		}
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if((e.getSource() == personnelList || e.getSource() == searchField)&& e.getKeyChar() == KeyEvent.VK_ENTER){
-				Object o[] = personnelList.getSelectedValues();
-				for(int i = 0; i < o.length; i++){
-					personnelModel.removeElement(o[i]);
-					calendarModel.addElement(o[i]);
-				}
-
+				addPersons();
+				return;
 			}
 			if(e.getSource() == searchField){
-				
+				if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+					shift = true;
+					return;
+				}
+				//arrow
+				if(e.getKeyCode() == KeyEvent.VK_DOWN){
+					int index = personnelList.getLeadSelectionIndex();
+					if(index == personnelModel.getSize() -1){
+						if(shift){
+							personnelList.addSelectionInterval(index, 0);
+							return;
+						}
+						personnelList.setSelectedIndex(0);
+						return;
+					}
+					if(shift){
+						personnelList.addSelectionInterval(index, index+1);
+						return;
+					}
+					personnelList.setSelectedIndex(index + 1);
+					return;
+				}
+				if(e.getKeyCode() == KeyEvent.VK_UP){
+					int index = personnelList.getSelectedIndex();
+					if(index == 0){
+						if(shift){
+							personnelList.addSelectionInterval(index, personnelModel.size() -1);
+							return;
+						}
+						personnelList.setSelectedIndex(personnelModel.size() -1);
+						return;
+					}
+					if(shift){
+						personnelList.addSelectionInterval(index, index -1);
+						return;
+					}
+					personnelList.setSelectedIndex(index -1);
+					return;
+				}
+				//search
 				String search = searchField.getText();
 				if(Character.isLetter(e.getKeyChar()) || e.getKeyChar() == '-'){
 					search += e.getKeyChar();
@@ -286,25 +333,27 @@ public class MainFrame extends JPanel{
 					else{
 					}
 				}
+				if(personnelModel.size() > 0){
+					personnelList.setSelectedIndex(0);
+				}
 			}
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
-
+			if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+				shift = false;
+			}
 		}
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
 
 		}
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			
 			if(e.getClickCount() == 2 && e.getSource() == personnelList){
 				if(personnelList.getSelectedValue() != null){
-					Object o = personnelList.getSelectedValue();
-					personnelModel.removeElement(o);
-					calendarModel.addElement(o);			
+					addPersons();			
 				}
 			}
 			if(e.getSource() == searchField){
@@ -320,7 +369,6 @@ public class MainFrame extends JPanel{
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
-
 		}
 		@Override
 		public void mousePressed(MouseEvent e) {

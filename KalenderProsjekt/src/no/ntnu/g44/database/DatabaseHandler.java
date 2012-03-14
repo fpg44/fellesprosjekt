@@ -115,6 +115,16 @@ public class DatabaseHandler {
 	
 	public void updateEvents(ArrayList<Event> events){
 		
-		
+		for(Event e : events){
+			try {
+				
+				stmt.executeUpdate("INSERT INTO EVENT balbalbala WHERE balbala");
+				
+			} catch (SQLException e1) {
+				
+				e1.printStackTrace();
+				
+			}
+		}
 	}
 }

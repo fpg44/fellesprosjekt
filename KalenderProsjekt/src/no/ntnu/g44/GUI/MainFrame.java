@@ -7,6 +7,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -23,14 +25,16 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 
 import no.ntnu.g44.components.ListRenderer;
+import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.controllers.NotificationController;
 
 public class MainFrame extends JPanel{
-	MouseListening listener = new MouseListening();
+	ListeningClass listener = new ListeningClass();
 	Insets insets;
 	JFrame frame;
 	JButton newEvent = new JButton("New Event");
@@ -52,20 +56,22 @@ public class MainFrame extends JPanel{
 	CalendarPanel calendar = new CalendarPanel();
 	JLabel weeknumber = new JLabel("UKE 12");
 	ListRenderer renderer = new ListRenderer();
-	
+
 	public MainFrame(){
 		calendarPersons.setCellRenderer(renderer);
 		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
 		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
-		
+
 		fillModel();
 		fillModel();
 		fillModel();
 		fillModel();
-		
-//		notifBox.addItem(new String("There is no notifications"));
+
+		//notifBox.addItem(new String("There is no notifications"));
 		checkForNewNotifications();
-		
+		notifBox.addActionListener(new ListeningClass());
+		notifBox.setRenderer(new NotificationListCellRenderer());
+
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
 		addMouseMotionListener(listener);
@@ -77,7 +83,7 @@ public class MainFrame extends JPanel{
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		insets = frame.getInsets();
-		
+
 		addMouseMotionListener(listener);
 		editEvent.setVisible(true);
 		newEvent.setVisible(true);
@@ -96,11 +102,11 @@ public class MainFrame extends JPanel{
 		personnelScroll.setVisible(true);
 		calendarScroll.setVisible(true);
 		backArrow.setVisible(true);
-		
+
 		nextArrow.setVisible(true);
 		notifBox.setVisible(true);
 		weeknumber.setVisible(true);
-		
+
 		add(personnelScroll);
 		add(calendarScroll);
 		add(newEvent);
@@ -122,7 +128,7 @@ public class MainFrame extends JPanel{
 	public void repaint(){
 		resizing();
 	}
-	
+
 	/**
 	 * Checks for new notifications and puts them in 'notifBox'
 	 */
@@ -130,21 +136,21 @@ public class MainFrame extends JPanel{
 		int notifCounter = 0;
 		NotificationController notificationController = new NotificationController();
 		ArrayList unseenNotifications = notificationController.getUnseenNotifications();
-		
+
 		if (!unseenNotifications.isEmpty()) {
 			for (int i = 0; i < unseenNotifications.size(); i++) {
 				notifCounter++;
 			}
 			notifBox.addItem(new String ("You have " + notifCounter + " new notifications."));
 			for (int i = 0; i < unseenNotifications.size(); i++) {
-				notifBox.addItem(((Notification) unseenNotifications.get(i)).getMessage());
+				notifBox.addItem(((Notification) unseenNotifications.get(i)));
 			}
 		}
 		else {
 			notifBox.addItem(new String ("There is no new notifications"));
 		}
 	}
-	
+
 	public void resizing(){
 		if(insets == null){
 			return;
@@ -152,56 +158,56 @@ public class MainFrame extends JPanel{
 		newEvent.setLocation( 12,  16);
 		newEvent.setSize((getWidth() -36) / 8,( getHeight() - 56) / 12);
 		newEvent.addMouseMotionListener(listener);
-		
+
 		editEvent.setSize(newEvent.getSize());
 		editEvent.setLocation(newEvent.getX(), newEvent.getY() + newEvent.getHeight());
-		
+
 		deleteEvent.setLocation(newEvent.getX(), editEvent.getY() + editEvent.getHeight());
 		deleteEvent.setSize(newEvent.getSize());
-		
+
 		calendar.setSize(newEvent.getWidth() * 7, getHeight() - 35 - 16 - 12 - 12);
 		calendar.setLocation(editEvent.getX() + editEvent.getWidth() + 12, 35 + 16 + 12);
-		
+
 		backArrow.setSize(calendar.getWidth() / 9, 35);
 		backArrow.setLocation(calendar.getX() + (calendar.getWidth() / 3), 16);
-		
+
 		todayButton.setSize(backArrow.getSize());
 		todayButton.setLocation(backArrow.getX() + backArrow.getWidth(), backArrow.getY());
-		
+
 		nextArrow.setSize(backArrow.getSize());
 		nextArrow.setLocation(todayButton.getX() + todayButton.getWidth(), todayButton.getY());
-		
+
 		notifBox.setSize(backArrow.getX() - calendar.getX() - 12, backArrow.getHeight());
 		notifBox.setLocation(calendar.getX(), newEvent.getY());
 		notifBox.setBackground(Color.getHSBColor((float)0.4, (float)0.2, (float) 0.95));
-		
-		
+
+
 		weeknumber.setSize(newEvent.getWidth(), backArrow.getHeight());
 		weeknumber.setLocation(calendar.getX() + calendar.getWidth() - newEvent.getWidth(), 16);
-		
+
 		calendarScroll.setSize(newEvent.getWidth(), (int)((getHeight() - 40 - 32 -(newEvent.getHeight() * 3.5)))/2);
 		calendarScroll.setLocation(newEvent.getX(), deleteEvent.getY() + deleteEvent.getHeight() + 24);
-		
+
 		arrowButton.setSize(newEvent.getWidth(), 22);
 		arrowButton.setLocation(newEvent.getX(), calendarScroll.getY() + calendarScroll.getHeight() + 1);
-		
+
 		personnelScroll.setSize(newEvent.getWidth(), calendarScroll.getHeight());
 		personnelScroll.setLocation(newEvent.getX(), calendarScroll.getY() + calendarScroll.getHeight() + 24);
-		
+
 		//calendarPersons.setSize(newEvent.getWidth(), (int)((getHeight() - 40 - 32 -(newEvent.getHeight() * 3.5)))/2);
 		//calendarPersons.setLocation(newEvent.getX(), deleteEvent.getY() + deleteEvent.getHeight() + 24);
-		
+
 		//personnelList.setSize(newEvent.getWidth(), calendarPersons.getHeight());
 		//personnelList.setLocation(newEvent.getX(), calendarPersons.getY() + calendarPersons.getHeight() + 24);
-		
+
 		searchField.setSize(newEvent.getWidth(), newEvent.getHeight() /2);
 		searchField.setLocation(newEvent.getX(), personnelScroll.getY() + personnelScroll.getHeight());
-		
-		
-		
+
+
+
 	}
-	
-	
+
+
 	public static void main(String[] args){
 		MainFrame panel = new MainFrame();
 	}
@@ -210,13 +216,15 @@ public class MainFrame extends JPanel{
 		personnel.add("Per");
 		personnel.add("Andreas");
 		personnel.add("Per-Olav");
+		personnel.add("Anders");
 		personnelModel.removeAllElements();
 		for(int i = 0; i < personnel.size(); i++){
 			personnelModel.addElement(personnel.get(i));
 		}
-		
+
 	}
-	public class MouseListening implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
+	public class ListeningClass implements MouseMotionListener, ActionListener, 
+		MouseListener, KeyListener{
 		public void mouseDragged(MouseEvent e) {
 		}
 		public void mouseMoved(MouseEvent e) {
@@ -228,8 +236,11 @@ public class MainFrame extends JPanel{
 			}
 		}
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			if(personnelList.getSelectedValue() != null){
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == notifBox) {
+				System.out.println(((Notification) notifBox.getSelectedItem()).getMessage());
+			}
+			else if(personnelList.getSelectedValue() != null){
 				Object o[] = personnelList.getSelectedValues();
 				for(int i = 0; i < o.length; i++){
 					personnelModel.removeElement(o[i]);
@@ -245,36 +256,40 @@ public class MainFrame extends JPanel{
 					personnelModel.removeElement(o[i]);
 					calendarModel.addElement(o[i]);
 				}
-				
+
 			}
 			if(e.getSource() == searchField){
+				
+				String search = searchField.getText();
+				if((e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z') || (e.getKeyChar() >= 'A' && e.getKeyChar() <= 'Z') || e.getKeyChar() == '-' || e.getKeyChar() == 'ø' || e.getKeyChar() == 'å' || e.getKeyChar() == 'æ' || e.getKeyChar() == 'Å' || e.getKeyChar() == 'Ø' || e.getKeyChar() == 'Æ'){
+					search += e.getKeyChar();
+				}
+				else if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE && search.length() > 0){
+					search = search.substring(0, search.length() -1);
+				}
+				search = search.toLowerCase();
+				String person;
 				personnelModel.removeAllElements();
 				for(int i = 0; i < personnel.size(); i++){
-					if(personnel.get(i).length() < searchField.getText().length()+1){
+					person = personnel.get(i).toLowerCase();
+					if(person.startsWith(search) || person.equals(search)){
+						personnelModel.addElement(personnel.get(i));
 						continue;
 					}
-					if(e.getKeyChar() == KeyEvent.VK_ENTER || e.getKeyChar() == KeyEvent.VK_CONTROL || e.getKeyChar() == KeyEvent.VK_SHIFT){
-						if(personnel.get(i).startsWith(searchField.getText())){
-							personnelModel.addElement(personnel.get(i));
-							continue;
-						}
-					}
-					if(personnel.get(i).startsWith(searchField.getText() + e.getKeyChar())){
-						personnelModel.addElement(personnel.get(i));
+					else{
 					}
 				}
 			}
-			
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 		@Override
 		public void keyTyped(KeyEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -288,27 +303,27 @@ public class MainFrame extends JPanel{
 			if(e.getSource() == searchField){
 				searchField.selectAll();
 			}
-			
+
 		}
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 	}
 }

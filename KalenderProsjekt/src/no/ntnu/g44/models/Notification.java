@@ -35,7 +35,7 @@ public class Notification {
 	 * @return Message that is to be displayed
 	 */
 	public String setMessage(NotificationType type) {
-		if(type == NotificationType.EVENT_CANCELLED) return "Event Cancelled";
+		if(type == NotificationType.EVENT_CANCELLED) return "Event cancelled";
 		else if (type == NotificationType.EVENT_INVITATION) return "New event invitation";
 		else if (type == NotificationType.EVENT_TIME_CHANGED) return "Event time changed";
 		else return "Participant declined invitation";

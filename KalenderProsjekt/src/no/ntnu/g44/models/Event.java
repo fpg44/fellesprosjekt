@@ -12,7 +12,8 @@ public class Event {
 	
 	private String eventTitle, location;
 	private ArrayList<Person> participants;
-	private Date eventTime;
+	private Date eventStartTime;
+	private Date eventEndTime;
 	private Room room;
 
 	/**
@@ -23,10 +24,12 @@ public class Event {
 	 * @param location
 	 * @param room
 	 */
-	public Event(String eventTitle, ArrayList<Person> participants, Date eventTime, String location, Room room) {
+	public Event(String eventTitle, ArrayList<Person> participants, 
+			Date eventStartTime, Date eventEndTime, String location, Room room) {
 		this.eventTitle = eventTitle;
 		this.participants = participants;
-		this.eventTime = eventTime;
+		this.eventStartTime = eventStartTime;
+		this.eventEndTime = eventEndTime;
 		this.location = location;
 		this.room = room;
 	}
@@ -55,12 +58,20 @@ public class Event {
 		this.participants = participants;
 	}
 
-	public Date getEventTime() {
-		return eventTime;
+	public Date getEventStartTime() {
+		return eventStartTime;
 	}
 
-	public void setEventTime(Date eventTime) {
-		this.eventTime = eventTime;
+	public void setEventStartTime(Date eventStartTime) {
+		this.eventStartTime = eventStartTime;
+	}
+
+	public Date getEventEndTime() {
+		return eventEndTime;
+	}
+
+	public void setEventEndTime(Date eventEndTime) {
+		this.eventEndTime = eventEndTime;
 	}
 
 	public Room getRoom() {

@@ -260,7 +260,7 @@ public class MainFrame extends JPanel{
 					notifBox.setSelectedIndex(0);
 				}
 			}
-			else if(e.getSource() == arrowButton && personnelList.getSelectedValue() != null){
+			if(e.getSource() == arrowButton && personnelList.getSelectedValue() != null){
 				addPersons();			
 			}
 			else if(e.getSource() == removeButton && calendarPersons.getSelectedValue() != null){

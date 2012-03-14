@@ -89,7 +89,6 @@ public class MainFrame extends JPanel{
 		calendarScroll.setVisible(true);
 		backArrow.setVisible(true);
 		
-		todayButton.setVisible(true);
 		nextArrow.setVisible(true);
 		notifBox.setVisible(true);
 		weeknumber.setVisible(true);

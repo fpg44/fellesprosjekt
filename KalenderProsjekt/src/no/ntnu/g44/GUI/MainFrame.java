@@ -210,6 +210,7 @@ public class MainFrame extends JPanel{
 		personnel.add("Per");
 		personnel.add("Andreas");
 		personnel.add("Per-Olav");
+		personnel.add("Anders");
 		personnelModel.removeAllElements();
 		for(int i = 0; i < personnel.size(); i++){
 			personnelModel.addElement(personnel.get(i));
@@ -248,19 +249,24 @@ public class MainFrame extends JPanel{
 				
 			}
 			if(e.getSource() == searchField){
+				
+				String search = searchField.getText();
+				if((e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z') || (e.getKeyChar() >= 'A' && e.getKeyChar() <= 'Z') || e.getKeyChar() == '-' || e.getKeyChar() == 'ø' || e.getKeyChar() == 'å' || e.getKeyChar() == 'æ' || e.getKeyChar() == 'Å' || e.getKeyChar() == 'Ø' || e.getKeyChar() == 'Æ'){
+					search += e.getKeyChar();
+				}
+				else if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE && search.length() > 0){
+					search = search.substring(0, search.length() -1);
+				}
+				search = search.toLowerCase();
+				String person;
 				personnelModel.removeAllElements();
 				for(int i = 0; i < personnel.size(); i++){
-					if(personnel.get(i).length() < searchField.getText().length()+1){
+					person = personnel.get(i).toLowerCase();
+					if(person.startsWith(search) || person.equals(search)){
+						personnelModel.addElement(personnel.get(i));
 						continue;
 					}
-					if(e.getKeyChar() == KeyEvent.VK_ENTER || e.getKeyChar() == KeyEvent.VK_CONTROL || e.getKeyChar() == KeyEvent.VK_SHIFT){
-						if(personnel.get(i).startsWith(searchField.getText())){
-							personnelModel.addElement(personnel.get(i));
-							continue;
-						}
-					}
-					if(personnel.get(i).startsWith(searchField.getText() + e.getKeyChar())){
-						personnelModel.addElement(personnel.get(i));
+					else{
 					}
 				}
 			}

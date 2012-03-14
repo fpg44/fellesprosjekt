@@ -70,12 +70,9 @@ public class MainFrame extends JPanel{
 		//notifBox.addItem(new String("There is no notifications"));
 		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
-<<<<<<< HEAD
 		notifBox.setMaximumRowCount(10);
 		notifBox.setRenderer(new NotificationListCellRenderer());
-=======
-		//notifBox.setRenderer(new NotificationListCellRenderer());
->>>>>>> 82f5317cd399db1d49f6697cf5ab91c2402a1cac
+
 
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);

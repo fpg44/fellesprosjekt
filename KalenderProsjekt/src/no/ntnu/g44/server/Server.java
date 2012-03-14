@@ -4,6 +4,7 @@ import no.ntnu.fp.net.admin.Log;
 import no.ntnu.g44.database.DatabaseHandler;
 import no.ntnu.g44.net.co.Connection;
 import no.ntnu.g44.net.co.ConnectionImpl;
+import nu.xom.Document;
 
 public class Server{
 
@@ -11,6 +12,7 @@ public class Server{
 	private Connection connection, server;
 	private boolean lookForIncommingDatagramPackets = true;
 	private DatabaseHandler dbHandler;
+	private XMLHelper xmlHelper;
 
 	/**
 	 * 
@@ -25,6 +27,7 @@ public class Server{
 		this.PORT = ServerPort;
 		
 		dbHandler = new DatabaseHandler();
+		xmlHelper = new XMLHelper();
 		
 		try{
 			dbHandler.connectToDatabase(databaseIP, databasePORT, databaseName, databaseUsername, databasePassword);			
@@ -77,5 +80,10 @@ public class Server{
 	
 	protected void stopIncommingDatagramPacketParser(boolean b){
 		this.lookForIncommingDatagramPackets = b;
+	}
+	
+	//returns a document from an arraylist with events from the database
+	protected Document getAllEvents(){ 
+		return xmlHelper.parseEvents(dbHandler.getEventsFromDatabase());
 	}
 }

@@ -85,14 +85,18 @@ public class DatabaseHandler {
 					persons.add(person);
 					
 				}while(rsP.next());
+
+				//convert from java.sql.Timestamp to java.util.Date
+				Date dateStart = rsE.getTimestamp(2);
+				Date dateEnd = rsE.getTimestamp(3);
 				
 				//create new event and add all the persons involved
-				Date date = rsE.getTimestamp(2);
 				Event event = new Event(rsE.getString(1), 
 										persons, 
-										date,
-										rsE.getString(3), 
-										new Room(rsE.getString(4)));
+										dateStart,
+										dateEnd,
+										rsE.getString(4), 
+										new Room(rsE.getString(5)));
 				//add this event to array
 				events.add(event);
 				

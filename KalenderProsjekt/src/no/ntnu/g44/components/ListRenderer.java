@@ -26,7 +26,7 @@ import org.w3c.dom.views.AbstractView;
  * A ListCellRenderer for elements with a text-label and an ImageIcon
  * @author Robin
  */
-public class ListRenderer extends JPanel implements ListCellRenderer, MouseMotionListener{
+public class ListRenderer extends JPanel implements ListCellRenderer, MouseMotionListener, MouseListener{
 
 	private static final Color HOVER_COLOR = new Color(194, 222, 211);
 	private static final Color SELECTED_COLOR = new Color(194, 222, 242);
@@ -37,15 +37,15 @@ public class ListRenderer extends JPanel implements ListCellRenderer, MouseMotio
 	private MouseAdapter handler;
 	private int hoverIndex = -1;
 	private JList l;
-	private int index;
+	private int i;
 
 	@Override
 	public Component getListCellRendererComponent(final JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		l = list;
-		this.index = index;
-		
-		l.addMouseMotionListener(this);
-		
+		i = index;
+
+		l.addMouseListener(this);
+
 		//Sets the text to be shown in the list
 		textLabel.setText(value.toString());
 
@@ -76,9 +76,9 @@ public class ListRenderer extends JPanel implements ListCellRenderer, MouseMotio
 			//if the hoverIndex is the same as the list index, an item is being hovered
 			//else set the background to default
 			setBackground(index == hoverIndex ? HOVER_COLOR : list.getBackground());  
-			
+
 		}
-		
+
 		setIcon(index == hoverIndex ? iconRemoveMouseOver : iconRemove);
 
 		//Sets the remove-icon to "mouse over" or "normal"
@@ -94,9 +94,9 @@ public class ListRenderer extends JPanel implements ListCellRenderer, MouseMotio
 	public void setIcon(ImageIcon i){
 		removeLabel.setIcon(i);
 	}
-	
+
 	public Rectangle getIconPosition(){
-		
+
 		return removeLabel.getBounds();
 	}
 
@@ -124,8 +124,6 @@ public class ListRenderer extends JPanel implements ListCellRenderer, MouseMotio
 
 		public HoverMouseHandler(JList list){
 			this.list = list;
-			ListRenderer renderer = (ListRenderer) list.getCellRenderer();
-			iconPoint = renderer.getIconPosition();
 		}
 
 		@Override
@@ -155,29 +153,71 @@ public class ListRenderer extends JPanel implements ListCellRenderer, MouseMotio
 			hoverIndex = index;
 			list.repaint();
 		}
-		
+
 		@Override
 		public void mouseReleased(MouseEvent e){
-			
-		}
-	}
 
+		}
+	}//end of private class
+
+	//Implemented MouseMotionListener
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		
+		//		//Changes the icon-label when mouse hovered
+		//		if(l.getSelectedIndex() > -1){
+		//			Rectangle iconPoint = removeLabel.getBounds();
+		//			if(e.getX() > iconPoint.getX() && e.getX() < (iconPoint.getX() + iconPoint.getWidth()) && e.getY() > iconPoint.getY() && e.getY() < (iconPoint.getY() + iconPoint.getHeight())){
+		//				
+		//				//Change removeLabel icon
+		//			}
+		//		}
+	}
+
+
+	//Implemented MouseListener
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		ListRenderer renderer = (ListRenderer) l.getCellRenderer();
+		Rectangle iconPoint = renderer.getIconPosition();
+		//System.out.println(e.getX() + " " + e.getY() + " " + iconPoint.getX() + " " + iconPoint.getY());
+
 		if(l.getSelectedIndex() > -1){
-			Rectangle iconPoint = removeLabel.getBounds();
-			if(e.getX() > iconPoint.getX() && e.getX() < (iconPoint.getX() + iconPoint.getWidth()) && e.getY() > iconPoint.getY() && e.getY() < (iconPoint.getY() + iconPoint.getHeight())){
-//				((DefaultListModel)l.getModel()).removeElementAt(l.getSelectedIndex());
-				((JLabel) l.getCellRenderer()).setIcon(l.getSelectedIndex() == hoverIndex ? iconRemoveMouseOver : iconRemove);
-				System.out.println("Selected element deleted");
+			if(e.getX() > iconPoint.getX() 
+					&& e.getX() < (iconPoint.getX() + iconPoint.getWidth()) 
+					&& e.getY() > iconPoint.getY() 
+					&& e.getY() < (iconPoint.getY() + iconPoint.getHeight())){
+
+				//This deletes the element from the list
+				((DefaultListModel)l.getModel()).removeElementAt(l.getSelectedIndex());
 			}
 		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
 	}
 }

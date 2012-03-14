@@ -37,10 +37,12 @@ public class ListRenderer extends JPanel implements ListCellRenderer, MouseMotio
 	private MouseAdapter handler;
 	private int hoverIndex = -1;
 	private JList l;
+	private int index;
 
 	@Override
 	public Component getListCellRendererComponent(final JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		l = list;
+		this.index = index;
 		
 		l.addMouseMotionListener(this);
 		
@@ -169,11 +171,12 @@ public class ListRenderer extends JPanel implements ListCellRenderer, MouseMotio
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		
-		if(l.getModel().getSize() > 0){
+		if(l.getSelectedIndex() > -1){
 			Rectangle iconPoint = removeLabel.getBounds();
 			if(e.getX() > iconPoint.getX() && e.getX() < (iconPoint.getX() + iconPoint.getWidth()) && e.getY() > iconPoint.getY() && e.getY() < (iconPoint.getY() + iconPoint.getHeight())){
-				((DefaultListModel)l.getModel()).removeElementAt(l.getSelectedIndex());
-				System.out.println("hei");
+//				((DefaultListModel)l.getModel()).removeElementAt(l.getSelectedIndex());
+				((JLabel) l.getCellRenderer()).setIcon(l.getSelectedIndex() == hoverIndex ? iconRemoveMouseOver : iconRemove);
+				System.out.println("Selected element deleted");
 			}
 		}
 	}

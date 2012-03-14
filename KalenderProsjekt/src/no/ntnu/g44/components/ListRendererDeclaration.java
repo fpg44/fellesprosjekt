@@ -36,8 +36,8 @@ public class ListRendererDeclaration extends JPanel{
 		
 		//setup list cell renderer and the necessary listeners
 		list.setCellRenderer(renderer);
-		list.addMouseListener(renderer.getHandler(list));  
-		list.addMouseMotionListener(renderer.getHandler(list)); 
+//		list.addMouseListener(renderer.getHandler(list));  
+//		list.addMouseMotionListener(renderer.getHandler(list)); 
 		
 		//add component to panel
 		add(list);

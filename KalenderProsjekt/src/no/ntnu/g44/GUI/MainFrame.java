@@ -56,6 +56,10 @@ public class MainFrame extends JPanel{
 	CalendarPanel calendar = new CalendarPanel();
 	JLabel weeknumber = new JLabel("UKE 12");
 	ListRenderer renderer = new ListRenderer();
+	
+	//Used by actionListener to check if the list of notifications is empty
+	NotificationController notificationController = new NotificationController();
+	ArrayList unseenNotifications = notificationController.getUnseenNotifications();
 
 	public MainFrame(){
 		calendarPersons.setCellRenderer(renderer);
@@ -68,12 +72,10 @@ public class MainFrame extends JPanel{
 		fillModel();
 
 		//notifBox.addItem(new String("There is no notifications"));
+//		notifBox.setSelectedIndex(0);
 		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
-		notifBox.setMaximumRowCount(10);
-		notifBox.setRenderer(new NotificationListCellRenderer());
-
-
+		
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
 		addMouseMotionListener(listener);
@@ -136,8 +138,6 @@ public class MainFrame extends JPanel{
 	 */
 	public void checkForNewNotifications() {
 		int notifCounter = 0;
-		NotificationController notificationController = new NotificationController();
-		ArrayList unseenNotifications = notificationController.getUnseenNotifications();
 
 		if (!unseenNotifications.isEmpty()) {
 			for (int i = 0; i < unseenNotifications.size(); i++) {
@@ -147,7 +147,9 @@ public class MainFrame extends JPanel{
 			for (int i = 0; i < unseenNotifications.size(); i++) {
 				notifBox.addItem((unseenNotifications.get(i)));
 			}
+			notifBox.setRenderer(new NotificationListCellRenderer());
 		}
+		
 		else {
 			notifBox.addItem(new String ("There is no new notifications"));
 		}
@@ -239,8 +241,11 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == notifBox) {
-				System.out.println(((Notification) notifBox.getSelectedItem()).getMessage());
+			if (!unseenNotifications.isEmpty()){
+				if (e.getSource() == notifBox) {
+//					System.out.println(((Notification) notifBox.getSelectedItem()).getMessage());
+					notifBox.setSelectedIndex(0);
+				}
 			}
 			else if(personnelList.getSelectedValue() != null){
 				Object o[] = personnelList.getSelectedValues();

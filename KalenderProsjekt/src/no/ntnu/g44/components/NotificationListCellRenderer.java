@@ -20,23 +20,24 @@ public class NotificationListCellRenderer extends JLabel implements ListCellRend
 	public Component getListCellRendererComponent(JList list, Object value,
 			int index, boolean isSelected, boolean cellHasFocus) {
 
-		//		int selectedIndex = ((Integer)value).intValue();
-
 		if (isSelected) {
 			setBackground(list.getSelectionBackground());
 			setForeground(list.getSelectionForeground());
 		} else {
+			setText(value.toString());
 			setBackground(list.getBackground());
 			setForeground(list.getForeground());
 		}
-
-		if(index > 0){
-			Notification not =((Notification)value);
-
-			String s = not.getMessage(); 
-			setText(s);
+		
+		if(index > 0) {
+			setText(((Notification) value).getMessage());
+		}
+		
+		else {
+			setText(value.toString());
 		}
 
+		
 		return this;
 	}
 

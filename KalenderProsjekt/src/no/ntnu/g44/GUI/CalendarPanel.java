@@ -153,11 +153,11 @@ public class CalendarPanel extends JPanel implements MouseWheelListener {
 			endTime.setTime(e.getEventEndTime());
 			
 			
-			int startY = (int) (((startTime.get(Calendar.HOUR_OF_DAY)-this.startHour)+
-					startTime.get(Calendar.MINUTE)/60) * pixlsPerHour) + topArea;
+			int startY = (int) ((((startTime.get(Calendar.HOUR_OF_DAY)-this.startHour)+
+					startTime.get(Calendar.MINUTE)/60f) * pixlsPerHour) + topArea);
 	
-			int endY = (int) (((endTime.get(Calendar.HOUR_OF_DAY)-this.startHour)+
-					endTime.get(Calendar.MINUTE)/60) * pixlsPerHour) + topArea;
+			int endY = (int) ((((endTime.get(Calendar.HOUR_OF_DAY)-this.startHour)+
+					endTime.get(Calendar.MINUTE)/60f) * pixlsPerHour) + topArea);
 			
 			int startX = (startTime.get(Calendar.DAY_OF_WEEK)  +8 ) %7 *dayWidth + leftOffset + eventMargin;
 			int endX = (startTime.get(Calendar.DAY_OF_WEEK) + 8)%7 *dayWidth +dayWidth+ leftOffset - eventMargin;

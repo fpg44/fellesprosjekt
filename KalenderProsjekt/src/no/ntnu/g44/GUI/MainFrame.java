@@ -223,6 +223,13 @@ public class MainFrame extends JPanel{
 		}
 
 	}
+	public void addPersons(){
+		Object o[] = personnelList.getSelectedValues();
+		for(int i = 0; i < o.length; i++){
+			personnelModel.removeElement(o[i]);
+			calendarModel.addElement(o[i]);
+		}
+	}
 	public class ListeningClass implements MouseMotionListener, ActionListener, 
 		MouseListener, KeyListener{
 		public void mouseDragged(MouseEvent e) {
@@ -241,21 +248,13 @@ public class MainFrame extends JPanel{
 				System.out.println(((Notification) notifBox.getSelectedItem()).getMessage());
 			}
 			else if(personnelList.getSelectedValue() != null){
-				Object o[] = personnelList.getSelectedValues();
-				for(int i = 0; i < o.length; i++){
-					personnelModel.removeElement(o[i]);
-					calendarModel.addElement(o[i]);
-				}			
+				addPersons();			
 			}
 		}
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if((e.getSource() == personnelList || e.getSource() == searchField)&& e.getKeyChar() == KeyEvent.VK_ENTER){
-				Object o[] = personnelList.getSelectedValues();
-				for(int i = 0; i < o.length; i++){
-					personnelModel.removeElement(o[i]);
-					calendarModel.addElement(o[i]);
-				}
+				addPersons();
 
 			}
 			if(e.getSource() == searchField){
@@ -279,6 +278,9 @@ public class MainFrame extends JPanel{
 					else{
 					}
 				}
+				if(personnelModel.size() > 0){
+					personnelList.setSelectedIndex(0);
+				}
 			}
 		}
 		@Override
@@ -295,9 +297,7 @@ public class MainFrame extends JPanel{
 		public void mouseClicked(MouseEvent e) {
 			if(e.getClickCount() == 2 && e.getSource() == personnelList){
 				if(personnelList.getSelectedValue() != null){
-					Object o = personnelList.getSelectedValue();
-					personnelModel.removeElement(o);
-					calendarModel.addElement(o);			
+					addPersons();			
 				}
 			}
 			if(e.getSource() == searchField){

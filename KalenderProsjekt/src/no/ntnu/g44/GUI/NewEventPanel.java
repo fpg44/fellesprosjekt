@@ -2,6 +2,9 @@ package no.ntnu.g44.gui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -18,9 +21,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import no.ntnu.g44.models.Person;
+import no.ntnu.g44.models.Room;
 
 public class NewEventPanel extends JPanel {
-
+	
+	// our container window
+	JFrame frame;
+	
 	// information about the event--the left side of our prototype
 	private JPanel eventInformationPanel;
 	private JLabel ownerLabel;
@@ -53,11 +60,21 @@ public class NewEventPanel extends JPanel {
 	private DefaultListModel<Person> participantsModel;
 	
 	// 'Save Event' and 'Cancel' buttons
+	private ButtonListener buttonListener;
 	private JPanel buttonPanel;
 	private JButton saveButton;
 	private JButton cancelButton;
 	
-	public NewEventPanel(Person owner) {
+	/**
+	 * A <code>NewEventPanel</code> provides the graphical interface for 
+	 * creating a new Event. <br><br>
+	 * 
+	 * @param owner - the Person creating the Event <br><br>
+	 * @param frame - the JFrame to contain this panel
+	 */
+	public NewEventPanel(Person owner, JFrame frame) {
+		this.frame = frame;
+		
 		eventInformationPanel = new JPanel();
 		ownerLabel = new JLabel("Arranged by");
 		eventOwner = new JLabel(owner.getName());
@@ -66,7 +83,7 @@ public class NewEventPanel extends JPanel {
 		eventEndLabel = new JLabel("To");
 		eventEndTime = new JSpinner();
 		locationLabel = new JLabel("Location");
-		location = new JComboBox();
+		location = new JComboBox<Room>();
 		customLocationLabel = new JLabel("Custom location");
 		customLocation = new JTextField(20);		// 20 columns
 		// customLocation should only be enabled when 'Other' is selected
@@ -98,6 +115,8 @@ public class NewEventPanel extends JPanel {
 		buttonPanel = new JPanel();
 		saveButton = new JButton("Save Event");
 		cancelButton = new JButton("Cancel");
+		buttonListener = new ButtonListener();
+		cancelButton.addActionListener(buttonListener);
 		
 		eventInformationPanel.setBorder(BorderFactory.createTitledBorder(
 				"Event information"));
@@ -149,7 +168,7 @@ public class NewEventPanel extends JPanel {
 		c.gridy = 1;
 		c.fill = GridBagConstraints.BOTH;
 		participantsPanel.add(invitedListScroller, c);
-		c.fill = GridBagConstraints.NONE;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		
 		buttonPanel.add(saveButton);
 		buttonPanel.add(cancelButton);
@@ -170,7 +189,7 @@ public class NewEventPanel extends JPanel {
 	public static void main(String[] args) {
 		Person person = new Person("Foo Bar", "foobar");
 		JFrame frame = new JFrame();
-		NewEventPanel panel = new NewEventPanel(person);
+		NewEventPanel panel = new NewEventPanel(person, frame);
 		frame.getContentPane().add(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
@@ -191,5 +210,18 @@ public class NewEventPanel extends JPanel {
 			if (personsModel.get(i) != null) {
 				persons.add(personsModel.get(i).getName());
 			}
+	}
+	
+	private void cancel() {
+		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+	}
+	
+	class ButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == cancelButton)
+				cancel();
+		}
 	}
 }

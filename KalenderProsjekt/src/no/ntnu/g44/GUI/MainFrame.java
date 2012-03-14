@@ -57,6 +57,7 @@ public class MainFrame extends JPanel{
 	CalendarPanel calendar = new CalendarPanel();
 	JLabel weeknumber = new JLabel("UKE 12");
 	ListRenderer renderer = new ListRenderer();
+	NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
 	
 	//Used by actionListener to check if the list of notifications is empty
 	NotificationController notificationController = new NotificationController();
@@ -76,6 +77,7 @@ public class MainFrame extends JPanel{
 //		notifBox.setSelectedIndex(0);
 		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
+		notifBox.setRenderer(notifRender);
 		
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
@@ -150,7 +152,6 @@ public class MainFrame extends JPanel{
 			for (int i = 0; i < unseenNotifications.size(); i++) {
 				notifBox.addItem((unseenNotifications.get(i)));
 			}
-			notifBox.setRenderer(new NotificationListCellRenderer());
 		}
 		
 		else {

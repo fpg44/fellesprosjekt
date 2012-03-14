@@ -37,6 +37,7 @@ public class NotificationListCellRenderer extends JLabel implements ListCellRend
 			setText(value.toString());
 		}
 
+		setOpaque(true);
 		
 		return this;
 	}

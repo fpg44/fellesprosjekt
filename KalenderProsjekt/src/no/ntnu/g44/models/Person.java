@@ -286,9 +286,10 @@ public class Person {
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-		String s = "Name: " + getName() + "; ";
-		s += "Email: " + getEmail() + "; ";
-		s += "Date of birth: " + getDateOfBirth().toString();
+		String s = "Name: " + name + "; ";
+		s += "Email: " + email + "; ";
+		if (dateOfBirth != null)
+			s += "Date of birth: " + dateOfBirth.toString();
 		return s;
 	}
 }

@@ -9,8 +9,8 @@ import javax.swing.JPanel;
 public class ListRendererDeclaration extends JPanel{
 
 	private static JFrame frame;
-	private DefaultListModel<String> model ;
-	private JList<String> list;
+	private DefaultListModel model ;
+	private JList list;
 	private ListRenderer renderer;
 
 	public static void main(String[] args) {
@@ -27,15 +27,15 @@ public class ListRendererDeclaration extends JPanel{
 	public ListRendererDeclaration(){
 
 		//initialize objects
-		model = new DefaultListModel<String>();
-		list = new JList<String>(model);
-		renderer = new ListRenderer();
+		model = new DefaultListModel();
+		list = new JList(model);
+//		renderer = new ListRenderer();
 
 		//add some items to model
 		putItemsInModel();
 		
 		//setup list cell renderer and the necessary listeners
-		list.setCellRenderer(renderer);
+//		list.setCellRenderer(renderer);
 //		list.addMouseListener(renderer.getHandler(list));  
 //		list.addMouseMotionListener(renderer.getHandler(list)); 
 		
@@ -44,8 +44,8 @@ public class ListRendererDeclaration extends JPanel{
 	}
 	
 	public void putItemsInModel(){	
-		model.addElement("Ola Normann");
-		model.addElement("Kari Normann");
-		model.addElement("Kong Harald");
+		model.addElement(new TestListRenderer("Hans"));
+		model.addElement(new TestListRenderer("Grete"));
+		model.addElement(new TestListRenderer("Nils"));
 	}
 }

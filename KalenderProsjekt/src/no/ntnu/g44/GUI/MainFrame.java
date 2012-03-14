@@ -40,7 +40,8 @@ public class MainFrame extends JPanel{
 	JButton newEvent = new JButton("New Event");
 	JButton editEvent = new JButton("Edit Event");
 	JButton deleteEvent = new JButton("Delete Event");
-	JButton arrowButton = new JButton("^   ^   ^   ^   ^   ^   ^   ^");
+	JButton arrowButton = new JButton("^  ^  ^  ^");
+	JButton removeButton = new JButton("Remove");
 	JTextField searchField = new JTextField("Search...");
 	DefaultListModel personnelModel = new DefaultListModel();
 	ArrayList<String> personnel = new ArrayList<String>();
@@ -92,6 +93,8 @@ public class MainFrame extends JPanel{
 		deleteEvent.setVisible(true);
 		arrowButton.setVisible(true);
 		arrowButton.addActionListener(listener);
+		removeButton.setVisible(true);
+		removeButton.addActionListener(listener);
 		searchField.setVisible(true);
 		searchField.addMouseListener(listener);
 		searchField.addKeyListener(listener);
@@ -100,7 +103,6 @@ public class MainFrame extends JPanel{
 		personnelList.setVisible(true);
 		personnelList.addMouseListener(listener);
 		personnelList.addKeyListener(listener);
-		calendarPersons.setVisible(true);
 		personnelScroll.setVisible(true);
 		calendarScroll.setVisible(true);
 		backArrow.setVisible(true);
@@ -115,6 +117,7 @@ public class MainFrame extends JPanel{
 		add(editEvent);
 		add(deleteEvent);
 		add(arrowButton);
+		add(removeButton);
 		add(searchField);
 		add(calendar);
 		add(backArrow);
@@ -190,8 +193,11 @@ public class MainFrame extends JPanel{
 		calendarScroll.setSize(newEvent.getWidth(), (int)((getHeight() - 40 - 32 -(newEvent.getHeight() * 3.5)))/2);
 		calendarScroll.setLocation(newEvent.getX(), deleteEvent.getY() + deleteEvent.getHeight() + 24);
 
-		arrowButton.setSize(newEvent.getWidth(), 22);
+		arrowButton.setSize((newEvent.getWidth() / 2)-1, 22);
 		arrowButton.setLocation(newEvent.getX(), calendarScroll.getY() + calendarScroll.getHeight() + 1);
+		
+		removeButton.setSize(arrowButton.getSize());
+		removeButton.setLocation(newEvent.getX() + arrowButton.getWidth() + 2, arrowButton.getY());
 
 		personnelScroll.setSize(newEvent.getWidth(), calendarScroll.getHeight());
 		personnelScroll.setLocation(newEvent.getX(), calendarScroll.getY() + calendarScroll.getHeight() + 24);
@@ -249,8 +255,11 @@ public class MainFrame extends JPanel{
 			if (e.getSource() == notifBox) {
 				System.out.println(((Notification) notifBox.getSelectedItem()).getMessage());
 			}
-			else if(personnelList.getSelectedValue() != null){
+			else if(e.getSource() == arrowButton && personnelList.getSelectedValue() != null){
 				addPersons();			
+			}
+			else if(e.getSource() == removeButton && calendarPersons.getSelectedValue() != null){
+				calendarModel.removeElement(calendarPersons.getSelectedValue());
 			}
 		}
 		@Override
@@ -332,7 +341,6 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void keyTyped(KeyEvent e) {
-			
 
 		}
 		@Override
@@ -356,7 +364,6 @@ public class MainFrame extends JPanel{
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
-
 		}
 		@Override
 		public void mousePressed(MouseEvent e) {

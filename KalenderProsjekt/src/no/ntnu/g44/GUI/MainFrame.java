@@ -257,6 +257,7 @@ public class MainFrame extends JPanel{
 		public void keyPressed(KeyEvent e) {
 			if((e.getSource() == personnelList || e.getSource() == searchField)&& e.getKeyChar() == KeyEvent.VK_ENTER){
 				addPersons();
+				return;
 			}
 			if(e.getSource() == searchField){
 				if(e.getKeyCode() == KeyEvent.VK_SHIFT){

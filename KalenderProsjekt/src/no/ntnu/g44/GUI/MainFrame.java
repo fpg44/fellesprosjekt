@@ -319,6 +319,22 @@ public class MainFrame extends JPanel{
 		Login.login();
 		frame.dispose();
 	}
+	public void search(String search){
+		String person;
+		personnelModel.removeAllElements();
+		for(int i = 0; i < personnel.size(); i++){
+			person = personnel.get(i).getName().toLowerCase();
+			if(person.startsWith(search) || person.equals(search)){
+				personnelModel.addElement(personnel.get(i));
+				continue;
+			}
+			else{
+			}
+		}
+		if(personnelModel.size() > 0){
+			personnelList.setSelectedIndex(0);
+		}
+	}
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
 		public void mouseDragged(MouseEvent e) {
@@ -399,6 +415,7 @@ public class MainFrame extends JPanel{
 			}
 			else if(e.getSource() == removeButton && calendarPersons.getSelectedValue() != null){
 				calendarModel.removeElement(calendarPersons.getSelectedValue());
+				search(searchField.getText().toLowerCase());
 			}
 		}
 		@Override
@@ -457,20 +474,7 @@ public class MainFrame extends JPanel{
 					search = search.substring(0, search.length() -1);
 				}
 				search = search.toLowerCase();
-				String person;
-				personnelModel.removeAllElements();
-				for(int i = 0; i < personnel.size(); i++){
-					person = personnel.get(i).getName().toLowerCase();
-					if(person.startsWith(search) || person.equals(search)){
-						personnelModel.addElement(personnel.get(i));
-						continue;
-					}
-					else{
-					}
-				}
-				if(personnelModel.size() > 0){
-					personnelList.setSelectedIndex(0);
-				}
+				search(search);
 			}
 		}
 		@Override

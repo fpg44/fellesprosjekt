@@ -16,6 +16,7 @@ import java.util.Iterator;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Project;
+import no.ntnu.g44.models.Room;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -29,43 +30,43 @@ import nu.xom.ParsingException;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class XmlSerializer {
-	
+
 	public XmlSerializer(){
-		
+
 	}
 
 	public Document toXml(Project aProject) {
 		Element root = new Element("project");
-		
+
 		Iterator it = aProject.personIterator();
 		while (it.hasNext()) {
 			Person aPerson = (Person)it.next();
 			Element element = personToXml(aPerson);
 			root.appendChild(element);
 		}
-		
+
 		return new Document(root);
 	}
-	
+
 	public Project toProject(Document xmlDocument) throws ParseException {
 		Project aProject = new Project();
 		Element groupElement = xmlDocument.getRootElement();
 		Elements personElements = groupElement.getChildElements("person");
-		
+
 		for (int i = 0; i < personElements.size(); i++) {
 			Element childElement = personElements.get(i);
 			aProject.addPerson(assemblePerson(childElement));
 		}
-		
+
 		return aProject;
 	}
 
-    public Person toPerson(String xml) throws java.io.IOException, java.text.ParseException, nu.xom.ParsingException {
-	nu.xom.Builder parser = new nu.xom.Builder(false);
-	nu.xom.Document doc = parser.build(xml, "");
-	return assemblePerson(doc.getRootElement());
-    }
-	
+	public Person toPerson(String xml) throws java.io.IOException, java.text.ParseException, nu.xom.ParsingException {
+		nu.xom.Builder parser = new nu.xom.Builder(false);
+		nu.xom.Document doc = parser.build(xml, "");
+		return assemblePerson(doc.getRootElement());
+	}
+
 	private Element personToXml(Person aPerson) {
 		DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, java.util.Locale.US);
 		Element element = new Element("person");
@@ -80,7 +81,7 @@ public class XmlSerializer {
 		element.appendChild(dateOfBirth);
 		return element;
 	}
-	
+
 	private Person assemblePerson(Element personElement) throws ParseException {
 		String name = null, email = null;
 		Date date = null;
@@ -98,7 +99,7 @@ public class XmlSerializer {
 		}
 		return new Person(name, email, date);
 	}
-	
+
 	/**
 	 * TODO: handle this one to avoid duplicate code
 	 * 
@@ -110,50 +111,107 @@ public class XmlSerializer {
 		DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, java.util.Locale.US);
 		return format.parse(date);
 	}
-	
+
 	protected Document toXml(ArrayList<Event> events){
-		
+
 		Element root = new Element("project");
-		
+
 		for(Event event : events){
 			Element element = eventToXml(event);
 			root.appendChild(element);
 		}
-		
+
 		return new Document(root);
 	}
-	
+
 	protected Element eventToXml(Event event){
-		
+
 		Element element = new Element("event");
-		
+
 		Element id = new Element("event-id");
 		id.appendChild(String.valueOf(event.getEventID()));
-		
+
 		Element title = new Element("title");
 		title.appendChild(event.getEventTitle());
-		
+
 		Element eventOwner = new Element("owner");
 		eventOwner.appendChild(event.getEventOwner().getUsername());
-		
+
 		Element eventStart = new Element("event-start");
 		eventStart.appendChild(event.getEventStartTime().toString());
-		
+
 		Element eventEnd = new Element("event-end");
 		eventEnd.appendChild(event.getEventEndTime().toString());
-		
+
 		Element location = new Element("location");
 		location.appendChild(event.getLocation());
-		
+
 		Element room = new Element("room");
 		room.appendChild(event.getRoom().getRoomName());
-		
+
 		Element participants = new Element("participants");
 		for(Person p : event.getParticipants()){
 			participants.appendChild(p.getUsername());
 		}
-		
+
 		return element;
+	}
+
+	public Event toEvent(String xml) throws java.io.IOException, java.text.ParseException, nu.xom.ParsingException {
+		nu.xom.Builder parser = new nu.xom.Builder(false);
+		nu.xom.Document doc = parser.build(xml, "");
+		return assembleEvent(doc.getRootElement());
+	}
+	
+	private Event assembleEvent(Element eventElement) throws ParseException {
+		int id;
+		String title = null, location = null;
+		ArrayList<Person> participants;
+		Room room;
+		Person owner;
+		Date eventStartDate = null, eventEndDate = null;
+		
+		Element element = eventElement.getFirstChildElement("event-id");
+		if (element != null) {
+			id = Integer.parseInt(element.getValue());
+		}
+		
+		element = eventElement.getFirstChildElement("title");
+		if (element != null) {
+			title = element.getValue();
+		}
+		
+		element = eventElement.getFirstChildElement("owner");
+		if (element != null) {
+			owner = new Person(null, element.getValue());
+		}
+		
+		element = eventElement.getFirstChildElement("event-start");
+		if (element != null){
+			eventStartDate = parseDate(element.getValue());
+		}
+		
+		element = eventElement.getFirstChildElement("event-end");
+		if (element != null){
+			eventEndDate = parseDate(element.getValue());
+		}
+		
+		element = eventElement.getFirstChildElement("location");
+		if (element != null){
+			location = element.getValue();
+		}
+		
+		element = eventElement.getFirstChildElement("room");
+		if (element != null){
+			room = new Room(element.getValue());
+		}
+		
+		element = eventElement.getFirstChildElement("participants");
+		if( element != null ){
+			//I HAVE NO IDEA :p
+		}
+		
+		return new Event(-1, null, null, null, null, null, null, null);
 	}
 }
 

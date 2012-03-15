@@ -63,7 +63,7 @@ public class Login {
 		passField.setVisible(true);
 		panel.add(passField);
 		
-		loginButt.setLocation(12 + navnLabel.getWidth() + 8, 42 + navnLabel.getHeight()+8);
+		loginButt.setLocation(12 + navnLabel.getWidth() + 8, 42 + navnLabel.getHeight()+16);
 		loginButt.setSize(navnField.getSize());
 		loginButt.setVisible(true);
 		loginButt.addActionListener(new ActionListener() {
@@ -78,7 +78,7 @@ public class Login {
 		panel.add(loginButt);
 		
 		
-		ramme.setSize(navnField.getWidth() + navnField.getX() + 8 + 25, passLabel.getY() + passLabel.getHeight() + 24 + 35);
+		ramme.setSize(navnField.getWidth() + navnField.getX() + 8 + 25, passLabel.getY() + passLabel.getHeight() + 24 + 39);
 		ramme.setLocation((int)(dim.getWidth() - ramme.getWidth())/ 2, (int) ((dim.getHeight() - ramme.getHeight())/2));
 		ramme.setResizable(false);
 		ramme.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

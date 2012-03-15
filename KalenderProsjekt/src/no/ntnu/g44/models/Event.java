@@ -49,7 +49,7 @@ public class Event {
 	}
 	
 	/**
-	 * 
+	 * @param event_ID
 	 * @param eventTitle
 	 * @param eventOwner
 	 * @param participants

@@ -35,6 +35,7 @@ import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Notification;
+import no.ntnu.g44.models.Person;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.controllers.NotificationController;
 
@@ -48,9 +49,9 @@ public class MainFrame extends JPanel{
 	JButton arrowButton = new JButton("^ ^ ^");
 	JButton removeButton = new JButton("X");
 	JTextField searchField = new JTextField("Search...");
-	DefaultListModel personnelModel = new DefaultListModel();
-	ArrayList<String> personnel = new ArrayList<String>();
-	DefaultListModel calendarModel = new DefaultListModel();
+	DefaultListModel<Person> personnelModel = new DefaultListModel<Person>();
+	ArrayList<Person> personnel = new ArrayList<Person>();
+	DefaultListModel<Person> calendarModel = new DefaultListModel<Person>();
 	JList personnelList = new JList(personnelModel);
 	JList calendarPersons = new JList(calendarModel);
 	JScrollPane personnelScroll = new JScrollPane(personnelList);
@@ -75,9 +76,6 @@ public class MainFrame extends JPanel{
 //		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
 //		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
 
-		fillModel();
-		fillModel();
-		fillModel();
 		fillModel();
 
 		checkForNewNotifications();
@@ -240,17 +238,22 @@ public class MainFrame extends JPanel{
 
 
 	public void fillModel(){
-		personnel.add("Kari");
-		personnel.add("Per");
-		personnel.add("Andreas");
-		personnel.add("Per-Olav");
-		personnel.add("Anders");
-		personnel.add("Karl");
-		personnel.add("Fridtjof");
-		personnel.add("Bjarne");
-		personnel.add("john");
-		personnel.add("Beate");
-		personnel.add("Karl-Ove");
+		/*
+		personnel.add(new Person("Kari", "Kari44"));
+		personnel.add(new Person("Per", "Per92"));
+		personnel.add(new Person("Andreas", "Andreas77"));
+		personnel.add(new Person("Per-Olav", "Perol"));
+		personnel.add(new Person("Anders", "anders007"));
+		personnel.add(new Person("Karl", "Karl"));
+		personnel.add(new Person("Fridtjof", "Fridtj"));
+		personnel.add(new Person("Bjarne", "Bjarn69"));
+		personnel.add(new Person("John", "John22"));
+		personnel.add(new Person("Beate", "Bea22"));
+		personnel.add(new Person("Karl-Ove", "Karo"));
+		*/
+		for(int i = 0; i < Main.currentProject.getPersonCount(); i++){
+			personnel.add(Main.currentProject.getPerson(i));
+		}
 		personnelModel.removeAllElements();
 		for(int i = 0; i < personnel.size(); i++){
 			personnelModel.addElement(personnel.get(i));
@@ -258,10 +261,10 @@ public class MainFrame extends JPanel{
 
 	}
 	public void addPersons(){
-		Object o[] = personnelList.getSelectedValues();
+		Object[] o = personnelList.getSelectedValues();
 		for(int i = 0; i < o.length; i++){
 			personnelModel.removeElement(o[i]);
-			calendarModel.addElement(o[i]);
+			calendarModel.addElement((Person) o[i]);
 		}
 	}
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
@@ -396,7 +399,7 @@ public class MainFrame extends JPanel{
 				String person;
 				personnelModel.removeAllElements();
 				for(int i = 0; i < personnel.size(); i++){
-					person = personnel.get(i).toLowerCase();
+					person = personnel.get(i).getName().toLowerCase();
 					if(person.startsWith(search) || person.equals(search)){
 						personnelModel.addElement(personnel.get(i));
 						continue;

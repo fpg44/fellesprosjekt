@@ -121,6 +121,7 @@ public class NewEventPanel extends JPanel {
 		searchField.addKeyListener(searchListener);
 		searchList = new JList<Person>(personsModel);
 		searchList.addMouseListener(searchListener);
+		searchList.addKeyListener(searchListener);
 		searchListScroller = new JScrollPane(searchList);
 		invitedPersonsLabel = new JLabel("Invited persons");
 		invitedList = new JList<Person>(participantsModel);

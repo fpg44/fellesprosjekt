@@ -266,7 +266,7 @@ public class DatabaseHandler {
 			}
 			
 			do{
-				Notification n = new Notification(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), NotificationType.convertFromString(rs.getString(5)));
+				Notification n = new Notification(rs.getInt(1), rs.getInt(2), rs.getString(3), NotificationType.convertFromString(rs.getString(4)));
 				
 				notifications.add(n);
 				

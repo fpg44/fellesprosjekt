@@ -16,6 +16,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -45,6 +47,8 @@ public class MainFrame extends JPanel{
 	ListeningClass listener = new ListeningClass();
 	Insets insets;
 	JFrame frame;
+	Timer timer = new Timer();
+	
 	
 	JPopupMenu popup = new JPopupMenu();
 	JMenuItem item3 = new JMenuItem("Delete Event");
@@ -81,6 +85,11 @@ public class MainFrame extends JPanel{
 	ArrayList unseenNotifications = notificationController.getUnseenNotifications();
 
 	public MainFrame(){
+		timer.scheduleAtFixedRate(new TimerTask() {
+	        public void run() {
+	        	calendar.repaint();
+	        }
+	    }, 0, 1000);
 //		calendarPersons.setCellRenderer(renderer);
 //		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
 //		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 

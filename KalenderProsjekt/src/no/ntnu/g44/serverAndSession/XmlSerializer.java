@@ -45,6 +45,13 @@ public class XmlSerializer {
 			root.appendChild(element);
 		}
 
+		Iterator<Event> eventIt = aProject.eventIterator();
+		while (eventIt.hasNext()) {
+			Event event = eventIt.next();
+			Element element = eventToXml(event);
+			root.appendChild(element);
+		}
+
 		return new Document(root);
 	}
 
@@ -132,30 +139,43 @@ public class XmlSerializer {
 
 		Element id = new Element("event-id");
 		id.appendChild(String.valueOf(event.getEventID()));
+		element.appendChild(id);
 
 		Element title = new Element("title");
 		title.appendChild(event.getEventTitle());
+		element.appendChild(title);
 
 		Element eventOwner = new Element("owner");
-		eventOwner.appendChild(event.getEventOwner().getUsername());
-
+		if(event.getEventOwner() != null){
+			eventOwner.appendChild(event.getEventOwner().getUsername());
+			element.appendChild(eventOwner);
+		}
 		Element eventStart = new Element("event-start");
 		eventStart.appendChild(event.getEventStartTime().toString());
+		element.appendChild(eventStart);
 
 		Element eventEnd = new Element("event-end");
 		eventEnd.appendChild(event.getEventEndTime().toString());
+		element.appendChild(eventEnd);
 
 		Element location = new Element("location");
 		location.appendChild(event.getLocation());
+		element.appendChild(location);
 
-		Element room = new Element("room");
-		room.appendChild(event.getRoom().getRoomName());
-
-		Element participants = new Element("participants");
-		for(Person p : event.getParticipants()){
-			participants.appendChild(p.getUsername());
+		if(event.getRoom() != null){
+			Element room = new Element("room");
+			room.appendChild(event.getRoom().getRoomName());
+			element.appendChild(room);
 		}
-
+		if(event.getParticipants() != null){
+			Element participants = new Element("participants");
+			for(Person p : event.getParticipants()){
+				Element personElem = new Element("person");
+				personElem.appendChild(p.getUsername());
+				participants.appendChild(personElem);
+			}
+			element.appendChild(participants);
+		}
 		return element;
 	}
 
@@ -164,56 +184,63 @@ public class XmlSerializer {
 		nu.xom.Document doc = parser.build(xml, "");
 		return assembleEvent(doc.getRootElement());
 	}
-	
+
 	private Event assembleEvent(Element eventElement) throws ParseException {
-		int id;
+		int id  = -1;
 		String title = null, location = null;
-		ArrayList<Person> participants;
-		Room room;
-		Person owner;
+		ArrayList<Person> participants = null;
+		Room room = null;
+		String owner_username = null;
 		Date eventStartDate = null, eventEndDate = null;
-		
+
 		Element element = eventElement.getFirstChildElement("event-id");
 		if (element != null) {
 			id = Integer.parseInt(element.getValue());
 		}
-		
+
 		element = eventElement.getFirstChildElement("title");
 		if (element != null) {
 			title = element.getValue();
 		}
-		
+
 		element = eventElement.getFirstChildElement("owner");
 		if (element != null) {
-			owner = new Person(null, element.getValue());
+			owner_username = element.getValue();
 		}
-		
+
 		element = eventElement.getFirstChildElement("event-start");
 		if (element != null){
 			eventStartDate = parseDate(element.getValue());
 		}
-		
+
 		element = eventElement.getFirstChildElement("event-end");
 		if (element != null){
 			eventEndDate = parseDate(element.getValue());
 		}
-		
+
 		element = eventElement.getFirstChildElement("location");
 		if (element != null){
 			location = element.getValue();
 		}
-		
+
 		element = eventElement.getFirstChildElement("room");
 		if (element != null){
 			room = new Room(element.getValue());
 		}
-		
+
 		element = eventElement.getFirstChildElement("participants");
 		if( element != null ){
-			//I HAVE NO IDEA :p
+			Elements children = element.getChildElements("participant");
+
 		}
 		
-		return new Event(-1, null, null, null, null, null, null, null);
+		return new Event(id, title, getPersonByUsername(owner_username), participants, eventStartDate, eventEndDate, location, room);
+	}
+	
+	public Person getPersonByUsername(String username){
+		
+		return null;
+
 	}
 }
 

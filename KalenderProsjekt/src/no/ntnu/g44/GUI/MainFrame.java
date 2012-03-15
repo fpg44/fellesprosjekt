@@ -74,9 +74,9 @@ public class MainFrame extends JPanel{
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
 	CalendarPanel calendar = new CalendarPanel();
-	int UKENR = 0;
-	int currUkenr = 0;
-	JLabel weeknumber = new JLabel("UKE " + UKENR);
+	final int UKENR = 13;
+	int currUkenr = 13;
+	JLabel weeknumber = new JLabel("UKE 13");
 	ListRenderer renderer = new ListRenderer();
 	NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
 	
@@ -88,8 +88,6 @@ public class MainFrame extends JPanel{
 		timer.scheduleAtFixedRate(new TimerTask() {
 	        public void run() {
 	        	calendar.repaint();
-	        	UKENR = calendar.getWeekNumber();
-	        	System.out.println(calendar.getWeekNumber());
 	        }
 	    }, 0, 1000);
 //		calendarPersons.setCellRenderer(renderer);
@@ -337,19 +335,17 @@ public class MainFrame extends JPanel{
 					}
 					//Her skal vi legge inn kall på forskjellige dialogbokser som kommer
 					//som følge av man trykker på en notifikasjon.
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CANCELLED){
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CANCELLED){
+//						EventCancelled eventCancelled = new EventCancelled(event)
 						System.out.println("This event has been cancelled");
-						//Inne i disse metoden må vi legge til slik at en notifikasjon
-						//blir borte om man besvarer eventet. Om man ikke svarer
-						//skal notifikasjonen fortsatt være i listen
 					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION) {
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.INVITATION) {
 						System.out.println("You have a new event invitation");
 					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_TIME_CHANGED) {
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CHANGED) {
 						System.out.println("This event have been changed");
 					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.PARTICIPANT_DECLINED_INVITATION){
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.DECLINER){
 						System.out.println("A participant has declined your invitation");
 					}
 					notifBox.setSelectedIndex(0);

@@ -341,7 +341,7 @@ public class MainFrame extends JPanel{
 					//Her skal vi legge inn kall på forskjellige dialogbokser som kommer
 					//som følge av man trykker på en notifikasjon.
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CANCELLED){
-						//						EventCancelled eventCancelled = new EventCancelled(event)
+						//EventCancelled eventCancelled = new EventCancelled(event)
 						System.out.println("This event has been cancelled");
 					}
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.INVITATION) {

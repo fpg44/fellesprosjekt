@@ -31,7 +31,7 @@ public class XmlSerializer {
 	public Document toXml(Project aProject) {
 		Element root = new Element("project");
 		
-		Iterator it = aProject.iterator();
+		Iterator it = aProject.personIterator();
 		while (it.hasNext()) {
 			Person aPerson = (Person)it.next();
 			Element element = personToXml(aPerson);

@@ -1,5 +1,7 @@
 package no.ntnu.g44.models;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Date;
 import java.util.ArrayList;
 
@@ -15,6 +17,13 @@ public class Event {
 	private Date eventStartTime;
 	private Date eventEndTime;
 	private Room room;
+	
+	
+	/**
+	 * This member variable provides functionality for notifying of changes to
+	 * the <code>Group</code> class.
+	 */
+	private PropertyChangeSupport propChangeSupp;
 
 	/**
 	 * Creates a new Event
@@ -98,5 +107,23 @@ public class Event {
 		if (participants.contains(participant)) {
 			participants.remove(participant);
 		}
+	}
+	
+	/**
+	 * Add a {@link java.beans.PropertyChangeListener} to the listener list.
+	 * 
+	 * @param listener The {@link java.beans.PropertyChangeListener} to be added.
+	 */
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		propChangeSupp.addPropertyChangeListener(listener);
+	}
+	
+	/**
+	 * Remove a {@link java.beans.PropertyChangeListener} from the listener list.
+	 * 
+	 * @param listener The {@link java.beans.PropertyChangeListener} to be removed.
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		propChangeSupp.removePropertyChangeListener(listener);
 	}
 }

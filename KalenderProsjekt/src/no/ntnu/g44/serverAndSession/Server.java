@@ -1,7 +1,12 @@
 package no.ntnu.g44.serverAndSession;
 
+import java.util.ArrayList;
+
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.g44.database.DatabaseHandler;
+import no.ntnu.g44.models.Event;
+import no.ntnu.g44.models.Person;
+import no.ntnu.g44.models.Project;
 import no.ntnu.g44.net.co.Connection;
 import no.ntnu.g44.net.co.ConnectionImpl;
 import nu.xom.Document;
@@ -83,7 +88,24 @@ public class Server{
 	}
 	
 	//returns a document from an arraylist with events from the database
-	protected Document getAllEvents(){ 
-		return xmlSerializer.toXml(dbHandler.getEventsFromDatabase());
+//	protected Document getAllEvents(){ 
+//		return xmlSerializer.toXml(dbHandler.getEventsFromDatabase());
+//	}
+	
+	protected Project getAllPersons(){
+		Project p = new Project();
+		ArrayList<Person> persons = dbHandler.getPersons();
+		
+		for(Person person : persons){
+			p.addPerson(person);
+		}
+		
+		ArrayList<Event> events = dbHandler.getEventsFromDatabase();
+		
+		for(Event event : events){
+			p.addEvent(event);
+		}
+		
+		return p;
 	}
 }

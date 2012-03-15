@@ -68,7 +68,7 @@ public class DatabaseHandler {
 	 */
 	public ArrayList<Event> getEventsFromDatabase(){
 		ArrayList<Event> events = new ArrayList<Event>();
-		ArrayList<Person> persons = new ArrayList<Person>();
+		ArrayList<String> persons = new ArrayList<String>();
 		int EVENT_ID;
 
 		try{
@@ -100,17 +100,17 @@ public class DatabaseHandler {
 
 					//Create persons and add them to array
 					Person person = new Person(rsP.getString(1), rsP.getString(2));
-					persons.add(person);
+					persons.add(person.getUsername());
 
 				}while(rsP.next());
 
 				rsP = null;	//clear the ResultSet for next iterate
 
-				Person owner = null;
+				String owner = null;
 
 				//Finds the owner of the Event
 				for(int i = 0; i<persons.size(); i++){
-					if(((Person)persons.get(i)).getUsername().equals(rsE.getString(2))){
+					if(persons.get(i).equals(rsE.getString(2))){
 
 						//If owner shall not be in the persons list, change to owner = persons.remove(i);
 						owner = persons.get(i);
@@ -179,5 +179,30 @@ public class DatabaseHandler {
 
 			}
 		}
+	}
+	
+	public ArrayList<Person> getPersons(){
+		ArrayList<Person> persons = new ArrayList<Person>();
+		
+		try{
+			
+			ResultSet rs = stmt.executeQuery("SELECT username, name FROM account");
+			
+			if(rs.first() == false){
+				return null;
+			}
+			
+			do{
+				
+				persons.add(new Person(rs.getString(1), rs.getString(2)));
+				
+			}while(rs.next());
+			
+			
+		}catch(Exception e){
+			
+		}
+		
+		return persons;
 	}
 }

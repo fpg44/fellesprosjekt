@@ -228,14 +228,9 @@ public class MainFrame extends JPanel{
 		searchField.setSize(newEvent.getWidth(), newEvent.getHeight() /2);
 		searchField.setLocation(newEvent.getX(), personnelScroll.getY() + personnelScroll.getHeight());
 
-
-
 	}
 
 
-	public static void main(String[] args){
-		MainFrame panel = new MainFrame();
-	}
 	public void fillModel(){
 		personnel.add("Kari");
 		personnel.add("Per");

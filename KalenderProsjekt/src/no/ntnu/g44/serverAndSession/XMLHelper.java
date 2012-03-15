@@ -14,8 +14,12 @@ public class XMLHelper {
 	
 	protected Document parseEvents(ArrayList<Event> events){
 		
-		Element element = new Element("something");
-		Document document = new Document(element);
+		Element root = new Element("project");
+		
+		for(Event event : events){
+			Element element = eventToXml(event);
+			root.appendChild(element);
+		}
 		
 		return document;
 	}

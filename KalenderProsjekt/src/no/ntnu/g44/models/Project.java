@@ -2,6 +2,9 @@ package no.ntnu.g44.models;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -16,7 +19,13 @@ public class Project implements PropertyChangeListener {
 	/**
 	 * The member variable storing all registered {@link Person} objects.
 	 */
-	private java.util.ArrayList personList;
+	private ArrayList<Person> personList;
+	
+	
+	/**
+	 * All events
+	 */
+	private ArrayList<Event> eventList; 
 	
 	/**
 	 * This member variable provides functionality for notifying of changes to
@@ -26,13 +35,37 @@ public class Project implements PropertyChangeListener {
 	
 	/**
 	 * Default constructor.  Must be called to initialise the object's member variables.
-	 *
 	 */
 	public Project() {
-		personList = new java.util.ArrayList();
-		propChangeSupp = new java.beans.PropertyChangeSupport(this);
+		personList = new ArrayList<Person>();
+		eventList = new ArrayList<Event>();
+		propChangeSupp = new PropertyChangeSupport(this);
+		addTestStuff();
 	}
 
+	
+	
+	private void addTestStuff(){
+		personList.add(new Person("Andreas Løve Selvik", "lionleaf"));
+		personList.add(new Person("Anders Eldhuset" , ""));
+		personList.add(new Person("Jeppe Eriksen", ""));
+		personList.add(new Person("Ander Dahlin", ""));
+		personList.add(new Person("Robing Tordly", ""));
+		
+		eventList.add(new Event("Ting 15.",null, new Date(2012,3,15,11,15),
+				new Date(2012,3,15,13,6), null,null));
+		
+		eventList.add(new Event("haha 16",null, new Date(2012,3,16,10,15),
+				new Date(2012,3,16,45,6), null,null));
+		eventList.add(new Event("hoho 14",null, new Date(2012,3,14,10,15),
+				new Date(2012,3,14,12,6), null,null));
+		eventList.add(new Event("test",null, new Date(2012,3,17,10,15),
+				new Date(2012,3,17,12,6), null,null));
+		eventList.add(new Event("Ting 15.",null, new Date(2012,3,15,11,15),
+				new Date(2012,3,15,13,6), null,null));
+		
+	}
+	
 	/**
 	 * Returns the number of {@linkplain #addPerson(Person) <code>Person</code> objects
 	 * registered} with this class.
@@ -41,6 +74,10 @@ public class Project implements PropertyChangeListener {
 	 */
 	public int getPersonCount() {
 		return personList.size();
+	}
+	
+	public int getEventCount(){
+		return eventList.size();
 	}
 	
 	/**
@@ -54,6 +91,9 @@ public class Project implements PropertyChangeListener {
 		return (Person)personList.get(i);
 	}
 	
+	public Event getEvent(int i){
+		return eventList.get(i);
+	}
 	/**
 	 * Returns the index of the first occurrence of the specified object, or 
 	 * -1 if the list does not contain this object.
@@ -74,10 +114,23 @@ public class Project implements PropertyChangeListener {
 	 * 
 	 * @see java.util.Iterator <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/Iterator.html">java.util.Iterator</a>.
 	 */
-	public Iterator iterator() {
+	public Iterator personIterator() {
 		return personList.iterator();
 	}
 
+	
+	public Iterator<Event> eventIterator(){
+		return eventList.iterator();
+	}
+	
+	/**
+	 * WARNING: USE ONLY FOR READING!!
+	 * @return the raw ArrayList
+	 */
+	public ArrayList<Event> getEventList(){
+		return eventList;
+	}
+	
 	/**
 	 * Adds a new {@link Person} object to the <code>Project</code>.<P>
 	 * 
@@ -106,6 +159,12 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp.firePropertyChange("person", null, person);
 	}
 
+	public void addEvent(Event event){
+		eventList.add(event);
+		event.addPropertyChangeListener(this);
+		propChangeSupp.firePropertyChange("event", null, event);
+	}
+	
 	/**
 	 * Removes the specified {@link Person} object from the <code>Project</code>.<P>
 	 * 
@@ -137,6 +196,17 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp.firePropertyChange("person", person, index);
 	}
 
+	
+	public void removeEvent(Event event){
+		int i = eventList.indexOf(event);
+		eventList.remove(event);
+		event.removePropertyChangeListener(this);
+		propChangeSupp.firePropertyChange("event",event,i);
+	}
+	
+	
+	
+	
 	/**
 	 * Add a {@link java.beans.PropertyChangeListener} to the listener list.
 	 * 
@@ -174,7 +244,7 @@ public class Project implements PropertyChangeListener {
 		if (aProject.getPersonCount() != getPersonCount())
 			return false;
 		
-		Iterator it = this.iterator();
+		Iterator it = this.personIterator();
 		while (it.hasNext()) {
 			Person aPerson = (Person)it.next();
 			if (aProject.indexOf(aPerson) < 0)
@@ -189,7 +259,7 @@ public class Project implements PropertyChangeListener {
 	 */
 	public String toString() {
 		String s = "project:\n";
-		Iterator it = this.iterator();
+		Iterator it = this.personIterator();
 		while (it.hasNext()) {
 			s += it.next().toString() + "\n";
 		}

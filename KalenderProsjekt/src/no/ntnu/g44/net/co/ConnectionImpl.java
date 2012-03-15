@@ -251,9 +251,7 @@ public class ConnectionImpl extends AbstractConnection {
 		state = State.FIN_WAIT_2;
 		
 		
-		do{
-			
-		}
+
 		
 		
 		

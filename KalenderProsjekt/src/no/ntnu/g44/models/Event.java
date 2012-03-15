@@ -65,6 +65,7 @@ public class Event {
 		this.eventEndTime = eventEndTime;
 		this.location = location;
 		this.room = room;
+		propChangeSupp = new PropertyChangeSupport(this);
 	}
 	
 	public Person getEventOwner() {

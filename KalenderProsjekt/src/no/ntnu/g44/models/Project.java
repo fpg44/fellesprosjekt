@@ -36,6 +36,15 @@ public class Project implements PropertyChangeListener {
 	private ArrayList<Event> eventList; 
 	
 	/**
+	 * All rooms
+	 */
+	private ArrayList<Room> roomList;
+	
+	/**
+	 * All notifications
+	 */
+	private ArrayList<Notification> notificationList;
+	/**
 	 * This member variable provides functionality for notifying of changes to
 	 * the <code>Project</code> class.
 	 */
@@ -183,6 +192,18 @@ public class Project implements PropertyChangeListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void addRoom(Room room){
+		roomList.add(room);
+		//room.addPropertyChangeListener(this);
+		propChangeSupp.firePropertyChange("room", null, room);
+	}
+	
+	public void addNotification(Notification notification){
+		notificationList.add(notification);
+//		notification.addPropertyChangeListener(this);
+		propChangeSupp.firePropertyChange("notification", null, notification);
 	}
 	
 	/**

@@ -5,6 +5,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -38,6 +40,17 @@ public class Login {
 		navnField.setLocation(12 + navnLabel.getWidth() + 8, 24);
 		navnField.setSize(175, navnLabel.getHeight());
 		navnField.setVisible(true);
+		navnField.addKeyListener(new KeyListener(){
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
+					if(navnField.getText().equalsIgnoreCase("Anders"))Main.onLogin(navnField.getText());
+				}
+			}
+			public void keyReleased(KeyEvent arg0) {
+			}
+			public void keyTyped(KeyEvent arg0) {
+			}
+		});
 		panel.add(navnField);
 		
 		passLabel.setLocation(12, 24 + navnLabel.getHeight() + 8);

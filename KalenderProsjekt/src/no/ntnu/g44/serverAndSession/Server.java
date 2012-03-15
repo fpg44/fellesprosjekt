@@ -12,7 +12,7 @@ public class Server{
 	private Connection connection, server;
 	private boolean lookForIncommingDatagramPackets = true;
 	private DatabaseHandler dbHandler;
-	private XMLHelper xmlHelper;
+	private XmlSerializer xmlSerializer;
 
 	/**
 	 * 
@@ -27,7 +27,7 @@ public class Server{
 		this.PORT = ServerPort;
 		
 		dbHandler = new DatabaseHandler();
-		xmlHelper = new XMLHelper();
+		xmlSerializer = new XmlSerializer();
 		
 		try{
 			dbHandler.connectToDatabase(databaseIP, databasePORT, databaseName, databaseUsername, databasePassword);			
@@ -84,6 +84,6 @@ public class Server{
 	
 	//returns a document from an arraylist with events from the database
 	protected Document getAllEvents(){ 
-		return xmlHelper.parseEvents(dbHandler.getEventsFromDatabase());
+		return xmlSerializer.toXml(dbHandler.getEventsFromDatabase());
 	}
 }

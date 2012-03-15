@@ -23,6 +23,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -34,6 +35,7 @@ import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Notification;
+import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.controllers.NotificationController;
 
 public class MainFrame extends JPanel{
@@ -94,8 +96,10 @@ public class MainFrame extends JPanel{
 
 		addMouseMotionListener(listener);
 		editEvent.setVisible(true);
+		editEvent.addActionListener(listener);
 		newEvent.setVisible(true);
 		deleteEvent.setVisible(true);
+		deleteEvent.addActionListener(listener);
 		arrowButton.setVisible(true);
 		arrowButton.addActionListener(listener);
 		removeButton.setVisible(true);
@@ -295,6 +299,21 @@ public class MainFrame extends JPanel{
 					notifBox.setSelectedIndex(0);
 				}
 			}
+			if(e.getSource() == deleteEvent){
+				if(calendar.getSelectedEvent() != null){
+					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
+						Main.currentProject.removeEvent(calendar.getSelectedEvent());
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
+					}
+				}
+			}
+			if(e.getSource() == editEvent){
+				if(calendar.getSelectedEvent() != null){
+					//edit
+				}
+			}
 			if(e.getSource() == arrowButton && personnelList.getSelectedValue() != null){
 				addPersons();			
 			}
@@ -414,8 +433,13 @@ public class MainFrame extends JPanel{
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if(e.getSource() == calendar){
-				if(e.getButton() == MouseEvent.BUTTON1){
-					System.out.println("høyre");
+				if(e.getButton() == MouseEvent.BUTTON3){
+					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
+						Main.currentProject.removeEvent(calendar.getSelectedEvent());
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
+					}
 				}
 				resizing();
 			}

@@ -111,10 +111,46 @@ public class XmlSerializer {
 		return format.parse(date);
 	}
 	
-	protected Element eventToXml(Event events){
+	protected Document toXml(ArrayList<Event> events){
 		
-		return new Element("");
+		Element root = new Element("project");
+		
+		for(Event event : events){
+			Element element = eventToXml(event);
+			root.appendChild(element);
+		}
+		
+		return new Document(root);
 	}
-
+	
+	protected Element eventToXml(Event event){
+		
+		Element element = new Element("event");
+		
+		Element title = new Element("title");
+		title.appendChild(event.getEventTitle());
+		
+		Element eventOwner = new Element("owner");
+		eventOwner.appendChild(event.getEventOwner().getUsername());
+		
+		Element eventStart = new Element("event-start");
+		eventStart.appendChild(event.getEventStartTime().toString());
+		
+		Element eventEnd = new Element("event-end");
+		eventEnd.appendChild(event.getEventEndTime().toString());
+		
+		Element location = new Element("location");
+		location.appendChild(event.getLocation());
+		
+		Element room = new Element("room");
+		room.appendChild(event.getRoom().getRoomName());
+		
+		Element participants = new Element("participants");
+		for(Person p : event.getParticipants()){
+			participants.appendChild(p.getUsername());
+		}
+		
+		return element;
+	}
 }
 

@@ -101,6 +101,11 @@ public class Person {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
+	/**
+	 * 
+	 * @param name
+	 * @param username
+	 */
 	public Person(String name, String username){
 		this.name = name;
 		this.username = username;

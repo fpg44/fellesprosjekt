@@ -16,9 +16,14 @@ import java.awt.geom.RoundRectangle2D;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import javax.swing.JPanel;
 
+import sun.util.resources.TimeZoneNames_en;
+
+import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.Event;
 
 public class CalendarPanel extends JPanel implements MouseWheelListener, MouseListener {
@@ -29,36 +34,13 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 	int textPos = 40;
 	int margin = 10;
 	int topArea = margin+textPos;
-	int pixlsPerHour = (int) ((getHeight() -topArea)/hoursShown);
-	Event[] testEvents = new Event[3];
-	
+	int pixlsPerHour = (int) ((getHeight() -topArea)/hoursShown);	
 	private Event selectedEvent = null;
 
 	public CalendarPanel() {
 		addMouseWheelListener(this);
 		addMouseListener(this);
-		testEvents = new Event[]{
-				new Event("Ting 15.",null, new Date(2012,3,15,11,15),
-					new Date(2012,3,15,13,6), null,null),
-					
-				new Event("haha 16",null, new Date(2012,3,16,10,15),
-					new Date(2012,3,16,45,6), null,null),
-					
-				new Event("hoho 14",null, new Date(2012,3,14,10,15),
-					new Date(2012,3,14,12,6), null,null),
-					
-				new Event("test",null, new Date(2012,3,17,10,15),
-					new Date(2012,3,17,12,6), null,null),
-					
-				new Event("test",null, new Date(2012,3,18,10,15),
-					new Date(2012,3,18,12,6), null,null),
-					
-				new Event("test",null, new Date(2012,3,19,10,15),
-					new Date(2012,3,19,12,6), null,null),
-					
-				new Event("test",null, new Date(2012,3,20,10,15),
-					new Date(2012,3,20,12,6), null,null),
-		};
+		
 	}
 
 	/**Offset to make room for displaying times	 */
@@ -149,7 +131,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 	private void paintEvents(Graphics2D g2d){
 		g2d.setStroke(new BasicStroke(2));
 		
-		for(Event e:testEvents){
+		for(Event e:Main.currentProject.getEventList()){
 			EventView ev = new EventView(e);
 			ev.set(startHour,pixlsPerHour,dayWidth, leftOffset,topArea);
 			ev.paint(g2d, selectedEvent == e);
@@ -166,15 +148,22 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 	
 	
 	private void paintNowLine(Graphics2D g2d){
+//		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+//		TimeZone timezone = registry.getTimeZone("America/Mexico_City");
+//		VTimeZone tz = timezone.getVTimeZone();
+		
+//		TimeZone tz=TimeZone.getTimeZone("G");
 		Calendar nowTime = Calendar.getInstance();
+//		nowTime.setTimeZone(tz);
 		nowTime.setTime(new Date());
 		
-		
+		System.out.println(nowTime.getFirstDayOfWeek());
 		int Y = (int) ((((nowTime.get(Calendar.HOUR_OF_DAY)-this.startHour)+
 				nowTime.get(Calendar.MINUTE)/60f) * pixlsPerHour) + topArea);
 		
-		int startX = (nowTime.get(Calendar.DAY_OF_WEEK)  +8)%7 *dayWidth + leftOffset;
-		int endX = (nowTime.get(Calendar.DAY_OF_WEEK) + 8)%7 *dayWidth +dayWidth+ leftOffset;
+		//The first day of week in java.util.Calendar is saturday, therefore +5
+		int startX = (nowTime.get(Calendar.DAY_OF_WEEK) +5 )%7 *dayWidth + leftOffset;
+		int endX = (nowTime.get(Calendar.DAY_OF_WEEK) +5 )%7 *dayWidth +dayWidth+ leftOffset;
 
 		
 		Paint p = g2d.getPaint();
@@ -214,7 +203,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		
-		for(Event event : testEvents){
+		for(Event event : Main.currentProject.getEventList()){
 			EventView ev = new EventView(event);
 			ev.set(startHour, pixlsPerHour, dayWidth, leftOffset,topArea);
 			if(ev.isAtPosition(e.getX(), e.getY())){

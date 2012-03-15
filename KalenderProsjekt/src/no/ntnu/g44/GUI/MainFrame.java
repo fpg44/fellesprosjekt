@@ -76,8 +76,6 @@ public class MainFrame extends JPanel{
 		fillModel();
 		fillModel();
 
-		//notifBox.addItem(new String("There is no notifications"));
-//		notifBox.setSelectedIndex(0);
 		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
 		notifBox.setRenderer(notifRender);

@@ -20,7 +20,9 @@ public class MainClass3000 {
 		JLabel navnLabel = new JLabel("Name:");
 		JLabel passLabel = new JLabel("Password:");
 		JTextField navnField = new JTextField();
+		//navnField.addActionListener(l);
 		JTextField passField = new JTextField();
+		//passField.addActionListener(l);
 		
 		navnLabel.setLocation(12, 24);
 		navnLabel.setSize((int)passLabel.getPreferredSize().getWidth(), (int) (navnLabel.getPreferredSize().getHeight() + 5));

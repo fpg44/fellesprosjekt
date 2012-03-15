@@ -178,12 +178,14 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		Calendar nowTime = Calendar.getInstance();
 //		nowTime.setTimeZone(tz);
 		nowTime.setTime(new Date());
-		System.out.println(nowTime.getTime());
+		
+		System.out.println(nowTime.getFirstDayOfWeek());
 		int Y = (int) ((((nowTime.get(Calendar.HOUR_OF_DAY)-this.startHour)+
 				nowTime.get(Calendar.MINUTE)/60f) * pixlsPerHour) + topArea);
 		
-		int startX = (nowTime.get(Calendar.DAY_OF_WEEK) + 5 )%7 *dayWidth + leftOffset;
-		int endX = (nowTime.get(Calendar.DAY_OF_WEEK) + 5 )%7 *dayWidth +dayWidth+ leftOffset;
+		//The first day of week in java.util.Calendar is saturday, therefore +5
+		int startX = (nowTime.get(Calendar.DAY_OF_WEEK) +5 )%7 *dayWidth + leftOffset;
+		int endX = (nowTime.get(Calendar.DAY_OF_WEEK) +5 )%7 *dayWidth +dayWidth+ leftOffset;
 
 		
 		Paint p = g2d.getPaint();

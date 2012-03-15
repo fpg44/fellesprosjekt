@@ -10,7 +10,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.net.URL;
 
-import no.ntnu.kjerne.model.Project;
+import no.ntnu.g44.models.Project;
+
 
 /**
  * @author tho

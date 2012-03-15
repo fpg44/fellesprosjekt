@@ -14,10 +14,9 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.StringTokenizer;
 
-import no.ntnu.kjerne.model.Person;
-import no.ntnu.kjerne.model.Project;
-import no.ntnu.kjerne.model.XmlSerializer;
-import no.ntnu.kjerne.swingutil.FPFileFilter;
+import no.ntnu.g44.models.Person;
+import no.ntnu.g44.models.Project;
+import no.ntnu.g44.swingutil.FPFileFilter;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.ParsingException;

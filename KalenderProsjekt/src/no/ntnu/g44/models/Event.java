@@ -17,6 +17,7 @@ public class Event {
 	private Date eventStartTime;
 	private Date eventEndTime;
 	private Room room;
+	private Person eventOwner;
 	
 	
 	/**
@@ -34,6 +35,7 @@ public class Event {
 	 * @param location
 	 * @param room
 	 */
+	@Deprecated
 	public Event(String eventTitle, ArrayList<Person> participants, 
 			Date eventStartTime, Date eventEndTime, String location, Room room) {
 		this.eventTitle = eventTitle;
@@ -42,6 +44,32 @@ public class Event {
 		this.eventEndTime = eventEndTime;
 		this.location = location;
 		this.room = room;
+	}
+	
+	/**
+	 * 
+	 * @param eventTitle
+	 * @param eventOwner
+	 * @param participants
+	 * @param eventStartTime
+	 * @param eventEndTime
+	 * @param location
+	 * @param room
+	 */
+	public Event(String eventTitle, Person eventOwner, ArrayList<Person> participants, 
+			Date eventStartTime, Date eventEndTime, String location, Room room) {
+		this.eventTitle = eventTitle;
+		this.eventOwner = eventOwner;
+		this.participants = participants;
+		this.eventStartTime = eventStartTime;
+		this.eventEndTime = eventEndTime;
+		this.location = location;
+		this.room = room;
+		propChangeSupp = new PropertyChangeSupport(this);
+	}
+	
+	public Person getEventOwner() {
+		return eventOwner;
 	}
 
 	public String getEventTitle() {

@@ -4,8 +4,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -48,15 +53,16 @@ public class NewEventPanel extends JPanel {
 	
 	// (invited) participants--the right side of our prototype
 	private JPanel participantsPanel;
+	private SearchListener searchListener;
 	private JTextField searchField;
 	private JList<Person> searchList;
 	private JScrollPane searchListScroller;
 	private JLabel invitedPersonsLabel;
 	private JList<Person> invitedList;
 	private JScrollPane invitedListScroller;
-	private JLabel addPersonToParticipantsLabel;
+	private JLabel addPersonToParticipantsListLabel;
 	private ImageIcon addPersonToParticipantsIcon;
-	private JLabel removePersonFromParticipantsLabel;
+	private JLabel removePersonFromParticipantsListLabel;
 	private ImageIcon removePersonFromParticipantsIcon;
 	private JPanel participantsButtonPanel;
 	// this model should contain all Person objects
@@ -106,9 +112,11 @@ public class NewEventPanel extends JPanel {
 		eventDescriptionScroller = new JScrollPane(eventDescription);
 	
 		participantsPanel = new JPanel();
+		searchListener = new SearchListener();
 		personsModel = new DefaultListModel<Person>();
 		participantsModel = new DefaultListModel<Person>();
 		searchField = new JTextField("Search", 20);	// 20 columns
+		searchField.addMouseListener(searchListener);
 		searchList = new JList<Person>(personsModel);
 		searchListScroller = new JScrollPane(searchList);
 		invitedPersonsLabel = new JLabel("Invited persons");
@@ -116,16 +124,18 @@ public class NewEventPanel extends JPanel {
 		invitedListScroller = new JScrollPane(invitedList);
 		addPersonToParticipantsIcon = new ImageIcon(getClass().getResource(
 				"images/rightArrow.png"));
-		addPersonToParticipantsLabel = new JLabel(addPersonToParticipantsIcon);
+		addPersonToParticipantsListLabel = new JLabel(addPersonToParticipantsIcon);
+		addPersonToParticipantsListLabel.addMouseListener(searchListener);
 		removePersonFromParticipantsIcon = new ImageIcon(getClass().getResource(
 				"images/removeIcon.png"));
-		removePersonFromParticipantsLabel = new JLabel(
+		removePersonFromParticipantsListLabel = new JLabel(
 				removePersonFromParticipantsIcon);
+		removePersonFromParticipantsListLabel.addMouseListener(searchListener);
 		participantsButtonPanel = new JPanel();
 		participantsButtonPanel.setLayout(new BoxLayout(participantsButtonPanel,
 				BoxLayout.PAGE_AXIS));
-		participantsButtonPanel.add(addPersonToParticipantsLabel);
-		participantsButtonPanel.add(removePersonFromParticipantsLabel);
+		participantsButtonPanel.add(addPersonToParticipantsListLabel);
+		participantsButtonPanel.add(removePersonFromParticipantsListLabel);
 		
 		persons = new ArrayList<String>();
 		populatePersonsModel();
@@ -250,6 +260,59 @@ public class NewEventPanel extends JPanel {
 				
 				closeWindow();
 			}
+		}
+	}
+	
+	class SearchListener implements MouseListener, KeyListener {
+
+		@Override
+		public void keyTyped(KeyEvent e) { }
+
+		@Override
+		public void keyPressed(KeyEvent e) { }
+
+		@Override
+		public void keyReleased(KeyEvent e) { }
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if (e.getSource() == addPersonToParticipantsListLabel 
+					&& searchList.getSelectedValue() != null) {
+				addPersons();			
+			} else if (e.getSource() == removePersonFromParticipantsListLabel
+					&& invitedList.getSelectedValue() != null) {
+				removePersons();
+			} else if (e.getSource() == searchField) {
+				searchField.selectAll();
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) { }
+
+		@Override
+		public void mouseReleased(MouseEvent e) { }
+
+		@Override
+		public void mouseEntered(MouseEvent e) { }
+
+		@Override
+		public void mouseExited(MouseEvent e) { }
+	}
+	
+	private void addPersons() {
+		List<Person> persons = searchList.getSelectedValuesList();
+		for (Person p : persons) {
+			participantsModel.addElement(p);
+			personsModel.removeElement(p);
+		}
+	}
+	
+	private void removePersons() {
+		List<Person> persons = invitedList.getSelectedValuesList();
+		for (Person p : persons) {
+			participantsModel.removeElement(p);
+			personsModel.addElement(p);
 		}
 	}
 }

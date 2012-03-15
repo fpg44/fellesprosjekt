@@ -106,12 +106,22 @@ public class DatabaseHandler {
 				
 				rsP = null;	//clear the ResultSet for next iterate
 				
+				Person owner = null;
+				
+				for(int i = 0; i<persons.size(); i++){
+					if(((Person)persons.get(i)).getUsername().equals("lol")){
+						owner = persons.get(i);
+					}
+							
+				}
+				
 				//convert from java.sql.Timestamp to java.util.Date
 				Date dateStart = rsE.getTimestamp(3);
 				Date dateEnd = rsE.getTimestamp(4);
 				
 				//create new event and add all the persons involved
-				Event event = new Event(rsE.getString(2), 
+				Event event = new Event(rsE.getString(2),
+						owner,
 						persons,
 						dateStart, dateEnd,
 						rsE.getString(5), 

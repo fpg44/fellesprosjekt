@@ -8,8 +8,10 @@ import nu.xom.Element;
 
 public class XMLHelper {
 
+	private XmlSerializer xml;
+	
 	public XMLHelper(){	
-		
+		xml = new XmlSerializer();
 	}
 	
 	protected Document parseEvents(ArrayList<Event> events){
@@ -17,10 +19,10 @@ public class XMLHelper {
 		Element root = new Element("project");
 		
 		for(Event event : events){
-			Element element = eventToXml(event);
+			Element element = xml.eventToXml(event);
 			root.appendChild(element);
 		}
 		
-		return document;
+		return new Document(root);
 	}
 }

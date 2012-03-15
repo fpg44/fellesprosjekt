@@ -18,6 +18,7 @@ public class Event {
 	private Date eventEndTime;
 	private Room room;
 	private Person eventOwner;
+	private int eventID;
 	
 	
 	/**
@@ -57,8 +58,9 @@ public class Event {
 	 * @param location
 	 * @param room
 	 */
-	public Event(String eventTitle, Person eventOwner, ArrayList<Person> participants, 
+	public Event(int eventID, String eventTitle, Person eventOwner, ArrayList<Person> participants, 
 			Date eventStartTime, Date eventEndTime, String location, Room room) {
+		this.eventID = eventID;
 		this.eventTitle = eventTitle;
 		this.eventOwner = eventOwner;
 		this.participants = participants;
@@ -69,6 +71,18 @@ public class Event {
 		propChangeSupp = new PropertyChangeSupport(this);
 	}
 	
+	public int getEventID() {
+		return eventID;
+	}
+
+	public void setEventID(int eventID) {
+		this.eventID = eventID;
+	}
+
+	public void setEventOwner(Person eventOwner) {
+		this.eventOwner = eventOwner;
+	}
+
 	public Person getEventOwner() {
 		return eventOwner;
 	}

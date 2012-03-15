@@ -16,7 +16,7 @@ public class Server{
 
 	/**
 	 * 
-	 * @param ServerPort : The Port-number the server is listening to
+	 * @param ServerPort : The Port-number the server is listening to (locally is 3306)
 	 * @param databaseIP : The IPAddress that the database have ('localhost' if ran locally)
 	 * @param databasePORT : The Port-number to the database
 	 * @param databaseName : The name of the database

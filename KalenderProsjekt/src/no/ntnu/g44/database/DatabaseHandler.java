@@ -69,47 +69,66 @@ public class DatabaseHandler {
 	public ArrayList<Event> getEventsFromDatabase(){
 		ArrayList<Event> events = new ArrayList<Event>();
 		ArrayList<Person> persons = new ArrayList<Person>();
-
+		int EVENT_ID;
+		
 		try{
-			ResultSet rsP = stmt.executeQuery("SELECT blabalba FROM Account");
-			ResultSet rsE = stmt.executeQuery("SELECT blabalba FROM Event");
+			
+			//get all the events with all their attributes
+			ResultSet rsE = stmt.executeQuery("SELECT * FROM Event");
 
-			if(rsP.first() == false || rsE.first() == false){
+			//Sets the pointer to the first line in the ResultSet, return if ResultSet is empty
+			if(rsE.first() == false){
 				return null;
 			}
+			
+			//ITERATES THE EVENT RESULTSET
 			do{
+				
+				//gets the event_id from the currently iterating event
+				EVENT_ID = rsE.getInt(1);
+				
+				//get all the persons associated each event
+				ResultSet rsP = stmt.executeQuery("SELECT name, username FROM Account WHERE event.event_id='" + EVENT_ID + "'");
+
+				//Sets the pointer to the first line in the ResultSet, return if ResultSet is empty
+				if(rsP.first() == false){
+					return null;
+				}
+
+				//ITERATES THE PERSON RESULTSET
 				do{
 					
-					//create persons and add them to array
+					//Create persons and add them to array
 					Person person = new Person(rsP.getString(1), rsP.getString(2));
 					persons.add(person);
 					
 				}while(rsP.next());
-
+				
+				rsP = null;	//clear the ResultSet for next iterate
+				
 				//convert from java.sql.Timestamp to java.util.Date
-				Date dateStart = rsE.getTimestamp(2);
-				Date dateEnd = rsE.getTimestamp(3);
+				Date dateStart = rsE.getTimestamp(3);
+				Date dateEnd = rsE.getTimestamp(4);
 				
 				//create new event and add all the persons involved
-				Event event = new Event(rsE.getString(1), 
-										persons, 
-										dateStart,
-										dateEnd,
-										rsE.getString(4), 
-										new Room(rsE.getString(5)));
+				Event event = new Event(rsE.getString(2), 
+						persons,
+						dateStart, dateEnd,
+						rsE.getString(5), 
+						new Room(rsE.getString(6)));
+				
 				//add this event to array
 				events.add(event);
 				
-				//clear the person array for the next event
-				persons.clear();
-				
 			}while(rsE.next());
-
-			rsP = null;
-			rsE = null;
+		
+			rsE = null; //clear the ResultSet
+			
 		}catch(Exception e){
+			
 			e.printStackTrace();
 		}
+		
 		return events;
 	}
 	

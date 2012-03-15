@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ContainerEvent;
@@ -26,6 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.NoFixedFacet;
 
 import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
@@ -149,7 +152,7 @@ public class MainFrame extends JPanel{
 			for (int i = 0; i < unseenNotifications.size(); i++) {
 				notifCounter++;
 			}
-			notifBox.addItem(new String ("You have " + notifCounter + " new notifications."));
+			notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
 			for (int i = 0; i < unseenNotifications.size(); i++) {
 				notifBox.addItem((unseenNotifications.get(i)));
 			}
@@ -274,7 +277,26 @@ public class MainFrame extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			if (!unseenNotifications.isEmpty()){
 				if (e.getSource() == notifBox) {
-//					System.out.println(((Notification) notifBox.getSelectedItem()).getMessage());
+					if (notifBox.getSelectedIndex() == 0) {
+						System.out.println("Nothing happens");
+					}
+					//Her skal vi legge inn kall pŒ forskjellige dialogbokser som kommer
+					//som f¿lge av man trykker pŒ en notifikasjon.
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CANCELLED){
+						System.out.println("This event has been cancelled");
+						//Inne i disse metoden mŒ vi legge til slik at en notifikasjon
+						//blir borte om man besvarer eventet. Om man ikke svarer
+						//skal notifikasjonen fortsatt v¾re i listen
+					}
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION) {
+						System.out.println("You have a new event invitation");
+					}
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_TIME_CHANGED) {
+						System.out.println("This event have been changed");
+					}
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.PARTICIPANT_DECLINED_INVITATION){
+						System.out.println("A participant has declined your invitation");
+					}
 					notifBox.setSelectedIndex(0);
 				}
 			}

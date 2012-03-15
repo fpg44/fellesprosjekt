@@ -74,9 +74,9 @@ public class MainFrame extends JPanel{
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
 	CalendarPanel calendar = new CalendarPanel();
-	final int UKENR = 13;
-	int currUkenr = 13;
-	JLabel weeknumber = new JLabel("UKE 13");
+	int UKENR = 0;
+	int currUkenr = UKENR;
+	JLabel weeknumber = new JLabel("UKE " + UKENR);
 	ListRenderer renderer = new ListRenderer();
 	NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
 	
@@ -88,6 +88,9 @@ public class MainFrame extends JPanel{
 		timer.scheduleAtFixedRate(new TimerTask() {
 	        public void run() {
 	        	calendar.repaint();
+	        	UKENR = calendar.getWeekNumber();
+	        	if(currUkenr == 0)currUkenr = UKENR;
+	        	resizing();
 	        }
 	    }, 0, 1000);
 //		calendarPersons.setCellRenderer(renderer);

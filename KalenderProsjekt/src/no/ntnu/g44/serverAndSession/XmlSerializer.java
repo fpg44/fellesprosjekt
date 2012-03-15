@@ -188,7 +188,7 @@ public class XmlSerializer {
 	private Event assembleEvent(Element eventElement) throws ParseException {
 		int id  = -1;
 		String title = null, location = null;
-		ArrayList<Person> participants = null;
+		ArrayList<String> participants = new ArrayList<String>();
 		Room room = null;
 		String owner_username = null;
 		Date eventStartDate = null, eventEndDate = null;
@@ -231,13 +231,15 @@ public class XmlSerializer {
 		element = eventElement.getFirstChildElement("participants");
 		if( element != null ){
 			Elements children = element.getChildElements("participant");
-
+			for ( int i = 0; i< children.size(); i++){
+				participants.add(String.valueOf(children.get(i).getFirstChildElement("participant")));				
+			}
 		}
 		
 		return new Event(id, title, getPersonByUsername(owner_username), participants, eventStartDate, eventEndDate, location, room);
 	}
 	
-	public Person getPersonByUsername(String username){
+	public String getPersonByUsername(String username){
 		
 		return null;
 

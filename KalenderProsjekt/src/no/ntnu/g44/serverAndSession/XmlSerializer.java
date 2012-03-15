@@ -75,7 +75,9 @@ public class XmlSerializer {
 		Element email = new Element("email");
 		email.appendChild(aPerson.getEmail());
 		Element dateOfBirth = new Element("date-of-birth");
-		dateOfBirth.appendChild(format.format(aPerson.getDateOfBirth()));
+		if(aPerson.getDateOfBirth() != null){
+			dateOfBirth.appendChild(format.format(aPerson.getDateOfBirth()));
+		}
 		element.appendChild(name);
 		element.appendChild(email);
 		element.appendChild(dateOfBirth);

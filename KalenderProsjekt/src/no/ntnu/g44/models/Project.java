@@ -3,9 +3,17 @@ package no.ntnu.g44.models;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+
+import no.ntnu.g44.serverAndSession.FileStorage;
+import no.ntnu.g44.serverAndSession.Storage;
 
 /**
  * The <code>Project</code> class is a list of zero or more {@link Person} objects.
@@ -33,6 +41,9 @@ public class Project implements PropertyChangeListener {
 	 */
 	private java.beans.PropertyChangeSupport propChangeSupp;
 	
+	private Storage storage;
+	
+	
 	/**
 	 * Default constructor.  Must be called to initialise the object's member variables.
 	 */
@@ -41,6 +52,8 @@ public class Project implements PropertyChangeListener {
 		eventList = new ArrayList<Event>();
 		propChangeSupp = new PropertyChangeSupport(this);
 		addTestStuff();
+		
+		storage = new FileStorage();
 	}
 
 	
@@ -163,6 +176,13 @@ public class Project implements PropertyChangeListener {
 		eventList.add(event);
 		event.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("event", null, event);
+		
+		try {
+			storage.save(new URL("project.xml"), this);
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -202,6 +222,13 @@ public class Project implements PropertyChangeListener {
 		eventList.remove(event);
 		event.removePropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("event",event,i);
+		try {
+			String cuPath = new File(".").getAbsolutePath();
+			storage.save(new URL("file://"+cuPath+"/project.xml"), this);
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	

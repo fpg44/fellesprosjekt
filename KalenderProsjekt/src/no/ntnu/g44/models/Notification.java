@@ -26,10 +26,9 @@ public class Notification {
 	 * @param Message
 	 * @param type
 	 */
-	public Notification(int notificationID, int eventID,  String Message, NotificationType type){
+	public Notification(int notificationID, int eventID, NotificationType type){
 		this.notificationID = notificationID;
 		this.eventID = eventID;
-		this.message = message;
 		this.type = type;
 	}
 

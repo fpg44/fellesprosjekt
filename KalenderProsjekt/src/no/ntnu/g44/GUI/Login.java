@@ -17,9 +17,11 @@ import javax.swing.JTextField;
 import no.ntnu.g44.controllers.Main;
 
 public class Login {
+	
+	static JFrame ramme;
 	public static void login(){
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		JFrame ramme = new JFrame("Login");
+		ramme = new JFrame("Login");
 		JPanel panel = new JPanel();
 		JButton loginButt = new JButton("Login");
 		ramme.getContentPane().add(panel);
@@ -44,6 +46,7 @@ public class Login {
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
 					if(navnField.getText().equalsIgnoreCase("Anders"))Main.onLogin(navnField.getText());
+					ramme.dispose();
 				}
 			}
 			public void keyReleased(KeyEvent arg0) {

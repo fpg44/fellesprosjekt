@@ -2,8 +2,9 @@ package no.ntnu.g44.models;
 
 public class Notification {
 	
-	private String message;
+	private String message, username;
 	private NotificationType type;
+	private int notificationID, eventID;
 	
 	/**
 	 * Create a new <code>Notification</code> with the specified message and type. <br><br>
@@ -14,6 +15,20 @@ public class Notification {
 	public Notification(NotificationType type) {
 		this.type = type;
 		this.message = setMessage(type);
+	}
+	/**
+	 * The notification constructor with all fields
+	 * @param notificationID
+	 * @param username
+	 * @param eventID
+	 * @param Message
+	 * @param type
+	 */
+	public Notification(int notificationID, int eventID,  String Message, NotificationType type){
+		this.notificationID = notificationID;
+		this.eventID = eventID;
+		this.message = message;
+		this.type = type;
 	}
 
 	/**

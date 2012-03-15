@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.g44.database.DatabaseHandler;
 import no.ntnu.g44.models.Event;
+import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Project;
+import no.ntnu.g44.models.Room;
 import no.ntnu.g44.net.co.Connection;
 import no.ntnu.g44.net.co.ConnectionImpl;
 import nu.xom.Document;
@@ -94,16 +96,25 @@ public class Server{
 	
 	protected Project getAllPersons(){
 		Project p = new Project();
-		ArrayList<Person> persons = dbHandler.getPersons();
 		
+		ArrayList<Person> persons = dbHandler.getPersons();
 		for(Person person : persons){
 			p.addPerson(person);
 		}
 		
 		ArrayList<Event> events = dbHandler.getEventsFromDatabase();
-		
 		for(Event event : events){
 			p.addEvent(event);
+		}
+		
+		ArrayList<Room> rooms = dbHandler.getRooms();
+		for(Room room : rooms){
+			p.addRoom(room);
+		}
+		
+		ArrayList<Notification> notifications = dbHandler.getNotifications();
+		for(Notification notification: notifications){
+			p.addNotification(notification);
 		}
 		
 		return p;

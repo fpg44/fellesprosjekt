@@ -13,6 +13,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -26,7 +28,7 @@ import sun.util.resources.TimeZoneNames_en;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.Event;
 
-public class CalendarPanel extends JPanel implements MouseWheelListener, MouseListener {
+public class CalendarPanel extends JPanel implements MouseWheelListener, MouseListener, PropertyChangeListener {
 	String[] weekdays = new String[]{"Monday","Tuesday","Wednesday",
 			"Thursday","Friday","Saturday","Sunday"};
 	private float startHour = 8f;
@@ -40,6 +42,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 	public CalendarPanel() {
 		addMouseWheelListener(this);
 		addMouseListener(this);
+		Main.currentProject.addPropertyChangeListener(this);
 		
 	}
 
@@ -213,6 +216,11 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 			}
 		}
 		selectedEvent = null;
+		repaint();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
 		repaint();
 	}
 

@@ -9,6 +9,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 
+import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Room;
 
@@ -40,7 +43,8 @@ public class NewEventPanel extends JPanel {
 	// information about the event--the left side of our prototype
 	private JPanel eventInformationPanel;
 	private JLabel ownerLabel;
-	private JLabel eventOwner;				// the person organizing the event
+	private JLabel eventOwnerName;			// the person organizing the event
+	private Person eventOwner;
 	private JLabel eventStartLabel;
 	private JSpinner eventStartTime;
 	private JLabel eventEndLabel;
@@ -92,7 +96,8 @@ public class NewEventPanel extends JPanel {
 		
 		eventInformationPanel = new JPanel();
 		ownerLabel = new JLabel("Arranged by");
-		eventOwner = new JLabel(owner.getName());
+		eventOwner = owner;
+		eventOwnerName = new JLabel(owner.getName());
 		eventStartLabel = new JLabel("From");
 		eventStartTime = new JSpinner();
 		eventStartTime.setModel(new SpinnerDateModel());
@@ -178,7 +183,7 @@ public class NewEventPanel extends JPanel {
 		c.anchor = GridBagConstraints.EAST;
 		c.gridx = 1;
 		c.gridy = 0;
-		eventInformationPanel.add(eventOwner, c);
+		eventInformationPanel.add(eventOwnerName, c);
 		c.gridy = 1;
 		eventInformationPanel.add(eventStartTime, c);
 		c.gridy = 2;
@@ -413,5 +418,21 @@ public class NewEventPanel extends JPanel {
 			if (!personsModel.contains(p))
 				personsModel.addElement(p);
 		}
+	}
+	
+	private Event createEvent() {
+		String eventTitle = new String(eventDescription.getText());
+		ArrayList<Person> participants = new ArrayList<Person>();
+		for (int i = 0; i < participantsModel.getSize(); i++)
+			participants.add(participantsModel.get(i));
+		Date eventStartTime = (Date) ((SpinnerDateModel) 
+				this.eventStartTime.getModel()).getDate();
+		Date eventEndTime = (Date) ((SpinnerDateModel) 
+				this.eventEndTime.getModel()).getDate();
+		String location = null;
+		Room room = null;
+		
+		return new Event(eventTitle, this.eventOwner, participants,
+				eventStartTime, eventEndTime, location, room);
 	}
 }

@@ -13,6 +13,8 @@ public class NotificationController {
 		unseenNotifications = new ArrayList();
 
 //		unseenNotifications.add(new Notification(12, 123123, Message, type))
+		unseenNotifications.add(new Notification(123, 123, NotificationType.CANCELLED));
+		
 		/*
 		unseenNotifications.add(new Notification(NotificationType.EVENT_CANCELLED));
 		unseenNotifications.add(new Notification(NotificationType.EVENT_INVITATION));

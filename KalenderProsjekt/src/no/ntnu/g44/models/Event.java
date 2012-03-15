@@ -94,8 +94,25 @@ public class Event {
 		this.eventEndTime = eventEndTime;
 		this.location = location;
 		this.room = room;
+		propChangeSupp = new PropertyChangeSupport(this);
 	}
 	
+	public ArrayList<String> getParticipantsStrings() {
+		return participantsStrings;
+	}
+
+	public void setParticipantsStrings(ArrayList<String> participantsStrings) {
+		this.participantsStrings = participantsStrings;
+	}
+
+	public String getEventOwnerString() {
+		return eventOwnerString;
+	}
+
+	public void setEventOwnerString(String eventOwnerString) {
+		this.eventOwnerString = eventOwnerString;
+	}
+
 	public int getEventID() {
 		return eventID;
 	}

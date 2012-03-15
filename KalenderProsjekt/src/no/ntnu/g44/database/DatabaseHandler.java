@@ -11,6 +11,8 @@ import java.util.Date;
 import javax.print.attribute.standard.DateTimeAtCompleted;
 
 import no.ntnu.g44.models.Event;
+import no.ntnu.g44.models.Notification;
+import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Room;
 
@@ -153,11 +155,16 @@ public class DatabaseHandler {
 		}catch(Exception e){
 
 			e.printStackTrace();
+			
 		}
 
 		return events;
 	}
 
+	/**
+	 * 
+	 * @param events 
+	 */
 	public void updateEvents(ArrayList<Event> events){
 
 		for(Event e : events){
@@ -181,6 +188,10 @@ public class DatabaseHandler {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return all the persons from the database
+	 */
 	public ArrayList<Person> getPersons(){
 		ArrayList<Person> persons = new ArrayList<Person>();
 		
@@ -198,11 +209,77 @@ public class DatabaseHandler {
 				
 			}while(rs.next());
 			
+			rs = null;
 			
 		}catch(Exception e){
 			
+			e.printStackTrace();
+			
+		}
+		return persons;
+	}
+	
+	/**
+	 * 
+	 * @return all the rooms from the database
+	 */
+	public ArrayList<Room> getRooms(){
+		ArrayList<Room> rooms = new ArrayList<Room>();
+		
+		try{
+			ResultSet rs = stmt.executeQuery("SELECT name FROM room");
+			
+			if(rs.first() == false){
+				return null;
+			}
+			
+			do{
+				
+				rooms.add(new Room(rs.getString(1)));
+				
+			}while(rs.next());
+			
+			rs = null;
+			
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			
 		}
 		
-		return persons;
+		return rooms;
+	}
+	
+	/**
+	 * 
+	 * @return all the notifications from the database
+	 */
+	public ArrayList<Notification> getNotifications(){
+		ArrayList<Notification> notifications = new ArrayList<Notification>();
+		
+		try{
+			
+			ResultSet rs = stmt.executeQuery("SELECT * FROM notification");
+			
+			if(rs.first() == false){
+				return null;
+			}
+			
+			do{
+				Notification n = new Notification(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), NotificationType.convertFromString(rs.getString(5)));
+				
+				notifications.add(n);
+				
+			}while(rs.next());
+			
+			rs = null;
+			
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			
+		}
+		
+		return notifications;
 	}
 }

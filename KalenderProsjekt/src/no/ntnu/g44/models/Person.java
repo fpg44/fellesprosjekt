@@ -3,6 +3,7 @@ package no.ntnu.g44.models;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -13,6 +14,12 @@ import java.util.Date;
  * @version $Revision: 1.5 $ - $Date: 2005/02/20 14:52:29 $
  */
 public class Person {
+	
+	/**
+	 * This class variable keeps a list of all Person objects created so they
+	 * can be recovered using findPersonByUsername
+	 */
+	private static ArrayList<Person> persons = new ArrayList<Person>();
 	
 	/**
 	 * This member variable holds the person's name.
@@ -84,6 +91,7 @@ public class Person {
 		dateOfBirth = new Date();
 		id = System.currentTimeMillis();
 		propChangeSupp = new PropertyChangeSupport(this);
+		Person.persons.add(this);
 	}
 	
 	/**
@@ -107,8 +115,17 @@ public class Person {
 	 * @param username
 	 */
 	public Person(String name, String username){
+		this();
 		this.name = name;
 		this.username = username;
+	}
+	
+	public static Person findPersonByUsername(String username) {
+		for (Person p : persons)
+			if (p.getUsername().equalsIgnoreCase(username))
+				return p;
+		
+		return null;
 	}
 	
 	/**

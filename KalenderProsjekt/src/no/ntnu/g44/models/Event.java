@@ -14,10 +14,13 @@ public class Event {
 	
 	private String eventTitle, location;
 	private ArrayList<Person> participants;
+	private ArrayList<String> participantsStrings;
 	private Date eventStartTime;
 	private Date eventEndTime;
 	private Room room;
 	private Person eventOwner;
+	private String eventOwnerString;
+	private int eventID;
 	
 	
 	/**
@@ -26,7 +29,7 @@ public class Event {
 	 */
 	private PropertyChangeSupport propChangeSupp;
 
-	/**
+	/** this should be deleted
 	 * Creates a new Event
 	 * @param eventTitle
 	 * @param participants
@@ -47,8 +50,8 @@ public class Event {
 		propChangeSupp = new PropertyChangeSupport(this);
 	}
 	
-	/**
-	 * 
+	/**	This is the one used within the application (the right one)
+	 * @param event_ID
 	 * @param eventTitle
 	 * @param eventOwner
 	 * @param participants
@@ -57,8 +60,9 @@ public class Event {
 	 * @param location
 	 * @param room
 	 */
-	public Event(String eventTitle, Person eventOwner, ArrayList<Person> participants, 
+	public Event(int eventID, String eventTitle, Person eventOwner, ArrayList<Person> participants, 
 			Date eventStartTime, Date eventEndTime, String location, Room room) {
+		this.eventID = eventID;
 		this.eventTitle = eventTitle;
 		this.eventOwner = eventOwner;
 		this.participants = participants;
@@ -69,6 +73,41 @@ public class Event {
 		propChangeSupp = new PropertyChangeSupport(this);
 	}
 	
+	/**
+	 * This is used when red from database and thrown after parsed to XML.
+	 * @param eventID
+	 * @param eventTitle
+	 * @param eventOwner
+	 * @param participants
+	 * @param eventStartTime
+	 * @param eventEndTime
+	 * @param location
+	 * @param room
+	 */
+	public Event(int eventID, String eventTitle, String eventOwner, ArrayList<String> participants, 
+			Date eventStartTime, Date eventEndTime, String location, Room room){
+		this.eventID = eventID;
+		this.eventTitle = eventTitle;
+		this.eventOwnerString = eventOwner;
+		this.participantsStrings = participants;
+		this.eventStartTime = eventStartTime;
+		this.eventEndTime = eventEndTime;
+		this.location = location;
+		this.room = room;
+	}
+	
+	public int getEventID() {
+		return eventID;
+	}
+
+	public void setEventID(int eventID) {
+		this.eventID = eventID;
+	}
+
+	public void setEventOwner(Person eventOwner) {
+		this.eventOwner = eventOwner;
+	}
+
 	public Person getEventOwner() {
 		return eventOwner;
 	}

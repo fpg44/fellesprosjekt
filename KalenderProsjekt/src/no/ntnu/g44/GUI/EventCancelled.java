@@ -179,7 +179,7 @@ public class EventCancelled extends JPanel{
 	public static void main(String[] args) {
 
 		Person person = new Person("Jeppe Eriksen", "jeppeer@gmail.com");
-		Event newEvent = new Event("TestEvent", person, null, new Date(2012,3,15,11,15),
+		Event newEvent = new Event(1, "TestEvent", person, null, new Date(2012,3,15,11,15),
 				new Date(2012,3,15,13,6), "G138" ,null);
 		EventCancelled ec = new EventCancelled(newEvent);
 	}

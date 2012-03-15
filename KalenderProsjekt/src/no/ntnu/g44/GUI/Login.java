@@ -12,14 +12,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import no.ntnu.g44.controllers.Main;
 
 public class Login {
+	
+	static JFrame ramme;
 	public static void login(){
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		JFrame ramme = new JFrame("Login");
+		ramme = new JFrame("Login");
 		JPanel panel = new JPanel();
 		JButton loginButt = new JButton("Login");
 		ramme.getContentPane().add(panel);
@@ -29,7 +32,7 @@ public class Login {
 		JLabel passLabel = new JLabel("Password:");
 		final JTextField navnField = new JTextField();
 		//navnField.addActionListener(l);
-		JTextField passField = new JTextField();
+		JPasswordField passField = new JPasswordField();
 		//passField.addActionListener(l);
 		
 		navnLabel.setLocation(12, 24);
@@ -43,7 +46,10 @@ public class Login {
 		navnField.addKeyListener(new KeyListener(){
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
-					if(navnField.getText().equalsIgnoreCase("Anders"))Main.onLogin(navnField.getText());
+					if(navnField.getText().equalsIgnoreCase("Anders")){
+						Main.onLogin(navnField.getText());
+						ramme.dispose();
+					}
 				}
 			}
 			public void keyReleased(KeyEvent arg0) {
@@ -63,7 +69,7 @@ public class Login {
 		passField.setVisible(true);
 		panel.add(passField);
 		
-		loginButt.setLocation(12 + navnLabel.getWidth() + 8, 42 + navnLabel.getHeight()+8);
+		loginButt.setLocation(12 + navnLabel.getWidth() + 8, 42 + navnLabel.getHeight()+16);
 		loginButt.setSize(navnField.getSize());
 		loginButt.setVisible(true);
 		loginButt.addActionListener(new ActionListener() {
@@ -78,7 +84,7 @@ public class Login {
 		panel.add(loginButt);
 		
 		
-		ramme.setSize(navnField.getWidth() + navnField.getX() + 8 + 25, passLabel.getY() + passLabel.getHeight() + 24 + 35);
+		ramme.setSize(navnField.getWidth() + navnField.getX() + 8 + 25, passLabel.getY() + passLabel.getHeight() + 24 + 39);
 		ramme.setLocation((int)(dim.getWidth() - ramme.getWidth())/ 2, (int) ((dim.getHeight() - ramme.getHeight())/2));
 		ramme.setResizable(false);
 		ramme.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

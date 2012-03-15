@@ -16,6 +16,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -23,8 +25,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
@@ -35,6 +39,7 @@ import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Notification;
+import no.ntnu.g44.models.Person;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.controllers.NotificationController;
 
@@ -42,15 +47,24 @@ public class MainFrame extends JPanel{
 	ListeningClass listener = new ListeningClass();
 	Insets insets;
 	JFrame frame;
+	Timer timer = new Timer();
+	
+	
+	JPopupMenu popup = new JPopupMenu();
+	JMenuItem item3 = new JMenuItem("Delete Event");
+	JMenuItem item2 = new JMenuItem("Edit Event");
+	JMenuItem item1 = new JMenuItem("New Event");
+	JMenuItem item4 = new JMenuItem("Logout");
+	
 	JButton newEvent = new JButton("New Event");
 	JButton editEvent = new JButton("Edit Event");
 	JButton deleteEvent = new JButton("Delete Event");
 	JButton arrowButton = new JButton("^ ^ ^");
 	JButton removeButton = new JButton("X");
 	JTextField searchField = new JTextField("Search...");
-	DefaultListModel personnelModel = new DefaultListModel();
-	ArrayList<String> personnel = new ArrayList<String>();
-	DefaultListModel calendarModel = new DefaultListModel();
+	DefaultListModel<Person> personnelModel = new DefaultListModel<Person>();
+	ArrayList<Person> personnel = new ArrayList<Person>();
+	DefaultListModel<Person> calendarModel = new DefaultListModel<Person>();
 	JList personnelList = new JList(personnelModel);
 	JList calendarPersons = new JList(calendarModel);
 	JScrollPane personnelScroll = new JScrollPane(personnelList);
@@ -60,7 +74,9 @@ public class MainFrame extends JPanel{
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
 	CalendarPanel calendar = new CalendarPanel();
-	JLabel weeknumber = new JLabel("UKE 12");
+	final int UKENR = 13;
+	int currUkenr = 13;
+	JLabel weeknumber = new JLabel("UKE 13");
 	ListRenderer renderer = new ListRenderer();
 	NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
 	
@@ -69,15 +85,26 @@ public class MainFrame extends JPanel{
 	ArrayList unseenNotifications = notificationController.getUnseenNotifications();
 
 	public MainFrame(){
+		timer.scheduleAtFixedRate(new TimerTask() {
+	        public void run() {
+	        	calendar.repaint();
+	        }
+	    }, 0, 1000);
 //		calendarPersons.setCellRenderer(renderer);
 //		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
 //		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
 
 		fillModel();
-		fillModel();
-		fillModel();
-		fillModel();
-
+		
+		item1.addActionListener(listener);
+		item2.addActionListener(listener);
+		item3.addActionListener(listener);
+		item4.addActionListener(listener);
+		popup.add(item1);
+		popup.add(item2);
+		popup.add(item3);
+		popup.add(item4);
+		
 		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
 		notifBox.setRenderer(notifRender);
@@ -116,10 +143,12 @@ public class MainFrame extends JPanel{
 		personnelScroll.setVisible(true);
 		calendarScroll.setVisible(true);
 		backArrow.setVisible(true);
-
+		backArrow.addActionListener(listener);
 		nextArrow.setVisible(true);
+		nextArrow.addActionListener(listener);
 		notifBox.setVisible(true);
 		weeknumber.setVisible(true);
+		todayButton.addActionListener(listener);
 
 		add(personnelScroll);
 		add(calendarScroll);
@@ -207,7 +236,7 @@ public class MainFrame extends JPanel{
 		notifBox.setLocation(calendar.getX(), newEvent.getY());
 		notifBox.setBackground(Color.getHSBColor((float)0.4, (float)0.2, (float) 0.95));
 
-
+		weeknumber.setText("Uke " + currUkenr);
 		weeknumber.setSize(newEvent.getWidth(), backArrow.getHeight());
 		weeknumber.setLocation(calendar.getX() + calendar.getWidth() - newEvent.getWidth(), 16);
 
@@ -236,17 +265,22 @@ public class MainFrame extends JPanel{
 
 
 	public void fillModel(){
-		personnel.add("Kari");
-		personnel.add("Per");
-		personnel.add("Andreas");
-		personnel.add("Per-Olav");
-		personnel.add("Anders");
-		personnel.add("Karl");
-		personnel.add("Fridtjof");
-		personnel.add("Bjarne");
-		personnel.add("john");
-		personnel.add("Beate");
-		personnel.add("Karl-Ove");
+		/*
+		personnel.add(new Person("Kari", "Kari44"));
+		personnel.add(new Person("Per", "Per92"));
+		personnel.add(new Person("Andreas", "Andreas77"));
+		personnel.add(new Person("Per-Olav", "Perol"));
+		personnel.add(new Person("Anders", "anders007"));
+		personnel.add(new Person("Karl", "Karl"));
+		personnel.add(new Person("Fridtjof", "Fridtj"));
+		personnel.add(new Person("Bjarne", "Bjarn69"));
+		personnel.add(new Person("John", "John22"));
+		personnel.add(new Person("Beate", "Bea22"));
+		personnel.add(new Person("Karl-Ove", "Karo"));
+		*/
+		for(int i = 0; i < Main.currentProject.getPersonCount(); i++){
+			personnel.add(Main.currentProject.getPerson(i));
+		}
 		personnelModel.removeAllElements();
 		for(int i = 0; i < personnel.size(); i++){
 			personnelModel.addElement(personnel.get(i));
@@ -254,11 +288,31 @@ public class MainFrame extends JPanel{
 
 	}
 	public void addPersons(){
-		Object o[] = personnelList.getSelectedValues();
+		Object[] o = personnelList.getSelectedValues();
 		for(int i = 0; i < o.length; i++){
 			personnelModel.removeElement(o[i]);
-			calendarModel.addElement(o[i]);
+			calendarModel.addElement((Person) o[i]);
 		}
+	}
+	public void newEvent(){
+		
+	}
+	public void deleteEvent(){
+		if(calendar.getSelectedEvent() != null){
+			if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
+				Main.currentProject.removeEvent(calendar.getSelectedEvent());
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
+			}
+		}
+	}
+	public void editEvent(){
+		
+	}
+	public void logout(){
+		Login.login();
+		frame.dispose();
 	}
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
@@ -299,15 +353,38 @@ public class MainFrame extends JPanel{
 					notifBox.setSelectedIndex(0);
 				}
 			}
+			if(e.getSource() == item1){
+				newEvent();
+			}
+			if(e.getSource() == item2){
+				editEvent();
+			}
+			if(e.getSource() == item3){
+				deleteEvent();
+			}
+			if(e.getSource() == item4){
+				logout();
+			}
+			if(e.getSource() == nextArrow){
+				currUkenr +=1;
+				if(currUkenr == 53)currUkenr = 1;
+			}
+			if(e.getSource() == backArrow){
+				currUkenr -=1;
+				if(currUkenr == 0)currUkenr = 52;
+			}
+			if(e.getSource() == todayButton){
+				currUkenr = UKENR;
+			}
+			resizing();
+			if(e.getSource() == editEvent){
+				editEvent();
+			}
+			if(e.getSource() == newEvent){
+				newEvent();
+			}
 			if(e.getSource() == deleteEvent){
-				if(calendar.getSelectedEvent() != null){
-					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
-						Main.currentProject.removeEvent(calendar.getSelectedEvent());
-					}
-					else{
-						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
-					}
-				}
+				deleteEvent();
 			}
 			if(e.getSource() == editEvent){
 				if(calendar.getSelectedEvent() != null){
@@ -380,7 +457,7 @@ public class MainFrame extends JPanel{
 				String person;
 				personnelModel.removeAllElements();
 				for(int i = 0; i < personnel.size(); i++){
-					person = personnel.get(i).toLowerCase();
+					person = personnel.get(i).getName().toLowerCase();
 					if(person.startsWith(search) || person.equals(search)){
 						personnelModel.addElement(personnel.get(i));
 						continue;
@@ -427,19 +504,29 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			if(e.getSource() == calendar){
+				if(e.getButton() == MouseEvent.BUTTON3){
+					if(e.isPopupTrigger()){
+						popup.show(calendar, e.getX(), e.getY());
+					}
+				}
+			}
 		}
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if(e.getSource() == calendar){
 				if(e.getButton() == MouseEvent.BUTTON3){
+					if(e.isPopupTrigger()){
+						popup.show(calendar, e.getX(), e.getY());
+					}
+					/*
 					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
 						Main.currentProject.removeEvent(calendar.getSelectedEvent());
 					}
 					else{
 						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
 					}
+					*/
 				}
 				resizing();
 			}

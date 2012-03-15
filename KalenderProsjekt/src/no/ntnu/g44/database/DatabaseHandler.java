@@ -68,11 +68,11 @@ public class DatabaseHandler {
 	 */
 	public ArrayList<Event> getEventsFromDatabase(){
 		ArrayList<Event> events = new ArrayList<Event>();
-		ArrayList<Person> persons = new ArrayList<Person>();
+		ArrayList<String> persons = new ArrayList<String>();
 		int EVENT_ID;
-		
+
 		try{
-			
+
 			//get all the events with all their attributes
 			ResultSet rsE = stmt.executeQuery("SELECT * FROM Event");
 
@@ -80,13 +80,13 @@ public class DatabaseHandler {
 			if(rsE.first() == false){
 				return null;
 			}
-			
+
 			//ITERATES THE EVENT RESULTSET
 			do{
-				
+
 				//gets the event_id from the currently iterating event
 				EVENT_ID = rsE.getInt(1);
-				
+
 				//get all the persons associated each event
 				ResultSet rsP = stmt.executeQuery("SELECT name, username FROM Account WHERE event.event_id='" + EVENT_ID + "'");
 
@@ -97,27 +97,28 @@ public class DatabaseHandler {
 
 				//ITERATES THE PERSON RESULTSET
 				do{
-					
+
 					//Create persons and add them to array
 					Person person = new Person(rsP.getString(1), rsP.getString(2));
-					persons.add(person);
-					
+					persons.add(person.getUsername());
+
 				}while(rsP.next());
-				
+
 				rsP = null;	//clear the ResultSet for next iterate
-				
-				Person owner = null;
-				
+
+				String owner = null;
+
 				//Finds the owner of the Event
 				for(int i = 0; i<persons.size(); i++){
-					if(((Person)persons.get(i)).getUsername().equals(rsE.getString(2))){
-						
+					if(persons.get(i).equals(rsE.getString(2))){
+
 						//If owner shall not be in the persons list, change to owner = persons.remove(i);
 						owner = persons.get(i);
 					}
-							
+
 				}
 				
+				/////////////////////			
 				/*	RESULTSET INDEX:
 				 * 1 : event_id
 				 * 2 : owner_username
@@ -127,45 +128,81 @@ public class DatabaseHandler {
 				 * 6 : location
 				 * 7 : room_name
 				 */
+				/////////////////////
+
 				//convert from java.sql.Timestamp to java.util.Date
 				Date dateStart = rsE.getTimestamp(3);		//date start
 				Date dateEnd = rsE.getTimestamp(4);			//date end
-				
+
 				//create new event and add all the persons involved
-				Event event = new Event(rsE.getString(5),	//eventTitle
+				Event event = new Event(EVENT_ID,			//event_id
+						rsE.getString(5),					//eventTitle
 						owner,								//owner_username
 						persons,							//persons
 						dateStart, dateEnd,					//date start, end
 						rsE.getString(6),					//location 
 						new Room(rsE.getString(7)));		//room
-				
+
 				//add this event to array
 				events.add(event);
-				
+
 			}while(rsE.next());
-		
+
 			rsE = null; //clear the ResultSet
+
+		}catch(Exception e){
+
+			e.printStackTrace();
+		}
+
+		return events;
+	}
+
+	public void updateEvents(ArrayList<Event> events){
+
+		for(Event e : events){
+			try {
+
+				stmt.executeUpdate("UPDATE event SET" +
+						"event_id = '" + e.getEventID() + "', " +
+						"owner_username = '" + e.getEventOwner().getUsername() + "', " +
+						"time_start = '" + e.getEventStartTime() + "', " +
+						"time_end = '" + e.getEventEndTime() + "', " +
+						"title = '" + e.getEventTitle() + "', " +
+						"location = '" + e.getLocation() + "' ," +
+						"room_name = '" + e.getRoom().getRoomName() + "'"
+				);
+
+			} catch (SQLException e1) {
+
+				e1.printStackTrace();
+
+			}
+		}
+	}
+	
+	public ArrayList<Person> getPersons(){
+		ArrayList<Person> persons = new ArrayList<Person>();
+		
+		try{
+			
+			ResultSet rs = stmt.executeQuery("SELECT username, name FROM account");
+			
+			if(rs.first() == false){
+				return null;
+			}
+			
+			do{
+				
+				persons.add(new Person(rs.getString(1), rs.getString(2)));
+				
+			}while(rs.next());
+			
 			
 		}catch(Exception e){
 			
-			e.printStackTrace();
 		}
 		
-		return events;
-	}
-	
-	public void updateEvents(ArrayList<Event> events){
-		
-		for(Event e : events){
-			try {
-				
-				stmt.executeUpdate("INSERT INTO EVENT balbalbala WHERE balbala");
-				
-			} catch (SQLException e1) {
-				
-				e1.printStackTrace();
-				
-			}
-		}
+		return persons;
 	}
 }

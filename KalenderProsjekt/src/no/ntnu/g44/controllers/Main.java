@@ -16,6 +16,7 @@ public class Main {
 	public static void main(String[] args) {		
 		//TODO: Create new login here
 		//MainFrame should be created in Project constructor
+		currentProject = new Project();
 		new MainFrame();
 	}
 	

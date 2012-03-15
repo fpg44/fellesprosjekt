@@ -116,5 +116,16 @@ public class XmlSerializer {
 		return new Element("");
 	}
 
+	protected Document parseEvents(ArrayList<Event> events){
+		
+		Element root = new Element("project");
+		
+		for(Event event : events){
+			Element element = eventToXml(event);
+			root.appendChild(element);
+		}
+		
+		return new Document(root);
+	}
 }
 

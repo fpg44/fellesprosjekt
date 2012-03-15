@@ -233,7 +233,6 @@ public class XmlSerializer {
 			Elements children = element.getChildElements("participant");
 
 		}
-<<<<<<< HEAD
 		
 		return new Event(id, title, getPersonByUsername(owner_username), participants, eventStartDate, eventEndDate, location, room);
 	}
@@ -241,10 +240,7 @@ public class XmlSerializer {
 	public Person getPersonByUsername(String username){
 		
 		return null;
-=======
 
-		return new Event(-1, null, null, null, null, null, null, null);
->>>>>>> 8fee8e3368929a5fb0987105bd07181764c00082
 	}
 }
 

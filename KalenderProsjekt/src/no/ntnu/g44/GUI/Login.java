@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import no.ntnu.g44.controllers.Main;
@@ -31,7 +32,7 @@ public class Login {
 		JLabel passLabel = new JLabel("Password:");
 		final JTextField navnField = new JTextField();
 		//navnField.addActionListener(l);
-		JTextField passField = new JTextField();
+		JPasswordField passField = new JPasswordField();
 		//passField.addActionListener(l);
 		
 		navnLabel.setLocation(12, 24);

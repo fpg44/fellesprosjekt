@@ -301,6 +301,10 @@ public class MainFrame extends JPanel{
 	public void editEvent(){
 		
 	}
+	public void logout(){
+		Login.login();
+		frame.dispose();
+	}
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
 		public void mouseDragged(MouseEvent e) {
@@ -350,7 +354,7 @@ public class MainFrame extends JPanel{
 				deleteEvent();
 			}
 			if(e.getSource() == item4){
-				Login.login();
+				logout();
 			}
 			if(e.getSource() == nextArrow){
 				currUkenr +=1;

@@ -106,16 +106,38 @@ public class DatabaseHandler {
 				
 				rsP = null;	//clear the ResultSet for next iterate
 				
+				Person owner = null;
+				
+				//Finds the owner of the Event
+				for(int i = 0; i<persons.size(); i++){
+					if(((Person)persons.get(i)).getUsername().equals(rsE.getString(2))){
+						
+						//If owner shall not be in the persons list, change to owner = persons.remove(i);
+						owner = persons.get(i);
+					}
+							
+				}
+				
+				/*	RESULTSET INDEX:
+				 * 1 : event_id
+				 * 2 : owner_username
+				 * 3 : time_start
+				 * 4 : time_end
+				 * 5 : title
+				 * 6 : location
+				 * 7 : room_name
+				 */
 				//convert from java.sql.Timestamp to java.util.Date
-				Date dateStart = rsE.getTimestamp(3);
-				Date dateEnd = rsE.getTimestamp(4);
+				Date dateStart = rsE.getTimestamp(3);		//date start
+				Date dateEnd = rsE.getTimestamp(4);			//date end
 				
 				//create new event and add all the persons involved
-				Event event = new Event(rsE.getString(2), 
-						persons,
-						dateStart, dateEnd,
-						rsE.getString(5), 
-						new Room(rsE.getString(6)));
+				Event event = new Event(rsE.getString(5),	//eventTitle
+						owner,								//owner_username
+						persons,							//persons
+						dateStart, dateEnd,					//date start, end
+						rsE.getString(6),					//location 
+						new Room(rsE.getString(7)));		//room
 				
 				//add this event to array
 				events.add(event);

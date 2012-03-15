@@ -9,9 +9,11 @@ package no.ntnu.g44.serverAndSession;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
+import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Project;
 import nu.xom.Builder;
@@ -27,6 +29,10 @@ import nu.xom.ParsingException;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class XmlSerializer {
+	
+	public XmlSerializer(){
+		
+	}
 
 	public Document toXml(Project aProject) {
 		Element root = new Element("project");
@@ -103,6 +109,11 @@ public class XmlSerializer {
 	private Date parseDate(String date) throws ParseException {
 		DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, java.util.Locale.US);
 		return format.parse(date);
+	}
+	
+	protected Element eventToXml(Event events){
+		
+		return new Element("");
 	}
 
 }

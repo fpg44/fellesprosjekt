@@ -38,6 +38,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 	int topArea = margin+textPos;
 	int pixlsPerHour = (int) ((getHeight() -topArea)/hoursShown);	
 	private Event selectedEvent = null;
+	Calendar nowTime;
 
 	public CalendarPanel() {
 		addMouseWheelListener(this);
@@ -149,14 +150,17 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		return selectedEvent;
 	}
 	
-	
+	public int getWeekNumber(){
+		if(nowTime == null)return 0;
+		return nowTime.get(Calendar.WEEK_OF_YEAR);
+	}
 	private void paintNowLine(Graphics2D g2d){
 //		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
 //		TimeZone timezone = registry.getTimeZone("America/Mexico_City");
 //		VTimeZone tz = timezone.getVTimeZone();
 		
 //		TimeZone tz=TimeZone.getTimeZone("G");
-		Calendar nowTime = Calendar.getInstance();
+		nowTime = Calendar.getInstance();
 //		nowTime.setTimeZone(tz);
 		nowTime.setTime(new Date());
 		

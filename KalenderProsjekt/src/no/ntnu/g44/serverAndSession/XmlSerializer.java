@@ -236,7 +236,7 @@ public class XmlSerializer {
 			}
 		}
 		
-		return new Event(id, title, getPersonByUsername(owner_username), participants, eventStartDate, eventEndDate, location, room);
+		return new Event(id, title, owner_username, participants, eventStartDate, eventEndDate, location, room);
 	}
 	
 	public String getPersonByUsername(String username){

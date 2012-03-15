@@ -164,7 +164,6 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 //		nowTime.setTimeZone(tz);
 		nowTime.setTime(new Date());
 		
-		System.out.println(nowTime.getFirstDayOfWeek());
 		int Y = (int) ((((nowTime.get(Calendar.HOUR_OF_DAY)-this.startHour)+
 				nowTime.get(Calendar.MINUTE)/60f) * pixlsPerHour) + topArea);
 		

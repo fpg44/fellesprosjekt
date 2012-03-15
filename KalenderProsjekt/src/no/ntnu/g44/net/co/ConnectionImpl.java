@@ -40,11 +40,11 @@ public class ConnectionImpl extends AbstractConnection {
 	private static int nextPort = 6600;
 	/** Keeps track of the used ports for each server port. */
 	private static Map<Integer, Boolean> usedPorts = Collections.synchronizedMap(new HashMap<Integer, Boolean>());
-	
+
 
 	/**Next sequence number we expect from the other side*/
 	private int nextExpectedSeqNr;
-	
+
 	/**
 	 * Initialise initial sequence number and setup state machine.
 	 * 
@@ -91,13 +91,13 @@ public class ConnectionImpl extends AbstractConnection {
 		KtnDatagram syn = constructInternalPacket(Flag.SYN);
 		KtnDatagram syn_ack = null;
 		int tries = 0;
-		
+
 		//Send syn and wait for the synack
 		do{
 			if(tries++ >= CONNECTION_TRIES){
 				throw new SocketTimeoutException("Could not get a syn_ack after "+CONNECTION_TRIES+" tries.");
 			}
-			
+
 			Timer timer = new Timer();
 			timer.scheduleAtFixedRate(new SendTimer(new ClSocket(), syn), 0, RETRANSMIT);
 
@@ -105,8 +105,8 @@ public class ConnectionImpl extends AbstractConnection {
 			syn_ack = receiveAck();
 			timer.cancel();
 			System.out.println("Recieved syn-ack " + syn_ack);
-			
-			
+
+
 		}while(syn_ack == null /*|| !validAck(syn, syn_ack)*/);
 
 		//We have now recieved a valid syn-ack
@@ -114,7 +114,7 @@ public class ConnectionImpl extends AbstractConnection {
 		nextExpectedSeqNr = syn_ack.getSeq_nr()+1;
 		this.remotePort = syn_ack.getSrc_port();
 		sendAck(syn_ack, false);
-		
+
 		state = State.ESTABLISHED;
 	}
 
@@ -130,22 +130,22 @@ public class ConnectionImpl extends AbstractConnection {
 	 * @see Connection#accept()
 	 */
 	public Connection accept() throws IOException, SocketTimeoutException {
-		
+
 		//Wait forever for a syn:
 		KtnDatagram syn = null;
 		do{
 			syn = receivePacket(true);
 		}while(syn== null || syn.getFlag() != Flag.SYN);
-		
-		
+
+
 		//Wohooo, syn recieved!
-		
-		
+
+
 		ConnectionImpl con = new ConnectionImpl();
 		con.synRcvd(syn);
-		
-		
-		
+
+
+
 		//Listen for syn packet
 		//respond with synack with retransmit
 		//init vars
@@ -159,7 +159,7 @@ public class ConnectionImpl extends AbstractConnection {
 		nextExpectedSeqNr = syn.getSeq_nr()+1;
 		remoteAddress = syn.getSrc_addr();
 		remotePort = syn.getSrc_port();
-		
+
 		KtnDatagram ack = null;
 		do{
 			sendAck(syn, true);
@@ -183,13 +183,13 @@ public class ConnectionImpl extends AbstractConnection {
 	 * @see no.ntnu.g44.net.co.Connection#send(String)
 	 */
 	public void send(String msg) throws ConnectException, IOException {
-		
+
 		KtnDatagram datagram = constructDataPacket(msg);
 		KtnDatagram ack = sendDataPacketWithRetransmit(datagram);
-		
+
 		//TODO CHECK SHIT!
 		nextExpectedSeqNr++; //for the ack.
-		
+
 		//    	check connection state
 		//make packet
 		//	send with retransmit
@@ -221,40 +221,56 @@ public class ConnectionImpl extends AbstractConnection {
 	 * @see Connection#close()
 	 */
 	public void close() throws IOException {
-		
-		if(true) throw new NotImplementedException();
-		
-		//TODO: Not at all done.!!!!
-		
-		KtnDatagram syn = constructInternalPacket(Flag.SYN);
-		KtnDatagram ack = null;
-		
+
 		int timeout = 1800000; //2 min timeout
-		
-		
-		
-		//Send syn and wait for the synack
+
+		long startTime = System.currentTimeMillis();
+
+		KtnDatagram fin = constructInternalPacket(Flag.FIN);
+		KtnDatagram ack = null;
+
+		//Send fin and wait for the ack
 		do{
 			Timer timer = new Timer();
-			timer.scheduleAtFixedRate(new SendTimer(new ClSocket(), syn), 0, RETRANSMIT);
-			state = State.FIN_WAIT_1;
+			timer.scheduleAtFixedRate(new SendTimer(new ClSocket(), fin), 0, RETRANSMIT);
+			state = state == State.CLOSE_WAIT ? State.LAST_ACK :State.FIN_WAIT_1;
 			//recieveAck will block for a while.
 			ack = receiveAck();
 			timer.cancel();
-			System.out.println("Recieved syn-ack " + ack);
-			
-			
-		}while(ack == null /*|| !validAck(syn, syn_ack)*/);
-		
+			System.out.println("Might have recieved ack " + ack);
+		}while(ack == null && System.currentTimeMillis() - startTime < timeout/*|| !validAck(syn, syn_ack)*/);
+
 		//recieved ack on the fin.
 		//Wait for the fin
+		if(state == State.LAST_ACK){
+			release();
+			return; //Connection closed!!
+		}
 		state = State.FIN_WAIT_2;
-		
-		
+		fin = null;
+		do{
+			fin = receivePacket(true);
+		}while((fin == null || fin.getFlag() != Flag.FIN) && System.currentTimeMillis() - startTime < timeout);
 
+		do{
+			if(fin != null){
+				sendAck(fin, false);
+			}
+			fin = receivePacket(true);
+		}while(System.currentTimeMillis() - startTime < timeout);
 		
 		
-		
+		//Connection closed!!
+		state = State.CLOSED;
+		release();
+		return;
+	}
+
+	private void release() {
+		remoteAddress = "";
+		remotePort = 0;
+		lastDataPacketSent = null;
+		lastValidPacketReceived = null;
 	}
 
 	/**
@@ -271,7 +287,7 @@ public class ConnectionImpl extends AbstractConnection {
 				&& (packet.getSrc_port() == remotePort);
 		//Should we check sequence number here?! NO! As we use this in connect before we know what sequencenr to check
 	}
-	
+
 	private boolean isValidAndExpectedSeq(KtnDatagram packet){
 		return packet.getSeq_nr() == nextExpectedSeqNr && isValid(packet);
 	}

@@ -241,6 +241,12 @@ public class MainFrame extends JPanel{
 		personnel.add("Andreas");
 		personnel.add("Per-Olav");
 		personnel.add("Anders");
+		personnel.add("Karl");
+		personnel.add("Fridtjof");
+		personnel.add("Bjarne");
+		personnel.add("john");
+		personnel.add("Beate");
+		personnel.add("Karl-Ove");
 		personnelModel.removeAllElements();
 		for(int i = 0; i < personnel.size(); i++){
 			personnelModel.addElement(personnel.get(i));

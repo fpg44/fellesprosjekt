@@ -1,19 +1,20 @@
 package no.ntnu.g44.models;
 
+import java.util.HashMap;
+
 public enum NotificationType {
-	EVENT_INVITATION,
-	EVENT_TIME_CHANGED,
-	EVENT_CANCELLED,
-	PARTICIPANT_DECLINED_INVITATION;
+	INVITATION("New event invitation"),
+	CHANGED("Event changed"),
+	CANCELLED("Event cancelled"),
+	DECLINER("Participant declined");
 	
-	public static NotificationType convertFromString(String type){
-		
-		switch(type){
-		case "INVITATION" 	: return EVENT_INVITATION;
-		case "CHANGED" 		: return EVENT_TIME_CHANGED;
-		case "CANCELED" 	: return EVENT_CANCELLED;
-		case "DECLINER" 	: return PARTICIPANT_DECLINED_INVITATION;
-		default				: return null;
-		}
+	private String msg;
+	
+	private NotificationType(String msg){
+		this.msg = msg;
+	}
+	
+	public String getMsg(){
+		return msg;
 	}
 }

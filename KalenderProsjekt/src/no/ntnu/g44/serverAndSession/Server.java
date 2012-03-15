@@ -84,6 +84,6 @@ public class Server{
 	
 	//returns a document from an arraylist with events from the database
 	protected Document getAllEvents(){ 
-		return xmlSerializer.parseEvents(dbHandler.getEventsFromDatabase());
+		return xmlSerializer.toXml(dbHandler.getEventsFromDatabase());
 	}
 }

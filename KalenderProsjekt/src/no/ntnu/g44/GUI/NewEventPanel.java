@@ -8,7 +8,9 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -52,6 +54,11 @@ public class NewEventPanel extends JPanel {
 	private JLabel invitedPersonsLabel;
 	private JList<Person> invitedList;
 	private JScrollPane invitedListScroller;
+	private JLabel addPersonToParticipantsLabel;
+	private ImageIcon addPersonToParticipantsIcon;
+	private JLabel removePersonFromParticipantsLabel;
+	private ImageIcon removePersonFromParticipantsIcon;
+	private JPanel participantsButtonPanel;
 	// this model should contain all Person objects
 	private DefaultListModel<Person> personsModel;
 	// this ArrayList should be filled with the names of all persons
@@ -107,6 +114,18 @@ public class NewEventPanel extends JPanel {
 		invitedPersonsLabel = new JLabel("Invited persons");
 		invitedList = new JList<Person>(participantsModel);
 		invitedListScroller = new JScrollPane(invitedList);
+		addPersonToParticipantsIcon = new ImageIcon(getClass().getResource(
+				"images/rightArrow.png"));
+		addPersonToParticipantsLabel = new JLabel(addPersonToParticipantsIcon);
+		removePersonFromParticipantsIcon = new ImageIcon(getClass().getResource(
+				"images/removeIcon.png"));
+		removePersonFromParticipantsLabel = new JLabel(
+				removePersonFromParticipantsIcon);
+		participantsButtonPanel = new JPanel();
+		participantsButtonPanel.setLayout(new BoxLayout(participantsButtonPanel,
+				BoxLayout.PAGE_AXIS));
+		participantsButtonPanel.add(addPersonToParticipantsLabel);
+		participantsButtonPanel.add(removePersonFromParticipantsLabel);
 		
 		persons = new ArrayList<String>();
 		populatePersonsModel();
@@ -116,6 +135,7 @@ public class NewEventPanel extends JPanel {
 		saveButton = new JButton("Save Event");
 		cancelButton = new JButton("Cancel");
 		buttonListener = new ButtonListener();
+		saveButton.addActionListener(buttonListener);
 		cancelButton.addActionListener(buttonListener);
 		
 		eventInformationPanel.setBorder(BorderFactory.createTitledBorder(
@@ -161,8 +181,11 @@ public class NewEventPanel extends JPanel {
 		c.fill = GridBagConstraints.BOTH;
 		participantsPanel.add(searchListScroller, c);
 		c.fill = GridBagConstraints.NONE;		// NONE is the default value
-		c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 1;
+		participantsPanel.add(participantsButtonPanel, c);
+		c.anchor = GridBagConstraints.EAST;
+		c.gridx = 2;
 		c.gridy = 0;
 		participantsPanel.add(invitedPersonsLabel, c);
 		c.gridy = 1;
@@ -212,7 +235,7 @@ public class NewEventPanel extends JPanel {
 			}
 	}
 	
-	private void cancel() {
+	private void closeWindow() {
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 	}
 	
@@ -221,7 +244,12 @@ public class NewEventPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == cancelButton)
-				cancel();
+				closeWindow();
+			else if (e.getSource() == saveButton) {
+				// call some stuff to save the information in the DB
+				
+				closeWindow();
+			}
 		}
 	}
 }

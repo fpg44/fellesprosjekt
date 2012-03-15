@@ -23,6 +23,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -300,8 +301,12 @@ public class MainFrame extends JPanel{
 			}
 			if(e.getSource() == deleteEvent){
 				if(calendar.getSelectedEvent() != null){
-					System.out.println("delete");
-					Main.currentProject.removeEvent(calendar.getSelectedEvent());
+					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
+						Main.currentProject.removeEvent(calendar.getSelectedEvent());
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
+					}
 				}
 			}
 			if(e.getSource() == editEvent){
@@ -429,7 +434,12 @@ public class MainFrame extends JPanel{
 		public void mouseReleased(MouseEvent e) {
 			if(e.getSource() == calendar){
 				if(e.getButton() == MouseEvent.BUTTON3){
-					Main.currentProject.removeEvent(calendar.getSelectedEvent());
+					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
+						Main.currentProject.removeEvent(calendar.getSelectedEvent());
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
+					}
 				}
 				resizing();
 			}

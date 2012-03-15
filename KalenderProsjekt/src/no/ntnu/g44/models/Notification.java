@@ -12,10 +12,12 @@ public class Notification {
 	 * @param message - the message to be displayed in a view <br><br>
 	 * @param type - the type of notification, e.g. NotificationType.EVENT_INVITATION
 	 */
+	/*
 	public Notification(NotificationType type) {
 		this.type = type;
 		this.message = setMessage(type);
 	}
+	*/
 	/**
 	 * The notification constructor with all fields
 	 * @param notificationID
@@ -24,11 +26,11 @@ public class Notification {
 	 * @param Message
 	 * @param type
 	 */
-	public Notification(int notificationID, int eventID,  String Message, NotificationType type){
+	public Notification(int notificationID, int eventID, NotificationType type){
 		this.notificationID = notificationID;
 		this.eventID = eventID;
-		this.message = message;
 		this.type = type;
+		this.message = setMessage(type);
 	}
 
 	/**
@@ -50,9 +52,9 @@ public class Notification {
 	 * @return Message that is to be displayed
 	 */
 	public String setMessage(NotificationType type) {
-		if(type == NotificationType.EVENT_CANCELLED) return "Event cancelled";
-		else if (type == NotificationType.EVENT_INVITATION) return "New event invitation";
-		else if (type == NotificationType.EVENT_TIME_CHANGED) return "Event time changed";
+		if(type == NotificationType.CANCELLED) return "Event cancelled";
+		else if (type == NotificationType.INVITATION) return "New event invitation";
+		else if (type == NotificationType.CHANGED) return "Event time changed";
 		else return "Participant declined invitation";
 	}
 	@Override

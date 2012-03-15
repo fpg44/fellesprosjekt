@@ -48,14 +48,14 @@ public class MainFrame extends JPanel{
 	Insets insets;
 	JFrame frame;
 	Timer timer = new Timer();
-	
-	
+
+
 	JPopupMenu popup = new JPopupMenu();
 	JMenuItem item3 = new JMenuItem("Delete Event");
 	JMenuItem item2 = new JMenuItem("Edit Event");
 	JMenuItem item1 = new JMenuItem("New Event");
 	JMenuItem item4 = new JMenuItem("Logout");
-	
+
 	JButton newEvent = new JButton("New Event");
 	JButton editEvent = new JButton("Edit Event");
 	JButton deleteEvent = new JButton("Delete Event");
@@ -74,31 +74,33 @@ public class MainFrame extends JPanel{
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
 	CalendarPanel calendar = new CalendarPanel();
+
+
 	int UKENR = 0;
 	int currUkenr = UKENR;
 	JLabel weeknumber = new JLabel("UKE " + UKENR);
 	ListRenderer renderer = new ListRenderer();
 	NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
-	
+
 	//Used by actionListener to check if the list of notifications is empty
 	NotificationController notificationController = new NotificationController();
 	ArrayList unseenNotifications = notificationController.getUnseenNotifications();
 
 	public MainFrame(){
 		timer.scheduleAtFixedRate(new TimerTask() {
-	        public void run() {
-	        	calendar.repaint();
-	        	UKENR = calendar.getWeekNumber();
-	        	if(currUkenr == 0)currUkenr = UKENR;
-	        	resizing();
-	        }
-	    }, 0, 1000);
-//		calendarPersons.setCellRenderer(renderer);
-//		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
-//		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
+			public void run() {
+				calendar.repaint();
+				UKENR = calendar.getWeekNumber();
+				if(currUkenr == 0)currUkenr = UKENR;
+				resizing();
+			}
+		}, 0, 1000);
+		//		calendarPersons.setCellRenderer(renderer);
+		//		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
+		//		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
 
 		fillModel();
-		
+
 		item1.addActionListener(listener);
 		item2.addActionListener(listener);
 		item3.addActionListener(listener);
@@ -107,11 +109,11 @@ public class MainFrame extends JPanel{
 		popup.add(item2);
 		popup.add(item3);
 		popup.add(item4);
-		
+
 		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
 		notifBox.setRenderer(notifRender);
-		
+
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
 		addMouseMotionListener(listener);
@@ -191,7 +193,7 @@ public class MainFrame extends JPanel{
 				notifBox.addItem((unseenNotifications.get(i)));
 			}
 		}
-		
+
 		else {
 			notifBox.addItem(new String ("There is no new notifications"));
 		}
@@ -248,7 +250,7 @@ public class MainFrame extends JPanel{
 
 		arrowButton.setSize((newEvent.getWidth() / 2)-1, 22);
 		arrowButton.setLocation(newEvent.getX(), calendarScroll.getY() + calendarScroll.getHeight() + 1);
-		
+
 		removeButton.setSize(arrowButton.getSize());
 		removeButton.setLocation(newEvent.getX() + arrowButton.getWidth() + 2, arrowButton.getY());
 
@@ -280,7 +282,7 @@ public class MainFrame extends JPanel{
 		personnel.add(new Person("John", "John22"));
 		personnel.add(new Person("Beate", "Bea22"));
 		personnel.add(new Person("Karl-Ove", "Karo"));
-		*/
+		 */
 		for(int i = 0; i < Main.currentProject.getPersonCount(); i++){
 			personnel.add(Main.currentProject.getPerson(i));
 		}
@@ -298,7 +300,7 @@ public class MainFrame extends JPanel{
 		}
 	}
 	public void newEvent(){
-		
+
 	}
 	public void deleteEvent(){
 		if(calendar.getSelectedEvent() != null){
@@ -311,7 +313,7 @@ public class MainFrame extends JPanel{
 		}
 	}
 	public void editEvent(){
-		
+
 	}
 	public void logout(){
 		Login.login();
@@ -338,19 +340,17 @@ public class MainFrame extends JPanel{
 					}
 					//Her skal vi legge inn kall pŒ forskjellige dialogbokser som kommer
 					//som f¿lge av man trykker pŒ en notifikasjon.
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CANCELLED){
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CANCELLED){
+						//EventCancelled eventCancelled = new EventCancelled(event)
 						System.out.println("This event has been cancelled");
-						//Inne i disse metoden mŒ vi legge til slik at en notifikasjon
-						//blir borte om man besvarer eventet. Om man ikke svarer
-						//skal notifikasjonen fortsatt v¾re i listen
 					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION) {
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.INVITATION) {
 						System.out.println("You have a new event invitation");
 					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_TIME_CHANGED) {
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CHANGED) {
 						System.out.println("This event have been changed");
 					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.PARTICIPANT_DECLINED_INVITATION){
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.DECLINER){
 						System.out.println("A participant has declined your invitation");
 					}
 					notifBox.setSelectedIndex(0);
@@ -403,7 +403,7 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void keyPressed(KeyEvent e) {
-			
+
 			if((e.getSource() == personnelList || e.getSource() == searchField)&& e.getKeyChar() == KeyEvent.VK_ENTER){
 				addPersons();
 				return;
@@ -485,7 +485,7 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			
+
 			if(e.getClickCount() == 2 && e.getSource() == personnelList){
 				if(personnelList.getSelectedValue() != null){
 					addPersons();			
@@ -529,7 +529,7 @@ public class MainFrame extends JPanel{
 					else{
 						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
 					}
-					*/
+					 */
 				}
 				resizing();
 			}

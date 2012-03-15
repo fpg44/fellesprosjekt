@@ -230,8 +230,6 @@ public class MainFrame extends JPanel{
 		searchField.setSize(newEvent.getWidth(), newEvent.getHeight() /2);
 		searchField.setLocation(newEvent.getX(), personnelScroll.getY() + personnelScroll.getHeight());
 
-
-
 	}
 
 

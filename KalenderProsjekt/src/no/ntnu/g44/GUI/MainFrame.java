@@ -23,8 +23,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
@@ -43,6 +45,13 @@ public class MainFrame extends JPanel{
 	ListeningClass listener = new ListeningClass();
 	Insets insets;
 	JFrame frame;
+	
+	JPopupMenu popup = new JPopupMenu();
+	JMenuItem item3 = new JMenuItem("Delete Event");
+	JMenuItem item2 = new JMenuItem("Edit Event");
+	JMenuItem item1 = new JMenuItem("New Event");
+	JMenuItem item4 = new JMenuItem("Logout");
+	
 	JButton newEvent = new JButton("New Event");
 	JButton editEvent = new JButton("Edit Event");
 	JButton deleteEvent = new JButton("Delete Event");
@@ -77,7 +86,16 @@ public class MainFrame extends JPanel{
 //		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
 
 		fillModel();
-
+		
+		item1.addActionListener(listener);
+		item2.addActionListener(listener);
+		item3.addActionListener(listener);
+		item4.addActionListener(listener);
+		popup.add(item1);
+		popup.add(item2);
+		popup.add(item3);
+		popup.add(item4);
+		
 		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
 		notifBox.setRenderer(notifRender);
@@ -267,6 +285,22 @@ public class MainFrame extends JPanel{
 			calendarModel.addElement((Person) o[i]);
 		}
 	}
+	public void newEvent(){
+		
+	}
+	public void deleteEvent(){
+		if(calendar.getSelectedEvent() != null){
+			if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
+				Main.currentProject.removeEvent(calendar.getSelectedEvent());
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
+			}
+		}
+	}
+	public void editEvent(){
+		
+	}
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
 		public void mouseDragged(MouseEvent e) {
@@ -306,6 +340,24 @@ public class MainFrame extends JPanel{
 					notifBox.setSelectedIndex(0);
 				}
 			}
+			if(e.getSource() == item1){
+				newEvent();
+			}
+			if(e.getSource() == item2){
+				editEvent();
+			}
+			if(e.getSource() == item3){
+				deleteEvent();
+			}
+			if(e.getSource() == item4){
+				try {
+					this.finalize();
+				} catch (Throwable e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Login.login();
+			}
 			if(e.getSource() == nextArrow){
 				currUkenr +=1;
 				if(currUkenr == 53)currUkenr = 1;
@@ -318,15 +370,14 @@ public class MainFrame extends JPanel{
 				currUkenr = UKENR;
 			}
 			resizing();
+			if(e.getSource() == editEvent){
+				editEvent();
+			}
+			if(e.getSource() == newEvent){
+				newEvent();
+			}
 			if(e.getSource() == deleteEvent){
-				if(calendar.getSelectedEvent() != null){
-					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
-						Main.currentProject.removeEvent(calendar.getSelectedEvent());
-					}
-					else{
-						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
-					}
-				}
+				deleteEvent();
 			}
 			if(e.getSource() == editEvent){
 				if(calendar.getSelectedEvent() != null){
@@ -446,19 +497,29 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			if(e.getSource() == calendar){
+				if(e.getButton() == MouseEvent.BUTTON3){
+					if(e.isPopupTrigger()){
+						popup.show(calendar, e.getX(), e.getY());
+					}
+				}
+			}
 		}
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if(e.getSource() == calendar){
 				if(e.getButton() == MouseEvent.BUTTON3){
+					if(e.isPopupTrigger()){
+						popup.show(calendar, e.getX(), e.getY());
+					}
+					/*
 					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
 						Main.currentProject.removeEvent(calendar.getSelectedEvent());
 					}
 					else{
 						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
 					}
+					*/
 				}
 				resizing();
 			}

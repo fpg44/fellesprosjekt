@@ -74,6 +74,25 @@ public class Event {
 	}
 	
 	/**
+	 * This constructor is for creating new events (because you don't know
+	 * the eventID at that point). NOTE: The eventID is always -1 when using
+	 * this constructor.
+	 * 
+	 * @param eventTitle
+	 * @param eventOwner
+	 * @param participants
+	 * @param eventStartTime
+	 * @param eventEndTime
+	 * @param location
+	 * @param room
+	 */
+	public Event(String eventTitle, Person eventOwner, ArrayList<Person> participants, 
+			Date eventStartTime, Date eventEndTime, String location, Room room) {
+		this(-1, eventTitle, eventOwner, participants, eventStartTime,
+				eventEndTime, location, room);
+	}
+	
+	/**
 	 * This is used when red from database and thrown after parsed to XML.
 	 * @param eventID
 	 * @param eventTitle

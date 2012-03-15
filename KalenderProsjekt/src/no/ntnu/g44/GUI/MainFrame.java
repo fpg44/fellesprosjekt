@@ -60,7 +60,9 @@ public class MainFrame extends JPanel{
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
 	CalendarPanel calendar = new CalendarPanel();
-	JLabel weeknumber = new JLabel("UKE 12");
+	final int UKENR = 13;
+	int currUkenr = 13;
+	JLabel weeknumber = new JLabel("UKE 13");
 	ListRenderer renderer = new ListRenderer();
 	NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
 	
@@ -116,10 +118,12 @@ public class MainFrame extends JPanel{
 		personnelScroll.setVisible(true);
 		calendarScroll.setVisible(true);
 		backArrow.setVisible(true);
-
+		backArrow.addActionListener(listener);
 		nextArrow.setVisible(true);
+		nextArrow.addActionListener(listener);
 		notifBox.setVisible(true);
 		weeknumber.setVisible(true);
+		todayButton.addActionListener(listener);
 
 		add(personnelScroll);
 		add(calendarScroll);
@@ -207,7 +211,7 @@ public class MainFrame extends JPanel{
 		notifBox.setLocation(calendar.getX(), newEvent.getY());
 		notifBox.setBackground(Color.getHSBColor((float)0.4, (float)0.2, (float) 0.95));
 
-
+		weeknumber.setText("Uke " + currUkenr);
 		weeknumber.setSize(newEvent.getWidth(), backArrow.getHeight());
 		weeknumber.setLocation(calendar.getX() + calendar.getWidth() - newEvent.getWidth(), 16);
 
@@ -299,10 +303,25 @@ public class MainFrame extends JPanel{
 					notifBox.setSelectedIndex(0);
 				}
 			}
+			if(e.getSource() == nextArrow){
+				currUkenr +=1;
+				if(currUkenr == 53)currUkenr = 1;
+			}
+			if(e.getSource() == backArrow){
+				currUkenr -=1;
+				if(currUkenr == 0)currUkenr = 52;
+			}
+			if(e.getSource() == todayButton){
+				currUkenr = UKENR;
+			}
+			resizing();
 			if(e.getSource() == deleteEvent){
 				if(calendar.getSelectedEvent() != null){
 					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
 						Main.currentProject.removeEvent(calendar.getSelectedEvent());
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
 					}
 				}
 			}
@@ -431,7 +450,12 @@ public class MainFrame extends JPanel{
 		public void mouseReleased(MouseEvent e) {
 			if(e.getSource() == calendar){
 				if(e.getButton() == MouseEvent.BUTTON3){
-					Main.currentProject.removeEvent(calendar.getSelectedEvent());
+					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
+						Main.currentProject.removeEvent(calendar.getSelectedEvent());
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
+					}
 				}
 				resizing();
 			}

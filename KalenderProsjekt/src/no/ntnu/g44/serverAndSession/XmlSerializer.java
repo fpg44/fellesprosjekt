@@ -129,6 +129,9 @@ public class XmlSerializer {
 		
 		Element element = new Element("event");
 		
+		Element id = new Element("event-id");
+		id.appendChild(String.valueOf(event.getEventID()));
+		
 		Element title = new Element("title");
 		title.appendChild(event.getEventTitle());
 		

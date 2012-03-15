@@ -46,8 +46,10 @@ public class Login {
 		navnField.addKeyListener(new KeyListener(){
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
-					if(navnField.getText().equalsIgnoreCase("Anders"))Main.onLogin(navnField.getText());
-					ramme.dispose();
+					if(navnField.getText().equalsIgnoreCase("Anders")){
+						Main.onLogin(navnField.getText());
+						ramme.dispose();
+					}
 				}
 			}
 			public void keyReleased(KeyEvent arg0) {

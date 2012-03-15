@@ -9,8 +9,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -67,8 +68,8 @@ public class NewEventPanel extends JPanel {
 	private JPanel participantsButtonPanel;
 	// this model should contain all Person objects
 	private DefaultListModel<Person> personsModel;
-	// this ArrayList should be filled with the names of all persons
-	private ArrayList<String> persons;
+	// this HashMap should be filled with the usernames and names of all persons
+	private HashMap<String, String> persons;
 	// this model should contain the persons to invite
 	private DefaultListModel<Person> participantsModel;
 	
@@ -117,6 +118,7 @@ public class NewEventPanel extends JPanel {
 		participantsModel = new DefaultListModel<Person>();
 		searchField = new JTextField("Search", 20);	// 20 columns
 		searchField.addMouseListener(searchListener);
+		searchField.addKeyListener(searchListener);
 		searchList = new JList<Person>(personsModel);
 		searchListScroller = new JScrollPane(searchList);
 		invitedPersonsLabel = new JLabel("Invited persons");
@@ -137,7 +139,7 @@ public class NewEventPanel extends JPanel {
 		participantsButtonPanel.add(addPersonToParticipantsListLabel);
 		participantsButtonPanel.add(removePersonFromParticipantsListLabel);
 		
-		persons = new ArrayList<String>();
+		persons = new HashMap<String, String>();
 		populatePersonsModel();
 		populatePersonsArray();
 	
@@ -241,7 +243,8 @@ public class NewEventPanel extends JPanel {
 	private void populatePersonsArray() {
 		for (int i = 0; i < personsModel.getSize(); i++)
 			if (personsModel.get(i) != null) {
-				persons.add(personsModel.get(i).getName());
+				Person p = personsModel.get(i);
+				persons.put(p.getUsername(), p.getName());
 			}
 	}
 	
@@ -269,10 +272,93 @@ public class NewEventPanel extends JPanel {
 		public void keyTyped(KeyEvent e) { }
 
 		@Override
-		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
 
 		@Override
-		public void keyReleased(KeyEvent e) { }
+		public void keyPressed(KeyEvent e) {
+			boolean shiftKeyPressed = false;
+			
+			if ((e.getSource() == searchList || e.getSource() == searchField)
+					&& e.getKeyChar() == KeyEvent.VK_ENTER) {
+				addPersons();
+			} else if (e.getSource() == searchField) {
+				if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+					shiftKeyPressed = true;
+					return;
+				}
+				
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					int index = searchList.getLeadSelectionIndex();
+					
+					if (index == personsModel.getSize() - 1) {
+						if (shiftKeyPressed) {
+							searchList.addSelectionInterval(index, 0);
+							return;
+						} else {
+							searchList.setSelectedIndex(0);
+							return;
+						}
+					}
+					
+					if (shiftKeyPressed) {
+						searchList.addSelectionInterval(index, index + 1);
+						return;
+					} else {
+						searchList.setSelectedIndex(index + 1);
+						return;
+					}
+				}
+
+				if (e.getKeyCode() == KeyEvent.VK_UP) {
+					int index = searchList.getSelectedIndex();
+					if (index == 0) {
+						if (shiftKeyPressed) {
+							searchList.addSelectionInterval(index, personsModel.size() - 1);
+							return;
+						}
+						searchList.setSelectedIndex(personsModel.size() - 1);
+						return;
+					}
+					if (shiftKeyPressed) {
+						searchList.addSelectionInterval(index, index - 1);
+						return;
+					}
+					searchList.setSelectedIndex(index - 1);
+					return;
+				}
+
+				String query = searchField.getText();
+				if (Character.isLetter(e.getKeyChar())
+						|| e.getKeyChar() == '-') {
+					query += e.getKeyChar();
+				} else if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE
+						&& query.length() > 0) {
+					query = query.substring(0, query.length() - 1);
+				}
+
+				query = query.toLowerCase();
+				personsModel.removeAllElements();
+				for (Map.Entry<String, String> entry : persons.entrySet()) {
+					String name = entry.getValue();
+					if (name.startsWith(query) || name.equals(query)) {
+						personsModel.addElement(Person.findPersonByUsername(
+								entry.getKey()));
+						continue;
+					}
+				}
+//				for (int i = 0; i < persons.size(); i++) {
+//					person = ((String[]) persons.values().toArray())[i];
+//					if (person.startsWith(query) || person.equals(query)) {
+//						personsModel.addElement(persons.get(i));
+//						continue;
+//					}
+//				}
+				
+				if (personsModel.size() > 0) {
+					searchList.setSelectedIndex(0);
+				}
+			}
+		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {

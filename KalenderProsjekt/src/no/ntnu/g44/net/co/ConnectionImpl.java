@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
+import sun.util.calendar.BaseCalendar.Date;
+
 
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.fp.net.cl.ClException;
@@ -233,7 +235,7 @@ public class ConnectionImpl extends AbstractConnection {
 		do{
 			Timer timer = new Timer();
 			timer.scheduleAtFixedRate(new SendTimer(new ClSocket(), fin), 0, RETRANSMIT);
-			state = state == State.CLOSE_WAIT ? State.LAST_ACK :State.FIN_WAIT_1;
+			state = State.FIN_WAIT_1;
 			//recieveAck will block for a while.
 			ack = receiveAck();
 			timer.cancel();
@@ -242,10 +244,7 @@ public class ConnectionImpl extends AbstractConnection {
 
 		//recieved ack on the fin.
 		//Wait for the fin
-		if(state == State.LAST_ACK){
-			release();
-			return; //Connection closed!!
-		}
+
 		state = State.FIN_WAIT_2;
 		fin = null;
 		do{
@@ -258,13 +257,38 @@ public class ConnectionImpl extends AbstractConnection {
 			}
 			fin = receivePacket(true);
 		}while(System.currentTimeMillis() - startTime < timeout);
-		
-		
+
+
 		//Connection closed!!
 		state = State.CLOSED;
 		release();
 		return;
 	}
+
+	private void closeOnFinRecieved() throws EOFException, IOException{
+		int timeout = 1800000; //2 min timeout
+
+		long startTime = System.currentTimeMillis();
+
+		KtnDatagram fin = constructInternalPacket(Flag.FIN);
+		KtnDatagram ack = null;
+
+		//Send fin and wait for the ack
+		do{
+			Timer timer = new Timer();
+			timer.scheduleAtFixedRate(new SendTimer(new ClSocket(), fin), 0, RETRANSMIT);
+			state = State.LAST_ACK ;
+			//recieveAck will block for a while.
+			ack = receiveAck();
+			timer.cancel();
+			System.out.println("Might have recieved ack " + ack);
+		}while(ack == null && System.currentTimeMillis() - startTime < timeout/*|| !validAck(syn, syn_ack)*/);
+
+		//recieved ack on the fin.
+		release();
+		return; //Connection closed!!
+	}
+
 
 	private void release() {
 		remoteAddress = "";

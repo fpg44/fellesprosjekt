@@ -120,6 +120,7 @@ public class NewEventPanel extends JPanel {
 		searchField.addMouseListener(searchListener);
 		searchField.addKeyListener(searchListener);
 		searchList = new JList<Person>(personsModel);
+		searchList.addMouseListener(searchListener);
 		searchListScroller = new JScrollPane(searchList);
 		invitedPersonsLabel = new JLabel("Invited persons");
 		invitedList = new JList<Person>(participantsModel);
@@ -218,22 +219,25 @@ public class NewEventPanel extends JPanel {
 		c.anchor = GridBagConstraints.EAST;
 		c.gridx = c.gridy = 1;
 		add(buttonPanel, c);
+		
+		frame.setTitle("New Event");
+		frame.getContentPane().add(this);
+		frame.pack();
+		frame.setVisible(true);
 	}
 	
 	// for testing purposes
 	public static void main(String[] args) {
 		Person person = new Person("Foo Bar", "foobar");
 		JFrame frame = new JFrame();
-		NewEventPanel panel = new NewEventPanel(person, frame);
-		frame.getContentPane().add(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
+		new NewEventPanel(person, frame);
 	}
 	
 	private void populatePersonsModel() {
 		String[] names = {	"Anders Andersen", "Bjørn Bjørnson",
-							"Charlie Cleese", "Dolly Delta" };
+							"Charlie Cleese", "Dolly Delta",
+							"Daffy Ding-Dong"};
 		for (String name : names) {
 			String username = name.toLowerCase().replace(" ", "_");
 			personsModel.addElement(new Person(name, username));
@@ -311,20 +315,25 @@ public class NewEventPanel extends JPanel {
 
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
 					int index = searchList.getSelectedIndex();
+
 					if (index == 0) {
 						if (shiftKeyPressed) {
-							searchList.addSelectionInterval(index, personsModel.size() - 1);
+							searchList.addSelectionInterval(index,
+									personsModel.size() - 1);
+							return;
+						} else {
+							searchList.setSelectedIndex(personsModel.size()-1);
 							return;
 						}
-						searchList.setSelectedIndex(personsModel.size() - 1);
-						return;
 					}
+					
 					if (shiftKeyPressed) {
 						searchList.addSelectionInterval(index, index - 1);
 						return;
+					} else {
+						searchList.setSelectedIndex(index - 1);
+						return;
 					}
-					searchList.setSelectedIndex(index - 1);
-					return;
 				}
 
 				String query = searchField.getText();
@@ -339,20 +348,12 @@ public class NewEventPanel extends JPanel {
 				query = query.toLowerCase();
 				personsModel.removeAllElements();
 				for (Map.Entry<String, String> entry : persons.entrySet()) {
-					String name = entry.getValue();
+					String name = entry.getValue().toLowerCase();
 					if (name.startsWith(query) || name.equals(query)) {
 						personsModel.addElement(Person.findPersonByUsername(
 								entry.getKey()));
-						continue;
 					}
 				}
-//				for (int i = 0; i < persons.size(); i++) {
-//					person = ((String[]) persons.values().toArray())[i];
-//					if (person.startsWith(query) || person.equals(query)) {
-//						personsModel.addElement(persons.get(i));
-//						continue;
-//					}
-//				}
 				
 				if (personsModel.size() > 0) {
 					searchList.setSelectedIndex(0);
@@ -370,6 +371,8 @@ public class NewEventPanel extends JPanel {
 				removePersons();
 			} else if (e.getSource() == searchField) {
 				searchField.selectAll();
+			} else if (e.getSource() == searchList && e.getClickCount() == 2) {
+				addPersons();
 			}
 		}
 
@@ -389,16 +392,20 @@ public class NewEventPanel extends JPanel {
 	private void addPersons() {
 		List<Person> persons = searchList.getSelectedValuesList();
 		for (Person p : persons) {
-			participantsModel.addElement(p);
-			personsModel.removeElement(p);
+			if (!participantsModel.contains(p))
+				participantsModel.addElement(p);
+			if (personsModel.contains(p))
+				personsModel.removeElement(p);
 		}
 	}
 	
 	private void removePersons() {
 		List<Person> persons = invitedList.getSelectedValuesList();
 		for (Person p : persons) {
-			participantsModel.removeElement(p);
-			personsModel.addElement(p);
+			if (participantsModel.contains(p))
+				participantsModel.removeElement(p);
+			if (!personsModel.contains(p))
+				personsModel.addElement(p);
 		}
 	}
 }

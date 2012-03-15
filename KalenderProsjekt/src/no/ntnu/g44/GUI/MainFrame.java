@@ -233,9 +233,6 @@ public class MainFrame extends JPanel{
 	}
 
 
-	public static void main(String[] args){
-		MainFrame panel = new MainFrame();
-	}
 	public void fillModel(){
 		personnel.add("Kari");
 		personnel.add("Per");

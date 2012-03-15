@@ -350,12 +350,6 @@ public class MainFrame extends JPanel{
 				deleteEvent();
 			}
 			if(e.getSource() == item4){
-				try {
-					this.finalize();
-				} catch (Throwable e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 				Login.login();
 			}
 			if(e.getSource() == nextArrow){

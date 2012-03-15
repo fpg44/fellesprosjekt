@@ -166,11 +166,11 @@ public class XmlSerializer {
 	}
 	
 	private Event assembleEvent(Element eventElement) throws ParseException {
-		int id;
+		int id  = -1;
 		String title = null, location = null;
-		ArrayList<Person> participants;
-		Room room;
-		Person owner;
+		ArrayList<Person> participants = null;
+		Room room = null;
+		String owner_username = null;
 		Date eventStartDate = null, eventEndDate = null;
 		
 		Element element = eventElement.getFirstChildElement("event-id");
@@ -185,7 +185,7 @@ public class XmlSerializer {
 		
 		element = eventElement.getFirstChildElement("owner");
 		if (element != null) {
-			owner = new Person(null, element.getValue());
+			owner_username = element.getValue();
 		}
 		
 		element = eventElement.getFirstChildElement("event-start");
@@ -213,7 +213,12 @@ public class XmlSerializer {
 			//I HAVE NO IDEA :p
 		}
 		
-		return new Event(-1, null, null, null, null, null, null, null);
+		return new Event(id, title, getPersonByUsername(owner_username), participants, eventStartDate, eventEndDate, location, room);
+	}
+	
+	public Person getPersonByUsername(String username){
+		
+		return null;
 	}
 }
 

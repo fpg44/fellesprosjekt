@@ -21,6 +21,6 @@ public class XMLHelper {
 			root.appendChild(element);
 		}
 		
-		return document;
+		return new Document(root);
 	}
 }

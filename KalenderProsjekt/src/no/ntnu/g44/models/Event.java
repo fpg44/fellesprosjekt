@@ -20,7 +20,8 @@ public class Event {
 	 * Creates a new Event
 	 * @param eventTitle
 	 * @param participants
-	 * @param eventTime
+	 * @param eventStartDate
+	 * @param eventEndDate
 	 * @param location
 	 * @param room
 	 */

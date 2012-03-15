@@ -221,8 +221,40 @@ public class ConnectionImpl extends AbstractConnection {
 	 * @see Connection#close()
 	 */
 	public void close() throws IOException {
-		//Go through fin stages
-		throw new NotImplementedException();
+		
+		if(true) throw new NotImplementedException();
+		
+		//TODO: Not at all done.!!!!
+		
+		KtnDatagram syn = constructInternalPacket(Flag.SYN);
+		KtnDatagram ack = null;
+		
+		int timeout = 1800000; //2 min timeout
+		
+		
+		
+		//Send syn and wait for the synack
+		do{
+			Timer timer = new Timer();
+			timer.scheduleAtFixedRate(new SendTimer(new ClSocket(), syn), 0, RETRANSMIT);
+			state = State.FIN_WAIT_1;
+			//recieveAck will block for a while.
+			ack = receiveAck();
+			timer.cancel();
+			System.out.println("Recieved syn-ack " + ack);
+			
+			
+		}while(ack == null /*|| !validAck(syn, syn_ack)*/);
+		
+		//recieved ack on the fin.
+		//Wait for the fin
+		state = State.FIN_WAIT_2;
+		
+		
+
+		
+		
+		
 	}
 
 	/**

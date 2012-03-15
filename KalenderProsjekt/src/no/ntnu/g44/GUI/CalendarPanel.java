@@ -16,8 +16,12 @@ import java.awt.geom.RoundRectangle2D;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import javax.swing.JPanel;
+
+import sun.util.resources.TimeZoneNames_en;
 
 import no.ntnu.g44.models.Event;
 
@@ -166,15 +170,22 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 	
 	
 	private void paintNowLine(Graphics2D g2d){
+//		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+//		TimeZone timezone = registry.getTimeZone("America/Mexico_City");
+//		VTimeZone tz = timezone.getVTimeZone();
+		
+//		TimeZone tz=TimeZone.getTimeZone("G");
 		Calendar nowTime = Calendar.getInstance();
+//		nowTime.setTimeZone(tz);
 		nowTime.setTime(new Date());
 		
-		
+		System.out.println(nowTime.getFirstDayOfWeek());
 		int Y = (int) ((((nowTime.get(Calendar.HOUR_OF_DAY)-this.startHour)+
 				nowTime.get(Calendar.MINUTE)/60f) * pixlsPerHour) + topArea);
 		
-		int startX = (nowTime.get(Calendar.DAY_OF_WEEK)  +8)%7 *dayWidth + leftOffset;
-		int endX = (nowTime.get(Calendar.DAY_OF_WEEK) + 8)%7 *dayWidth +dayWidth+ leftOffset;
+		//The first day of week in java.util.Calendar is saturday, therefore +5
+		int startX = (nowTime.get(Calendar.DAY_OF_WEEK) +5 )%7 *dayWidth + leftOffset;
+		int endX = (nowTime.get(Calendar.DAY_OF_WEEK) +5 )%7 *dayWidth +dayWidth+ leftOffset;
 
 		
 		Paint p = g2d.getPaint();

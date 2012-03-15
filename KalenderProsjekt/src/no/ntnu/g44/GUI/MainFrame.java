@@ -416,6 +416,9 @@ public class MainFrame extends JPanel{
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if(e.getSource() == calendar){
+				if(e.getButton() == MouseEvent.BUTTON1){
+					System.out.println("høyre");
+				}
 				resizing();
 			}
 		}

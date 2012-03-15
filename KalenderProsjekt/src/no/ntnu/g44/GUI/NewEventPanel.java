@@ -27,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Room;
@@ -94,8 +95,12 @@ public class NewEventPanel extends JPanel {
 		eventOwner = new JLabel(owner.getName());
 		eventStartLabel = new JLabel("From");
 		eventStartTime = new JSpinner();
+		eventStartTime.setModel(new SpinnerDateModel());
+		eventStartTime.setEditor(new JSpinner.DateEditor(eventStartTime));
 		eventEndLabel = new JLabel("To");
 		eventEndTime = new JSpinner();
+		eventEndTime.setModel(new SpinnerDateModel());
+		eventEndTime.setEditor(new JSpinner.DateEditor(eventEndTime));
 		locationLabel = new JLabel("Location");
 		location = new JComboBox<Room>();
 		customLocationLabel = new JLabel("Custom location");

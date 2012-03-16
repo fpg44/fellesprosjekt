@@ -15,7 +15,7 @@ import no.ntnu.g44.models.Event;
 public class EventInfoPanel extends JPanel{
 	public EventInfoPanel(Event event){
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		JFrame frame = new JFrame(event.getEventTitle());
+		JFrame frame = new JFrame(event.getEventDescription());
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().add(this);
 		JLabel ownerLabel = new JLabel("Event owner:");
@@ -28,7 +28,11 @@ public class EventInfoPanel extends JPanel{
 		JTextField endField = new JTextField();
 		JTextField locationField = new JTextField();
 		JTextField messageField = new JTextField();
-		ownerField.setEnabled(false);
+		ownerField.setEditable(false);
+		startField.setEditable(false);
+		endField.setEditable(false);
+		locationField.setEditable(false);
+		messageField.setEditable(false);
 		setLayout(null);
 		
 		ownerLabel.setLocation(8, 12);
@@ -50,6 +54,12 @@ public class EventInfoPanel extends JPanel{
 		endField.setText(event.getEventEndTime().toGMTString());
 		endField.setLocation(ownerField.getX(), endLabel.getY());
 		endField.setSize(ownerField.getSize());
+		locationField.setText(event.getLocation());
+		locationField.setLocation(ownerField.getX(), locationLabel.getY());
+		locationField.setSize(ownerField.getSize());
+		messageField.setText(event.getEventDescription());
+		messageField.setLocation(ownerLabel.getX(), messageLabel.getY() + messageLabel.getHeight() + 4);
+		messageField.setSize(locationField.getX() + locationField.getWidth() - locationLabel.getX(), ownerField.getHeight() * 4);
 		
 		add(ownerLabel);
 		add(startLabel);
@@ -59,8 +69,10 @@ public class EventInfoPanel extends JPanel{
 		add(ownerField);
 		add(startField);
 		add(endField);
+		add(locationField);
+		add(messageField);
 		
-		frame.setSize(ownerField.getX() + ownerField.getWidth() + 8, messageLabel.getY() + 50);
+		frame.setSize(ownerField.getX() + ownerField.getWidth() + 8 + 14, messageField.getY() + messageField.getHeight() + 45);
 		frame.setLocation((int)(dim.getWidth() - frame.getWidth()) / 2, (int)(dim.getHeight() - frame.getHeight()) / 2);
 		frame.setVisible(true);
 		

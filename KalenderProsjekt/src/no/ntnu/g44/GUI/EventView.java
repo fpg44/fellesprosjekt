@@ -60,7 +60,7 @@ public class EventView {
 		Font prefont = g2d.getFont();
 		Font f = new Font("Helvetica",Font.BOLD, 12);
 		g2d.setFont(f);
-		g2d.drawString(event.getEventTitle(), startX+15, startY+20);
+		g2d.drawString(event.getEventDescription(), startX+15, startY+20);
 
 		g2d.drawLine(startX, startY+30, endX, startY+30);
 

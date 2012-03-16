@@ -1,9 +1,11 @@
 package no.ntnu.g44.gui;
 
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.WindowEvent;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -36,9 +38,10 @@ public abstract class AbstractPanelClass {
 	protected GridBagConstraints c;
 	
 	protected void setPanelLayout() {
+		
 		c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.WEST;
-		c.insets = new Insets(0, 0, 5, 5);
+		c.insets = new Insets(0, 0, 5, 10);
 		c.ipadx = 5;
 		c.ipady = 5;
 
@@ -80,9 +83,10 @@ public abstract class AbstractPanelClass {
 		c.gridx = 0;
 		c.gridy = 4;
 		c.gridwidth = 2;
-//		c.fill = new GridBagConstraints().HORIZONTAL;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		textArea.setEditable(false);
 		panel.add(textArea, c);
+		
 	}
 	
 	public void init(Event event) {
@@ -113,5 +117,12 @@ public abstract class AbstractPanelClass {
 		
 		textArea = new JTextArea();
 		panel.setLayout(new GridBagLayout());
+	}
+	
+	/**
+	 * Closes the window.
+	 */
+	protected void closeWindow() {
+		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 	}
 }

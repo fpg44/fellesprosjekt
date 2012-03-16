@@ -53,6 +53,8 @@ public class Room {
 	 */
 	public Room(String roomName) {
 		this.roomName = roomName;
+		
+		pcs = new PropertyChangeSupport(this);
 	}
 	
 	public void setRoomName(String name) {

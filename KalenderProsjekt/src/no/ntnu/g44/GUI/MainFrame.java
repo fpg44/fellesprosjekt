@@ -367,7 +367,7 @@ public class MainFrame extends JPanel{
 						System.out.println("This event have been changed");
 					}
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.DECLINER){
-						System.out.println("A participant has declined your invitation");
+						System.out.println("A participant has declined invitation");
 					}
 					notifBox.setSelectedIndex(0);
 				}

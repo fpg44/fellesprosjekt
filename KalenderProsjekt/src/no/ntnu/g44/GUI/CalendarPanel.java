@@ -44,7 +44,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		addMouseWheelListener(this);
 		addMouseListener(this);
 		Main.currentProject.addPropertyChangeListener(this);
-		
+
 	}
 
 	/**Offset to make room for displaying times	 */
@@ -60,6 +60,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		paintFrame(g2d);
 		paintEvents(g2d);
 		paintNowLine(g2d);
+		paintDayText(g2d);
 	}
 
 	private void paintFrame(Graphics2D g2d) {
@@ -117,8 +118,30 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		}
 
 
-		//Add day text
+
+	}
+
+	private void paintDayText(Graphics2D g2d){
+		int width = getWidth() - leftOffset;
 		Font prefont = g2d.getFont();
+		Paint prepaint = g2d.getPaint();
+		//paint background
+		g2d.setPaint(getBackground());
+		g2d.fill(new Rectangle2D.Double(0, 0, getWidth(),topArea));
+		g2d.drawRect(0, 0, getWidth(),topArea);
+		
+		//repaint the line between days
+		
+		dayWidth = Math.round(width/7f);
+		g2d.setColor(Color.black);
+		for(int i = 0; i<= 7; i++){
+			int xPos = i*dayWidth+leftOffset;
+			g2d.drawLine(xPos, 0, xPos, topArea);
+		}
+		
+		g2d.setPaint(prepaint);
+		//Add day text
+		
 		Font f = new Font("Helvetica",Font.BOLD, 16);
 		g2d.setFont(f);
 		for(int i = 0; i < 7; i++){
@@ -128,13 +151,14 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		}
 		g2d.drawLine(0, topArea, getWidth(), topArea);
 		g2d.setFont(prefont); //reset font
+		g2d.setPaint(prepaint);
 	}
 
 
 	@SuppressWarnings("deprecation")
 	private void paintEvents(Graphics2D g2d){
 		g2d.setStroke(new BasicStroke(2));
-		
+
 		for(Event e:Main.currentProject.getEventList()){
 			if(!e.isInWeek(Main.currentMainFrame.currUkenr)) continue;
 			EventView ev = new EventView(e);
@@ -143,43 +167,43 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 
 		}
 	}
-	
+
 	/**
 	 * @return the selected event. Or null if none is selected.
 	 */
 	public Event getSelectedEvent(){
 		return selectedEvent;
 	}
-	
+
 	public int getWeekNumber(){
 		if(nowTime == null)return 0;
 		return nowTime.get(Calendar.WEEK_OF_YEAR);
 	}
 	private void paintNowLine(Graphics2D g2d){
-//		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
-//		TimeZone timezone = registry.getTimeZone("America/Mexico_City");
-//		VTimeZone tz = timezone.getVTimeZone();
-		
-//		TimeZone tz=TimeZone.getTimeZone("G");
+		//		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+		//		TimeZone timezone = registry.getTimeZone("America/Mexico_City");
+		//		VTimeZone tz = timezone.getVTimeZone();
+
+		//		TimeZone tz=TimeZone.getTimeZone("G");
 		nowTime = Calendar.getInstance();
-//		nowTime.setTimeZone(tz);
+		//		nowTime.setTimeZone(tz);
 		nowTime.setTime(new Date());
-		
+
 		int Y = (int) ((((nowTime.get(Calendar.HOUR_OF_DAY)-this.startHour)+
 				nowTime.get(Calendar.MINUTE)/60f) * pixlsPerHour) + topArea);
-		
+
 		//The first day of week in java.util.Calendar is saturday, therefore +5
 		int startX = (nowTime.get(Calendar.DAY_OF_WEEK) +5 )%7 *dayWidth + leftOffset;
 		int endX = (nowTime.get(Calendar.DAY_OF_WEEK) +5 )%7 *dayWidth +dayWidth+ leftOffset;
 
-		
+
 		Paint p = g2d.getPaint();
 		Stroke s = g2d.getStroke();
 		g2d.setStroke(new BasicStroke(2));
 		g2d.setPaint(Color.red);
-		
+
 		g2d.drawLine(startX, Y, endX, Y);
-		
+
 		//reset
 		g2d.setStroke(s);
 		g2d.setPaint(p);
@@ -191,7 +215,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		startHour += 0.5f*e.getPreciseWheelRotation();
 		startHour = Math.max(0, Math.min(startHour,24-hoursShown));
 		System.out.println("startTime = "+startHour);
-		
+
 		repaint();		
 	}
 
@@ -209,7 +233,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
+
 		for(Event event : Main.currentProject.getEventList()){
 			EventView ev = new EventView(event);
 			ev.set(startHour, pixlsPerHour, dayWidth, leftOffset,topArea);

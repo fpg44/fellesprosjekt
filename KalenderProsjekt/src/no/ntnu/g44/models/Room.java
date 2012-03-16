@@ -10,6 +10,9 @@ import java.util.Date;
 
 public class Room {
 	
+	// used as a 'custom location' flag
+	public static final Room OTHER = new Room("OTHER");
+	
 	private String roomName;
 	private boolean isOccupied;
 	
@@ -26,6 +29,10 @@ public class Room {
 		for (String name : roomNames)
 			rooms.add(new Room(name));
 		// END MOCK CONTENT
+		
+		// this value indicates a custom location, and should always be 
+		// included in the list
+		rooms.add(OTHER);
 		
 		return rooms;
 	}
@@ -51,5 +58,9 @@ public class Room {
 	 */
 	public boolean isOccupied() {
 		return isOccupied;
+	}
+	
+	public String toString() {
+		return roomName;
 	}
 }

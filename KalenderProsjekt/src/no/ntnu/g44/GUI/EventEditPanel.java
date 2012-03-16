@@ -71,7 +71,7 @@ public class EventEditPanel extends JPanel{
 		add(messageField);
 		add(saveButton);
 		
-		frame.setSize(ownerField.getX() + ownerField.getWidth() + 8 + 14, saveButton.getY() + saveButton.getHeight() + 35);
+		frame.setSize(ownerField.getX() + ownerField.getWidth() + 8 + 10, saveButton.getY() + saveButton.getHeight() + 35);
 		frame.setLocation((int)(dim.getWidth() - frame.getWidth()) / 2, (int)(dim.getHeight() - frame.getHeight()) / 2);
 		frame.setResizable(false);
 		frame.setVisible(true);

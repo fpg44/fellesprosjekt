@@ -2,6 +2,7 @@ package no.ntnu.g44.gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,7 +46,8 @@ public class EventInfoPanel extends JPanel{
 		ownerField.setText(event.getEventOwnerString());
 		ownerField.setLocation(ownerLabel.getX() + ownerLabel.getWidth() + 4, ownerLabel.getY());
 		ownerField.setSize(175, (int) ownerField.getPreferredSize().getHeight());
-		startField.setText(event.getEventStartTime().toGMTString());
+		Date date = event.getEventStartTime();
+		startField.setText(event.getEventStartTime().toString());
 		startField.setLocation(ownerField.getX(), startLabel.getY());
 		startField.setSize(ownerField.getSize());
 		endField.setText(event.getEventEndTime().toGMTString());

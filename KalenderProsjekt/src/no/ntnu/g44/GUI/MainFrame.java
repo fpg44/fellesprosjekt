@@ -49,7 +49,6 @@ public class MainFrame extends JPanel{
 	JFrame frame;
 	Timer timer = new Timer();
 
-
 	JPopupMenu popup = new JPopupMenu();
 	JMenuItem item3 = new JMenuItem("Delete Event");
 	JMenuItem item2 = new JMenuItem("Edit Event");
@@ -325,7 +324,13 @@ public class MainFrame extends JPanel{
 		for(int i = 0; i < personnel.size(); i++){
 			person = personnel.get(i).getName().toLowerCase();
 			if(person.startsWith(search) || person.equals(search)){
-				personnelModel.addElement(personnel.get(i));
+				boolean b = true;
+				for(int j = 0; j < calendarModel.getSize(); j++){
+					if(calendarModel.getElementAt(j).getName().toLowerCase().equals(person)){
+						b = false;
+					}
+				}
+				if(b) personnelModel.addElement(personnel.get(i));
 				continue;
 			}
 			else{

@@ -74,6 +74,7 @@ public class EventInfoPanel extends JPanel{
 		
 		frame.setSize(ownerField.getX() + ownerField.getWidth() + 8 + 14, messageField.getY() + messageField.getHeight() + 45);
 		frame.setLocation((int)(dim.getWidth() - frame.getWidth()) / 2, (int)(dim.getHeight() - frame.getHeight()) / 2);
+		frame.setResizable(false);
 		frame.setVisible(true);
 		
 	}

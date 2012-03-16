@@ -9,8 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import no.ntnu.g44.models.Event;
 
-public class EventInfoPanel extends JPanel{
-	public EventInfoPanel(Event event){
+public class EventEditPanel extends JPanel{
+	public EventEditPanel(Event event){
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		JFrame frame = new JFrame(event.getEventDescription());
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -25,11 +25,6 @@ public class EventInfoPanel extends JPanel{
 		JTextField endField = new JTextField();
 		JTextField locationField = new JTextField();
 		JTextField messageField = new JTextField();
-		ownerField.setEditable(false);
-		startField.setEditable(false);
-		endField.setEditable(false);
-		locationField.setEditable(false);
-		messageField.setEditable(false);
 		setLayout(null);
 		
 		ownerLabel.setLocation(8, 12);
@@ -75,7 +70,7 @@ public class EventInfoPanel extends JPanel{
 		frame.setVisible(true);
 		
 	}
-	public static void makeInfoPanel(Event event){
-		EventInfoPanel infoPanel = new EventInfoPanel(event);
+	public static void makeEditPanel(Event event){
+		EventEditPanel editPanel = new EventEditPanel(event);
 	}
 }

@@ -2,8 +2,12 @@ package no.ntnu.g44.models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
+
+import sun.util.resources.CalendarData;
 
 /**
  * Class representing an event
@@ -230,5 +234,11 @@ public class Event {
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		propChangeSupp.removePropertyChangeListener(listener);
+	}
+
+	public boolean isInWeek(int weekNr) {
+		Calendar cal =new GregorianCalendar();
+		cal.setTime(eventStartTime);
+		return cal.get(Calendar.WEEK_OF_YEAR) == weekNr;
 	}
 }

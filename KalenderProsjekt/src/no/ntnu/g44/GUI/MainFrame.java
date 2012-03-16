@@ -313,7 +313,7 @@ public class MainFrame extends JPanel{
 		}
 	}
 	public void editEvent(){
-
+		EventEditPanel.makeEditPanel(calendar.getSelectedEvent());
 	}
 	public void logout(){
 		Login.login();
@@ -387,13 +387,16 @@ public class MainFrame extends JPanel{
 			if(e.getSource() == nextArrow){
 				currUkenr +=1;
 				if(currUkenr == 53)currUkenr = 1;
+				calendar.repaint();
 			}
 			if(e.getSource() == backArrow){
 				currUkenr -=1;
 				if(currUkenr == 0)currUkenr = 52;
+				calendar.repaint();
 			}
 			if(e.getSource() == todayButton){
 				currUkenr = UKENR;
+				calendar.repaint();
 			}
 			resizing();
 			if(e.getSource() == editEvent){

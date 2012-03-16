@@ -24,7 +24,6 @@ public class NotificationController {
 	}
 	
 	/**
-	 * 
 	 * @return An array with all the notifications of a user.
 	 */
 	public ArrayList<Notification> getUnseenNotifications() {

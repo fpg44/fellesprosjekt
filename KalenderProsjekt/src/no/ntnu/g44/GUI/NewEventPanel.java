@@ -50,7 +50,7 @@ public class NewEventPanel extends JPanel {
 	private JLabel eventEndLabel;
 	private JSpinner eventEndTime;
 	private JLabel locationLabel;
-	private JComboBox location;
+	private JComboBox<Room> location;
 	private JLabel customLocationLabel;
 	private JTextField customLocation;
 	private JLabel eventDescriptionLabel;
@@ -135,10 +135,13 @@ public class NewEventPanel extends JPanel {
 		searchListScroller = new JScrollPane(searchList);
 		invitedPersonsLabel = new JLabel("Invited persons");
 		invitedList = new JList<Person>(participantsModel);
+		invitedList.addMouseListener(searchListener);
+		invitedList.addKeyListener(searchListener);
 		invitedListScroller = new JScrollPane(invitedList);
 		addPersonToParticipantsIcon = new ImageIcon(getClass().getResource(
 				"images/rightArrow.png"));
-		addPersonToParticipantsListLabel = new JLabel(addPersonToParticipantsIcon);
+		addPersonToParticipantsListLabel = new JLabel(
+				addPersonToParticipantsIcon);
 		addPersonToParticipantsListLabel.addMouseListener(searchListener);
 		removePersonFromParticipantsIcon = new ImageIcon(getClass().getResource(
 				"images/removeIcon.png"));
@@ -296,6 +299,10 @@ public class NewEventPanel extends JPanel {
 			if ((e.getSource() == searchList || e.getSource() == searchField)
 					&& e.getKeyChar() == KeyEvent.VK_ENTER) {
 				addPersons();
+			} else if (e.getSource() == invitedList
+					&& (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
+					|| e.getKeyCode() == KeyEvent.VK_DELETE)) {
+				removePersons();
 			} else if (e.getSource() == searchField) {
 				if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 					shiftKeyPressed = true;
@@ -361,8 +368,9 @@ public class NewEventPanel extends JPanel {
 				for (Map.Entry<String, String> entry : persons.entrySet()) {
 					String name = entry.getValue().toLowerCase();
 					if (name.startsWith(query) || name.equals(query)) {
-						personsModel.addElement(Person.findPersonByUsername(
-								entry.getKey()));
+						Person p = Person.findPersonByUsername(entry.getKey());
+						if (!participantsModel.contains(p))
+							personsModel.addElement(p);
 					}
 				}
 				
@@ -384,6 +392,8 @@ public class NewEventPanel extends JPanel {
 				searchField.selectAll();
 			} else if (e.getSource() == searchList && e.getClickCount() == 2) {
 				addPersons();
+			} else if (e.getSource() == invitedList && e.getClickCount() == 2) {
+				removePersons();
 			}
 		}
 

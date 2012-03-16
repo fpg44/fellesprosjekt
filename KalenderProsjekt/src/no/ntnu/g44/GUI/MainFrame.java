@@ -319,6 +319,22 @@ public class MainFrame extends JPanel{
 		Login.login();
 		frame.dispose();
 	}
+	public void search(String search){
+		String person;
+		personnelModel.removeAllElements();
+		for(int i = 0; i < personnel.size(); i++){
+			person = personnel.get(i).getName().toLowerCase();
+			if(person.startsWith(search) || person.equals(search)){
+				personnelModel.addElement(personnel.get(i));
+				continue;
+			}
+			else{
+			}
+		}
+		if(personnelModel.size() > 0){
+			personnelList.setSelectedIndex(0);
+		}
+	}
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
 		public void mouseDragged(MouseEvent e) {
@@ -351,7 +367,7 @@ public class MainFrame extends JPanel{
 						System.out.println("This event have been changed");
 					}
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.DECLINER){
-						System.out.println("A participant has declined your invitation");
+						System.out.println("A participant has declined invitation");
 					}
 					notifBox.setSelectedIndex(0);
 				}
@@ -399,6 +415,7 @@ public class MainFrame extends JPanel{
 			}
 			else if(e.getSource() == removeButton && calendarPersons.getSelectedValue() != null){
 				calendarModel.removeElement(calendarPersons.getSelectedValue());
+				search(searchField.getText().toLowerCase());
 			}
 		}
 		@Override
@@ -457,20 +474,7 @@ public class MainFrame extends JPanel{
 					search = search.substring(0, search.length() -1);
 				}
 				search = search.toLowerCase();
-				String person;
-				personnelModel.removeAllElements();
-				for(int i = 0; i < personnel.size(); i++){
-					person = personnel.get(i).getName().toLowerCase();
-					if(person.startsWith(search) || person.equals(search)){
-						personnelModel.addElement(personnel.get(i));
-						continue;
-					}
-					else{
-					}
-				}
-				if(personnelModel.size() > 0){
-					personnelList.setSelectedIndex(0);
-				}
+				search(search);
 			}
 		}
 		@Override
@@ -485,7 +489,9 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void mouseClicked(MouseEvent e) {
-
+			if(e.getClickCount() == 2 && e.getSource() == calendar){
+				EventInfoPanel.makeInfoPanel(calendar.getSelectedEvent());
+			}
 			if(e.getClickCount() == 2 && e.getSource() == personnelList){
 				if(personnelList.getSelectedValue() != null){
 					addPersons();			

@@ -72,7 +72,7 @@ public class EventCancelledPanel extends JPanel{
 		staticLocationLabel = new JLabel("Location:");
 
 		personNameLabel = new JLabel(eventOwner.getName());
-		eventTitleLabel = new JLabel(event.getEventTitle());
+		eventTitleLabel = new JLabel(event.getEventDescription());
 		startTimeLabel = new JLabel(startTime.toString());
 		endTimeLabel = new JLabel(endTime.toString());
 		locationLabel = new JLabel();

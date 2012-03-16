@@ -34,6 +34,7 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Room;
@@ -284,11 +285,11 @@ public class NewEventPanel extends JPanel {
 	
 	private void removePersons() {
 		List<Person> persons = invitedList.getSelectedValuesList();
-		for (Person p : persons) {
-			if (participantsModel.contains(p))
-				participantsModel.removeElement(p);
-			if (!personsModel.contains(p))
-				personsModel.addElement(p);
+		for (Person person : persons) {
+			if (participantsModel.contains(person))
+				participantsModel.removeElement(person);
+			if (!personsModel.contains(person))
+				personsModel.addElement(person);
 		}
 	}
 	
@@ -309,8 +310,8 @@ public class NewEventPanel extends JPanel {
 			participants.add(participantsModel.get(i));
 		Date eventStartTime = startTimeModel.getDate();
 		Date eventEndTime = endTimeModel.getDate();
-		String location = null;
-		Room room = null;
+		String location = customLocation.getText();
+		Room room = (Room) this.location.getSelectedItem();
 		
 		return new Event(eventTitle, this.eventOwner, participants,
 				eventStartTime, eventEndTime, location, room);
@@ -357,8 +358,7 @@ public class NewEventPanel extends JPanel {
 			if (e.getSource() == cancelButton)
 				closeWindow();
 			else if (e.getSource() == saveButton) {
-				// call some stuff to save the information in the DB
-				
+				Main.currentProject.addEvent(createEvent());
 				closeWindow();
 			}
 		}

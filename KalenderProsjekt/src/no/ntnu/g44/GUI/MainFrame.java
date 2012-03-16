@@ -5,11 +5,8 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -25,23 +22,22 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.NoFixedFacet;
 
 import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
-import no.ntnu.g44.models.NotificationType;
-import no.ntnu.g44.models.Notification;
-import no.ntnu.g44.models.Person;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.controllers.NotificationController;
+import no.ntnu.g44.models.Notification;
+import no.ntnu.g44.models.NotificationType;
+import no.ntnu.g44.models.Person;
 
 public class MainFrame extends JPanel{
 	ListeningClass listener = new ListeningClass();
@@ -73,7 +69,10 @@ public class MainFrame extends JPanel{
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
 	CalendarPanel calendar = new CalendarPanel();
-
+	
+	JMenuItem newAction;
+	JMenuItem logoutAction;
+	JMenuItem exitAction;
 
 	int UKENR = 0;
 	int currUkenr = UKENR;
@@ -100,6 +99,9 @@ public class MainFrame extends JPanel{
 
 		fillModel();
 
+		newEvent.addMouseMotionListener(listener);
+		newEvent.addMouseListener(listener);
+		
 		item1.addActionListener(listener);
 		item2.addActionListener(listener);
 		item3.addActionListener(listener);
@@ -124,7 +126,21 @@ public class MainFrame extends JPanel{
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		insets = frame.getInsets();
-
+		
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		JMenu systemMenu = new JMenu("System");
+		menuBar.add(systemMenu);
+		newAction = new JMenuItem("New Event");
+		logoutAction = new JMenuItem("Logout");
+		exitAction = new JMenuItem("Exit");
+		systemMenu.add(newAction);
+		systemMenu.add(logoutAction);
+		systemMenu.add(exitAction);
+		newAction.addActionListener(listener);
+		logoutAction.addActionListener(listener);
+		exitAction.addActionListener(listener);
+		
 		addMouseMotionListener(listener);
 		editEvent.setVisible(true);
 		editEvent.addActionListener(listener);
@@ -204,7 +220,6 @@ public class MainFrame extends JPanel{
 		}
 		newEvent.setLocation( 12,  16);
 		newEvent.setSize((getWidth() -36) / 8,( getHeight() - 56) / 12);
-		newEvent.addMouseMotionListener(listener);
 
 		editEvent.setSize(newEvent.getSize());
 		editEvent.setLocation(newEvent.getX(), newEvent.getY() + newEvent.getHeight());
@@ -299,7 +314,7 @@ public class MainFrame extends JPanel{
 		}
 	}
 	public void newEvent(){
-
+		new NewEventPanel(new Person("Foo Bar", "foobar"), new JFrame());
 	}
 	public void deleteEvent(){
 		if(calendar.getSelectedEvent() != null){
@@ -344,14 +359,7 @@ public class MainFrame extends JPanel{
 		boolean shift = false;
 		public void mouseDragged(MouseEvent e) {
 		}
-		public void mouseMoved(MouseEvent e) {
-			if(e.getSource() == newEvent){
-				newEvent.setText("BØØØØØ!");
-			}
-			else{
-				newEvent.setText("New event");
-			}
-		}
+		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!unseenNotifications.isEmpty()){
@@ -359,8 +367,8 @@ public class MainFrame extends JPanel{
 					if (notifBox.getSelectedIndex() == 0) {
 						System.out.println("Nothing happens");
 					}
-					//Her skal vi legge inn kall pŒ forskjellige dialogbokser som kommer
-					//som f¿lge av man trykker pŒ en notifikasjon.
+					//Her skal vi legge inn kall pï¿½ forskjellige dialogbokser som kommer
+					//som fï¿½lge av man trykker pï¿½ en notifikasjon.
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CANCELLED){
 						//EventCancelled eventCancelled = new EventCancelled(event)
 						System.out.println("This event has been cancelled");
@@ -388,6 +396,15 @@ public class MainFrame extends JPanel{
 			}
 			if(e.getSource() == item4){
 				logout();
+			}
+			if(e.getSource() == newAction){
+				newEvent();
+			}
+			if(e.getSource() == logoutAction){
+				logout();
+			}
+			if(e.getSource() == exitAction){
+				System.exit(0);
 			}
 			if(e.getSource() == nextArrow){
 				currUkenr +=1;
@@ -507,6 +524,10 @@ public class MainFrame extends JPanel{
 			}
 			if(e.getSource() == searchField){
 				searchField.selectAll();
+			}
+			
+			if (e.getSource() == newEvent) {
+				newEvent();
 			}
 
 		}

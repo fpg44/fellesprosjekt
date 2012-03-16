@@ -136,6 +136,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		g2d.setStroke(new BasicStroke(2));
 		
 		for(Event e:Main.currentProject.getEventList()){
+			if(!e.isInWeek(Main.currentMainFrame.currUkenr)) continue;
 			EventView ev = new EventView(e);
 			ev.set(startHour,pixlsPerHour,dayWidth, leftOffset,topArea);
 			ev.paint(g2d, selectedEvent == e);

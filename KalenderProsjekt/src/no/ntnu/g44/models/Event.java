@@ -148,11 +148,11 @@ public class Event {
 		return eventOwner;
 	}
 
-	public String getEventTitle() {
+	public String getEventDescription() {
 		return eventDescription;
 	}
 
-	public void setEventTitle(String eventTitle) {
+	public void setEventDescription(String eventTitle) {
 		this.eventDescription = eventTitle;
 	}
 

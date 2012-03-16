@@ -402,23 +402,6 @@ public class DatabaseHandler {
 		}
 	}
 
-//	/** SHOULD NOT BE POSSIBLE
-//	 * Insert a new Person in the database
-//	 * @param p
-//	 */
-//	public void newPerson(Person person){
-//
-//		try{
-//
-//			stmt.executeUpdate("");
-//
-//		}catch( Exception e ){
-//
-//			e.printStackTrace();
-//
-//		}
-//	}
-
 	/**
 	 * Delete an event in the database
 	 * @param e
@@ -427,7 +410,7 @@ public class DatabaseHandler {
 
 		try{
 
-			stmt.executeUpdate("UPDATE TABLE event set");
+			stmt.executeUpdate("DELETE FROM event WHERE event_id ='" + event.getEventID() + "'");
 
 		}catch( Exception e ){
 
@@ -444,7 +427,7 @@ public class DatabaseHandler {
 
 		try{
 
-			stmt.executeUpdate("");
+			stmt.executeUpdate("DELETE FROM notification WHERE notif_id ='" + notification.getNotificationID() + "'");
 
 		}catch( Exception e ){
 
@@ -453,20 +436,37 @@ public class DatabaseHandler {
 		}
 	}
 
-	/**
-	 * Delete a person in the database
-	 * @param p
-	 */
-	public void deletePerson(Person person){
-
-		try{
-
-			stmt.executeUpdate("");
-
-		}catch( Exception e ){
-
-			e.printStackTrace();
-
-		}
-	}
+//	/** SHOULD NOT BE POSSIBLE
+//	 * Delete a person in the database
+//	 * @param p
+//	 */
+//	public void deletePerson(Person person){
+//
+//		try{
+//
+//			stmt.executeUpdate("DELETE FROM account WHERE username ='" + person.getUsername() + "'");
+//
+//		}catch( Exception e ){
+//
+//			e.printStackTrace();
+//
+//		}
+//	}
+//	
+//	/** SHOULD NOT BE POSSIBLE
+//	 * Insert a new Person in the database
+//	 * @param p
+//	 */
+//	public void newPerson(Person person){
+//
+//		try{
+//
+//			stmt.executeUpdate("");
+//
+//		}catch( Exception e ){
+//
+//			e.printStackTrace();
+//
+//		}
+//	}
 }

@@ -2,8 +2,12 @@ package no.ntnu.g44.models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
+
+import sun.util.resources.CalendarData;
 
 /**
  * Class representing an event
@@ -18,6 +22,7 @@ public class Event {
 	private Date eventStartTime;
 	private Date eventEndTime;
 	private Room room;
+	private String roomString;
 	private Person eventOwner;
 	private String eventOwnerString;
 	private int eventID;
@@ -94,6 +99,8 @@ public class Event {
 	
 	/**
 	 * This is used when red from database and thrown after parsed to XML.
+	 * This constructor will also prevent duplicates of objects like Person and Room
+	 * when fetched from database to xml
 	 * @param eventID
 	 * @param eventTitle
 	 * @param eventOwner
@@ -104,7 +111,7 @@ public class Event {
 	 * @param room
 	 */
 	public Event(int eventID, String eventTitle, String eventOwner, ArrayList<String> participants, 
-			Date eventStartTime, Date eventEndTime, String location, Room room){
+			Date eventStartTime, Date eventEndTime, String location, String roomString){
 		this.eventID = eventID;
 		this.eventDescription = eventTitle;
 		this.eventOwnerString = eventOwner;
@@ -112,7 +119,7 @@ public class Event {
 		this.eventStartTime = eventStartTime;
 		this.eventEndTime = eventEndTime;
 		this.location = location;
-		this.room = room;
+		this.roomString = roomString;
 		propChangeSupp = new PropertyChangeSupport(this);
 	}
 	
@@ -230,5 +237,11 @@ public class Event {
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		propChangeSupp.removePropertyChangeListener(listener);
+	}
+
+	public boolean isInWeek(int weekNr) {
+		Calendar cal =new GregorianCalendar();
+		cal.setTime(eventStartTime);
+		return cal.get(Calendar.WEEK_OF_YEAR) == weekNr;
 	}
 }

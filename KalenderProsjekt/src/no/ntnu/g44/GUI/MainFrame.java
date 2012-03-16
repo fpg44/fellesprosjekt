@@ -43,7 +43,6 @@ public class MainFrame extends JPanel{
 	JFrame frame;
 	Timer timer = new Timer();
 
-
 	JPopupMenu popup = new JPopupMenu();
 	JMenuItem item3 = new JMenuItem("Delete Event");
 	JMenuItem item2 = new JMenuItem("Edit Event");
@@ -309,7 +308,7 @@ public class MainFrame extends JPanel{
 		}
 	}
 	public void editEvent(){
-
+		EventEditPanel.makeEditPanel(calendar.getSelectedEvent());
 	}
 	public void logout(){
 		Login.login();
@@ -321,7 +320,13 @@ public class MainFrame extends JPanel{
 		for(int i = 0; i < personnel.size(); i++){
 			person = personnel.get(i).getName().toLowerCase();
 			if(person.startsWith(search) || person.equals(search)){
-				personnelModel.addElement(personnel.get(i));
+				boolean b = true;
+				for(int j = 0; j < calendarModel.getSize(); j++){
+					if(calendarModel.getElementAt(j).getName().toLowerCase().equals(person)){
+						b = false;
+					}
+				}
+				if(b) personnelModel.addElement(personnel.get(i));
 				continue;
 			}
 			else{
@@ -376,13 +381,16 @@ public class MainFrame extends JPanel{
 			if(e.getSource() == nextArrow){
 				currUkenr +=1;
 				if(currUkenr == 53)currUkenr = 1;
+				calendar.repaint();
 			}
 			if(e.getSource() == backArrow){
 				currUkenr -=1;
 				if(currUkenr == 0)currUkenr = 52;
+				calendar.repaint();
 			}
 			if(e.getSource() == todayButton){
 				currUkenr = UKENR;
+				calendar.repaint();
 			}
 			resizing();
 			if(e.getSource() == editEvent){

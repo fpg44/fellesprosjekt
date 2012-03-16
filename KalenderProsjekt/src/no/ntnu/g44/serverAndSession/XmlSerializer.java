@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
+import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.Event;
+import no.ntnu.g44.models.Notification;
+import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Project;
 import no.ntnu.g44.models.Room;
@@ -22,6 +25,7 @@ import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.ParsingException;
+import nu.xom.ValidityException;
 
 /**
  * @author tho
@@ -38,9 +42,9 @@ public class XmlSerializer {
 	public Document toXml(Project aProject) {
 		Element root = new Element("project");
 
-		Iterator it = aProject.personIterator();
-		while (it.hasNext()) {
-			Person aPerson = (Person)it.next();
+		Iterator<Person> personIt = aProject.personIterator();
+		while (personIt.hasNext()) {
+			Person aPerson = (Person)personIt.next();
 			Element element = personToXml(aPerson);
 			root.appendChild(element);
 		}
@@ -51,7 +55,28 @@ public class XmlSerializer {
 			Element element = eventToXml(event);
 			root.appendChild(element);
 		}
+		
+		Iterator<Notification> notificationIt = aProject.notificationIterator();
+		while(notificationIt.hasNext()){
+			Notification notification = notificationIt.next();
+			Element element = notificationToXml(notification);
+			root.appendChild(element);
+		}
+		
+		Iterator<Room> roomIt = aProject.roomIterator();
+		while(roomIt.hasNext()){
+			Room room = roomIt.next();
+//			Element element = roomToXml(room);
+//			root.appendChild(element);
+		}
 
+		Iterator<AttendanceStatus> attendanceStatusIt = aProject.attendanseStaturIterator();
+		while(attendanceStatusIt.hasNext()){
+			AttendanceStatus attendanceStatus = attendanceStatusIt.next();
+//			Element element = attendanceStatusToXml(attendanceStatus);
+//			root.appendChild(element);
+		}
+		
 		return new Document(root);
 	}
 
@@ -189,7 +214,8 @@ public class XmlSerializer {
 		int id  = -1;
 		String title = null, location = null;
 		ArrayList<String> participants = new ArrayList<String>();
-		Room room = null;
+//		Room room = null;
+		String roomString = null;
 		String owner_username = null;
 		Date eventStartDate = null, eventEndDate = null;
 
@@ -225,7 +251,8 @@ public class XmlSerializer {
 
 		element = eventElement.getFirstChildElement("room");
 		if (element != null){
-			room = new Room(element.getValue());
+//			room = new Room(element.getValue());
+			roomString = element.getValue();
 		}
 
 		element = eventElement.getFirstChildElement("participants");
@@ -236,7 +263,71 @@ public class XmlSerializer {
 			}
 		}
 		
-		return new Event(id, title, owner_username, participants, eventStartDate, eventEndDate, location, room);
+		return new Event(id, title, owner_username, participants, eventStartDate, eventEndDate, location, roomString);
+	}
+	
+	public Element notificationToXml(Notification notification){
+		
+		Element element = new Element("notification");
+		
+		Element notificatioID = new Element("notification-id");
+		notificatioID.appendChild(String.valueOf(notification.getNotificationID()));
+		element.appendChild(notificatioID);
+		
+		Element eventID = new Element("event-id");
+		eventID.appendChild(String.valueOf(notification.getEventID()));
+		element.appendChild(eventID);
+		
+		Element type = new Element("type");
+		type.appendChild(notification.getType().toString());
+		element.appendChild(type);
+		
+		return element;
+	}
+	
+	public Notification toNotification(String xml) throws ValidityException, ParsingException, IOException{
+		nu.xom.Builder parser = new nu.xom.Builder(false);
+		nu.xom.Document doc = parser.build(xml, "");
+		return assembleNotification(doc.getRootElement());
+	}
+	
+	public Notification assembleNotification(Element e){
+		int eventID = -1, notificationID = -1;
+		NotificationType type = null;
+		
+		Element element = e.getFirstChildElement("notification-id");
+		if(element != null){
+			notificationID = Integer.parseInt(element.getValue());
+		}
+
+		element = e.getFirstChildElement("event-id");
+		if(element != null){
+			eventID = Integer.parseInt(element.getValue());
+		}
+				
+		element = e.getFirstChildElement("type");
+		if(element != null){
+			type = NotificationType.valueOf(element.getValue());
+		}
+		
+		return new Notification(notificationID, eventID, type);
+	}
+	
+	public Room toRoom(String xml) throws ValidityException, ParsingException, IOException{
+		nu.xom.Builder parser = new nu.xom.Builder(false);
+		nu.xom.Document doc = parser.build(xml, "");
+		return assembleRoom(doc.getRootElement());
+	}
+	
+	public Room assembleRoom(Element e){
+		String name = null;
+		
+		Element element = e.getFirstChildElement("name");
+		if(element != null){
+			name = element.getValue();
+		}
+		
+		return new Room(name);
 	}
 	
 }

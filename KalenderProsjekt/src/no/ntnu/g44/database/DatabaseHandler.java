@@ -298,13 +298,13 @@ public class DatabaseHandler {
 			try {
 
 				stmt.executeUpdate("UPDATE event SET" +
-						"event_id = '" + e.getEventID() + "', " +
 						"owner_username = '" + e.getEventOwner().getUsername() + "', " +
 						"time_start = '" + e.getEventStartTime() + "', " +
 						"time_end = '" + e.getEventEndTime() + "', " +
 						"title = '" + e.getEventDescription() + "', " +
 						"location = '" + e.getLocation() + "' ," +
-						"room_name = '" + e.getRoom().getRoomName() + "'"
+						"room_name = '" + e.getRoom().getRoomName() + "'" +
+						"WHERE event_id = '" + e.getEventID() + "'"
 						);
 
 			} catch (SQLException e1) {
@@ -325,7 +325,7 @@ public class DatabaseHandler {
 			//iterates over all notifications and adds them into the database
 			for(Notification notif : notifications){
 
-				stmt.executeUpdate("UPDATE notification set " +
+				stmt.executeUpdate("UPDATE notification SET " +
 						"type = '" + notif.getType().toString() + "' " +
 						"WHERE notif_id = '" + notif.getNotificationID() + "' " +
 						"AND event_id = '" + notif.getEventID() + "'");
@@ -346,11 +346,13 @@ public class DatabaseHandler {
 	public void updatePersons(ArrayList<Person> persons){
 
 		try{
-			//iterates over all notifications and adds them into the database
+			//iterates over all persons and adds them into the database
 			for(Person person : persons){
 
-				stmt.executeUpdate("UPDATE ");
-				
+				stmt.executeUpdate("UPDATE account SET" +
+						"name = '" + person.getName() + "' " +
+						"WHERE username = '" + person.getUsername() + "'");
+
 			}
 
 		}catch( Exception e ){
@@ -367,8 +369,13 @@ public class DatabaseHandler {
 	public void newEvent(Event event){
 
 		try{
-
-			stmt.executeUpdate("");
+			stmt.executeUpdate("INSERT INTO event VALUES" +
+					"owner_username = '" + event.getEventOwner().getName() + "', " +
+					"time_start = '" + event.getEventStartTime().toString() + "', " +
+					"time_end = '" + event.getEventEndTime() + "', " +
+					"title = '" + event.getEventDescription() + "', " +
+					"location = '" + event.getLocation() + "', " +
+					"room_name = '" + event.getRoom().getRoomName() + "'");
 
 		}catch( Exception e ){
 
@@ -385,8 +392,9 @@ public class DatabaseHandler {
 
 		try{
 
-			stmt.executeUpdate("");
-
+			stmt.executeUpdate("INSERT INTO notification VALUES" +
+					"event_id = '" + notification.getEventID() + "', " +
+					"type = '" + notification.getType().toString() + "'");
 		}catch( Exception e ){
 
 			e.printStackTrace();
@@ -394,22 +402,22 @@ public class DatabaseHandler {
 		}
 	}
 
-	/**
-	 * Insert a new Person in the database
-	 * @param p
-	 */
-	public void newPerson(Person person){
-
-		try{
-
-			stmt.executeUpdate("");
-
-		}catch( Exception e ){
-
-			e.printStackTrace();
-
-		}
-	}
+//	/** SHOULD NOT BE POSSIBLE
+//	 * Insert a new Person in the database
+//	 * @param p
+//	 */
+//	public void newPerson(Person person){
+//
+//		try{
+//
+//			stmt.executeUpdate("");
+//
+//		}catch( Exception e ){
+//
+//			e.printStackTrace();
+//
+//		}
+//	}
 
 	/**
 	 * Delete an event in the database
@@ -419,7 +427,7 @@ public class DatabaseHandler {
 
 		try{
 
-			stmt.executeUpdate("");
+			stmt.executeUpdate("UPDATE TABLE event set");
 
 		}catch( Exception e ){
 

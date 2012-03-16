@@ -461,7 +461,13 @@ public class NewEventPanel extends JPanel {
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mouseClicked(MouseEvent e) { }
+
+		@Override
+		public void mousePressed(MouseEvent e) { }
+
+		@Override
+		public void mouseReleased(MouseEvent e) { 
 			if (e.getSource() == addPersonToParticipantsListLabel 
 					&& searchList.getSelectedValue() != null) {
 				addParticipants();			
@@ -476,12 +482,6 @@ public class NewEventPanel extends JPanel {
 				removePersons();
 			}
 		}
-
-		@Override
-		public void mousePressed(MouseEvent e) { }
-
-		@Override
-		public void mouseReleased(MouseEvent e) { }
 
 		@Override
 		public void mouseEntered(MouseEvent e) { }

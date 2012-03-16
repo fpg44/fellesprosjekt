@@ -50,7 +50,7 @@ public class NewEventPanel extends JPanel {
 	private JLabel eventEndLabel;
 	private JSpinner eventEndTime;
 	private JLabel locationLabel;
-	private JComboBox location;
+	private JComboBox<Room> location;
 	private JLabel customLocationLabel;
 	private JTextField customLocation;
 	private JLabel eventDescriptionLabel;
@@ -138,7 +138,8 @@ public class NewEventPanel extends JPanel {
 		invitedListScroller = new JScrollPane(invitedList);
 		addPersonToParticipantsIcon = new ImageIcon(getClass().getResource(
 				"images/rightArrow.png"));
-		addPersonToParticipantsListLabel = new JLabel(addPersonToParticipantsIcon);
+		addPersonToParticipantsListLabel = new JLabel(
+				addPersonToParticipantsIcon);
 		addPersonToParticipantsListLabel.addMouseListener(searchListener);
 		removePersonFromParticipantsIcon = new ImageIcon(getClass().getResource(
 				"images/removeIcon.png"));
@@ -361,8 +362,9 @@ public class NewEventPanel extends JPanel {
 				for (Map.Entry<String, String> entry : persons.entrySet()) {
 					String name = entry.getValue().toLowerCase();
 					if (name.startsWith(query) || name.equals(query)) {
-						personsModel.addElement(Person.findPersonByUsername(
-								entry.getKey()));
+						Person p = Person.findPersonByUsername(entry.getKey());
+						if (!participantsModel.contains(p))
+							personsModel.addElement(p);
 					}
 				}
 				

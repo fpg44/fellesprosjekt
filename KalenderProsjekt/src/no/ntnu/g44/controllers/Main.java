@@ -11,6 +11,7 @@ import no.ntnu.g44.serverAndSession.FileStorage;
 
 public class Main {
 	public static Project currentProject = null;
+	public static MainFrame currentMainFrame;
 	/**
 	 * @param args
 	 */
@@ -23,7 +24,7 @@ public class Main {
 	
 	public static void onLogin(String username){
 		currentProject = new Project();
-		new MainFrame();
+		currentMainFrame = new MainFrame();
 		if(true) return; //hack to drop the code under.
 		try {
 			currentProject = new FileStorage().load(new File("project.xml"));

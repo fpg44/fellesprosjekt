@@ -59,7 +59,7 @@ public class EventInfoPanel extends JPanel{
 		locationField.setSize(ownerField.getSize());
 		messageField.setText(event.getEventDescription());
 		messageField.setLocation(ownerLabel.getX(), messageLabel.getY() + messageLabel.getHeight() + 4);
-		messageField.setSize(locationField.getX() + locationField.getWidth() - locationLabel.getX(), ownerField.getHeight() * 4);
+		messageField.setSize(locationField.getX() + locationField.getWidth() - locationLabel.getX(), ownerField.getHeight() * 3);
 		
 		add(ownerLabel);
 		add(startLabel);

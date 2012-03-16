@@ -1,6 +1,12 @@
 package no.ntnu.g44.gui;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -30,7 +36,7 @@ public class EventInvitationPanel extends AbstractPanelClass {
 		//Custom for this panel
 		textArea.setText(event.getEventDescription());
 		
-		attendingLabel = new JLabel("Are you attending this event?");
+		attendingLabel = new JLabel("Will you be attending this event?");
 		yesButton = new JButton("Yes");
 		noButton = new JButton("No");
 		cancelButton = new JButton("Cancel");
@@ -43,22 +49,29 @@ public class EventInvitationPanel extends AbstractPanelClass {
 		c.gridy = 6;
 		panel.add(attendingLabel, c);
 		
+		c.fill = GridBagConstraints.NONE;
 		
-		c.gridx = 1;
-		c.gridy = 7;
-		c.anchor = GridBagConstraints.EAST;
-		panel.add(yesButton, c);
+		//Add a new panel for the buttons
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new GridBagLayout());
+		GridBagConstraints bc = new GridBagConstraints();
 		
-		c.gridx = 1;
+		buttonPanel.add(yesButton, bc);
+		buttonPanel.add(noButton, bc);
+		buttonPanel.add(cancelButton, bc);
+		
+		c.gridx = 0;
 		c.gridy = 7;
-		c.anchor = GridBagConstraints.WEST;
-		panel.add(noButton, c);
+		c.gridwidth = 2;
+		panel.add(buttonPanel, c);
+		
+		//Add actionlistener for the buttons
+		yesButton.addActionListener(new ButtonListener());
+		noButton.addActionListener(new ButtonListener());
+		cancelButton.addActionListener(new ButtonListener());
 		
 		frame.pack();
-		frame.setVisible(true);
-		
-		
-		
+		frame.setVisible(true);		
 	}
 	
 	//For testing purposes
@@ -69,5 +82,21 @@ public class EventInvitationPanel extends AbstractPanelClass {
 				new Date(2012,3,15,13,6), "G138" ,null);
 		EventInvitationPanel e = new EventInvitationPanel(newEvent);
 	}
-
+	
+	class ButtonListener implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == yesButton) {
+				//Her må det legges til slik at eventet legges til på personen
+				closeWindow();
+			}
+			else if (e.getSource() == noButton) {
+				closeWindow();
+			}
+			else if (e.getSource() == cancelButton) {
+				closeWindow();
+			}
+		}
+	}
 }

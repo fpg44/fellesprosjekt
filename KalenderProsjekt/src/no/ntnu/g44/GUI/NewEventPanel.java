@@ -28,10 +28,11 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JSpinner.DateEditor;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
@@ -49,8 +50,11 @@ public class NewEventPanel extends JPanel {
 	private Person eventOwner;
 	private JLabel eventStartLabel;
 	private JSpinner eventStartTime;
+	private SpinnerDateModel startTimeModel;
 	private JLabel eventEndLabel;
 	private JSpinner eventEndTime;
+	private SpinnerDateModel endTimeModel;
+	private RoomListener roomListener;
 	private JLabel locationLabel;
 	private JComboBox<Room> location;
 	private JLabel customLocationLabel;
@@ -102,16 +106,16 @@ public class NewEventPanel extends JPanel {
 		eventOwnerName = new JLabel(owner.getName());
 		eventStartLabel = new JLabel("From");
 		eventStartTime = new JSpinner();
-		SpinnerDateModel startModel = new SpinnerDateModel();
-		startModel.setCalendarField(Calendar.DAY_OF_WEEK_IN_MONTH);
-		eventStartTime.setModel(startModel);
+		startTimeModel = new SpinnerDateModel();
+		startTimeModel.setCalendarField(Calendar.DAY_OF_WEEK_IN_MONTH);
+		eventStartTime.setModel(startTimeModel);
 		eventStartTime.setEditor(new JSpinner.DateEditor(eventStartTime,
 				"yyyy-MM-dd HH:mm"));
 		eventEndLabel = new JLabel("To");
 		eventEndTime = new JSpinner();
-		SpinnerDateModel endModel = new SpinnerDateModel();
-		endModel.setCalendarField(Calendar.DAY_OF_WEEK_IN_MONTH);
-		eventEndTime.setModel(endModel);
+		endTimeModel = new SpinnerDateModel();
+		endTimeModel.setCalendarField(Calendar.DAY_OF_WEEK_IN_MONTH);
+		eventEndTime.setModel(endTimeModel);
 		eventEndTime.setEditor(new JSpinner.DateEditor(eventEndTime,
 				"yyyy-MM-dd HH:mm"));
 		locationLabel = new JLabel("Location");
@@ -123,6 +127,10 @@ public class NewEventPanel extends JPanel {
 		customLocation.setEnabled(false);
 		eventDescriptionLabel = new JLabel("Description");
 		eventDescription = new JTextArea(4, 20);	// 4 rows, 20 columns
+		roomListener = new RoomListener();
+		startTimeModel.addChangeListener(roomListener);
+		endTimeModel.addChangeListener(roomListener);
+		location.addActionListener(roomListener);
 		
 		// add some padding between the edge of the JTextArea and entered text
 		eventDescription.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
@@ -274,8 +282,72 @@ public class NewEventPanel extends JPanel {
 			}
 	}
 	
+	private void removePersons() {
+		List<Person> persons = invitedList.getSelectedValuesList();
+		for (Person p : persons) {
+			if (participantsModel.contains(p))
+				participantsModel.removeElement(p);
+			if (!personsModel.contains(p))
+				personsModel.addElement(p);
+		}
+	}
+	
+	private void addParticipants() {
+		List<Person> persons = searchList.getSelectedValuesList();
+		for (Person person : persons) {
+			if (!participantsModel.contains(person))
+				participantsModel.addElement(person);
+			if (personsModel.contains(person))
+				personsModel.removeElement(person);
+		}
+	}
+	
+	private Event createEvent() {
+		String eventTitle = new String(eventDescription.getText());
+		ArrayList<Person> participants = new ArrayList<Person>();
+		for (int i = 0; i < participantsModel.getSize(); i++)
+			participants.add(participantsModel.get(i));
+		Date eventStartTime = startTimeModel.getDate();
+		Date eventEndTime = endTimeModel.getDate();
+		String location = null;
+		Room room = null;
+		
+		return new Event(eventTitle, this.eventOwner, participants,
+				eventStartTime, eventEndTime, location, room);
+	}
+	
 	private void closeWindow() {
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+	}
+	
+	class RoomListener implements ActionListener, ChangeListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == location) {
+				Room room = (Room) location.getSelectedItem();
+				if (room != null && room == Room.OTHER) {
+					customLocation.setEnabled(true);
+				} else {
+					customLocation.setText("");
+					customLocation.setEnabled(false);
+				}
+			}
+		}
+
+		@Override
+		public void stateChanged(ChangeEvent e) {
+			if (e.getSource() == startTimeModel
+					|| e.getSource() == endTimeModel) {
+				Date start = startTimeModel.getDate();
+				Date end = endTimeModel.getDate();
+				ArrayList<Room> rooms = Room.getAvailableRooms(start, end);
+				
+				location.removeAllItems();
+				for (Room room : rooms)
+					location.addItem(room);
+			}
+		}
 	}
 	
 	class ButtonListener implements ActionListener {
@@ -306,7 +378,7 @@ public class NewEventPanel extends JPanel {
 			
 			if ((e.getSource() == searchList || e.getSource() == searchField)
 					&& e.getKeyChar() == KeyEvent.VK_ENTER) {
-				addPersons();
+				addParticipants();
 			} else if (e.getSource() == invitedList
 					&& (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
 					|| e.getKeyCode() == KeyEvent.VK_DELETE)) {
@@ -392,14 +464,14 @@ public class NewEventPanel extends JPanel {
 		public void mouseClicked(MouseEvent e) {
 			if (e.getSource() == addPersonToParticipantsListLabel 
 					&& searchList.getSelectedValue() != null) {
-				addPersons();			
+				addParticipants();			
 			} else if (e.getSource() == removePersonFromParticipantsListLabel
 					&& invitedList.getSelectedValue() != null) {
 				removePersons();
 			} else if (e.getSource() == searchField) {
 				searchField.selectAll();
 			} else if (e.getSource() == searchList && e.getClickCount() == 2) {
-				addPersons();
+				addParticipants();
 			} else if (e.getSource() == invitedList && e.getClickCount() == 2) {
 				removePersons();
 			}
@@ -416,41 +488,5 @@ public class NewEventPanel extends JPanel {
 
 		@Override
 		public void mouseExited(MouseEvent e) { }
-	}
-	
-	private void addPersons() {
-		List<Person> persons = searchList.getSelectedValuesList();
-		for (Person p : persons) {
-			if (!participantsModel.contains(p))
-				participantsModel.addElement(p);
-			if (personsModel.contains(p))
-				personsModel.removeElement(p);
-		}
-	}
-	
-	private void removePersons() {
-		List<Person> persons = invitedList.getSelectedValuesList();
-		for (Person p : persons) {
-			if (participantsModel.contains(p))
-				participantsModel.removeElement(p);
-			if (!personsModel.contains(p))
-				personsModel.addElement(p);
-		}
-	}
-	
-	private Event createEvent() {
-		String eventTitle = new String(eventDescription.getText());
-		ArrayList<Person> participants = new ArrayList<Person>();
-		for (int i = 0; i < participantsModel.getSize(); i++)
-			participants.add(participantsModel.get(i));
-		Date eventStartTime = (Date) ((SpinnerDateModel) 
-				this.eventStartTime.getModel()).getDate();
-		Date eventEndTime = (Date) ((SpinnerDateModel) 
-				this.eventEndTime.getModel()).getDate();
-		String location = null;
-		Room room = null;
-		
-		return new Event(eventTitle, this.eventOwner, participants,
-				eventStartTime, eventEndTime, location, room);
 	}
 }

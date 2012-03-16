@@ -34,7 +34,6 @@ public class Notification {
 		this.notificationID = notificationID;
 		this.eventID = eventID;
 		this.type = type;
-		this.message = setMessage(type);
 		
 		pcs = new PropertyChangeSupport(this);
 	}
@@ -60,7 +59,7 @@ public class Notification {
 	 * area in MainFrame
 	 */
 	public String getMessage() {
-		return message;
+		return type.getMsg();
 	}
 
 	public NotificationType getType() {

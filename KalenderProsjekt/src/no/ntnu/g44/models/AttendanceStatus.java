@@ -10,6 +10,30 @@ public class AttendanceStatus {
 	private AttendanceStatusType status;
 	private PropertyChangeSupport pcs;
 	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public int getEventID() {
+		return eventID;
+	}
+
+	public void setEventID(int eventID) {
+		this.eventID = eventID;
+	}
+
+	public AttendanceStatusType getStatus() {
+		return status;
+	}
+
+	public void setStatus(AttendanceStatusType status) {
+		this.status = status;
+	}
+
 	public AttendanceStatus(String username, int eventID, AttendanceStatusType status){
 		this.username = username;
 		this.eventID = eventID;

@@ -142,7 +142,7 @@ public class DatabaseHandler {
 						persons,							//persons
 						dateStart, dateEnd,					//date start, end
 						rsE.getString(6),					//location 
-						new Room(rsE.getString(7)));		//room
+						rsE.getString(7));		//room
 
 				//add this event to array
 				events.add(event);

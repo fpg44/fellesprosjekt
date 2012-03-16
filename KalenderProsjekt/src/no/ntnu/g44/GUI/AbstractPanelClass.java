@@ -33,8 +33,10 @@ public abstract class AbstractPanelClass {
 
 	protected JButton okButton;
 	
+	protected GridBagConstraints c;
+	
 	protected void setPanelLayout() {
-		GridBagConstraints c = new GridBagConstraints();
+		c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.WEST;
 		c.insets = new Insets(0, 0, 5, 5);
 		c.ipadx = 5;
@@ -47,46 +49,38 @@ public abstract class AbstractPanelClass {
 
 		c.gridx = 0;
 		c.gridy = 1;
-		panel.add(staticEventTitleLabel, c);
-
-		c.gridx = 0;
-		c.gridy = 2;
 		panel.add(staticStartTimeLabel, c);
 
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 2;
 		panel.add(staticEndTimeLabel, c);
 
 		c.gridx = 0;
-		c.gridy = 4;
+		c.gridy = 3;
 		panel.add(staticLocationLabel, c);
 
 		//Add the non-static labels
 		c.gridx = 1;
 		c.gridy = 0;
 		panel.add(personNameLabel, c);
-
+		
 		c.gridx = 1;
 		c.gridy = 1;
-		panel.add(eventTitleLabel, c);
-
-		c.gridx = 1;
-		c.gridy = 2;
 		panel.add(startTimeLabel, c);
 
 		c.gridx = 1;
-		c.gridy = 3;
+		c.gridy = 2;
 		panel.add(endTimeLabel, c);
 
 		c.gridx = 1;
-		c.gridy = 4;
+		c.gridy = 3;
 		panel.add(locationLabel, c);
 
 		//Add the textarea
 		c.gridx = 0;
-		c.gridy = 5;
+		c.gridy = 4;
 		c.gridwidth = 2;
-		c.fill = new GridBagConstraints().HORIZONTAL;
+//		c.fill = new GridBagConstraints().HORIZONTAL;
 		textArea.setEditable(false);
 		panel.add(textArea, c);
 	}

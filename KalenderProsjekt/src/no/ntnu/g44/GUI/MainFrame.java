@@ -5,11 +5,8 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -31,17 +28,14 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.NoFixedFacet;
 
 import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
-import no.ntnu.g44.models.NotificationType;
-import no.ntnu.g44.models.Notification;
-import no.ntnu.g44.models.Person;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.controllers.NotificationController;
+import no.ntnu.g44.models.Notification;
+import no.ntnu.g44.models.NotificationType;
+import no.ntnu.g44.models.Person;
 
 public class MainFrame extends JPanel{
 	ListeningClass listener = new ListeningClass();
@@ -101,6 +95,9 @@ public class MainFrame extends JPanel{
 
 		fillModel();
 
+		newEvent.addMouseMotionListener(listener);
+		newEvent.addMouseListener(listener);
+		
 		item1.addActionListener(listener);
 		item2.addActionListener(listener);
 		item3.addActionListener(listener);
@@ -205,7 +202,6 @@ public class MainFrame extends JPanel{
 		}
 		newEvent.setLocation( 12,  16);
 		newEvent.setSize((getWidth() -36) / 8,( getHeight() - 56) / 12);
-		newEvent.addMouseMotionListener(listener);
 
 		editEvent.setSize(newEvent.getSize());
 		editEvent.setLocation(newEvent.getX(), newEvent.getY() + newEvent.getHeight());
@@ -300,7 +296,7 @@ public class MainFrame extends JPanel{
 		}
 	}
 	public void newEvent(){
-
+		new NewEventPanel(new Person("Foo Bar", "foobar"), new JFrame());
 	}
 	public void deleteEvent(){
 		if(calendar.getSelectedEvent() != null){
@@ -339,14 +335,7 @@ public class MainFrame extends JPanel{
 		boolean shift = false;
 		public void mouseDragged(MouseEvent e) {
 		}
-		public void mouseMoved(MouseEvent e) {
-			if(e.getSource() == newEvent){
-				newEvent.setText("BØØØØØ!");
-			}
-			else{
-				newEvent.setText("New event");
-			}
-		}
+		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!unseenNotifications.isEmpty()){
@@ -354,8 +343,8 @@ public class MainFrame extends JPanel{
 					if (notifBox.getSelectedIndex() == 0) {
 						System.out.println("Nothing happens");
 					}
-					//Her skal vi legge inn kall pŒ forskjellige dialogbokser som kommer
-					//som f¿lge av man trykker pŒ en notifikasjon.
+					//Her skal vi legge inn kall pï¿½ forskjellige dialogbokser som kommer
+					//som fï¿½lge av man trykker pï¿½ en notifikasjon.
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CANCELLED){
 						//EventCancelled eventCancelled = new EventCancelled(event)
 						System.out.println("This event has been cancelled");
@@ -499,6 +488,10 @@ public class MainFrame extends JPanel{
 			}
 			if(e.getSource() == searchField){
 				searchField.selectAll();
+			}
+			
+			if (e.getSource() == newEvent) {
+				newEvent();
 			}
 
 		}

@@ -45,7 +45,7 @@ public class EventInfoPanel extends JPanel{
 		messageLabel.setSize(messageLabel.getPreferredSize());
 		ownerField.setText(event.getEventOwnerString());
 		ownerField.setLocation(ownerLabel.getX() + ownerLabel.getWidth() + 4, ownerLabel.getY());
-		ownerField.setSize(200, (int) ownerField.getPreferredSize().getHeight());
+		ownerField.setSize(250, (int) ownerField.getPreferredSize().getHeight());
 		Date date = event.getEventStartTime();
 		startField.setText(event.getEventStartTime().toGMTString());
 		startField.setLocation(ownerField.getX(), startLabel.getY());

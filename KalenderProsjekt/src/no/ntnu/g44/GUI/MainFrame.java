@@ -25,6 +25,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -73,7 +75,10 @@ public class MainFrame extends JPanel{
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
 	CalendarPanel calendar = new CalendarPanel();
-
+	
+	JMenuItem newAction;
+	JMenuItem logoutAction;
+	JMenuItem exitAction;
 
 	int UKENR = 0;
 	int currUkenr = UKENR;
@@ -124,7 +129,21 @@ public class MainFrame extends JPanel{
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		insets = frame.getInsets();
-
+		
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		JMenu systemMenu = new JMenu("System");
+		menuBar.add(systemMenu);
+		newAction = new JMenuItem("New Event");
+		logoutAction = new JMenuItem("Logout");
+		exitAction = new JMenuItem("Exit");
+		systemMenu.add(newAction);
+		systemMenu.add(logoutAction);
+		systemMenu.add(exitAction);
+		newAction.addActionListener(listener);
+		logoutAction.addActionListener(listener);
+		exitAction.addActionListener(listener);
+		
 		addMouseMotionListener(listener);
 		editEvent.setVisible(true);
 		editEvent.addActionListener(listener);
@@ -388,6 +407,15 @@ public class MainFrame extends JPanel{
 			}
 			if(e.getSource() == item4){
 				logout();
+			}
+			if(e.getSource() == newAction){
+				newEvent();
+			}
+			if(e.getSource() == logoutAction){
+				logout();
+			}
+			if(e.getSource() == exitAction){
+				System.exit(0);
 			}
 			if(e.getSource() == nextArrow){
 				currUkenr +=1;

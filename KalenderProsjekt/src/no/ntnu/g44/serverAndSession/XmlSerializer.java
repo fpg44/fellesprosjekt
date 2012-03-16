@@ -121,17 +121,17 @@ public class XmlSerializer {
 		return format.parse(date);
 	}
 
-	protected Document toXml(ArrayList<Event> events){
-
-		Element root = new Element("project");
-
-		for(Event event : events){
-			Element element = eventToXml(event);
-			root.appendChild(element);
-		}
-
-		return new Document(root);
-	}
+//	protected Document toXml(ArrayList<Event> events){
+//
+//		Element root = new Element("project");
+//
+//		for(Event event : events){
+//			Element element = eventToXml(event);
+//			root.appendChild(element);
+//		}
+//
+//		return new Document(root);
+//	}
 
 	protected Element eventToXml(Event event){
 

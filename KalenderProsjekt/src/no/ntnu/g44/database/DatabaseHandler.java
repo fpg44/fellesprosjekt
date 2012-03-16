@@ -10,6 +10,8 @@ import java.util.Date;
 
 import javax.print.attribute.standard.DateTimeAtCompleted;
 
+import no.ntnu.g44.models.AttendanceStatus;
+import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.NotificationType;
@@ -119,7 +121,7 @@ public class DatabaseHandler {
 					}
 
 				}
-				
+
 				/////////////////////			
 				/*	RESULTSET INDEX:
 				 * 1 : event_id
@@ -155,7 +157,7 @@ public class DatabaseHandler {
 		}catch(Exception e){
 
 			e.printStackTrace();
-			
+
 		}
 
 		return events;
@@ -167,95 +169,124 @@ public class DatabaseHandler {
 	 */
 	public ArrayList<Person> getPersons(){
 		ArrayList<Person> persons = new ArrayList<Person>();
-		
+
 		try{
-			
+
 			ResultSet rs = stmt.executeQuery("SELECT username, name FROM account");
-			
+
 			if(rs.first() == false){
 				return null;
 			}
-			
+
 			do{
-				
+
 				persons.add(new Person(rs.getString(1), rs.getString(2)));
-				
+
 			}while(rs.next());
-			
+
 			rs = null;
-			
+
 		}catch(Exception e){
-			
+
 			e.printStackTrace();
-			
+
 		}
 		return persons;
 	}
-	
+
 	/**
 	 * 
 	 * @return all the rooms from the database
 	 */
 	public ArrayList<Room> getRooms(){
 		ArrayList<Room> rooms = new ArrayList<Room>();
-		
+
 		try{
 			ResultSet rs = stmt.executeQuery("SELECT name FROM room");
-			
+
 			if(rs.first() == false){
 				return null;
 			}
-			
+
 			do{
-				
+
 				rooms.add(new Room(rs.getString(1)));
-				
+
 			}while(rs.next());
-			
+
 			rs = null;
-			
+
 		}catch(Exception e){
-			
+
 			e.printStackTrace();
-			
+
 		}
-		
+
 		return rooms;
 	}
-	
+
 	/**
 	 * 
 	 * @return all the notifications from the database
 	 */
 	public ArrayList<Notification> getNotifications(){
 		ArrayList<Notification> notifications = new ArrayList<Notification>();
-		
+
 		try{
-			
+
 			ResultSet rs = stmt.executeQuery("SELECT * FROM notification");
-			
+
 			if(rs.first() == false){
 				return null;
 			}
-			
+
 			do{
 				Notification n = new Notification(rs.getInt(1), rs.getInt(2), NotificationType.valueOf(rs.getString(3)));
-				
+
 				notifications.add(n);
-				
+
 			}while(rs.next());
-			
+
 			rs = null;
-			
+
 		}catch(Exception e){
-			
+
 			e.printStackTrace();
-			
+
 		}
-		
+
 		return notifications;
 	}
-	
+
+	public ArrayList<AttendanceStatus> getAttendanceStatus(){
+
+		ArrayList<AttendanceStatus> status = new ArrayList<AttendanceStatus>();
+
+		try{
+
+			ResultSet rs = stmt.executeQuery("SELECT * FROM attends_at");
+
+			if(rs.first() == false){
+
+				do{
+
+					status.add( new AttendanceStatus(rs.getString(1), rs.getInt(2), AttendanceStatusType.getType(rs.getString(3))) );
+
+				}while(rs.next());
+
+				rs = null;
+
+			}
+
+		}catch( Exception e){
+
+			e.printStackTrace();
+
+		}
+		
+		return status;
+	}
+
 	/**
 	 * 
 	 * @param events 
@@ -273,7 +304,7 @@ public class DatabaseHandler {
 						"title = '" + e.getEventTitle() + "', " +
 						"location = '" + e.getLocation() + "' ," +
 						"room_name = '" + e.getRoom().getRoomName() + "'"
-				);
+						);
 
 			} catch (SQLException e1) {
 
@@ -282,36 +313,36 @@ public class DatabaseHandler {
 			}
 		}
 	}
-	
+
 	public void updateNotifications(ArrayList<Notification> notifications){
-		
+
 	}
-	
+
 	public void updatePersons(ArrayList<Person> persons){
-		
+
 	}
-	
+
 	public void newEvent(Event e){
-		
+
 	}
-	
+
 	public void newNotification(Notification n){
-		
+
 	}
-	
+
 	public void newPerson(Person p){
-		
+
 	}
-	
+
 	public void deleteEvent(Event e){
-		
+
 	}
-	
+
 	public void deleteNotification(Notification n){
-		
+
 	}
-	
+
 	public void deletePerson(Person p){
-		
+
 	}
 }

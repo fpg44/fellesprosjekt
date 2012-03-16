@@ -1,7 +1,5 @@
 package no.ntnu.g44.models;
 
-import java.util.HashMap;
-
 public enum NotificationType {
 	INVITATION("New event invitation"),
 	CHANGED("Event changed"),

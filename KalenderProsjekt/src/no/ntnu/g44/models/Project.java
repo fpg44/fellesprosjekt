@@ -136,13 +136,17 @@ public class Project implements PropertyChangeListener {
 	 * 
 	 * @see java.util.Iterator <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/Iterator.html">java.util.Iterator</a>.
 	 */
-	public Iterator personIterator() {
+	public Iterator<Person> personIterator() {
 		return personList.iterator();
 	}
 
 	
 	public Iterator<Event> eventIterator(){
 		return eventList.iterator();
+	}
+	
+	public Iterator<Notification> notificationIterator(){
+		return notificationList.iterator();
 	}
 	
 	/**

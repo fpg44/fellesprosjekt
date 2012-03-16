@@ -94,7 +94,7 @@ public class Server{
 //		return xmlSerializer.toXml(dbHandler.getEventsFromDatabase());
 //	}
 	
-	protected Project getAllPersons(){
+	protected Project getDataFromDatabase(){
 		Project p = new Project();
 		
 		ArrayList<Person> persons = dbHandler.getPersons();

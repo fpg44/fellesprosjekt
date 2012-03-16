@@ -7,9 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-
-import javax.print.attribute.standard.DateTimeAtCompleted;
-
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
@@ -258,6 +255,10 @@ public class DatabaseHandler {
 		return notifications;
 	}
 
+	/**
+	 * 
+	 * @return Array with all the information about the attendance-status to the participants
+	 */
 	public ArrayList<AttendanceStatus> getAttendanceStatus(){
 
 		ArrayList<AttendanceStatus> status = new ArrayList<AttendanceStatus>();
@@ -283,13 +284,13 @@ public class DatabaseHandler {
 			e.printStackTrace();
 
 		}
-		
+
 		return status;
 	}
 
 	/**
 	 * 
-	 * @param events 
+	 * @param an array with all the events that should be updated into the database
 	 */
 	public void updateEvents(ArrayList<Event> events){
 
@@ -297,13 +298,13 @@ public class DatabaseHandler {
 			try {
 
 				stmt.executeUpdate("UPDATE event SET" +
-						"event_id = '" + e.getEventID() + "', " +
 						"owner_username = '" + e.getEventOwner().getUsername() + "', " +
 						"time_start = '" + e.getEventStartTime() + "', " +
 						"time_end = '" + e.getEventEndTime() + "', " +
-						"title = '" + e.getEventTitle() + "', " +
+						"title = '" + e.getEventDescription() + "', " +
 						"location = '" + e.getLocation() + "' ," +
-						"room_name = '" + e.getRoom().getRoomName() + "'"
+						"room_name = '" + e.getRoom().getRoomName() + "'" +
+						"WHERE event_id = '" + e.getEventID() + "'"
 						);
 
 			} catch (SQLException e1) {
@@ -314,35 +315,158 @@ public class DatabaseHandler {
 		}
 	}
 
+	/**
+	 * Send an arraylist with all the notification that shal be updated in the database
+	 * @param notifications
+	 */
 	public void updateNotifications(ArrayList<Notification> notifications){
 
+		try{
+			//iterates over all notifications and adds them into the database
+			for(Notification notif : notifications){
+
+				stmt.executeUpdate("UPDATE notification SET " +
+						"type = '" + notif.getType().toString() + "' " +
+						"WHERE notif_id = '" + notif.getNotificationID() + "' " +
+						"AND event_id = '" + notif.getEventID() + "'");
+
+			}
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
+	/**
+	 * Send an ArrayList with all the persons that shall be updated in the database
+	 * @param persons
+	 */
 	public void updatePersons(ArrayList<Person> persons){
 
+		try{
+			//iterates over all persons and adds them into the database
+			for(Person person : persons){
+
+				stmt.executeUpdate("UPDATE account SET" +
+						"name = '" + person.getName() + "' " +
+						"WHERE username = '" + person.getUsername() + "'");
+
+			}
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
-	public void newEvent(Event e){
+	/**
+	 * Insert a new event in the database
+	 * @param event
+	 */
+	public void newEvent(Event event){
 
+		try{
+			stmt.executeUpdate("INSERT INTO event VALUES" +
+					"owner_username = '" + event.getEventOwner().getName() + "', " +
+					"time_start = '" + event.getEventStartTime().toString() + "', " +
+					"time_end = '" + event.getEventEndTime() + "', " +
+					"title = '" + event.getEventDescription() + "', " +
+					"location = '" + event.getLocation() + "', " +
+					"room_name = '" + event.getRoom().getRoomName() + "'");
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
-	public void newNotification(Notification n){
+	/**
+	 * Insert a new notification in the database
+	 * @param notification
+	 */
+	public void newNotification(Notification notification){
 
+		try{
+
+			stmt.executeUpdate("INSERT INTO notification VALUES" +
+					"event_id = '" + notification.getEventID() + "', " +
+					"type = '" + notification.getType().toString() + "'");
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
-	public void newPerson(Person p){
+	/**
+	 * Delete an event in the database
+	 * @param e
+	 */
+	public void deleteEvent(Event event){
 
+		try{
+
+			stmt.executeUpdate("DELETE FROM event WHERE event_id ='" + event.getEventID() + "'");
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
-	public void deleteEvent(Event e){
+	/**
+	 * Delete a notification in the database
+	 * @param n
+	 */
+	public void deleteNotification(Notification notification){
 
+		try{
+
+			stmt.executeUpdate("DELETE FROM notification WHERE notif_id ='" + notification.getNotificationID() + "'");
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
-	public void deleteNotification(Notification n){
-
-	}
-
-	public void deletePerson(Person p){
-
-	}
+//	/** SHOULD NOT BE POSSIBLE
+//	 * Delete a person in the database
+//	 * @param p
+//	 */
+//	public void deletePerson(Person person){
+//
+//		try{
+//
+//			stmt.executeUpdate("DELETE FROM account WHERE username ='" + person.getUsername() + "'");
+//
+//		}catch( Exception e ){
+//
+//			e.printStackTrace();
+//
+//		}
+//	}
+//	
+//	/** SHOULD NOT BE POSSIBLE
+//	 * Insert a new Person in the database
+//	 * @param p
+//	 */
+//	public void newPerson(Person person){
+//
+//		try{
+//
+//			stmt.executeUpdate("");
+//
+//		}catch( Exception e ){
+//
+//			e.printStackTrace();
+//
+//		}
+//	}
 }

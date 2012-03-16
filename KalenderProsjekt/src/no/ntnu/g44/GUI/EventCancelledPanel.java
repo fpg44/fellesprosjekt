@@ -34,7 +34,6 @@ public class EventCancelledPanel extends JPanel{
 	private Event event;
 
 	private JPanel eventCancelledLabelPanel;
-	private JPanel eventCancelledTextAreaPanel;
 	private JFrame frame;
 
 	private Person eventOwner;
@@ -56,7 +55,6 @@ public class EventCancelledPanel extends JPanel{
 
 		frame = new JFrame();
 		eventCancelledLabelPanel = new JPanel();
-		eventCancelledTextAreaPanel = new JPanel();
 		frame.getContentPane().add(eventCancelledLabelPanel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -74,7 +72,7 @@ public class EventCancelledPanel extends JPanel{
 		staticLocationLabel = new JLabel("Location:");
 
 		personNameLabel = new JLabel(eventOwner.getName());
-		eventTitleLabel = new JLabel(event.getEventTitle());
+		eventTitleLabel = new JLabel(event.getEventDescription());
 		startTimeLabel = new JLabel(startTime.toString());
 		endTimeLabel = new JLabel(endTime.toString());
 		locationLabel = new JLabel();

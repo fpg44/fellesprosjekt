@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Event {
 	
-	private String eventTitle, location;
+	private String eventDescription, location;
 	private ArrayList<Person> participants;
 	private ArrayList<String> participantsStrings;
 	private Date eventStartTime;
@@ -31,7 +31,7 @@ public class Event {
 
 	/** this should be deleted
 	 * Creates a new Event
-	 * @param eventTitle
+	 * @param eventDescription
 	 * @param participants
 	 * @param eventStartDate
 	 * @param eventEndDate
@@ -39,9 +39,9 @@ public class Event {
 	 * @param room
 	 */
 	@Deprecated
-	public Event(String eventTitle, ArrayList<Person> participants, 
+	public Event(String eventDescription, ArrayList<Person> participants, 
 			Date eventStartTime, Date eventEndTime, String location, Room room) {
-		this.eventTitle = eventTitle;
+		this.eventDescription = eventDescription;
 		this.participants = participants;
 		this.eventStartTime = eventStartTime;
 		this.eventEndTime = eventEndTime;
@@ -63,7 +63,7 @@ public class Event {
 	public Event(int eventID, String eventTitle, Person eventOwner, ArrayList<Person> participants, 
 			Date eventStartTime, Date eventEndTime, String location, Room room) {
 		this.eventID = eventID;
-		this.eventTitle = eventTitle;
+		this.eventDescription = eventTitle;
 		this.eventOwner = eventOwner;
 		this.participants = participants;
 		this.eventStartTime = eventStartTime;
@@ -106,7 +106,7 @@ public class Event {
 	public Event(int eventID, String eventTitle, String eventOwner, ArrayList<String> participants, 
 			Date eventStartTime, Date eventEndTime, String location, Room room){
 		this.eventID = eventID;
-		this.eventTitle = eventTitle;
+		this.eventDescription = eventTitle;
 		this.eventOwnerString = eventOwner;
 		this.participantsStrings = participants;
 		this.eventStartTime = eventStartTime;
@@ -148,12 +148,12 @@ public class Event {
 		return eventOwner;
 	}
 
-	public String getEventTitle() {
-		return eventTitle;
+	public String getEventDescription() {
+		return eventDescription;
 	}
 
-	public void setEventTitle(String eventTitle) {
-		this.eventTitle = eventTitle;
+	public void setEventDescription(String eventTitle) {
+		this.eventDescription = eventTitle;
 	}
 
 	public String getLocation() {

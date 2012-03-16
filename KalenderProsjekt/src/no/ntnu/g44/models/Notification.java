@@ -2,7 +2,7 @@ package no.ntnu.g44.models;
 
 public class Notification {
 	
-	private String message, username;
+	private String message;
 	private NotificationType type;
 	private int notificationID, eventID;
 	
@@ -31,6 +31,22 @@ public class Notification {
 		this.eventID = eventID;
 		this.type = type;
 		this.message = setMessage(type);
+	}
+
+	public int getNotificationID() {
+		return notificationID;
+	}
+
+	public void setNotificationID(int notificationID) {
+		this.notificationID = notificationID;
+	}
+
+	public int getEventID() {
+		return eventID;
+	}
+
+	public void setEventID(int eventID) {
+		this.eventID = eventID;
 	}
 
 	/**

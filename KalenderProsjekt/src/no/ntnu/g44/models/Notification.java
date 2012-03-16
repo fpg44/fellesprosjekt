@@ -1,10 +1,14 @@
 package no.ntnu.g44.models;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 public class Notification {
 	
 	private String message;
 	private NotificationType type;
 	private int notificationID, eventID;
+	private PropertyChangeSupport pcs;
 	
 	/**
 	 * Create a new <code>Notification</code> with the specified message and type. <br><br>
@@ -31,6 +35,8 @@ public class Notification {
 		this.eventID = eventID;
 		this.type = type;
 		this.message = setMessage(type);
+		
+		pcs = new PropertyChangeSupport(this);
 	}
 
 	public int getNotificationID() {
@@ -76,5 +82,9 @@ public class Notification {
 	@Override
 	public String toString() {
 		return message;
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener){
+		pcs.addPropertyChangeListener(listener);
 	}
 }

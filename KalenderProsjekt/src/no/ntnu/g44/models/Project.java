@@ -44,6 +44,11 @@ public class Project implements PropertyChangeListener {
 	 * All notifications
 	 */
 	private ArrayList<Notification> notificationList;
+	
+	/**
+	 * All attendance statuses to the participants
+	 */
+	private ArrayList<AttendanceStatus> attendanceStatus;
 	/**
 	 * This member variable provides functionality for notifying of changes to
 	 * the <code>Project</code> class.
@@ -116,6 +121,7 @@ public class Project implements PropertyChangeListener {
 	public Event getEvent(int i){
 		return eventList.get(i);
 	}
+	
 	/**
 	 * Returns the index of the first occurrence of the specified object, or 
 	 * -1 if the list does not contain this object.
@@ -140,7 +146,6 @@ public class Project implements PropertyChangeListener {
 		return personList.iterator();
 	}
 
-	
 	public Iterator<Event> eventIterator(){
 		return eventList.iterator();
 	}
@@ -149,12 +154,36 @@ public class Project implements PropertyChangeListener {
 		return notificationList.iterator();
 	}
 	
+	public Iterator<Room> roomIterator(){
+		return roomList.iterator();
+	}
+	
+	public Iterator<AttendanceStatus> attendanseStaturIterator(){
+		return attendanceStatus.iterator();
+	}
+	
 	/**
 	 * WARNING: USE ONLY FOR READING!!
 	 * @return the raw ArrayList
 	 */
 	public ArrayList<Event> getEventList(){
 		return eventList;
+	}
+	
+	public ArrayList<Person> getPersonList(){
+		return personList;
+	}
+	
+	public ArrayList<Notification> getNotificationList(){
+		return notificationList;
+	}
+	
+	public ArrayList<Room> getRoomList(){
+		return roomList;
+	}
+	
+	public ArrayList<AttendanceStatus> getAttendanceStatusList(){
+		return attendanceStatus;
 	}
 	
 	/**
@@ -200,14 +229,20 @@ public class Project implements PropertyChangeListener {
 	
 	public void addRoom(Room room){
 		roomList.add(room);
-		//room.addPropertyChangeListener(this);
+		room.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("room", null, room);
 	}
 	
 	public void addNotification(Notification notification){
 		notificationList.add(notification);
-//		notification.addPropertyChangeListener(this);
+		notification.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("notification", null, notification);
+	}
+	
+	public void addAttendanceStatus(AttendanceStatus status){
+		attendanceStatus.add(status);
+		status.addPropertyChangeListener(this);
+		propChangeSupp.firePropertyChange("status", null, status);
 	}
 	
 	/**

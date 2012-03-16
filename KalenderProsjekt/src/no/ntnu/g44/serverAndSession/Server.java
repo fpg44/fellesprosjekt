@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.g44.database.DatabaseHandler;
+import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.Person;
@@ -20,6 +21,7 @@ public class Server{
 	private boolean lookForIncommingDatagramPackets = true;
 	private DatabaseHandler dbHandler;
 	private XmlSerializer xmlSerializer;
+	private Project project;
 
 	/**
 	 * 
@@ -89,34 +91,45 @@ public class Server{
 		this.lookForIncommingDatagramPackets = b;
 	}
 	
-	//returns a document from an arraylist with events from the database
-//	protected Document getAllEvents(){ 
-//		return xmlSerializer.toXml(dbHandler.getEventsFromDatabase());
-//	}
-	
+	/**
+	 * 
+	 * @return Project file with all information from the database
+	 */
 	protected Project getDataFromDatabase(){
-		Project p = new Project();
+		project = new Project();
 		
 		ArrayList<Person> persons = dbHandler.getPersons();
 		for(Person person : persons){
-			p.addPerson(person);
+			project.addPerson(person);
 		}
 		
 		ArrayList<Event> events = dbHandler.getEventsFromDatabase();
 		for(Event event : events){
-			p.addEvent(event);
+			project.addEvent(event);
 		}
 		
 		ArrayList<Room> rooms = dbHandler.getRooms();
 		for(Room room : rooms){
-			p.addRoom(room);
+			project.addRoom(room);
 		}
 		
 		ArrayList<Notification> notifications = dbHandler.getNotifications();
 		for(Notification notification: notifications){
-			p.addNotification(notification);
+			project.addNotification(notification);
 		}
 		
-		return p;
+		ArrayList<AttendanceStatus> attendanceStatus = dbHandler.getAttendanceStatus();
+		for(AttendanceStatus status : attendanceStatus){
+			project.addAttendanceStatus(status);
+		}
+		
+		return project;
+	}
+	
+	protected void update(){
+		ArrayList<Event> events = project.getEventList();
+		dbHandler.updateEvents(events);
+		
+//		ArrayList<Person> persons = project.getPersonList();
 	}
 }

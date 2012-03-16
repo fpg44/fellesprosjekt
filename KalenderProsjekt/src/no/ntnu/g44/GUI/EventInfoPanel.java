@@ -4,8 +4,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.Event;
@@ -16,7 +18,49 @@ public class EventInfoPanel extends JPanel{
 		JFrame frame = new JFrame(event.getEventTitle());
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().add(this);
-		frame.setSize(200, 150);
+		JLabel ownerLabel = new JLabel("Event owner:");
+		JLabel startLabel = new JLabel("Start time:");
+		JLabel endLabel = new JLabel("End time:");
+		JLabel locationLabel = new JLabel("Location:");
+		JLabel messageLabel = new JLabel("Info:");
+		JTextField ownerField = new JTextField();
+		JTextField startField = new JTextField();
+		JTextField endField = new JTextField();
+		JTextField locationField = new JTextField();
+		JTextField messageField = new JTextField();
+		ownerField.setEnabled(false);
+		setLayout(null);
+		
+		ownerLabel.setLocation(8, 12);
+		ownerLabel.setSize(ownerLabel.getPreferredSize());
+		startLabel.setLocation(ownerLabel.getX(), ownerLabel.getY() + ownerLabel.getHeight() + 4);
+		startLabel.setSize(ownerLabel.getSize());
+		endLabel.setLocation(ownerLabel.getX(), startLabel.getY() + startLabel.getHeight() + 4);
+		endLabel.setSize(ownerLabel.getSize());
+		locationLabel.setLocation(ownerLabel.getX(), endLabel.getY() + endLabel.getHeight() + 4);
+		locationLabel.setSize(ownerLabel.getSize());
+		messageLabel.setLocation(ownerLabel.getX(), locationLabel.getY() + locationLabel.getHeight() + 4);
+		messageLabel.setSize(messageLabel.getPreferredSize());
+		ownerField.setText(event.getEventOwnerString());
+		ownerField.setLocation(ownerLabel.getX() + ownerLabel.getWidth() + 4, ownerLabel.getY());
+		ownerField.setSize(175, (int) ownerField.getPreferredSize().getHeight());
+		startField.setText(event.getEventStartTime().toGMTString());
+		startField.setLocation(ownerField.getX(), startLabel.getY());
+		startField.setSize(ownerField.getSize());
+		endField.setText(event.getEventEndTime().toGMTString());
+		endField.setLocation(ownerField.getX(), endLabel.getY());
+		endField.setSize(ownerField.getSize());
+		
+		add(ownerLabel);
+		add(startLabel);
+		add(endLabel);
+		add(locationLabel);
+		add(messageLabel);
+		add(ownerField);
+		add(startField);
+		add(endField);
+		
+		frame.setSize(ownerField.getX() + ownerField.getWidth() + 8, messageLabel.getY() + 50);
 		frame.setLocation((int)(dim.getWidth() - frame.getWidth()) / 2, (int)(dim.getHeight() - frame.getHeight()) / 2);
 		frame.setVisible(true);
 		

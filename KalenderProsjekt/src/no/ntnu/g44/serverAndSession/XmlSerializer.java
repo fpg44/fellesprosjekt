@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
+import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.Event;
+import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Project;
 import no.ntnu.g44.models.Room;
@@ -38,9 +40,9 @@ public class XmlSerializer {
 	public Document toXml(Project aProject) {
 		Element root = new Element("project");
 
-		Iterator it = aProject.personIterator();
-		while (it.hasNext()) {
-			Person aPerson = (Person)it.next();
+		Iterator<Person> personIt = aProject.personIterator();
+		while (personIt.hasNext()) {
+			Person aPerson = (Person)personIt.next();
 			Element element = personToXml(aPerson);
 			root.appendChild(element);
 		}
@@ -51,7 +53,28 @@ public class XmlSerializer {
 			Element element = eventToXml(event);
 			root.appendChild(element);
 		}
+		
+		Iterator<Notification> notificationIt = aProject.notificationIterator();
+		while(notificationIt.hasNext()){
+			Notification notification = notificationIt.next();
+//			Element element = notificationToXml(notification);
+//			root.appendChild(element);
+		}
+		
+		Iterator<Room> roomIt = aProject.roomIterator();
+		while(roomIt.hasNext()){
+			Room room = roomIt.next();
+//			Element element = roomToXml(room);
+//			root.appendChild(element);
+		}
 
+		Iterator<AttendanceStatus> attendanceStatusIt = aProject.attendanseStaturIterator();
+		while(attendanceStatusIt.hasNext()){
+			AttendanceStatus attendanceStatus = attendanceStatusIt.next();
+//			Element element = attendanceStatusToXml(attendanceStatus);
+//			root.appendChild(element);
+		}
+		
 		return new Document(root);
 	}
 

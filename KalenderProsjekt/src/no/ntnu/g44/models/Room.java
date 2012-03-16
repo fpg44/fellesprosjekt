@@ -1,5 +1,7 @@
 package no.ntnu.g44.models;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,13 +12,24 @@ import java.util.Date;
 
 public class Room {
 	
+	// used as a 'custom location' flag
+	public static final Room OTHER = new Room("OTHER");
+	
 	private String roomName;
 	private boolean isOccupied;
+	private PropertyChangeSupport pcs;
 	
 	/**
 	 * This method should check the database for rooms which are not occupied
 	 * within the given time range, and return an ArrayList<Room> of those.
 	 */
+	
+	public Room(String roomName, boolean isOccupied){
+		this.roomName = roomName;
+		this.isOccupied = isOccupied;
+		
+		pcs = new PropertyChangeSupport(this);
+	}
 	
 	public static ArrayList<Room> getAvailableRooms(Date startTime, Date endTime) {
 		ArrayList<Room> rooms = new ArrayList<Room>();
@@ -26,6 +39,10 @@ public class Room {
 		for (String name : roomNames)
 			rooms.add(new Room(name));
 		// END MOCK CONTENT
+		
+		// this value indicates a custom location, and should always be 
+		// included in the list
+		rooms.add(OTHER);
 		
 		return rooms;
 	}
@@ -51,5 +68,13 @@ public class Room {
 	 */
 	public boolean isOccupied() {
 		return isOccupied;
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener){
+		pcs.addPropertyChangeListener(listener);
+	}
+	
+	public String toString() {
+		return roomName;
 	}
 }

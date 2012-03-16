@@ -3,14 +3,15 @@ package no.ntnu.g44.gui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import no.ntnu.g44.models.Event;
 
-public class EventInfoPanel extends JPanel{
-	public EventInfoPanel(Event event){
+public class EventEditPanel extends JPanel{
+	public EventEditPanel(Event event){
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		JFrame frame = new JFrame(event.getEventDescription());
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -25,11 +26,8 @@ public class EventInfoPanel extends JPanel{
 		JTextField endField = new JTextField();
 		JTextField locationField = new JTextField();
 		JTextField messageField = new JTextField();
+		JButton saveButton = new JButton("Save");
 		ownerField.setEditable(false);
-		startField.setEditable(false);
-		endField.setEditable(false);
-		locationField.setEditable(false);
-		messageField.setEditable(false);
 		setLayout(null);
 		
 		ownerLabel.setLocation(8, 12);
@@ -56,7 +54,10 @@ public class EventInfoPanel extends JPanel{
 		locationField.setSize(ownerField.getSize());
 		messageField.setText(event.getEventDescription());
 		messageField.setLocation(ownerLabel.getX(), messageLabel.getY() + messageLabel.getHeight() + 4);
-		messageField.setSize(locationField.getX() + locationField.getWidth() - locationLabel.getX(), ownerField.getHeight() * 3);
+		messageField.setSize(locationField.getX() + locationField.getWidth() - locationLabel.getX(), ownerField.getHeight() * 2);
+		saveButton.setSize(saveButton.getPreferredSize());
+		saveButton.setLocation(messageField.getX() + messageField.getWidth() - saveButton.getWidth(), messageField.getY() + messageField.getHeight() + 4);
+		
 		
 		add(ownerLabel);
 		add(startLabel);
@@ -68,14 +69,15 @@ public class EventInfoPanel extends JPanel{
 		add(endField);
 		add(locationField);
 		add(messageField);
+		add(saveButton);
 		
-		frame.setSize(ownerField.getX() + ownerField.getWidth() + 8 + 14, messageField.getY() + messageField.getHeight() + 45);
+		frame.setSize(ownerField.getX() + ownerField.getWidth() + 8 + 14, saveButton.getY() + saveButton.getHeight() + 35);
 		frame.setLocation((int)(dim.getWidth() - frame.getWidth()) / 2, (int)(dim.getHeight() - frame.getHeight()) / 2);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		
 	}
-	public static void makeInfoPanel(Event event){
-		EventInfoPanel infoPanel = new EventInfoPanel(event);
+	public static void makeEditPanel(Event event){
+		EventEditPanel editPanel = new EventEditPanel(event);
 	}
 }

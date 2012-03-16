@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JSpinner.DateEditor;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
@@ -100,12 +102,18 @@ public class NewEventPanel extends JPanel {
 		eventOwnerName = new JLabel(owner.getName());
 		eventStartLabel = new JLabel("From");
 		eventStartTime = new JSpinner();
-		eventStartTime.setModel(new SpinnerDateModel());
-		eventStartTime.setEditor(new JSpinner.DateEditor(eventStartTime));
+		SpinnerDateModel startModel = new SpinnerDateModel();
+		startModel.setCalendarField(Calendar.DAY_OF_WEEK_IN_MONTH);
+		eventStartTime.setModel(startModel);
+		eventStartTime.setEditor(new JSpinner.DateEditor(eventStartTime,
+				"yyyy-MM-dd HH:mm"));
 		eventEndLabel = new JLabel("To");
 		eventEndTime = new JSpinner();
-		eventEndTime.setModel(new SpinnerDateModel());
-		eventEndTime.setEditor(new JSpinner.DateEditor(eventEndTime));
+		SpinnerDateModel endModel = new SpinnerDateModel();
+		endModel.setCalendarField(Calendar.DAY_OF_WEEK_IN_MONTH);
+		eventEndTime.setModel(endModel);
+		eventEndTime.setEditor(new JSpinner.DateEditor(eventEndTime,
+				"yyyy-MM-dd HH:mm"));
 		locationLabel = new JLabel("Location");
 		location = new JComboBox<Room>();
 		customLocationLabel = new JLabel("Custom location");

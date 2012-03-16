@@ -12,15 +12,14 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-
 import no.ntnu.g44.models.AttendanceStatus;
+import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Project;
 import no.ntnu.g44.models.Room;
-import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -66,15 +65,15 @@ public class XmlSerializer {
 		Iterator<Room> roomIt = aProject.roomIterator();
 		while(roomIt.hasNext()){
 			Room room = roomIt.next();
-			//			Element element = roomToXml(room);
-			//			root.appendChild(element);
+			Element element = roomToXml(room);
+			root.appendChild(element);
 		}
 
 		Iterator<AttendanceStatus> attendanceStatusIt = aProject.attendanseStaturIterator();
 		while(attendanceStatusIt.hasNext()){
 			AttendanceStatus attendanceStatus = attendanceStatusIt.next();
-			//			Element element = attendanceStatusToXml(attendanceStatus);
-			//			root.appendChild(element);
+			Element element = attendanceStatusToXml(attendanceStatus);
+			root.appendChild(element);
 		}
 
 		return new Document(root);
@@ -145,18 +144,6 @@ public class XmlSerializer {
 		DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, java.util.Locale.US);
 		return format.parse(date);
 	}
-
-	//	protected Document toXml(ArrayList<Event> events){
-	//
-	//		Element root = new Element("project");
-	//
-	//		for(Event event : events){
-	//			Element element = eventToXml(event);
-	//			root.appendChild(element);
-	//		}
-	//
-	//		return new Document(root);
-	//	}
 
 	protected Element eventToXml(Event event){
 
@@ -323,7 +310,7 @@ public class XmlSerializer {
 		return element;
 	}
 
-	public Element AttendanceStatusToXml(AttendanceStatus status){
+	public Element attendanceStatusToXml(AttendanceStatus status){
 		Element element = new Element("Attendance-status");
 
 		Element username = new Element("username");
@@ -366,13 +353,24 @@ public class XmlSerializer {
 	public AttendanceStatus assembleAttendanceStatus(Element e){
 		String username = null;
 		int id = -1;
+		AttendanceStatusType type = null;
 
-		Element element = e.getFirstChildElement("name");
+		Element element = e.getFirstChildElement("username");
 		if(element != null){
-
+			username = element.getValue();
 		}
 
-		return new AttendanceStatus(username, id, null);
+		element = e.getFirstChildElement("event-id");
+		if(element != null){
+			id = Integer.parseInt(element.getValue());
+		}
+
+		element = e.getFirstChildElement("type");
+		if(element != null){
+			type = AttendanceStatusType.getType(element.getValue());
+		}
+
+		return new AttendanceStatus(username, id, type);
 	}
 
 }

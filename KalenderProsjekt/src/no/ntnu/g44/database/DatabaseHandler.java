@@ -163,33 +163,6 @@ public class DatabaseHandler {
 
 	/**
 	 * 
-	 * @param events 
-	 */
-	public void updateEvents(ArrayList<Event> events){
-
-		for(Event e : events){
-			try {
-
-				stmt.executeUpdate("UPDATE event SET" +
-						"event_id = '" + e.getEventID() + "', " +
-						"owner_username = '" + e.getEventOwner().getUsername() + "', " +
-						"time_start = '" + e.getEventStartTime() + "', " +
-						"time_end = '" + e.getEventEndTime() + "', " +
-						"title = '" + e.getEventTitle() + "', " +
-						"location = '" + e.getLocation() + "' ," +
-						"room_name = '" + e.getRoom().getRoomName() + "'"
-				);
-
-			} catch (SQLException e1) {
-
-				e1.printStackTrace();
-
-			}
-		}
-	}
-	
-	/**
-	 * 
 	 * @return all the persons from the database
 	 */
 	public ArrayList<Person> getPersons(){
@@ -281,5 +254,64 @@ public class DatabaseHandler {
 		}
 		
 		return notifications;
+	}
+	
+	/**
+	 * 
+	 * @param events 
+	 */
+	public void updateEvents(ArrayList<Event> events){
+
+		for(Event e : events){
+			try {
+
+				stmt.executeUpdate("UPDATE event SET" +
+						"event_id = '" + e.getEventID() + "', " +
+						"owner_username = '" + e.getEventOwner().getUsername() + "', " +
+						"time_start = '" + e.getEventStartTime() + "', " +
+						"time_end = '" + e.getEventEndTime() + "', " +
+						"title = '" + e.getEventTitle() + "', " +
+						"location = '" + e.getLocation() + "' ," +
+						"room_name = '" + e.getRoom().getRoomName() + "'"
+				);
+
+			} catch (SQLException e1) {
+
+				e1.printStackTrace();
+
+			}
+		}
+	}
+	
+	public void updateNotifications(ArrayList<Notification> notifications){
+		
+	}
+	
+	public void updatePersons(ArrayList<Person> persons){
+		
+	}
+	
+	public void newEvent(Event e){
+		
+	}
+	
+	public void newNotification(Notification n){
+		
+	}
+	
+	public void newPerson(Person p){
+		
+	}
+	
+	public void deleteEvent(Event e){
+		
+	}
+	
+	public void deleteNotification(Notification n){
+		
+	}
+	
+	public void deletePerson(Person p){
+		
 	}
 }

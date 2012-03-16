@@ -7,9 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-
-import javax.print.attribute.standard.DateTimeAtCompleted;
-
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
@@ -258,6 +255,10 @@ public class DatabaseHandler {
 		return notifications;
 	}
 
+	/**
+	 * 
+	 * @return Array with all the information about the attendance-status to the participants
+	 */
 	public ArrayList<AttendanceStatus> getAttendanceStatus(){
 
 		ArrayList<AttendanceStatus> status = new ArrayList<AttendanceStatus>();
@@ -283,13 +284,13 @@ public class DatabaseHandler {
 			e.printStackTrace();
 
 		}
-		
+
 		return status;
 	}
 
 	/**
 	 * 
-	 * @param events 
+	 * @param an array with all the events that should be updated into the database
 	 */
 	public void updateEvents(ArrayList<Event> events){
 
@@ -301,7 +302,7 @@ public class DatabaseHandler {
 						"owner_username = '" + e.getEventOwner().getUsername() + "', " +
 						"time_start = '" + e.getEventStartTime() + "', " +
 						"time_end = '" + e.getEventEndTime() + "', " +
-						"title = '" + e.getEventTitle() + "', " +
+						"title = '" + e.getEventDescription() + "', " +
 						"location = '" + e.getLocation() + "' ," +
 						"room_name = '" + e.getRoom().getRoomName() + "'"
 						);
@@ -314,35 +315,150 @@ public class DatabaseHandler {
 		}
 	}
 
+	/**
+	 * Send an arraylist with all the notification that shal be updated in the database
+	 * @param notifications
+	 */
 	public void updateNotifications(ArrayList<Notification> notifications){
 
+		try{
+			//iterates over all notifications and adds them into the database
+			for(Notification notif : notifications){
+
+				stmt.executeUpdate("UPDATE notification set " +
+						"type = '" + notif.getType().toString() + "' " +
+						"WHERE notif_id = '" + notif.getNotificationID() + "' " +
+						"AND event_id = '" + notif.getEventID() + "'");
+
+			}
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
+	/**
+	 * Send an ArrayList with all the persons that shall be updated in the database
+	 * @param persons
+	 */
 	public void updatePersons(ArrayList<Person> persons){
 
+		try{
+			//iterates over all notifications and adds them into the database
+			for(Person person : persons){
+
+				stmt.executeUpdate("UPDATE ");
+				
+			}
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
-	public void newEvent(Event e){
+	/**
+	 * Insert a new event in the database
+	 * @param event
+	 */
+	public void newEvent(Event event){
 
+		try{
+
+			stmt.executeUpdate("");
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
-	public void newNotification(Notification n){
+	/**
+	 * Insert a new notification in the database
+	 * @param notification
+	 */
+	public void newNotification(Notification notification){
 
+		try{
+
+			stmt.executeUpdate("");
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
-	public void newPerson(Person p){
+	/**
+	 * Insert a new Person in the database
+	 * @param p
+	 */
+	public void newPerson(Person person){
 
+		try{
+
+			stmt.executeUpdate("");
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
-	public void deleteEvent(Event e){
+	/**
+	 * Delete an event in the database
+	 * @param e
+	 */
+	public void deleteEvent(Event event){
 
+		try{
+
+			stmt.executeUpdate("");
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
-	public void deleteNotification(Notification n){
+	/**
+	 * Delete a notification in the database
+	 * @param n
+	 */
+	public void deleteNotification(Notification notification){
 
+		try{
+
+			stmt.executeUpdate("");
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 
-	public void deletePerson(Person p){
+	/**
+	 * Delete a person in the database
+	 * @param p
+	 */
+	public void deletePerson(Person person){
 
+		try{
+
+			stmt.executeUpdate("");
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
 	}
 }

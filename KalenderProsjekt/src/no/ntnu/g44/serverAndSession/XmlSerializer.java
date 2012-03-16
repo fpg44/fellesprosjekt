@@ -142,7 +142,7 @@ public class XmlSerializer {
 		element.appendChild(id);
 
 		Element title = new Element("title");
-		title.appendChild(event.getEventTitle());
+		title.appendChild(event.getEventDescription());
 		element.appendChild(title);
 
 		Element eventOwner = new Element("owner");

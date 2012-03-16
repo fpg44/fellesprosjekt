@@ -135,6 +135,8 @@ public class NewEventPanel extends JPanel {
 		searchListScroller = new JScrollPane(searchList);
 		invitedPersonsLabel = new JLabel("Invited persons");
 		invitedList = new JList<Person>(participantsModel);
+		invitedList.addMouseListener(searchListener);
+		invitedList.addKeyListener(searchListener);
 		invitedListScroller = new JScrollPane(invitedList);
 		addPersonToParticipantsIcon = new ImageIcon(getClass().getResource(
 				"images/rightArrow.png"));
@@ -297,6 +299,10 @@ public class NewEventPanel extends JPanel {
 			if ((e.getSource() == searchList || e.getSource() == searchField)
 					&& e.getKeyChar() == KeyEvent.VK_ENTER) {
 				addPersons();
+			} else if (e.getSource() == invitedList
+					&& (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
+					|| e.getKeyCode() == KeyEvent.VK_DELETE)) {
+				removePersons();
 			} else if (e.getSource() == searchField) {
 				if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 					shiftKeyPressed = true;
@@ -386,6 +392,8 @@ public class NewEventPanel extends JPanel {
 				searchField.selectAll();
 			} else if (e.getSource() == searchList && e.getClickCount() == 2) {
 				addPersons();
+			} else if (e.getSource() == invitedList && e.getClickCount() == 2) {
+				removePersons();
 			}
 		}
 

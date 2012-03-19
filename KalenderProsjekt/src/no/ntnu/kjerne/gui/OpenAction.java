@@ -15,7 +15,7 @@ import no.ntnu.kjerne.swingutil.FPFileFilter;
 /**
  * Implements the application's open command.
  * 
- * @author Hallvard Tr¾tteberg
+ * @author Hallvard Trï¿½tteberg
  * @author Thomas &Oslash;sterlie
  * @author Rune Molden
  * 
@@ -45,7 +45,8 @@ public class OpenAction extends AbstractAction {
      * 
      * @param e The action event.
      */
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
       try {
         String urlString = getFileUrlFromUser();
         if (urlString == null || urlString.length() == 0) {

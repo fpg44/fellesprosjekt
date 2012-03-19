@@ -1,12 +1,9 @@
 package no.ntnu.g44.gui;
 
-import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -78,7 +75,7 @@ public class EventInvitationPanel extends AbstractPanelClass {
 	public static void main(String[] args) {
 
 		Person person = new Person("Jeppe Eriksen", "jeppeer@gmail.com");
-		Event newEvent = new Event(1, "MIXER! \nÅrets event! Sykt kult! blalbalbalba", person, null, new Date(2012,3,15,11,15),
+		Event newEvent = new Event(1, "MIXER! \nÔøΩrets event! Sykt kult! blalbalbalba", person, null, new Date(2012,3,15,11,15),
 				new Date(2012,3,15,13,6), "G138" ,null);
 		EventInvitationPanel e = new EventInvitationPanel(newEvent);
 	}
@@ -88,7 +85,7 @@ public class EventInvitationPanel extends AbstractPanelClass {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == yesButton) {
-				//Her må det legges til slik at eventet legges til på personen
+				//Her mÔøΩ det legges til slik at eventet legges til pÔøΩ personen
 				closeWindow();
 			}
 			else if (e.getSource() == noButton) {

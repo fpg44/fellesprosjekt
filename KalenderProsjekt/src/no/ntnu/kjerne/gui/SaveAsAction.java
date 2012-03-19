@@ -54,6 +54,7 @@ public class SaveAsAction extends AbstractAction {
 	 * 
 	 * @param e The action event.
 	 */
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		JFileChooser chooser = new JFileChooser();
 		chooser.setDialogTitle("Save As");

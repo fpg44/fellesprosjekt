@@ -12,18 +12,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
 import javax.swing.JPanel;
-
-import sun.util.resources.TimeZoneNames_en;
 
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.Event;
@@ -160,7 +154,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		g2d.setStroke(new BasicStroke(2));
 
 		for(Event e:Main.currentProject.getEventList()){
-			if(!e.isInWeek(Main.currentMainFrame.currUkenr)) continue;
+			if(!e.isInWeek(Main.currentMainFrame.currentWeekNumber)) continue;
 			EventView ev = new EventView(e);
 			ev.set(startHour,pixlsPerHour,dayWidth, leftOffset,topArea);
 			ev.paint(g2d, selectedEvent == e);
@@ -237,7 +231,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		for(Event event : Main.currentProject.getEventList()){
 			EventView ev = new EventView(event);
 			ev.set(startHour, pixlsPerHour, dayWidth, leftOffset,topArea);
-			if(ev.isAtPosition(e.getX(), e.getY(), Main.currentMainFrame.currUkenr)){
+			if(ev.isAtPosition(e.getX(), e.getY(), Main.currentMainFrame.currentWeekNumber)){
 				selectedEvent = event;
 				repaint();
 				return;

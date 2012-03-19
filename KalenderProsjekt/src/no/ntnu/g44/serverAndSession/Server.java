@@ -12,7 +12,6 @@ import no.ntnu.g44.models.Project;
 import no.ntnu.g44.models.Room;
 import no.ntnu.g44.net.co.Connection;
 import no.ntnu.g44.net.co.ConnectionImpl;
-import nu.xom.Document;
 
 public class Server{
 

@@ -9,8 +9,6 @@ package no.ntnu.kjerne.gui;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.Icon;
-
 import no.ntnu.kjerne.model.Person;
 import no.ntnu.kjerne.model.Project;
 
@@ -43,6 +41,7 @@ public class NewAction extends AbstractAction {
 	 * 
 	 * @param e The action event.
 	 */
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		Project project = new Project();
 		project.addPerson(new Person());

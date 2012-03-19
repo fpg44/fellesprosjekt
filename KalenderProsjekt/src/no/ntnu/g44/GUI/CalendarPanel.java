@@ -170,6 +170,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 			ev.paint(g2d, selectedEvent == e);
 
 		}
+		
 	}
 
 	/**
@@ -244,6 +245,8 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 			ev.set(startHour, pixlsPerHour, dayWidth, leftOffset,topArea);
 			if(ev.isAtPosition(e.getX(), e.getY())){
 				selectedEvent = events.get(i);
+				Main.currentProject.getEventList().remove(selectedEvent);
+				Main.currentProject.getEventList().add(selectedEvent);
 				repaint();
 				return;
 			}

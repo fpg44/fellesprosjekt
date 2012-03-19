@@ -26,6 +26,8 @@ public class Event {
 	private Person eventOwner;
 	private String eventOwnerString;
 	private int eventID;
+	private boolean hasOldEvent = false;
+	private String oldEventString;
 	
 	
 	/**
@@ -33,7 +35,20 @@ public class Event {
 	 * the <code>Group</code> class.
 	 */
 	private PropertyChangeSupport propChangeSupp;
-
+	/** this is for testing
+	 * creates a new Event
+	 * no parameters
+	 */
+	public Event(){
+		eventDescription = "desc";
+		location = "somewhere";
+		participants = new ArrayList<Person>();
+		eventStartTime = new Date();
+		eventEndTime = new Date();
+		room = null;
+		eventOwner = new Person();
+		eventID = 0;
+	}
 	/** this should be deleted
 	 * Creates a new Event
 	 * @param eventDescription
@@ -246,5 +261,21 @@ public class Event {
 		Calendar cal =new GregorianCalendar();
 		cal.setTime(eventStartTime);
 		return cal.get(Calendar.WEEK_OF_YEAR) == weekNr;
+	}
+	
+	public String getOldEventId(){
+		if(hasOldEvent == true){
+			return oldEventString;
+		}
+		return null;
+	}
+	public boolean isHasOldEvent() {
+		return hasOldEvent;
+	}
+	public void setHasOldEvent(boolean hasOldEvent) {
+		this.hasOldEvent = hasOldEvent;
+	}
+	public void setOldEvent(String oldEventString) {
+		this.oldEventString = oldEventString;
 	}
 }

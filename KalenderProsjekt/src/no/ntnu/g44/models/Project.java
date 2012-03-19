@@ -123,6 +123,20 @@ public class Project implements PropertyChangeListener {
 	}
 	
 	/**
+	 * This is used when i.e viewing changed-event
+	 * @param id
+	 * @return the event with the given id
+	 */
+	public Event getEventById(int id){
+		for(int i = 0; i<eventList.size(); i++){
+			if(eventList.get(i).getEventID() == id){
+				return eventList.get(i);
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Returns the index of the first occurrence of the specified object, or 
 	 * -1 if the list does not contain this object.
 	 * 

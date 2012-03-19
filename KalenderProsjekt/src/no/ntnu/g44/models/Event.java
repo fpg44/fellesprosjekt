@@ -26,7 +26,7 @@ public class Event {
 	private Person eventOwner;
 	private String eventOwnerString;
 	private int eventID;
-	private boolean hasOldEvent;
+	private boolean hasOldEvent = false;
 	private String oldEventString;
 	
 	
@@ -147,7 +147,7 @@ public class Event {
 	}
 
 	public String getEventOwnerString() {
-		return eventOwnerString;
+		return eventOwner.toString();
 	}
 
 	public void setEventOwnerString(String eventOwnerString) {
@@ -179,7 +179,10 @@ public class Event {
 	}
 
 	public String getLocation() {
-		return location;
+		if (room == Room.OTHER)
+			return location;
+		else
+			return room.getRoomName();
 	}
 
 	public void setLocation(String location) {
@@ -265,5 +268,14 @@ public class Event {
 			return oldEventString;
 		}
 		return null;
+	}
+	public boolean isHasOldEvent() {
+		return hasOldEvent;
+	}
+	public void setHasOldEvent(boolean hasOldEvent) {
+		this.hasOldEvent = hasOldEvent;
+	}
+	public void setOldEvent(String oldEventString) {
+		this.oldEventString = oldEventString;
 	}
 }

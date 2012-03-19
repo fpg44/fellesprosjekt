@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import no.ntnu.fp.net.admin.Log;
 import no.ntnu.g44.net.co.Connection;
 
 /**
@@ -61,7 +60,8 @@ public class ReceiveMessageWorker extends Thread {
     /**
      * The worker thread.
      */
-    public void run() {
+    @Override
+	public void run() {
         isRunning = true;
         int counter = 0;
         try {

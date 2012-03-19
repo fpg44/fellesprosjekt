@@ -12,18 +12,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
 import javax.swing.JPanel;
-
-import sun.util.resources.TimeZoneNames_en;
 
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.Event;

@@ -10,6 +10,8 @@ import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
+import javax.swing.JFrame;
+
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.fp.net.admin.Settings;
 import no.ntnu.g44.net.co.Connection;
@@ -55,13 +57,14 @@ public class ChatClient {
         gui = new Gui("Chat klient laget av Geir", this);
         this.login(username);
 
-        gui.setDefaultCloseOperation(Gui.EXIT_ON_CLOSE);
+        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private class RecieveThread extends Thread {
         public boolean run = true;
 
-        public void run() {
+        @Override
+		public void run() {
             run = true;
             while (run) {
                 try {

@@ -49,7 +49,8 @@ public class SimpleConnection implements Connection {
   /* (non-Javadoc)
    * @see no.ntnu.fp.net.co.Connection#connect(java.net.InetAddress, int)
    */
-  public void connect(InetAddress remoteAddress, int remotePort)
+  @Override
+public void connect(InetAddress remoteAddress, int remotePort)
     throws IOException, SocketTimeoutException {
 		
     System.out.println("Trying to connect to: "+remoteAddress.getHostAddress()+" : "+remotePort);
@@ -66,16 +67,17 @@ public class SimpleConnection implements Connection {
   /* (non-Javadoc)
    * @see no.ntnu.fp.net.co.Connection#accept(java.net.InetAddress, int)
    */
-  public Connection accept()
+  @Override
+public Connection accept()
     throws IOException, SocketTimeoutException {
 		
     ServerSocket myServerSocket = new ServerSocket(myPort);
 		
-    System.out.println("Serversocket lytter på: " +myServerSocket.getLocalPort() );
+    System.out.println("Serversocket lytter pï¿½: " +myServerSocket.getLocalPort() );
     mySocket = myServerSocket.accept();
-    System.out.println("Fikk en oppkobling på: " +myServerSocket.getLocalPort() );
+    System.out.println("Fikk en oppkobling pï¿½: " +myServerSocket.getLocalPort() );
 	    
-    //skal denne lukkes med en gang? hvis ikke - når?
+    //skal denne lukkes med en gang? hvis ikke - nï¿½r?
     myServerSocket.close();
 
     return new SimpleConnection(mySocket, myPort);
@@ -85,7 +87,8 @@ public class SimpleConnection implements Connection {
   /* (non-Javadoc)
    * @see no.ntnu.fp.net.co.Connection#send(java.lang.String)
    */
-  public void send(String msg) throws ConnectException, IOException {
+  @Override
+public void send(String msg) throws ConnectException, IOException {
     os.writeUTF(msg);
 
   }
@@ -93,7 +96,8 @@ public class SimpleConnection implements Connection {
   /* (non-Javadoc)
    * @see no.ntnu.fp.net.co.Connection#receive()
    */
-  public String receive() throws ConnectException, IOException {
+  @Override
+public String receive() throws ConnectException, IOException {
     while (!stop) {
       String s  = is.readUTF();
       System.out.println("Received the text: "+s);
@@ -105,7 +109,8 @@ public class SimpleConnection implements Connection {
   /* (non-Javadoc)
    * @see no.ntnu.fp.net.co.Connection#close()
    */
-  public void close() throws IOException {
+  @Override
+public void close() throws IOException {
     //		 clean up:
     //		 close the output stream
     //		 close the input stream

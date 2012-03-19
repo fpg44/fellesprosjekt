@@ -41,6 +41,7 @@ public class AddPersonAction extends AbstractAction {
      * 
      * @param e The action event.
      */
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		PersonListModel plm = projectPanel.getModel();
 		Project project = plm.getProject();

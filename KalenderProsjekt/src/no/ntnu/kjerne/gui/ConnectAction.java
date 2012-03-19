@@ -34,6 +34,7 @@ public class ConnectAction extends AbstractAction {
     * 
     * @param e The action event.
     */
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		JOptionPane.showMessageDialog(projectPanel, "Function not implemented.");
 	}

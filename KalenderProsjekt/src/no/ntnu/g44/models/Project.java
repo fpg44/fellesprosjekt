@@ -75,11 +75,11 @@ public class Project implements PropertyChangeListener {
 	
 	
 	private void addTestStuff(){
-		personList.add(new Person("Andreas L�ve Selvik", "lionleaf"));
-		personList.add(new Person("Anders Eldhuset" , ""));
-		personList.add(new Person("Jeppe Eriksen", ""));
-		personList.add(new Person("Ander Dahlin", ""));
-		personList.add(new Person("Robing Tordly", ""));
+//		personList.add(new Person("Andreas L�ve Selvik", "lionleaf"));
+//		personList.add(new Person("Anders Eldhuset" , ""));
+//		personList.add(new Person("Jeppe Eriksen", ""));
+//		personList.add(new Person("Ander Dahlin", ""));
+//		personList.add(new Person("Robing Tordly", ""));
 		
 //		eventList.add(new Event("Ting 15.",null, new Date(2012,3,15,11,15),
 //				new Date(2012,3,15,13,6), null,null));

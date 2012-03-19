@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
@@ -123,9 +125,60 @@ public class XmlSerializer {
 	 * @return
 	 * @throws ParseException
 	 */
-	private Date parseDate(String date) throws ParseException {
-		DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, java.util.Locale.US);
-		return format.parse(date);
+	private Date parseToDate(String date) throws ParseException {
+//		DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, java.util.Locale.US);
+//		return format.parse(date);
+		String temp = "";
+		int day = -1, month = -1, year = -1, hour = -1, min = -1;
+		Calendar parsedDate = new GregorianCalendar();
+		Date dato = new Date();
+		
+		for(int i = 0; i<date.length(); i++){
+			temp += date.charAt(i);
+			
+			if(date.charAt(i) == '?'){
+				temp = temp.substring(0, temp.length()-1);
+			}
+			else if(date.charAt(i) == ':'){
+				temp = temp.substring(0, temp.length()-1);
+				day = Integer.parseInt(temp);
+				temp = "";
+			}
+			else if(date.charAt(i) == ';'){
+				temp = temp.substring(0, temp.length()-1);
+				month = Integer.parseInt(temp);
+				temp = "";
+			}
+			else if(date.charAt(i) == '-'){
+				temp = temp.substring(0, temp.length()-1);
+				year = Integer.parseInt(temp);
+				temp = "";
+			}
+			else if(date.charAt(i) == '_'){
+				temp = temp.substring(0, temp.length()-1);
+				min = Integer.parseInt(temp);
+				temp = "";
+			}
+			else if(date.charAt(i) == '!'){
+				temp = temp.substring(0, temp.length()-1);
+				hour = Integer.parseInt(temp);
+				temp = "";
+				parsedDate.set(year, month, day, hour, min);
+				dato = parsedDate.getTime();
+			}
+		}
+		return dato;
+	}
+	
+	private String parseToString(Date date){
+		String time = "?";
+		
+		Calendar c = new GregorianCalendar();
+		c.setTime(date);
+		
+		time += c.DAY_OF_MONTH + ":" + c.MONTH + ";" + c.YEAR + "-" + c.MINUTE + "_" + c.HOUR + "!";
+		
+		return time;
 	}
 
 	public Person toPerson(String xml) throws java.io.IOException, java.text.ParseException, nu.xom.ParsingException {
@@ -195,11 +248,11 @@ public class XmlSerializer {
 			element.appendChild(eventOwner);
 		}
 		Element eventStart = new Element("event-start");
-		eventStart.appendChild((event.getEventStartTime()).toString());
+		eventStart.appendChild((parseToString(event.getEventStartTime())));
 		element.appendChild(eventStart);
 
 		Element eventEnd = new Element("event-end");
-		eventEnd.appendChild((event.getEventEndTime()).toString());
+		eventEnd.appendChild((parseToString(event.getEventEndTime())));
 		element.appendChild(eventEnd);
 
 		Element location = new Element("location");
@@ -353,14 +406,14 @@ public class XmlSerializer {
 		element = eventElement.getFirstChildElement("event-start");
 		if (element != null){
 //			eventStartDate = parseDate(element.getValue());
-			eventStartDate = new Date(element.getValue());
+			eventStartDate = parseToDate(element.getValue());
 			System.out.println(eventStartDate);
 		}
 
 		element = eventElement.getFirstChildElement("event-end");
 		if (element != null){
 //			eventEndDate = parseDate(element.getValue());
-			eventEndDate = new Date(element.getValue());
+			eventEndDate = parseToDate(element.getValue());
 		}
 
 		element = eventElement.getFirstChildElement("location");

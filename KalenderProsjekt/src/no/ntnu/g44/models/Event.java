@@ -262,9 +262,12 @@ public class Event {
 	}
 
 	public boolean isInWeek(int weekNr) {
-		Calendar cal =new GregorianCalendar();
-		cal.setTime(eventStartTime);
-		return cal.get(Calendar.WEEK_OF_YEAR) == weekNr;
+		if(eventStartTime != null){
+			Calendar cal =new GregorianCalendar();
+			cal.setTime(eventStartTime);
+			return cal.get(Calendar.WEEK_OF_YEAR) == weekNr;			
+		}
+		return false;
 	}
 	
 	public String getOldEventId(){

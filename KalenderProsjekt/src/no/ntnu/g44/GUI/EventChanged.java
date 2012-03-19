@@ -16,6 +16,11 @@ public class EventChanged extends JPanel{
 	JLabel oldStartLabel = new JLabel("Starttime:");
 	JLabel oldEndLabel = new JLabel("Endtime:");
 	JLabel oldLocationLabel = new JLabel("Location:");
+	JLabel newNameLabel = new JLabel("Name:");
+	JLabel newStartLabel = new JLabel("Starttime:");
+	JLabel newEndLabel = new JLabel("Endtime:");
+	JLabel newLocationLabel = new JLabel("Location:");
+	
 	
 	public EventChanged(Event e){
 		newEvent = e;
@@ -27,10 +32,10 @@ public class EventChanged extends JPanel{
 		//setBackground(Color.LIGHT_GRAY);
 		setLayout(null);
 		
-		oldLabel.setLocation(6, 12);
+		oldLabel.setLocation(6, 6);
 		oldLabel.setSize(oldLabel.getPreferredSize());
 		add(oldLabel);
-		oldNameLabel.setLocation(oldLabel.getX(), oldLabel.getY() + oldLabel.getHeight() + 10);
+		oldNameLabel.setLocation(oldLabel.getX(), oldLabel.getY() + oldLabel.getHeight() + 8);
 		oldNameLabel.setSize(oldNameLabel.getPreferredSize());
 		add(oldNameLabel);
 		oldStartLabel.setLocation(oldLabel.getX(), oldNameLabel.getY() + oldNameLabel.getHeight() + 6);
@@ -41,7 +46,7 @@ public class EventChanged extends JPanel{
 		add(oldEndLabel);
 		oldLocationLabel.setLocation(oldLabel.getX(), oldEndLabel.getY() + oldEndLabel.getHeight() + 6);
 		oldLocationLabel.setSize(oldLocationLabel.getPreferredSize());
-		
+		add(oldLocationLabel);
 		
 	}
 	public static void makeEventChangedPanel(Event e){

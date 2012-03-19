@@ -4,10 +4,9 @@ import java.util.ArrayList;
 
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.NotificationType;
+
 /**
- * 
  * @author JeppeE
- *
  */
 public class NotificationController {
 	

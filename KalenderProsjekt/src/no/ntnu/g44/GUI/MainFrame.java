@@ -193,29 +193,6 @@ public class MainFrame extends JPanel{
 		resizing();
 	}
 
-	/**
-	 * Checks for new notifications and puts them in 'notifBox'
-	 */
-	public void checkForNewNotifications() {
-		int notifCounter = 0;
-		
-		unseenNotifications = notificationController.getUnseenNotifications();
-
-		if (!unseenNotifications.isEmpty()) {
-			for (int i = 0; i < unseenNotifications.size(); i++) {
-				notifCounter++;
-			}
-			notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
-			for (int i = 0; i < unseenNotifications.size(); i++) {
-				notifBox.addItem((unseenNotifications.get(i)));
-			}
-		}
-
-		else {
-			notifBox.addItem(new String ("There is no new notifications"));
-		}
-	}
-
 	public void resizing(){
 		if(insets == null){
 			return;
@@ -357,11 +334,42 @@ public class MainFrame extends JPanel{
 			personnelList.setSelectedIndex(0);
 		}
 	}
+	
+	public void notificationCounter() {
+		int notifCounter = 0;
+		for (int i = 0; i < unseenNotifications.size(); i++) {
+			notifCounter++;
+		}
+		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
+	}
+	
+	/**
+	 * Checks for new notifications and puts them in 'notifBox'
+	 */
+	public void checkForNewNotifications() {
+		int notifCounter = 0;
+		
+		unseenNotifications = notificationController.getUnseenNotifications();
+		System.out.println(unseenNotifications.size());
+
+		if (!unseenNotifications.isEmpty()) {
+			notificationCounter();
+			for (int i = 0; i < unseenNotifications.size(); i++) {
+				notifBox.addItem((unseenNotifications.get(i)));
+			}
+		}
+
+		else {
+			notifBox.addItem(new String ("There is no new notifications"));
+		}
+	}
+	
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
 		public void mouseDragged(MouseEvent e) {
 		}
-		public void mouseMoved(MouseEvent e) { }
+		public void mouseMoved(MouseEvent e) {
+		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!unseenNotifications.isEmpty()){
@@ -373,11 +381,13 @@ public class MainFrame extends JPanel{
 					//som f�lge av man trykker p� en notifikasjon.
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CANCELLED){
 						//EventCancelled eventCancelled = new EventCancelled(event)
-//						notificationController.removeNotification((Notification) notifBox.getSelectedItem());
-//						notifBox.removeItem(notifBox.getSelectedItem());
-//						notifBox.setSelectedIndex(0);
-						checkForNewNotifications();
 						System.out.println("This event has been cancelled");
+						/*
+						Notification selectedNotification = (Notification) notifBox.getSelectedItem();
+						notifBox.setSelectedIndex(0);
+						notifBox.removeItem(selectedNotification);
+						notificationController.removeNotification(selectedNotification);
+						*/
 					}
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.INVITATION) {
 						System.out.println("You have a new event invitation");

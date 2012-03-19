@@ -83,8 +83,8 @@ public class XmlSerializer {
 		Project aProject = new Project();
 		
 		Element groupElement = xmlDocument.getRootElement();
+		
 		Elements personElements = groupElement.getChildElements("person");
-
 		for (int i = 0; i < personElements.size(); i++) {
 			Element childElement = personElements.get(i);
 			aProject.addPerson(assemblePerson(childElement));
@@ -92,8 +92,8 @@ public class XmlSerializer {
 		
 		Elements eventElements = groupElement.getChildElements("event");
 		for (int i = 0; i < eventElements.size(); i++){
-			Element child = personElements.get(i);
-			aProject.addEvent(assembleEvent(child));
+			Element child = eventElements.get(i);
+			aProject.addEvent(assembleEvent(child), false);
 		}
 		
 		Elements notificationElements = groupElement.getChildElements("notification");
@@ -105,7 +105,7 @@ public class XmlSerializer {
 		Elements roomElements = groupElement.getChildElements("room");
 		for (int i = 0; i < roomElements.size(); i++){
 			Element child = roomElements.get(i);
-			aProject.addEvent(assembleEvent(child));
+			aProject.addRoom(assembleRoom(child));
 		}
 		
 		Elements attendanceStatusElements = groupElement.getChildElements("attendance-status");
@@ -178,8 +178,7 @@ public class XmlSerializer {
 		return element;
 	}
 
-	protected Element eventToXml(Event event){
-
+	protected Element eventToXml(Event event){		
 		Element element = new Element("event");
 
 		Element id = new Element("event-id");
@@ -196,11 +195,11 @@ public class XmlSerializer {
 			element.appendChild(eventOwner);
 		}
 		Element eventStart = new Element("event-start");
-		eventStart.appendChild(event.getEventStartTime().toString());
+		eventStart.appendChild((event.getEventStartTime()).toString());
 		element.appendChild(eventStart);
 
 		Element eventEnd = new Element("event-end");
-		eventEnd.appendChild(event.getEventEndTime().toString());
+		eventEnd.appendChild((event.getEventEndTime()).toString());
 		element.appendChild(eventEnd);
 
 		Element location = new Element("location");
@@ -353,12 +352,15 @@ public class XmlSerializer {
 
 		element = eventElement.getFirstChildElement("event-start");
 		if (element != null){
-			eventStartDate = parseDate(element.getValue());
+//			eventStartDate = parseDate(element.getValue());
+			eventStartDate = new Date(element.getValue());
+			System.out.println(eventStartDate);
 		}
 
 		element = eventElement.getFirstChildElement("event-end");
 		if (element != null){
-			eventEndDate = parseDate(element.getValue());
+//			eventEndDate = parseDate(element.getValue());
+			eventEndDate = new Date(element.getValue());
 		}
 
 		element = eventElement.getFirstChildElement("location");

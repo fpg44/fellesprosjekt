@@ -134,15 +134,15 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		
 		Font dateFont = new Font("Helvetica", Font.PLAIN, 12);
 		g2d.setFont(dateFont);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.set(Calendar.WEEK_OF_YEAR, Main.currentMainFrame.currentWeekNumber);
 		for (int i = 0; i < 7; i++) {
-			Calendar cal = Calendar.getInstance();
-			int currentWeek = Main.currentMainFrame.currentWeekNumber;
-			cal.set(Calendar.WEEK_OF_YEAR, currentWeek);
-			cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY + i);
 			int xPos = Math.round(width * i / 7f) + margin + leftOffset;
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			g2d.drawChars(dateFormat.format(cal.getTime()).toCharArray(),
 					0, 10, xPos, textPos - 20);
+			cal.add(Calendar.DATE, 1);
 		}
 		
 		Font f = new Font("Helvetica",Font.BOLD, 16);

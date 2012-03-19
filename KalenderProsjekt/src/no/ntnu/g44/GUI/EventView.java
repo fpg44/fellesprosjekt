@@ -82,8 +82,14 @@ public class EventView {
 		if(y<y0 || y>y1) return false;
 				
 		return true;
+	}
 
-
+	public boolean isAtPosition(int x, int y, int week){
+		if(event.isInWeek(week)){
+			return isAtPosition(x, y);
+		}else{
+			return false;
+		}
 	}
 	
 	private int  getStartY(){

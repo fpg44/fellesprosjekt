@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import sun.util.resources.CalendarData;
-
 /**
  * Class representing an event
  * @author JeppeE
@@ -45,7 +43,7 @@ public class Event {
 		participants = new ArrayList<Person>();
 		eventStartTime = new Date();
 		eventEndTime = new Date();
-		room = null;
+		room = Room.OTHER;
 		eventOwner = new Person();
 		eventID = 0;
 	}

@@ -1,7 +1,6 @@
 package no.ntnu.g44.gui;
 
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,6 +43,7 @@ public class Login {
 		navnField.setSize(175, navnLabel.getHeight());
 		navnField.setVisible(true);
 		navnField.addKeyListener(new KeyListener(){
+			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
 					Main.onLogin(navnField.getText());
@@ -54,8 +54,10 @@ public class Login {
 					}
 				}
 			}
+			@Override
 			public void keyReleased(KeyEvent arg0) {
 			}
+			@Override
 			public void keyTyped(KeyEvent arg0) {
 			}
 		});

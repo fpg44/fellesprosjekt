@@ -74,9 +74,9 @@ public class MainFrame extends JPanel{
 	JMenuItem logoutAction;
 	JMenuItem exitAction;
 
-	int UKENR = 0;
-	int currUkenr = UKENR;
-	JLabel weeknumber = new JLabel("UKE " + UKENR);
+	int WEEK_NUMBER = 0;
+	int currentWeekNumber = WEEK_NUMBER;
+	JLabel weeknumber = new JLabel("WEEK " + WEEK_NUMBER);
 	ListRenderer renderer = new ListRenderer();
 	NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
 
@@ -86,10 +86,11 @@ public class MainFrame extends JPanel{
 
 	public MainFrame(){
 		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
 			public void run() {
 				calendar.repaint();
-				UKENR = calendar.getWeekNumber();
-				if(currUkenr == 0)currUkenr = UKENR;
+				WEEK_NUMBER = calendar.getWeekNumber();
+				if(currentWeekNumber == 0)currentWeekNumber = WEEK_NUMBER;
 				resizing();
 			}
 		}, 0, 1000);
@@ -234,7 +235,7 @@ public class MainFrame extends JPanel{
 		notifBox.setLocation(calendar.getX(), newEvent.getY());
 		notifBox.setBackground(Color.getHSBColor((float)0.4, (float)0.2, (float) 0.95));
 
-		weeknumber.setText("Uke " + currUkenr);
+		weeknumber.setText("Week number " + currentWeekNumber);
 		weeknumber.setSize(newEvent.getWidth(), backArrow.getHeight());
 		weeknumber.setLocation(calendar.getX() + calendar.getWidth() - newEvent.getWidth(), 16);
 
@@ -366,10 +367,11 @@ public class MainFrame extends JPanel{
 	
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
+		@Override
 		public void mouseDragged(MouseEvent e) {
 		}
-		public void mouseMoved(MouseEvent e) {
-		}
+		@Override
+		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!unseenNotifications.isEmpty()){
@@ -423,17 +425,17 @@ public class MainFrame extends JPanel{
 				System.exit(0);
 			}
 			if(e.getSource() == nextArrow){
-				currUkenr +=1;
-				if(currUkenr == 53)currUkenr = 1;
+				currentWeekNumber +=1;
+				if(currentWeekNumber == 53)currentWeekNumber = 1;
 				calendar.repaint();
 			}
 			if(e.getSource() == backArrow){
-				currUkenr -=1;
-				if(currUkenr == 0)currUkenr = 52;
+				currentWeekNumber -=1;
+				if(currentWeekNumber == 0)currentWeekNumber = 52;
 				calendar.repaint();
 			}
 			if(e.getSource() == todayButton){
-				currUkenr = UKENR;
+				currentWeekNumber = WEEK_NUMBER;
 				calendar.repaint();
 			}
 			resizing();

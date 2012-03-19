@@ -12,18 +12,13 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 import javax.swing.JPanel;
-
-import sun.util.resources.TimeZoneNames_en;
 
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.Event;
@@ -44,7 +39,6 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		addMouseWheelListener(this);
 		addMouseListener(this);
 		Main.currentProject.addPropertyChangeListener(this);
-
 	}
 
 	/**Offset to make room for displaying times	 */
@@ -97,7 +91,6 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 					topArea+0.5*pixlsPerHour);
 
 			g2d.drawLine(leftOffset, ypos, getWidth(), ypos);
-
 		}
 
 		//Set back to old stroke.
@@ -116,9 +109,6 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 			int xPos = i*dayWidth+leftOffset;
 			g2d.drawLine(xPos, 0, xPos, getHeight());
 		}
-
-
-
 	}
 
 	private void paintDayText(Graphics2D g2d){
@@ -142,6 +132,19 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		g2d.setPaint(prepaint);
 		//Add day text
 		
+		Font dateFont = new Font("Helvetica", Font.PLAIN, 12);
+		g2d.setFont(dateFont);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.set(Calendar.WEEK_OF_YEAR, Main.currentMainFrame.currentWeekNumber);
+		for (int i = 0; i < 7; i++) {
+			int xPos = Math.round(width * i / 7f) + margin + leftOffset;
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			g2d.drawChars(dateFormat.format(cal.getTime()).toCharArray(),
+					0, 10, xPos, textPos - 20);
+			cal.add(Calendar.DATE, 1);
+		}
+		
 		Font f = new Font("Helvetica",Font.BOLD, 16);
 		g2d.setFont(f);
 		for(int i = 0; i < 7; i++){
@@ -160,7 +163,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		g2d.setStroke(new BasicStroke(2));
 
 		for(Event e:Main.currentProject.getEventList()){
-			if(!e.isInWeek(Main.currentMainFrame.currUkenr)) continue;
+			if(!e.isInWeek(Main.currentMainFrame.currentWeekNumber)) continue;
 			EventView ev = new EventView(e);
 			ev.set(startHour,pixlsPerHour,dayWidth, leftOffset,topArea);
 			ev.paint(g2d, selectedEvent == e);

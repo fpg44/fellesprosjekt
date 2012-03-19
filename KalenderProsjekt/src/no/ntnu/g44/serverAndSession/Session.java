@@ -10,7 +10,7 @@ public class Session {
 	public static int PORT;
 	
 	public Session(String IP, int PORT){
-		this.IP = IP;
-		this.PORT = PORT;
+		Session.IP = IP;
+		Session.PORT = PORT;
 	}
 }

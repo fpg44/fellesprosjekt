@@ -3,7 +3,7 @@ package no.ntnu.kjerne.gui;
 /**
  * A ListCellRenderer for Person objects.
  * 
- * @author Hallvard Tr¾tteberg 
+ * @author Hallvard Trï¿½tteberg 
  * @version $Revision: 1.2 $ - $Date: 2005/02/20 15:01:17 $
  */
 
@@ -42,7 +42,8 @@ public class PersonCellRenderer extends DefaultListCellRenderer
      * 
      * @return the renderer Component
      */
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Person p = (Person)value;
         // the default method always returns a JLabel,
         // in fact the superclass inherits from JLabel

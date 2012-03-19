@@ -7,7 +7,6 @@ import java.awt.*;
 
 import no.ntnu.kjerne.model.Person;
 import no.ntnu.kjerne.model.Project;
-import no.ntnu.kjerne.storage.FileStorage;
 
 /**
  * GroupPanel is JPanel for presenting the hierarhical Group structure and editing its contents.
@@ -21,7 +20,7 @@ import no.ntnu.kjerne.storage.FileStorage;
  * 
  * GroupPanel implements main logic connecting the three panes, by listening to selection events.
  * 
- * @author Hallvard Tr¾tteberg
+ * @author Hallvard Trï¿½tteberg
  * @author Thomas &Oslash;sterlie
  * 
  * @version $Revision: 1.7 $ - $Date: 2005/02/22 08:45:46 $
@@ -104,7 +103,8 @@ public class ProjectPanel extends JPanel implements ListSelectionListener, ListD
      * 
      * @param e The ListSelectionEvent
      */
-    public void valueChanged(ListSelectionEvent e) {
+    @Override
+	public void valueChanged(ListSelectionEvent e) {
         if (e.getSource() == personSelection) {
             listElementSelected((Person)personList.getSelectedValue());
         }
@@ -113,10 +113,12 @@ public class ProjectPanel extends JPanel implements ListSelectionListener, ListD
     /**
      * ListDataListener methods, called when the underlying (Person)ListModel is added to
      */
-    public void intervalAdded(ListDataEvent e) {
+    @Override
+	public void intervalAdded(ListDataEvent e) {
         personList.setSelectedIndex(e.getIndex0());
     }
-    public void contentsChanged(ListDataEvent e) {}
+    @Override
+	public void contentsChanged(ListDataEvent e) {}
     
     /**
      * This method is invoked when a person is deleted from the list.  If the first person in
@@ -124,7 +126,8 @@ public class ProjectPanel extends JPanel implements ListSelectionListener, ListD
      * in the list is removed, the method will select the new last person.  Else the method
      * will select the person after the person removed in the list.
      */
-    public void intervalRemoved(ListDataEvent e) {
+    @Override
+	public void intervalRemoved(ListDataEvent e) {
     		int index = e.getIndex0();
     		if (index == 0) 
     			personList.setSelectedIndex(1);

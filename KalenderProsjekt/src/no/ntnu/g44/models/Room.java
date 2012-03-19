@@ -76,6 +76,7 @@ public class Room {
 		pcs.addPropertyChangeListener(listener);
 	}
 	
+	@Override
 	public String toString() {
 		return roomName;
 	}

@@ -2,14 +2,9 @@ package no.ntnu.g44.components;
 
 import java.awt.Component;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-import javax.swing.Renderer;
-
-import sun.font.TextLabel;
-
 import no.ntnu.g44.models.Notification;
 
 public class NotificationListCellRenderer extends JLabel implements ListCellRenderer {

@@ -82,7 +82,8 @@ class PersonListModel extends AbstractListModel implements PropertyChangeListene
      * 
      * @return the number of Person objects in the underlying Project object
      */
-    public int getSize() {
+    @Override
+	public int getSize() {
         return (project == null ? 0 : project.getPersonCount());
     }
     
@@ -93,7 +94,8 @@ class PersonListModel extends AbstractListModel implements PropertyChangeListene
      * 
      * @return the Person object at the specific position in the underlying Project object
      */
-    public Object getElementAt(int i) {
+    @Override
+	public Object getElementAt(int i) {
       try {
         return (project == null ? null : (Person)project.getPerson(i));
       } catch (java.lang.IndexOutOfBoundsException e) { //handling of empty models
@@ -108,7 +110,8 @@ class PersonListModel extends AbstractListModel implements PropertyChangeListene
      * 
      * @param event the ProjectEvent detailing what has changed
      */
-     public void propertyChange(PropertyChangeEvent event) {
+     @Override
+	public void propertyChange(PropertyChangeEvent event) {
         Object source = event.getSource();
         Person person = null;
    

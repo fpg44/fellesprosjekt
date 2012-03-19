@@ -155,6 +155,7 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp.removePropertyChangeListener(listener);
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		propChangeSupp.firePropertyChange(event);
 	}
@@ -162,6 +163,7 @@ public class Project implements PropertyChangeListener {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (super.equals(o))
 			return true;
@@ -187,6 +189,7 @@ public class Project implements PropertyChangeListener {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String toString() {
 		String s = "project:\n";
 		Iterator it = this.iterator();

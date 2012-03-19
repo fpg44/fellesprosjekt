@@ -5,7 +5,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -65,7 +64,10 @@ public class Project implements PropertyChangeListener {
 		personList = new ArrayList<Person>();
 		eventList = new ArrayList<Event>();
 		propChangeSupp = new PropertyChangeSupport(this);
-		addTestStuff();
+		notificationList = new ArrayList<Notification>();
+		roomList = new ArrayList<Room>();
+		attendanceStatus = new ArrayList<AttendanceStatus>();
+		//addTestStuff();
 		
 		storage = new FileStorage();
 	}
@@ -73,23 +75,23 @@ public class Project implements PropertyChangeListener {
 	
 	
 	private void addTestStuff(){
-		personList.add(new Person("Andreas Løve Selvik", "lionleaf"));
+		personList.add(new Person("Andreas Lï¿½ve Selvik", "lionleaf"));
 		personList.add(new Person("Anders Eldhuset" , ""));
 		personList.add(new Person("Jeppe Eriksen", ""));
 		personList.add(new Person("Ander Dahlin", ""));
 		personList.add(new Person("Robing Tordly", ""));
 		
-		eventList.add(new Event("Ting 15.",null, new Date(2012,3,15,11,15),
-				new Date(2012,3,15,13,6), null,null));
-		
-		eventList.add(new Event("haha 16",null, new Date(2012,3,16,10,15),
-				new Date(2012,3,16,45,6), null,null));
-		eventList.add(new Event("hoho 14",null, new Date(2012,3,14,10,15),
-				new Date(2012,3,14,12,6), null,null));
-		eventList.add(new Event("test",null, new Date(2012,3,17,10,15),
-				new Date(2012,3,17,12,6), null,null));
-		eventList.add(new Event("Ting 15.",null, new Date(2012,3,15,11,15),
-				new Date(2012,3,15,13,6), null,null));
+//		eventList.add(new Event("Ting 15.",null, new Date(2012,3,15,11,15),
+//				new Date(2012,3,15,13,6), null,null));
+//		
+//		eventList.add(new Event("haha 16",null, new Date(2012,3,16,10,15),
+//				new Date(2012,3,16,45,6), null,null));
+//		eventList.add(new Event("hoho 14",null, new Date(2012,3,14,10,15),
+//				new Date(2012,3,14,12,6), null,null));
+//		eventList.add(new Event("test",null, new Date(2012,3,17,10,15),
+//				new Date(2012,3,17,12,6), null,null));
+//		eventList.add(new Event("Ting 15.",null, new Date(2012,3,15,11,15),
+//				new Date(2012,3,15,13,6), null,null));
 		
 	}
 	
@@ -115,13 +117,18 @@ public class Project implements PropertyChangeListener {
 	 * @return The {@link Person} object at the specified position in the list.
 	 */
 	public Person getPerson(int i) {
-		return (Person)personList.get(i);
+		return personList.get(i);
 	}
 	
 	public Event getEvent(int i){
 		return eventList.get(i);
 	}
 	
+	/**
+	 * This is used when i.e viewing changed-event
+	 * @param id
+	 * @return the event with the given id
+	 */
 	public Event getEventById(int id){
 		for(int i = 0; i<eventList.size(); i++){
 			if(eventList.get(i).getEventID() == id){
@@ -229,7 +236,8 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp.firePropertyChange("event", null, event);
 		
 		try {
-			storage.save(new URL("project.xml"), this);
+			String cuPath = new File(".").getAbsolutePath();
+			storage.save(new URL("file://"+cuPath+"/project.xml"), this);
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -321,6 +329,7 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp.removePropertyChangeListener(listener);
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		propChangeSupp.firePropertyChange(event);
 	}
@@ -328,6 +337,7 @@ public class Project implements PropertyChangeListener {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (super.equals(o))
 			return true;
@@ -353,6 +363,7 @@ public class Project implements PropertyChangeListener {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String toString() {
 		String s = "project:\n";
 		Iterator it = this.personIterator();

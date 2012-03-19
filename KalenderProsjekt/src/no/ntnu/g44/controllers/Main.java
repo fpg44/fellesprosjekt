@@ -23,15 +23,14 @@ public class Main {
 	}
 	
 	public static void onLogin(String username){
-		currentProject = new Project();
-		currentMainFrame = new MainFrame();
-		if(true) return; //hack to drop the code under.
 		try {
 			currentProject = new FileStorage().load(new File("project.xml"));
 		} catch (IllegalArgumentException | IOException | ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("No project file, creating blank project");
+			currentProject = new Project();
 		}
+		//currentProject = new Project();
+		currentMainFrame = new MainFrame();
 	}
 
 }

@@ -50,8 +50,9 @@ public class Event {
 		eventStartTime = new Date();
 		eventEndTime = new Date();
 		room = Room.OTHER;
-		eventOwner = new Person();
+		eventOwner = new Person("TestPerson", "tester69");
 		eventID = 0;
+		participants.add(eventOwner);
 	}
 	/** this should be deleted
 	 * Creates a new Event

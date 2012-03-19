@@ -2,12 +2,16 @@ package no.ntnu.g44.gui;
 
 import java.awt.Font;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import no.ntnu.g44.models.Event;
+import no.ntnu.g44.models.Person;
 
 public class EventChanged extends JPanel{
 	Event newEvent;
@@ -31,6 +35,9 @@ public class EventChanged extends JPanel{
 	JTextField newStart = new JTextField();
 	JTextField newEnd = new JTextField();
 	JTextField newLocation = new JTextField();
+	DefaultListModel<Person> personModel = new DefaultListModel<Person>();
+	JList personList = new JList(personModel);
+	JScrollPane personScroll = new JScrollPane(personList);
 	
 	public EventChanged(Event e){
 		newEvent = e;
@@ -56,6 +63,9 @@ public class EventChanged extends JPanel{
 		newEnd.setEditable(false);
 		newLocation.setText(newEvent.getLocation());
 		newLocation.setEditable(false);
+		for(int i = 0; i < newEvent.getParticipants().size(); i++){
+			personModel.addElement(newEvent.getParticipants().get(i));
+		}
 		//setBackground(Color.LIGHT_GRAY);
 		setLayout(null);
 		
@@ -114,6 +124,10 @@ public class EventChanged extends JPanel{
 		newLocation.setLocation(newName.getX(), newLocationLabel.getY());
 		newLocation.setSize(newName.getSize());
 		add(newLocation);
+		personScroll.setLocation(newStart.getX() + newStart.getWidth() + 6, newLabel.getY());
+		personScroll.setSize((int) personScroll.getPreferredSize().getWidth() + 10, newLocation.getHeight() + newLocation.getY() - 6);
+		add(personScroll);
+		ramme.setSize((int)personScroll.getX() + personScroll.getWidth() + 12 + 10, personScroll.getY() + personScroll.getHeight() + 12 + 35);
 		
 	}
 	public static void makeEventChangedPanel(Event e){

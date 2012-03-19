@@ -111,14 +111,14 @@ public class NewEventPanel extends JPanel {
 		startTimeModel.setCalendarField(Calendar.DAY_OF_WEEK_IN_MONTH);
 		eventStartTime.setModel(startTimeModel);
 		eventStartTime.setEditor(new JSpinner.DateEditor(eventStartTime,
-				"yyyy-MM-dd HH:mm"));
+				"HH:mm dd-MM-yyyy"));
 		eventEndLabel = new JLabel("To");
 		eventEndTime = new JSpinner();
 		endTimeModel = new SpinnerDateModel();
 		endTimeModel.setCalendarField(Calendar.DAY_OF_WEEK_IN_MONTH);
 		eventEndTime.setModel(endTimeModel);
 		eventEndTime.setEditor(new JSpinner.DateEditor(eventEndTime,
-				"yyyy-MM-dd HH:mm"));
+				"HH:mm dd-MM-yyyy"));
 		locationLabel = new JLabel("Location");
 		location = new JComboBox<Room>();
 		customLocationLabel = new JLabel("Custom location");

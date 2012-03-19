@@ -81,6 +81,7 @@ public class XmlSerializer {
 
 	public Project toProject(Document xmlDocument) throws ParseException {
 		Project aProject = new Project();
+		
 		Element groupElement = xmlDocument.getRootElement();
 		Elements personElements = groupElement.getChildElements("person");
 
@@ -88,7 +89,31 @@ public class XmlSerializer {
 			Element childElement = personElements.get(i);
 			aProject.addPerson(assemblePerson(childElement));
 		}
-
+		
+		Elements eventElements = groupElement.getChildElements("event");
+		for (int i = 0; i < eventElements.size(); i++){
+			Element child = personElements.get(i);
+			aProject.addEvent(assembleEvent(child));
+		}
+		
+		Elements notificationElements = groupElement.getChildElements("notification");
+		for (int i = 0; i < notificationElements.size(); i++){
+			Element child = notificationElements.get(i);
+			aProject.addNotification(assembleNotification(child));
+		}
+		
+		Elements roomElements = groupElement.getChildElements("room");
+		for (int i = 0; i < roomElements.size(); i++){
+			Element child = roomElements.get(i);
+			aProject.addEvent(assembleEvent(child));
+		}
+		
+		Elements attendanceStatusElements = groupElement.getChildElements("attendance-status");
+		for (int i = 0; i < attendanceStatusElements.size(); i++){
+			Element child = attendanceStatusElements.get(i);
+			aProject.addAttendanceStatus(assembleAttendanceStatus(child));
+		}
+		
 		return aProject;
 	}
 	
@@ -365,15 +390,15 @@ public class XmlSerializer {
 		if (element != null) {
 			name = element.getValue();
 		}
-		element = personElement.getFirstChildElement("email");
-		if (element != null) {
-			email = element.getValue();
-		}
-		element = personElement.getFirstChildElement("date-of-birth");
-		if (element != null) {
-			date = parseDate(element.getValue());
-		}
-		return new Person(name, email, date);
+//		element = personElement.getFirstChildElement("email");
+//		if (element != null) {
+//			email = element.getValue();
+//		}
+//		element = personElement.getFirstChildElement("date-of-birth");
+//		if (element != null && !element.getValue().equals("")) {
+//			date = parseDate(element.getValue());
+//		}
+		return new Person(name, null, null);
 	}
 }
 

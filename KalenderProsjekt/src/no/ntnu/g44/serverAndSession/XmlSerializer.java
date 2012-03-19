@@ -81,6 +81,7 @@ public class XmlSerializer {
 
 	public Project toProject(Document xmlDocument) throws ParseException {
 		Project aProject = new Project();
+		
 		Element groupElement = xmlDocument.getRootElement();
 		Elements personElements = groupElement.getChildElements("person");
 
@@ -88,6 +89,31 @@ public class XmlSerializer {
 			Element childElement = personElements.get(i);
 			aProject.addPerson(assemblePerson(childElement));
 		}
+		
+		Elements eventElements = groupElement.getChildElements("event");
+		for (int i = 0; i < eventElements.size(); i++){
+			Element child = personElements.get(i);
+			aProject.addEvent(assembleEvent(child));
+		}
+		
+		Elements notificationElements = groupElement.getChildElements("notification");
+		for (int i = 0; i < notificationElements.size(); i++){
+			Element child = notificationElements.get(i);
+			aProject.addNotification(assembleNotification(child));
+		}
+		
+		Elements roomElements = groupElement.getChildElements("room");
+		for (int i = 0; i < roomElements.size(); i++){
+			Element child = roomElements.get(i);
+			aProject.addEvent(assembleEvent(child));
+		}
+		
+		Elements attendanceStatusElements = groupElement.getChildElements("attendance-status");
+		for (int i = 0; i < attendanceStatusElements.size(); i++){
+			Element child = attendanceStatusElements.get(i);
+			aProject.addAttendanceStatus(assembleAttendanceStatus(child));
+		}
+		
 
 		return aProject;
 	}

@@ -388,12 +388,13 @@ public class MainFrame extends JPanel{
 						//EventCancelled eventCancelled = new EventCancelled(event)
 						System.out.println("This event has been cancelled");
 						
+						/*
 						//Testevent.
 						Person person = new Person("Jeppe Eriksen", "jeppeer@gmail.com");
 						Event newEvent = new Event(1, "TestEvent", person, null, new Date(2012,3,15,11,15),
 								new Date(2012,3,15,13,6), "G138", Room.OTHER);
 						EventCancelledPanel ec = new EventCancelledPanel(newEvent);
-						/*
+						
 						Notification selectedNotification = (Notification) notifBox.getSelectedItem();
 						notifBox.setSelectedIndex(0);
 						notifBox.removeItem(selectedNotification);

@@ -47,8 +47,8 @@ public class EventView {
 		int endY = (int) ((((endTime.get(Calendar.HOUR_OF_DAY)-startHour)+
 				endTime.get(Calendar.MINUTE)/60f) * pixlsPerHour) + offsetY);
 
-		int startX = (startTime.get(Calendar.DAY_OF_WEEK)  +8 ) %7 *dayWidth + offsetX + eventMargin;
-		int endX = (startTime.get(Calendar.DAY_OF_WEEK) + 8)%7 *dayWidth +dayWidth+ offsetX - eventMargin;
+		int startX = getStartX();
+		int endX = getEndX();
 
 		g2d.drawRoundRect(startX,startY,endX - startX , endY - startY,roundCorners,roundCorners);
 		g2d.setPaint(selected ? Color.red : Color.white);
@@ -109,7 +109,7 @@ public class EventView {
 	
 	private int  getStartX(){
 		Calendar startTime = getStartTime();		
-		int startX = (startTime.get(Calendar.DAY_OF_WEEK)  +8 ) %7 *dayWidth + 
+		int startX = (startTime.get(Calendar.DAY_OF_WEEK)+5)%7*dayWidth + 
 				offsetX + eventMargin;
 
 		return startX;
@@ -118,7 +118,7 @@ public class EventView {
 	private int  getEndX(){
 		Calendar startTime = getStartTime();
 		
-		int endX = (startTime.get(Calendar.DAY_OF_WEEK) + 8)%7 *dayWidth +dayWidth+ offsetX - eventMargin;
+		int endX = (startTime.get(Calendar.DAY_OF_WEEK) + 5)%7 *dayWidth +dayWidth+ offsetX - eventMargin;
 
 		return endX;
 	}

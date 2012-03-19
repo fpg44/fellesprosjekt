@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,9 +36,11 @@ import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.controllers.NotificationController;
+import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Person;
+import no.ntnu.g44.models.Room;
 
 public class MainFrame extends JPanel{
 	ListeningClass listener = new ListeningClass();
@@ -194,27 +197,6 @@ public class MainFrame extends JPanel{
 		resizing();
 	}
 
-	/**
-	 * Checks for new notifications and puts them in 'notifBox'
-	 */
-	public void checkForNewNotifications() {
-		int notifCounter = 0;
-
-		if (!unseenNotifications.isEmpty()) {
-			for (int i = 0; i < unseenNotifications.size(); i++) {
-				notifCounter++;
-			}
-			notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
-			for (int i = 0; i < unseenNotifications.size(); i++) {
-				notifBox.addItem((unseenNotifications.get(i)));
-			}
-		}
-
-		else {
-			notifBox.addItem(new String ("There is no new notifications"));
-		}
-	}
-
 	public void resizing(){
 		if(insets == null){
 			return;
@@ -356,6 +338,36 @@ public class MainFrame extends JPanel{
 			personnelList.setSelectedIndex(0);
 		}
 	}
+	
+	public void notificationCounter() {
+		int notifCounter = 0;
+		for (int i = 0; i < unseenNotifications.size(); i++) {
+			notifCounter++;
+		}
+		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
+	}
+	
+	/**
+	 * Checks for new notifications and puts them in 'notifBox'
+	 */
+	public void checkForNewNotifications() {
+		int notifCounter = 0;
+		
+		unseenNotifications = notificationController.getUnseenNotifications();
+		System.out.println(unseenNotifications.size());
+
+		if (!unseenNotifications.isEmpty()) {
+			notificationCounter();
+			for (int i = 0; i < unseenNotifications.size(); i++) {
+				notifBox.addItem((unseenNotifications.get(i)));
+			}
+		}
+
+		else {
+			notifBox.addItem(new String ("There is no new notifications"));
+		}
+	}
+	
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
 		@Override
@@ -375,6 +387,18 @@ public class MainFrame extends JPanel{
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CANCELLED){
 						//EventCancelled eventCancelled = new EventCancelled(event)
 						System.out.println("This event has been cancelled");
+						
+						//Testevent.
+						Person person = new Person("Jeppe Eriksen", "jeppeer@gmail.com");
+						Event newEvent = new Event(1, "TestEvent", person, null, new Date(2012,3,15,11,15),
+								new Date(2012,3,15,13,6), "G138", Room.OTHER);
+						EventCancelledPanel ec = new EventCancelledPanel(newEvent);
+						/*
+						Notification selectedNotification = (Notification) notifBox.getSelectedItem();
+						notifBox.setSelectedIndex(0);
+						notifBox.removeItem(selectedNotification);
+						notificationController.removeNotification(selectedNotification);
+						*/
 					}
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.INVITATION) {
 						System.out.println("You have a new event invitation");

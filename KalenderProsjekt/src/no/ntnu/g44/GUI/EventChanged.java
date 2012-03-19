@@ -3,6 +3,7 @@ package no.ntnu.g44.gui;
 import java.awt.Font;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -35,6 +36,7 @@ public class EventChanged extends JPanel{
 	JTextField newStart = new JTextField();
 	JTextField newEnd = new JTextField();
 	JTextField newLocation = new JTextField();
+	JButton okButton = new JButton("OK");
 	DefaultListModel<Person> personModel = new DefaultListModel<Person>();
 	JList personList = new JList(personModel);
 	JScrollPane personScroll = new JScrollPane(personList);
@@ -127,7 +129,10 @@ public class EventChanged extends JPanel{
 		personScroll.setLocation(newStart.getX() + newStart.getWidth() + 6, newLabel.getY());
 		personScroll.setSize((int) personScroll.getPreferredSize().getWidth() + 10, newLocation.getHeight() + newLocation.getY() - 6);
 		add(personScroll);
-		ramme.setSize((int)personScroll.getX() + personScroll.getWidth() + 12 + 10, personScroll.getY() + personScroll.getHeight() + 12 + 35);
+		okButton.setSize(okButton.getPreferredSize());
+		okButton.setLocation(personScroll.getX() + personScroll.getWidth() - okButton.getWidth(), personScroll.getY() + personScroll.getHeight() + 6);
+		add(okButton);
+		ramme.setSize((int)personScroll.getX() + personScroll.getWidth() + 12 + 10, personScroll.getY() + personScroll.getHeight() + okButton.getHeight() + 18 + 35);
 		
 	}
 	public static void makeEventChangedPanel(Event e){

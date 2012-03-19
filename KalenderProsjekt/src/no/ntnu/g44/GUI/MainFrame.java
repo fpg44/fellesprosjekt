@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,9 +36,11 @@ import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.controllers.NotificationController;
+import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Person;
+import no.ntnu.g44.models.Room;
 
 public class MainFrame extends JPanel{
 	ListeningClass listener = new ListeningClass();
@@ -384,6 +387,12 @@ public class MainFrame extends JPanel{
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CANCELLED){
 						//EventCancelled eventCancelled = new EventCancelled(event)
 						System.out.println("This event has been cancelled");
+						
+						//Testevent.
+						Person person = new Person("Jeppe Eriksen", "jeppeer@gmail.com");
+						Event newEvent = new Event(1, "TestEvent", person, null, new Date(2012,3,15,11,15),
+								new Date(2012,3,15,13,6), "G138", Room.OTHER);
+						EventCancelledPanel ec = new EventCancelledPanel(newEvent);
 						/*
 						Notification selectedNotification = (Notification) notifBox.getSelectedItem();
 						notifBox.setSelectedIndex(0);

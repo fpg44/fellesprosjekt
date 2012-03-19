@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
+import no.ntnu.g44.models.Room;
 
 /**
  * Class that represents a cancelled event. Is called when a user gets a
@@ -68,14 +69,16 @@ public class EventCancelledPanel extends AbstractPanelClass {
 		frame.setVisible(true);
 	}
 
+	/*
 	//For testing purposes
 	public static void main(String[] args) {
 
 		Person person = new Person("Jeppe Eriksen", "jeppeer@gmail.com");
 		Event newEvent = new Event(1, "TestEvent", person, null, new Date(2012,3,15,11,15),
-				new Date(2012,3,15,13,6), "G138" ,null);
+				new Date(2012,3,15,13,6), "G138", Room.OTHER);
 		EventCancelledPanel ec = new EventCancelledPanel(newEvent);
 	}
+	*/
 
 	class ButtonListener implements ActionListener, KeyListener {
 

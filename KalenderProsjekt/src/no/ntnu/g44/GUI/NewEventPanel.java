@@ -358,7 +358,7 @@ public class NewEventPanel extends JPanel {
 			if (e.getSource() == cancelButton)
 				closeWindow();
 			else if (e.getSource() == saveButton) {
-				Main.currentProject.addEvent(createEvent());
+				Main.currentProject.addEvent(createEvent(), true);
 				closeWindow();
 			}
 		}

@@ -28,6 +28,12 @@ public class Event {
 	private String oldEventString;
 	
 	
+	public String getRoomString() {
+		return roomString;
+	}
+	public void setRoomString(String roomString) {
+		this.roomString = roomString;
+	}
 	/**
 	 * This member variable provides functionality for notifying of changes to
 	 * the <code>Group</code> class.

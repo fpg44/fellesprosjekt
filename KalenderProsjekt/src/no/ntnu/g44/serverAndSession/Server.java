@@ -104,7 +104,7 @@ public class Server{
 		
 		ArrayList<Event> events = dbHandler.getEventsFromDatabase();
 		for(Event event : events){
-			project.addEvent(event);
+			project.addEvent(event, false);
 		}
 		
 		ArrayList<Room> rooms = dbHandler.getRooms();

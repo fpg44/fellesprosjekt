@@ -230,14 +230,16 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp.firePropertyChange("person", null, person);
 	}
 
-	public void addEvent(Event event){
+	public void addEvent(Event event, boolean save){
 		eventList.add(event);
 		event.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("event", null, event);
 		
 		try {
-			String cuPath = new File(".").getAbsolutePath();
-			storage.save(new URL("file://"+cuPath+"/project.xml"), this);
+			if(save){
+				String cuPath = new File(".").getAbsolutePath();
+				storage.save(new URL("file://"+cuPath+"/project.xml"), this);				
+			}
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -122,7 +122,7 @@ public class Project implements PropertyChangeListener {
 		return eventList.get(i);
 	}
 	
-	public Event getEventID(int id){
+	public Event getEventById(int id){
 		for(int i = 0; i<eventList.size(); i++){
 			if(eventList.get(i).getEventID() == id){
 				return eventList.get(i);

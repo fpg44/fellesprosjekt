@@ -26,6 +26,8 @@ public class Event {
 	private Person eventOwner;
 	private String eventOwnerString;
 	private int eventID;
+	private boolean hasOldEvent;
+	private String oldEventString;
 	
 	
 	/**
@@ -243,5 +245,12 @@ public class Event {
 		Calendar cal =new GregorianCalendar();
 		cal.setTime(eventStartTime);
 		return cal.get(Calendar.WEEK_OF_YEAR) == weekNr;
+	}
+	
+	public String getOldEventId(){
+		if(hasOldEvent == true){
+			return oldEventString;
+		}
+		return null;
 	}
 }

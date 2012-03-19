@@ -144,9 +144,16 @@ public class DatabaseHandler {
 						rsE.getString(6),					//location 
 						rsE.getString(7));		//room
 
+				//Finds old event id if excist
+				ResultSet rsOld = stmt.executeQuery("SELECT event_old_id FROM old_events WHERE event_id ='" + event.getEventID() + "'");
+				if(rsOld.next()){
+					event.setOldEvent(rsOld.getString(1));
+				}
+				rsOld = null;
+				
 				//add this event to array
 				events.add(event);
-
+				
 			}while(rsE.next());
 
 			rsE = null; //clear the ResultSet
@@ -323,15 +330,25 @@ public class DatabaseHandler {
 
 		try {
 
-			stmt.executeUpdate("UPDATE event SET" +
+			stmt.executeUpdate("INSERT into event VALUES" +
 					"owner_username = '" + e.getEventOwner().getUsername() + "', " +
 					"time_start = '" + e.getEventStartTime() + "', " +
 					"time_end = '" + e.getEventEndTime() + "', " +
 					"title = '" + e.getEventDescription() + "', " +
 					"location = '" + e.getLocation() + "' ," +
-					"room_name = '" + e.getRoom().getRoomName() + "'" +
-					"WHERE event_id = '" + e.getEventID() + "'"
+					"room_name = '" + e.getRoom().getRoomName() + "'"
 					);
+
+			//gets the primary key the statement made (as per tutorial) could be incorrect
+			ResultSet rs = stmt.getGeneratedKeys();
+			if(rs.next()){
+				int key = rs.getInt(1);
+				
+				//insert old and new event id in a table overview
+				stmt.executeUpdate("INSERT INTO old_events VALUES" +
+						"event_id ='" + key + "', " +
+						"event_old_id ='" + e.getEventID() + "'");
+			}
 
 		} catch (SQLException e1) {
 
@@ -537,15 +554,15 @@ public class DatabaseHandler {
 
 		}
 	}
-	
+
 	public void deleteAttendanceStatus(AttendanceStatus status){
-		
+
 		try{
-			
-			
-			
+
+
+
 		}catch(Exception e){
-			
+
 			e.printStackTrace();
 		}
 	}

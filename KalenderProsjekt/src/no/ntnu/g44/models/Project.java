@@ -122,6 +122,11 @@ public class Project implements PropertyChangeListener {
 		return eventList.get(i);
 	}
 	
+	/**
+	 * This is used when i.e viewing changed-event
+	 * @param id
+	 * @return the event with the given id
+	 */
 	public Event getEventById(int id){
 		for(int i = 0; i<eventList.size(); i++){
 			if(eventList.get(i).getEventID() == id){

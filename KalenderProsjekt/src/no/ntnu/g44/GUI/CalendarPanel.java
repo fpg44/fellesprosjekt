@@ -237,7 +237,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		for(Event event : Main.currentProject.getEventList()){
 			EventView ev = new EventView(event);
 			ev.set(startHour, pixlsPerHour, dayWidth, leftOffset,topArea);
-			if(ev.isAtPosition(e.getX(), e.getY())){
+			if(ev.isAtPosition(e.getX(), e.getY(), Main.currentMainFrame.currUkenr)){
 				selectedEvent = event;
 				repaint();
 				return;

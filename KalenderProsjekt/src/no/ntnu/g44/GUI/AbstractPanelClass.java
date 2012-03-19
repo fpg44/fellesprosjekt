@@ -106,13 +106,7 @@ public abstract class AbstractPanelClass {
 		eventTitleLabel = new JLabel(event.getEventDescription());
 		startTimeLabel = new JLabel(startTime.toString());
 		endTimeLabel = new JLabel(endTime.toString());
-		locationLabel = new JLabel();
-		if (event.getRoom() != null) {
-			locationLabel.setText(event.getRoom().getRoomName());
-		}
-		else {
-			locationLabel.setText(customLocation);
-		}
+		locationLabel = new JLabel(event.getLocation());
 		
 		textArea = new JTextArea();
 		panel.setLayout(new GridBagLayout());

@@ -43,7 +43,7 @@ public class XmlSerializer {
 
 		Iterator<Person> personIt = aProject.personIterator();
 		while (personIt.hasNext()) {
-			Person aPerson = (Person)personIt.next();
+			Person aPerson = personIt.next();
 			Element element = personToXml(aPerson);
 			root.appendChild(element);
 		}

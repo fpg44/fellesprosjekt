@@ -48,7 +48,8 @@ public class Gui extends JFrame {
         this.setSize(500, 400);
         this.placeComponents();
         this.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
+            @Override
+			public void windowClosing(WindowEvent e) {
                 Gui.this.target.disconnect();
                 System.exit(0);
             }
@@ -74,7 +75,8 @@ public class Gui extends JFrame {
         inputFelt.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         loggedOn.setListData(new Vector());
         inputFelt.addKeyListener(new KeyAdapter() {
-            public void keyTyped(KeyEvent e) {
+            @Override
+			public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                     sendMessage(inputFelt.getText());
                     inputFelt.setText("");
@@ -86,7 +88,8 @@ public class Gui extends JFrame {
         Menu menu = new Menu("Settings");
         MenuItem item = new MenuItem("Change nick");
         item.addActionListener(new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 String newName = JOptionPane.showInputDialog(Gui.this,
                         "Enter new nick:", "Change nick",
                         JOptionPane.PLAIN_MESSAGE);

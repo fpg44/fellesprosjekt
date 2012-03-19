@@ -1,32 +1,14 @@
 package no.ntnu.g44.components;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import java.awt.GridBagLayout;
 import javax.swing.JList;
-import java.awt.GridBagConstraints;
-
 import javax.swing.DefaultListModel;
-import javax.swing.GroupLayout;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-
 import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.BoxLayout;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-
-
-import java.awt.Component;
 
 public class TestListRenderer extends JPanel implements MouseListener{
 

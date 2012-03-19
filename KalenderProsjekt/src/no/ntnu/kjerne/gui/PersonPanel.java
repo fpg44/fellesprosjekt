@@ -125,7 +125,8 @@ public class PersonPanel extends JPanel
      * @see java.beans.PropertyChangeListener <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/beans/PropertyChangeListener.html">java.beans.PropertyChangeListener</a>
      * @see javax.swing.JFormattedTextField <a href="http://java.sun.com/j2se/1.4.2/docs/api/javax/swing/JFormattedTextField.html">javax.swing.JFormattedTextField</a>
      */
-    public void propertyChange(PropertyChangeEvent evt)
+    @Override
+	public void propertyChange(PropertyChangeEvent evt)
     {
         if (evt.getSource() == dateOfBirthTextField) {
             sourceChanged(dateOfBirthTextField);
@@ -248,7 +249,8 @@ public class PersonPanel extends JPanel
      * 
      * @param event the ActionEvent describing the action
      */
-    public void actionPerformed(ActionEvent event) {
+    @Override
+	public void actionPerformed(ActionEvent event) {
         sourceChanged(event.getSource());
     }
 
@@ -259,7 +261,8 @@ public class PersonPanel extends JPanel
      * 
      * @param event the ItemEvent describing the selection
      */
-    public void itemStateChanged(ItemEvent event) {
+    @Override
+	public void itemStateChanged(ItemEvent event) {
         sourceChanged(event.getSource());
     }
 
@@ -270,9 +273,11 @@ public class PersonPanel extends JPanel
      * 
      * @param event the FocusEvent describing what happened
      */
-    public void focusLost(FocusEvent event) {
+    @Override
+	public void focusLost(FocusEvent event) {
         sourceChanged(event.getSource());
     }
 
-    public void focusGained(FocusEvent event) {}
+    @Override
+	public void focusGained(FocusEvent event) {}
 }

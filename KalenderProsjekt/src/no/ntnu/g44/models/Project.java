@@ -5,7 +5,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -115,7 +114,7 @@ public class Project implements PropertyChangeListener {
 	 * @return The {@link Person} object at the specified position in the list.
 	 */
 	public Person getPerson(int i) {
-		return (Person)personList.get(i);
+		return personList.get(i);
 	}
 	
 	public Event getEvent(int i){
@@ -326,6 +325,7 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp.removePropertyChangeListener(listener);
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		propChangeSupp.firePropertyChange(event);
 	}
@@ -333,6 +333,7 @@ public class Project implements PropertyChangeListener {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (super.equals(o))
 			return true;
@@ -358,6 +359,7 @@ public class Project implements PropertyChangeListener {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String toString() {
 		String s = "project:\n";
 		Iterator it = this.personIterator();

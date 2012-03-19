@@ -256,6 +256,7 @@ public class Person {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (super.equals(obj))
 			return true;
@@ -278,6 +279,7 @@ public class Person {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String toString() {
 		String s = "Name: " + getName() + "; ";
 		s += "Email: " + getEmail() + "; ";

@@ -114,7 +114,6 @@ public class XmlSerializer {
 			aProject.addAttendanceStatus(assembleAttendanceStatus(child));
 		}
 		
-
 		return aProject;
 	}
 	
@@ -391,15 +390,15 @@ public class XmlSerializer {
 		if (element != null) {
 			name = element.getValue();
 		}
-		element = personElement.getFirstChildElement("email");
-		if (element != null) {
-			email = element.getValue();
-		}
-		element = personElement.getFirstChildElement("date-of-birth");
-		if (element != null) {
-			date = parseDate(element.getValue());
-		}
-		return new Person(name, email, date);
+//		element = personElement.getFirstChildElement("email");
+//		if (element != null) {
+//			email = element.getValue();
+//		}
+//		element = personElement.getFirstChildElement("date-of-birth");
+//		if (element != null && !element.getValue().equals("")) {
+//			date = parseDate(element.getValue());
+//		}
+		return new Person(name, null, null);
 	}
 }
 

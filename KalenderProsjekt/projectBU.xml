@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project>
+     <person>
+          <name>Andreas L&#xFFFD;ve Selvik</name>
+          <email/>
+          <date-of-birth>Mar 19, 2012</date-of-birth>
+     </person>
+     <person>
+          <name>Anders Eldhuset</name>
+          <email/>
+          <date-of-birth>Mar 19, 2012</date-of-birth>
+     </person>
+     <person>
+          <name>Jeppe Eriksen</name>
+          <email/>
+          <date-of-birth>Mar 19, 2012</date-of-birth>
+     </person>
+     <person>
+          <name>Ander Dahlin</name>
+          <email/>
+          <date-of-birth>Mar 19, 2012</date-of-birth>
+     </person>
+     <person>
+          <name>Robing Tordly</name>
+          <email/>
+          <date-of-birth>Mar 19, 2012</date-of-birth>
+     </person>
+     <event>
+          <event-id>-1</event-id>
+          <title/>
+          <owner>foobar</owner>
+          <event-start>Mon Mar 19 11:55:36 CET 2012</event-start>
+          <event-end>Mon Mar 19 12:55:00 CET 2012</event-end>
+          <location>P123</location>
+          <room>P123</room>
+          <participants/>
+     </event>
+</project>

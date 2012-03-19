@@ -11,6 +11,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.fp.net.admin.Settings;
@@ -47,6 +48,10 @@ public class ChatClient {
     public ChatClient(String address, int port) {
         port_to_server = port;
         addressServer= address;
+        
+        addressServer = JOptionPane.showInputDialog("server IP");
+        thisPort = Integer.parseInt(JOptionPane.showInputDialog("my port"));
+        
         if (SIMPLE_CONNECTION) {
             connection = new SimpleConnection(thisPort);
         } else {

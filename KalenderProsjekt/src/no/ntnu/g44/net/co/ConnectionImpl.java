@@ -27,7 +27,7 @@ import no.ntnu.fp.net.cl.KtnDatagram.Flag;
  * of the functionality, leaving message passing and error handling to this
  * implementation.
  * 
- * @author Sebjørn Birkeland and Stein Jakob Nordbø
+ * @author Sebjï¿½rn Birkeland and Stein Jakob Nordbï¿½
  * @see no.ntnu.g44.net.co.Connection
  * @see no.ntnu.fp.net.cl.ClSocket
  */
@@ -223,7 +223,9 @@ public class ConnectionImpl extends AbstractConnection {
 	 */
 	@Override
 	public void close() throws IOException {
-
+		if(disconnectRequest != null){
+			closeOnFinRecieved();
+		}
 		int timeout = 1800000; //2 min timeout
 
 		long startTime = System.currentTimeMillis();
@@ -268,6 +270,10 @@ public class ConnectionImpl extends AbstractConnection {
 	private void closeOnFinRecieved() throws EOFException, IOException{
 		int timeout = 1800000; //2 min timeout
 
+		//send ack
+		sendAck(this.disconnectRequest, false);
+
+
 		long startTime = System.currentTimeMillis();
 
 		KtnDatagram fin = constructInternalPacket(Flag.FIN);
@@ -282,6 +288,16 @@ public class ConnectionImpl extends AbstractConnection {
 			ack = receiveAck();
 			timer.cancel();
 			System.out.println("Might have recieved ack " + ack);
+
+
+			//Check internal queue for fin packets that needs to be acked again
+			if(!internalQueue.isEmpty()){
+				KtnDatagram maybefin = receivePacket(true);
+				if(maybefin != null && maybefin.getFlag() == Flag.FIN){
+					sendAck(maybefin, false);
+				}
+			}
+
 		}while(ack == null && System.currentTimeMillis() - startTime < timeout/*|| !validAck(syn, syn_ack)*/);
 
 		//recieved ack on the fin.

@@ -26,6 +26,7 @@ public class Main {
 		try {
 			currentProject = new FileStorage().load(new File("project.xml"));
 		} catch (IllegalArgumentException | IOException | ParseException e) {
+			e.printStackTrace();
 			System.out.println("No project file, creating blank project");
 			currentProject = new Project();
 		}

@@ -316,6 +316,31 @@ public class DatabaseHandler {
 	}
 
 	/**
+	 * Updates an event in database
+	 * @param e
+	 */
+	public void updateEvent(Event e){
+
+		try {
+
+			stmt.executeUpdate("UPDATE event SET" +
+					"owner_username = '" + e.getEventOwner().getUsername() + "', " +
+					"time_start = '" + e.getEventStartTime() + "', " +
+					"time_end = '" + e.getEventEndTime() + "', " +
+					"title = '" + e.getEventDescription() + "', " +
+					"location = '" + e.getLocation() + "' ," +
+					"room_name = '" + e.getRoom().getRoomName() + "'" +
+					"WHERE event_id = '" + e.getEventID() + "'"
+					);
+
+		} catch (SQLException e1) {
+
+			e1.printStackTrace();
+
+		}
+	}
+
+	/**
 	 * Send an arraylist with all the notification that shal be updated in the database
 	 * @param notifications
 	 */
@@ -331,6 +356,26 @@ public class DatabaseHandler {
 						"AND event_id = '" + notif.getEventID() + "'");
 
 			}
+
+		}catch( Exception e ){
+
+			e.printStackTrace();
+
+		}
+	}
+
+	/**
+	 * Updates a notification in the database
+	 * @param notif
+	 */
+	public void updateNotification(Notification notif){
+
+		try{
+
+			stmt.executeUpdate("UPDATE notification SET " +
+					"type = '" + notif.getType().toString() + "' " +
+					"WHERE notif_id = '" + notif.getNotificationID() + "' " +
+					"AND event_id = '" + notif.getEventID() + "'");
 
 		}catch( Exception e ){
 
@@ -359,6 +404,45 @@ public class DatabaseHandler {
 
 			e.printStackTrace();
 
+		}
+	}
+
+	/**
+	 * Updates all the attendance statuses in the database (attends_at)
+	 * @param attendanceStatus
+	 */
+	public void updateAttendanceStatus(ArrayList<AttendanceStatus> attendanceStatus){
+
+		try{
+
+			for(AttendanceStatus status : attendanceStatus){
+
+				stmt.executeUpdate("UPDATE attends_at SET" +
+						"status ='" + status.getStatus().toString() + "' " +
+						"WHERE account_username ='" + status.getUsername() + "' " +
+						"AND event_id ='" + status.getEventID() + "'");
+
+			}
+
+		}catch(Exception e){
+
+			e.printStackTrace();
+		}
+	}
+
+	public void updateAttendanceStatus(AttendanceStatus status){
+
+		try{
+
+			stmt.executeUpdate("UPDATE attends_at SET" +
+					"status ='" + status.getStatus().toString() + "' " +
+					"WHERE account_username ='" + status.getUsername() + "' " +
+					"AND event_id ='" + status.getEventID() + "'");
+
+
+		}catch(Exception e){
+
+			e.printStackTrace();
 		}
 	}
 
@@ -403,6 +487,24 @@ public class DatabaseHandler {
 	}
 
 	/**
+	 * insert new status in database
+	 * @param status
+	 */
+	public void newAttendanceStatus(AttendanceStatus status){
+		try{
+
+			stmt.executeUpdate("INSERT INTO attends_at VALUES " +
+					"account_username ='" + status.getUsername() + "', " +
+					"event_id ='" + status.getEventID() + "', " +
+					"status ='" + status.getStatus().toString() + "'");
+
+		}catch(Exception e){
+
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Delete an event in the database
 	 * @param e
 	 */
@@ -435,38 +537,50 @@ public class DatabaseHandler {
 
 		}
 	}
+	
+	public void deleteAttendanceStatus(AttendanceStatus status){
+		
+		try{
+			
+			
+			
+		}catch(Exception e){
+			
+			e.printStackTrace();
+		}
+	}
 
-//	/** SHOULD NOT BE POSSIBLE
-//	 * Delete a person in the database
-//	 * @param p
-//	 */
-//	public void deletePerson(Person person){
-//
-//		try{
-//
-//			stmt.executeUpdate("DELETE FROM account WHERE username ='" + person.getUsername() + "'");
-//
-//		}catch( Exception e ){
-//
-//			e.printStackTrace();
-//
-//		}
-//	}
-//	
-//	/** SHOULD NOT BE POSSIBLE
-//	 * Insert a new Person in the database
-//	 * @param p
-//	 */
-//	public void newPerson(Person person){
-//
-//		try{
-//
-//			stmt.executeUpdate("");
-//
-//		}catch( Exception e ){
-//
-//			e.printStackTrace();
-//
-//		}
-//	}
+	//	/** SHOULD NOT BE POSSIBLE
+	//	 * Delete a person in the database
+	//	 * @param p
+	//	 */
+	//	public void deletePerson(Person person){
+	//
+	//		try{
+	//
+	//			stmt.executeUpdate("DELETE FROM account WHERE username ='" + person.getUsername() + "'");
+	//
+	//		}catch( Exception e ){
+	//
+	//			e.printStackTrace();
+	//
+	//		}
+	//	}
+	//	
+	//	/** SHOULD NOT BE POSSIBLE
+	//	 * Insert a new Person in the database
+	//	 * @param p
+	//	 */
+	//	public void newPerson(Person person){
+	//
+	//		try{
+	//
+	//			stmt.executeUpdate("");
+	//
+	//		}catch( Exception e ){
+	//
+	//			e.printStackTrace();
+	//
+	//		}
+	//	}
 }

@@ -126,10 +126,46 @@ public class Server{
 		return project;
 	}
 	
-	protected void update(){
+	protected void updateAll(){
 		ArrayList<Event> events = project.getEventList();
 		dbHandler.updateEvents(events);
 		
-//		ArrayList<Person> persons = project.getPersonList();
+		ArrayList<Notification> notifications = project.getNotificationList();
+		dbHandler.updateNotifications(notifications);
+		
+		ArrayList<AttendanceStatus> status = project.getAttendanceStatusList();
+		dbHandler.updateAttendanceStatus(status);
+	}
+	
+	protected void update(Event event){
+		dbHandler.updateEvent(event);
+	}
+	
+	protected void update(Notification notification){
+		dbHandler.updateNotification(notification);
+	}
+	
+	protected void update(AttendanceStatus status){
+		dbHandler.updateAttendanceStatus(status);
+	}
+	
+	protected void insert(Event event){
+		dbHandler.newEvent(event);
+	}
+	
+	protected void insert(Notification notif){
+		dbHandler.newNotification(notif);
+	}
+	
+	protected void insert(AttendanceStatus status){
+		dbHandler.newAttendanceStatus(status);
+	}
+	
+	protected void delete(Event event){
+		dbHandler.deleteEvent(event);
+	}
+	
+	protected void delete(Notification notif){
+		dbHandler.deleteNotification(notif);
 	}
 }

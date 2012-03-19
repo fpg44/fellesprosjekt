@@ -35,7 +35,20 @@ public class Event {
 	 * the <code>Group</code> class.
 	 */
 	private PropertyChangeSupport propChangeSupp;
-
+	/** this is for testing
+	 * creates a new Event
+	 * no parameters
+	 */
+	public Event(){
+		eventDescription = "desc";
+		location = "somewhere";
+		participants = new ArrayList<Person>();
+		eventStartTime = new Date();
+		eventEndTime = new Date();
+		room = null;
+		eventOwner = new Person();
+		eventID = 0;
+	}
 	/** this should be deleted
 	 * Creates a new Event
 	 * @param eventDescription

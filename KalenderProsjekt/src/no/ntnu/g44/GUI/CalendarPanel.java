@@ -15,6 +15,7 @@ import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -236,12 +237,13 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-
-		for(Event event : Main.currentProject.getEventList()){
-			EventView ev = new EventView(event);
+		ArrayList<Event> events = Main.currentProject.getEventList();
+		int len = events.size();
+		for(int i = len-1;i>= 0;i--){
+			EventView ev = new EventView(events.get(i));
 			ev.set(startHour, pixlsPerHour, dayWidth, leftOffset,topArea);
 			if(ev.isAtPosition(e.getX(), e.getY())){
-				selectedEvent = event;
+				selectedEvent = events.get(i);
 				repaint();
 				return;
 			}

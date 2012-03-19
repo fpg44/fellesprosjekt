@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 /**
  * A Formatter that checks the syntax of a String according to a regex Pattern.
  * 
- * @author Hallvard Tr¾tteberg
+ * @author Hallvard Trï¿½tteberg
  *  
  * @version $Revision: 1.2 $ - $Date: 2005/02/20 18:33:16 $
  */
@@ -45,7 +45,8 @@ public class RegexFormatter extends DefaultFormatter
      * 
      * @return the resulting String
      */
-    public String valueToString(Object o) {
+    @Override
+	public String valueToString(Object o) {
         return (o != null ? o.toString() : "");
     }
     
@@ -57,7 +58,8 @@ public class RegexFormatter extends DefaultFormatter
      * 
      * @return the resulting Object (possibly the same String)
      */
-    public Object stringToValue(String s) throws ParseException {
+    @Override
+	public Object stringToValue(String s) throws ParseException {
         boolean matches = (pattern != null ? pattern.matcher(s).matches() : true);
         if (! matches) {
             throw new ParseException("Illegal value: " + s, 0);

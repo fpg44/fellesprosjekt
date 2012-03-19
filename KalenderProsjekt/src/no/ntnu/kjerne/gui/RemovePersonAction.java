@@ -41,6 +41,7 @@ public class RemovePersonAction extends AbstractAction {
 	 * 
 	 * @param e The action event.
 	 */
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		PersonListModel plm = projectPanel.getModel();
 		Project project = plm.getProject();

@@ -32,7 +32,7 @@ public class TestCoClient {
 
     // Set up log
     Log log = new Log();
-    log.setLogName("Client");
+    Log.setLogName("Client");
 
     // Connection object listening on 4001
     Connection conn = new ConnectionImpl(4001);

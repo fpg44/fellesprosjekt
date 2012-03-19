@@ -86,6 +86,7 @@ public class MainFrame extends JPanel{
 
 	public MainFrame(){
 		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
 			public void run() {
 				calendar.repaint();
 				WEEK_NUMBER = calendar.getWeekNumber();
@@ -357,8 +358,10 @@ public class MainFrame extends JPanel{
 	}
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
+		@Override
 		public void mouseDragged(MouseEvent e) {
 		}
+		@Override
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {

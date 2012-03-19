@@ -30,7 +30,8 @@ class ClSocketReceiver extends Thread {
     }
 
     /** Try to receive a packet. */
-    public void run() {
+    @Override
+	public void run() {
         try {
             connection = new ClSocket();
             packet = connection.receive(port);

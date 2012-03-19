@@ -8,13 +8,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
+
 import no.ntnu.g44.models.Event;
 
 public class EventEditPanel extends JPanel{
 	public EventEditPanel(Event event){
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		JFrame frame = new JFrame(event.getEventDescription());
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.getContentPane().add(this);
 		JLabel ownerLabel = new JLabel("Event owner:");
 		JLabel startLabel = new JLabel("Start time:");

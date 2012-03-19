@@ -14,11 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
-import sun.util.calendar.BaseCalendar.Date;
-
-
-import no.ntnu.fp.net.admin.Log;
-import no.ntnu.fp.net.cl.ClException;
 import no.ntnu.fp.net.cl.ClSocket;
 import no.ntnu.fp.net.cl.KtnDatagram;
 import no.ntnu.fp.net.cl.KtnDatagram.Flag;
@@ -85,6 +80,7 @@ public class ConnectionImpl extends AbstractConnection {
 	 *             If timeout expires before connection is completed.
 	 * @see Connection#connect(InetAddress, int)
 	 */
+	@Override
 	public void connect(InetAddress pRemoteAddress, int pRemotePort) throws IOException,
 	SocketTimeoutException {
 		this.remoteAddress = pRemoteAddress.getHostAddress();
@@ -131,6 +127,7 @@ public class ConnectionImpl extends AbstractConnection {
 	 * @return A new ConnectionImpl-object representing the new connection.
 	 * @see Connection#accept()
 	 */
+	@Override
 	public Connection accept() throws IOException, SocketTimeoutException {
 
 		//Wait forever for a syn:
@@ -184,6 +181,7 @@ public class ConnectionImpl extends AbstractConnection {
 	 * @see AbstractConnection#sendDataPacketWithRetransmit(KtnDatagram)
 	 * @see no.ntnu.g44.net.co.Connection#send(String)
 	 */
+	@Override
 	public void send(String msg) throws ConnectException, IOException {
 
 		KtnDatagram datagram = constructDataPacket(msg);
@@ -210,6 +208,7 @@ public class ConnectionImpl extends AbstractConnection {
 	 * @see AbstractConnection#receivePacket(boolean)
 	 * @see AbstractConnection#sendAck(KtnDatagram, boolean)
 	 */
+	@Override
 	public String receive() throws ConnectException, IOException {
 		KtnDatagram datagram = receivePacket(false);
 		nextExpectedSeqNr++;
@@ -222,6 +221,7 @@ public class ConnectionImpl extends AbstractConnection {
 	 * 
 	 * @see Connection#close()
 	 */
+	@Override
 	public void close() throws IOException {
 
 		int timeout = 1800000; //2 min timeout
@@ -305,6 +305,7 @@ public class ConnectionImpl extends AbstractConnection {
 	 *            Packet to test.
 	 * @return true if packet is free of errors, false otherwise.
 	 */
+	@Override
 	protected boolean isValid(KtnDatagram packet) {
 		return (packet.calculateChecksum() == packet.getChecksum())
 				&& (packet.getSrc_addr() == remoteAddress) //To get those ghost packets!

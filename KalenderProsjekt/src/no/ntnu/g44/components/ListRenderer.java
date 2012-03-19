@@ -1,32 +1,15 @@
 package no.ntnu.g44.components;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
-
-import org.w3c.dom.events.EventTarget;
-import org.w3c.dom.views.AbstractView;
 
 /**
  * A ListCellRenderer for elements with a text-label and an ImageIcon
@@ -48,6 +31,7 @@ public class ListRenderer extends JPanel implements ListCellRenderer{
 	private int i;
 	private JButton button = new JButton("X");
 
+	@Override
 	public Component getListCellRendererComponent(final JList list, Object value, final int index, boolean isSelected, boolean hasFocus) {
 
 		setLayout(new BorderLayout());

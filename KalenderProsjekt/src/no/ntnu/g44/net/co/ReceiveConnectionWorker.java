@@ -25,7 +25,8 @@ public class ReceiveConnectionWorker extends Thread {
     /**
      * The worker thread.
      */
-    public void run() {
+    @Override
+	public void run() {
         isRunning = true;
         try {
             while (isRunning) {

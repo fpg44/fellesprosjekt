@@ -18,7 +18,7 @@ import no.ntnu.g44.net.co.AbstractConnection;
  * @see AbstractConnection#simplySendPacket(KtnDatagram)
  * @see java.util.TimerTask
  * @see java.util.Timer
- * @author Stein Jakob Nordbø
+ * @author Stein Jakob Nordbï¿½
  */
 public class SendTimer extends TimerTask {
 
@@ -46,7 +46,8 @@ public class SendTimer extends TimerTask {
      * received within the desired interval, and the datagram is resend on the
      * same socket.
      */
-    public void run() {
+    @Override
+	public void run() {
         try {
             Log.writeToLog(packet, "Sending this datagram (try: " + ++tries + ")", "SendTimer");
             

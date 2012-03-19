@@ -59,7 +59,8 @@ public class FPFileFilter extends FileFilter {
      * @return <code>true</code> if it is to be shown, <code>false</code> if
      *         not.
      */
-    public boolean accept(File file) {
+    @Override
+	public boolean accept(File file) {
         if (file != null) {
             if (file.isDirectory()) {
                 return true;
@@ -78,7 +79,8 @@ public class FPFileFilter extends FileFilter {
      * 
      * @return The description of the filter.
      */
-    public String getDescription() {
+    @Override
+	public String getDescription() {
         if (description == null || isExtensionListInDescription()) {
             fullDescription = description == null ? "(" : description + " (";
             Enumeration extensions = filters.keys();

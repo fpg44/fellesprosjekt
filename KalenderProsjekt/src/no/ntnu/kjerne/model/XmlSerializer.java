@@ -6,17 +6,14 @@
  */
 package no.ntnu.kjerne.model;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Iterator;
 
-import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
-import nu.xom.ParsingException;
 
 /**
  * @author tho

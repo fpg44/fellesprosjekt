@@ -1,7 +1,6 @@
 package no.ntnu.g44.gui;
 
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;

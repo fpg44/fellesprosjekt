@@ -15,14 +15,11 @@ import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
-
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.fp.net.admin.Settings;
 import no.ntnu.g44.net.co.Connection;
 import no.ntnu.g44.net.co.ConnectionImpl;
 import no.ntnu.g44.net.co.SimpleConnection;
-import no.ntnu.g44.net.separat.client.ChatClient;
 
 /**
  * @author Geir Vevle
@@ -65,7 +62,8 @@ public class ChatServer extends JFrame {
         private class RecieveThread extends Thread {
             public boolean run = true;
 
-            public void run() {
+            @Override
+			public void run() {
                 run = true;
                 while (run) {
                     try {
@@ -182,10 +180,11 @@ public class ChatServer extends JFrame {
 
             private String message = "";
 
-            public void run() {
+            @Override
+			public void run() {
                 while (true) {
                     try {
-                        DBG("Server lytter på:" + listenPort);
+                        DBG("Server lytter pï¿½:" + listenPort);
                         newConn = server.accept();
                         message = newConn.receive();
 
@@ -199,10 +198,10 @@ public class ChatServer extends JFrame {
                             broadcast(getUsers().toString());
                         }
                     } catch (SocketTimeoutException e) {
-		      DBG("startServer(): Noe gikk galt, forsøk igjen.");
+		      DBG("startServer(): Noe gikk galt, forsï¿½k igjen.");
 		      e.printStackTrace();
                     } catch (IOException e) {
-		      DBG("startServer(): Noe gikk galt, forsøk igjen.");
+		      DBG("startServer(): Noe gikk galt, forsï¿½k igjen.");
 		      e.printStackTrace();
                     }
                 }

@@ -43,12 +43,12 @@ public class XmlSerializer {
 	public Document toXml(Project aProject) {
 		Element root = new Element("project");
 
-		Iterator<Person> personIt = aProject.personIterator();
-		while (personIt.hasNext()) {
-			Person aPerson = personIt.next();
-			Element element = personToXml(aPerson);
-			root.appendChild(element);
-		}
+//		Iterator<Person> personIt = aProject.personIterator();
+//		while (personIt.hasNext()) {
+//			Person aPerson = personIt.next();
+//			Element element = personToXml(aPerson);
+//			root.appendChild(element);
+//		}
 
 		Iterator<Event> eventIt = aProject.eventIterator();
 		while (eventIt.hasNext()) {

@@ -115,7 +115,6 @@ public class XmlSerializer {
 			Element child = attendanceStatusElements.get(i);
 			aProject.addAttendanceStatus(assembleAttendanceStatus(child));
 		}
-		
 		return aProject;
 	}
 	
@@ -176,8 +175,12 @@ public class XmlSerializer {
 		
 		Calendar c = new GregorianCalendar();
 		c.setTime(date);
-		
-		time += c.DAY_OF_MONTH + ":" + c.MONTH + ";" + c.YEAR + "-" + c.MINUTE + "_" + c.HOUR + "!";
+		int pm = 0;
+		System.out.println("pm" + c.get(c.PM) + "am" + c.get(c.AM) + "ampm" + c.get(c.AM_PM));
+		if(c.get(c.AM) == c.get(c.AM_PM)){
+			pm = 12;
+		}
+		time += c.get(c.DAY_OF_MONTH) + ":" + c.get(c.MONTH) + ";" + c.get(c.YEAR) + "-" + c.get(c.MINUTE) + "_" + (c.get(c.HOUR)+pm) + "!";
 		
 		return time;
 	}

@@ -152,6 +152,9 @@ public class Event {
 	}
 
 	public String getEventOwnerString() {
+		if(eventOwner == null){
+			return "";
+		}
 		return eventOwner.toString();
 	}
 
@@ -186,8 +189,10 @@ public class Event {
 	public String getLocation() {
 		if (room == Room.OTHER)
 			return location;
-		else
-			return room.getRoomName();
+		else{
+			return "lol";
+//			return room.getRoomName();
+		}
 	}
 
 	public void setLocation(String location) {

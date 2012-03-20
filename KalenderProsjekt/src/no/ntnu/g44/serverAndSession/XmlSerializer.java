@@ -64,12 +64,12 @@ public class XmlSerializer {
 			root.appendChild(element);
 		}
 
-		Iterator<Room> roomIt = aProject.roomIterator();
-		while(roomIt.hasNext()){
-			Room room = roomIt.next();
-			Element element = roomToXml(room);
-			root.appendChild(element);
-		}
+//		Iterator<Room> roomIt = aProject.roomIterator();
+//		while(roomIt.hasNext()){
+//			Room room = roomIt.next();
+//			Element element = roomToXml(room);
+//			root.appendChild(element);
+//		}
 
 		Iterator<AttendanceStatus> attendanceStatusIt = aProject.attendanseStaturIterator();
 		while(attendanceStatusIt.hasNext()){

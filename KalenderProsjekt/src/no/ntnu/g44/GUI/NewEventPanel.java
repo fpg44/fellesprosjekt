@@ -33,6 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultCaret;
 
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.Event;
@@ -100,31 +101,42 @@ public class NewEventPanel extends JPanel {
 	 */
 	public NewEventPanel(Person owner, JFrame frame) {
 		this.frame = frame;
-		
+
 		eventInformationPanel = new JPanel();
 		ownerLabel = new JLabel("Arranged by");
 		eventOwner = owner;
 		eventOwnerName = new JLabel(owner.getName());
+
 		eventStartLabel = new JLabel("From");
 		eventStartTime = new JSpinner();
 		startTimeModel = new SpinnerDateModel();
 		startTimeModel.setCalendarField(Calendar.DAY_OF_WEEK_IN_MONTH);
 		eventStartTime.setModel(startTimeModel);
-		eventStartTime.setEditor(new JSpinner.DateEditor(eventStartTime,
-				"HH:mm dd-MM-yyyy"));
+		JSpinner.DateEditor startEd = new JSpinner.DateEditor(eventStartTime,
+				"yyyy-MM-dd HH:mm");
+		setCustomCaret(startEd);
+		eventStartTime.setEditor(startEd);
+		
 		eventEndLabel = new JLabel("To");
 		eventEndTime = new JSpinner();
 		endTimeModel = new SpinnerDateModel();
 		endTimeModel.setCalendarField(Calendar.DAY_OF_WEEK_IN_MONTH);
 		eventEndTime.setModel(endTimeModel);
-		eventEndTime.setEditor(new JSpinner.DateEditor(eventEndTime,
-				"HH:mm dd-MM-yyyy"));
+		JSpinner.DateEditor endEd = new JSpinner.DateEditor(eventEndTime,
+				"yyyy-MM-dd HH:mm");
+		setCustomCaret(endEd);
+		eventEndTime.setEditor(endEd);
+		// set the endtime to current epoch time + 3600000 milliseconds (1 hour)
+		Date endTime = new Date(new Date().getTime() + 3600000);
+		endTime.setTime(endTime.getTime());
+		eventEndTime.setValue(endTime);
+		
 		locationLabel = new JLabel("Location");
 		location = new JComboBox<Room>();
 		customLocationLabel = new JLabel("Custom location");
 		customLocation = new JTextField(20);		// 20 columns
-		// customLocation should only be enabled when 'Other' is selected
-		// in the location JComboBox
+		/* customLocation should only be enabled when 'Other' is selected
+		   in the location JComboBox */
 		customLocation.setEnabled(false);
 		eventDescriptionLabel = new JLabel("Description");
 		eventDescription = new JTextArea(4, 20);	// 4 rows, 20 columns
@@ -135,8 +147,8 @@ public class NewEventPanel extends JPanel {
 		
 		// add some padding between the edge of the JTextArea and entered text
 		eventDescription.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-		// put the description in a JScrollPane so scrollbars are added rather
-		// than the textearea resizing itself when a lot of text is entered
+		/* put the description in a JScrollPane so scrollbars are added rather
+		   than the textearea resizing itself when a lot of text is entered */
 		eventDescriptionScroller = new JScrollPane(eventDescription);
 	
 		participantsPanel = new JPanel();
@@ -257,21 +269,10 @@ public class NewEventPanel extends JPanel {
 		frame.setVisible(true);
 	}
 	
-	// for testing purposes
-	public static void main(String[] args) {
-		Person person = new Person("Foo Bar", "foobar");
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		new NewEventPanel(person, frame);
-	}
-	
 	private void populatePersonsModel() {
-		String[] names = {	"Anders Andersen", "Bjørn Bjørnson",
-							"Charlie Cleese", "Dolly Delta",
-							"Daffy Ding-Dong"};
-		for (String name : names) {
-			String username = name.toLowerCase().replace(" ", "_");
-			personsModel.addElement(new Person(name, username));
+		ArrayList<Person> persons = Main.currentProject.getPersonList();
+		for (Person person : persons) {
+			personsModel.addElement(person);
 		}
 	}
 	
@@ -319,6 +320,37 @@ public class NewEventPanel extends JPanel {
 	
 	private void closeWindow() {
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+	}
+	
+	private void setCustomCaret(JSpinner.DateEditor ed) {
+		/* This is a hack to set the default value to change in the 'To' and
+		   'From' fields to the day of month, not year. */
+		
+		ed.getTextField().setCaret(new DefaultCaret() {  
+
+			private boolean diverted = false;
+
+			@Override
+			public void setDot(int dot) {
+				diverted = (dot == 0);
+				if (diverted) {
+					/* setting the dot (caret) value to 9 places it in the 
+					   middle of the 'day of month' field (dd), assuming the 
+					   date format is ISO-8601 (yyyy-MM-dd HH:mm) */
+					dot = 9;
+				}
+				super.setDot(dot);
+			}
+
+			@Override
+			public void moveDot(int dot) {
+				if (diverted) {
+					super.setDot(0);
+					diverted = false;
+				}
+				super.moveDot(dot);
+			}  
+		});
 	}
 	
 	class RoomListener implements ActionListener, ChangeListener {

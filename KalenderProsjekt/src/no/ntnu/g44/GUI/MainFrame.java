@@ -385,8 +385,6 @@ public class MainFrame extends JPanel{
 					if (notifBox.getSelectedIndex() == 0) {
 						System.out.println("Nothing happens");
 					}
-					//Her skal vi legge inn kall p� forskjellige dialogbokser som kommer
-					//som f�lge av man trykker p� en notifikasjon.
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CANCELLED){
 						//EventCancelled eventCancelled = new EventCancelled(event)
 						System.out.println("This event has been cancelled");

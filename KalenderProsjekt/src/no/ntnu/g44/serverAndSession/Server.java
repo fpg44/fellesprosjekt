@@ -1,5 +1,8 @@
 package no.ntnu.g44.serverAndSession;
 
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import no.ntnu.fp.net.admin.Log;
@@ -12,16 +15,25 @@ import no.ntnu.g44.models.Project;
 import no.ntnu.g44.models.Room;
 import no.ntnu.g44.net.co.Connection;
 import no.ntnu.g44.net.co.ConnectionImpl;
+import no.ntnu.g44.net.co.SimpleConnection;
 
 public class Server{
 
 	public int PORT;
-	private Connection connection, server;
+	private Connection server;
 	private boolean lookForIncommingDatagramPackets = true;
 	private DatabaseHandler dbHandler;
 	private XmlSerializer xmlSerializer;
 	private Project project;
+	private Thread connectAcceptor;
+	
+	ArrayList<ConnectionToAClient> connections = new ArrayList<>();
 
+	
+	public static void main(String[] args) {
+		new Server(5545,"localhost","","","","");
+	}
+	
 	/**
 	 * 
 	 * @param ServerPort : The Port-number the server is listening to (locally is 3306)
@@ -43,19 +55,68 @@ public class Server{
 			e.printStackTrace();
 		}
 		
-		server = new ConnectionImpl(PORT);
+		server = new SimpleConnection(PORT);
 		
-		try{
+		
+		this.connectAcceptor = new Thread(){
+			private boolean stop;
+
+			@Override
+			public void run() {
+				while(!stop){
+					try {
+						connections.add(new ConnectionToAClient(server.accept()));
+					} catch (SocketTimeoutException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 			
-			connection = server.accept();
-			startIncommingDatagramPacketParser();
+			@Override
+			public void interrupt() {
+				stop = true;
+				super.interrupt();
+			}
+		};
+		
+		
+		connectAcceptor.start();
 			
-		}catch(Exception e){
-			
-			e.printStackTrace();
-			
+	}
+	
+		
+	class ConnectionToAClient{
+		private Connection conToClient;
+		private boolean listening;
+
+		public ConnectionToAClient(Connection con) {
+			this.conToClient = con;
+		}
+		
+		public void listen(){
+			this.listening = true;
+			while(listening){
+				
+				try {
+					tryPacketParse(conToClient);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		public void stopListening(){
+			listening = false;
 		}
 	}
+	
+	
+	
+	
+	
 
 	/**
 	 * When some changes are done in the calendar-application, this will notify the other online users.
@@ -64,12 +125,12 @@ public class Server{
 		
 	}
 	
-	private void startIncommingDatagramPacketParser() throws Exception{
+	private void tryPacketParse(Connection con) throws ConnectException, IOException {
 		
-		while(lookForIncommingDatagramPackets){
 			
-			String message = connection.receive();
+			String message = con.receive();
 			Log.writeToLog("Server.java received a message", "lololol");
+			System.out.println(message);
 			
 			
 			//This is the parser part where you read the incomming string and chooses what to do
@@ -83,7 +144,7 @@ public class Server{
 //				
 //			else if(message.equals(""))
 				
-		}
+		
 	}
 	
 	protected void stopIncommingDatagramPacketParser(boolean b){

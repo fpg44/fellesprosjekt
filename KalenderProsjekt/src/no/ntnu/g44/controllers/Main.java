@@ -7,6 +7,7 @@ import java.text.ParseException;
 import no.ntnu.g44.gui.Login;
 import 
 no.ntnu.g44.gui.MainFrame;
+import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Project;
 import no.ntnu.g44.serverAndSession.FileStorage;
 
@@ -19,11 +20,6 @@ public class Main {
 	public static void main(String[] args) {		
 		//TODO: Create new login here
 		//MainFrame should be created in Project constructor
-		Login.login();
-		
-	}
-	
-	public static void onLogin(String username){
 		try {
 			currentProject = new FileStorage().load(new File("project.xml"));
 		} catch (IllegalArgumentException | IOException | ParseException e) {
@@ -31,6 +27,12 @@ public class Main {
 			System.out.println("No project file, creating blank project");
 			currentProject = new Project();
 		}
+		Login.login();
+		
+	}
+	
+	public static void onLogin(Person user){
+		currentProject.setLoggedInPerson(user);
 		//currentProject = new Project();
 		currentMainFrame = new MainFrame();
 	}

@@ -223,6 +223,8 @@ public class XmlSerializer {
 		Element element = new Element("person");
 		Element name = new Element("name");
 		name.appendChild(aPerson.getName());
+		Element username = new Element("username");
+		username.appendChild(aPerson.getUsername());
 		Element email = new Element("email");
 		email.appendChild(aPerson.getEmail());
 		Element dateOfBirth = new Element("date-of-birth");
@@ -230,6 +232,7 @@ public class XmlSerializer {
 			dateOfBirth.appendChild(format.format(aPerson.getDateOfBirth()));
 		}
 		element.appendChild(name);
+		element.appendChild(username);
 		element.appendChild(email);
 		element.appendChild(dateOfBirth);
 		return element;
@@ -443,11 +446,15 @@ public class XmlSerializer {
 	}
 	
 	private Person assemblePerson(Element personElement) throws ParseException {
-		String name = null, email = null;
+		String name = null, email = null, username = null;
 		Date date = null;
 		Element element = personElement.getFirstChildElement("name");
 		if (element != null) {
 			name = element.getValue();
+		}
+		element = personElement.getFirstChildElement("username");
+		if(element!=null){
+			username = element.getValue();
 		}
 //		element = personElement.getFirstChildElement("email");
 //		if (element != null) {
@@ -457,7 +464,7 @@ public class XmlSerializer {
 //		if (element != null && !element.getValue().equals("")) {
 //			date = parseDate(element.getValue());
 //		}
-		return new Person(name, null, null);
+		return new Person(name, username);
 	}
 }
 

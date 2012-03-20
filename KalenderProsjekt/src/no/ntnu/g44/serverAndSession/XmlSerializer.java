@@ -43,12 +43,12 @@ public class XmlSerializer {
 	public Document toXml(Project aProject) {
 		Element root = new Element("project");
 
-//		Iterator<Person> personIt = aProject.personIterator();
-//		while (personIt.hasNext()) {
-//			Person aPerson = personIt.next();
-//			Element element = personToXml(aPerson);
-//			root.appendChild(element);
-//		}
+		Iterator<Person> personIt = aProject.personIterator();
+		while (personIt.hasNext()) {
+			Person aPerson = personIt.next();
+			Element element = personToXml(aPerson);
+			root.appendChild(element);
+		}
 
 		Iterator<Event> eventIt = aProject.eventIterator();
 		while (eventIt.hasNext()) {
@@ -64,12 +64,12 @@ public class XmlSerializer {
 			root.appendChild(element);
 		}
 
-//		Iterator<Room> roomIt = aProject.roomIterator();
-//		while(roomIt.hasNext()){
-//			Room room = roomIt.next();
-//			Element element = roomToXml(room);
-//			root.appendChild(element);
-//		}
+		Iterator<Room> roomIt = aProject.roomIterator();
+		while(roomIt.hasNext()){
+			Room room = roomIt.next();
+			Element element = roomToXml(room);
+			root.appendChild(element);
+		}
 
 		Iterator<AttendanceStatus> attendanceStatusIt = aProject.attendanseStaturIterator();
 		while(attendanceStatusIt.hasNext()){

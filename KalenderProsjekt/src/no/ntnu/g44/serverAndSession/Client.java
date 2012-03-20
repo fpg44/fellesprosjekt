@@ -1,5 +1,6 @@
 package no.ntnu.g44.serverAndSession;
 
+import java.awt.HeadlessException;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetAddress;
@@ -23,11 +24,22 @@ public class Client {
 		new Client(server, 5545);
 	}
 	public Client(String serverIP, int serverPort){
-		connection = new ConnectionImpl(6565);
+		connection = new ConnectionImpl(6564);
 		try {
 			connection.connect(InetAddress.getByName(serverIP), serverPort);
 			connection.send("halla!!!");
-			recieveLoop();
+			new Thread(){
+				public void run() {
+					recieveLoop();
+				};
+			}.start();
+			new Thread(){
+				public void run() {
+					inputLoop();
+				}
+
+				
+			}.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -42,5 +54,15 @@ public class Client {
 			}
 		}
 	}
+	private void inputLoop() {
+		while(true){
+			try {
+				connection.send(JOptionPane.showInputDialog("msg"));
+			} catch (HeadlessException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	};
 
 }

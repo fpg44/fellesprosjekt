@@ -93,6 +93,11 @@ public class Server{
 
 		public ConnectionToAClient(Connection con) {
 			this.conToClient = con;
+			new Thread(){
+				public void run() {
+					listen();
+				};
+			}.start();
 		}
 		
 		public void listen(){

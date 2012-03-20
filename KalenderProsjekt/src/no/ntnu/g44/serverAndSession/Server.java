@@ -145,11 +145,58 @@ public class Server{
 			String message = con.receive();
 			Log.writeToLog("Server.java received a message", "lololol");
 			System.out.println(message);
-			notfyOnlineListeners(message, null);
+			//notfyOnlineListeners(message, null);
 			
 			
 			//This is the parser part where you read the incomming string and chooses what to do
-//			if(message.equals(""))
+			if(message.equals("hello")){
+				con.send("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\r\n" + 
+						"<project>\r\n" + 
+						"     <person>\r\n" + 
+						"          <name>Andreas L&#xFFFD;ve Selvik</name>\r\n" + 
+						"          <username>lion</username>\r\n" + 
+						"          <email/>\r\n" + 
+						"          <date-of-birth>Mar 20, 2012</date-of-birth>\r\n" + 
+						"     </person>\r\n" + 
+						"     <person>\r\n" + 
+						"          <name>Anders Eldhuset</name>\r\n" + 
+						"          <username>anderse</username>\r\n" + 
+						"          <email/>\r\n" + 
+						"          <date-of-birth>Mar 20, 2012</date-of-birth>\r\n" + 
+						"     </person>\r\n" + 
+						"     <person>\r\n" + 
+						"          <name>Jeppe Eriksen</name>\r\n" + 
+						"          <username>jeppee</username>\r\n" + 
+						"          <email/>\r\n" + 
+						"          <date-of-birth>Mar 20, 2012</date-of-birth>\r\n" + 
+						"     </person>\r\n" + 
+						"     <person>\r\n" + 
+						"          <name>Anders Dahlin</name>\r\n" + 
+						"          <username>andersd</username>\r\n" + 
+						"          <email/>\r\n" + 
+						"          <date-of-birth>Mar 20, 2012</date-of-birth>\r\n" + 
+						"     </person>\r\n" + 
+						"     <person>\r\n" + 
+						"          <name>Robing Tordly</name>\r\n" + 
+						"          <username>robing</username>\r\n" + 
+						"          <email/>\r\n" + 
+						"          <date-of-birth>Mar 20, 2012</date-of-birth>\r\n" + 
+						"     </person>\r\n" + 
+						"     <event>\r\n" + 
+						"          <event-id>-1</event-id>\r\n" + 
+						"          <title>potato</title>\r\n" + 
+						"          <owner>andersd</owner>\r\n" + 
+						"          <event-start>?20:2;2012-23_13!</event-start>\r\n" + 
+						"          <event-end>?20:2;2012-23_15!</event-end>\r\n" + 
+						"          <location>hot</location>\r\n" + 
+						"          <room>OTHER</room>\r\n" + 
+						"          <participants>\r\n" + 
+						"               <person>jeppee</person>\r\n" + 
+						"               <person>andersd</person>\r\n" + 
+						"          </participants>\r\n" + 
+						"     </event>\r\n" + 
+						"</project>");
+			}
 //				
 //			else if(message.equals(""))
 //				

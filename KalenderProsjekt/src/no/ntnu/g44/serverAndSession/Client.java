@@ -1,7 +1,9 @@
 package no.ntnu.g44.serverAndSession;
 
 import java.awt.HeadlessException;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
@@ -11,10 +13,16 @@ import java.text.ParseException;
 
 import javax.swing.JOptionPane;
 
+import org.xml.sax.InputSource;
+
 import no.ntnu.g44.models.Project;
 import no.ntnu.g44.net.co.Connection;
 import no.ntnu.g44.net.co.ConnectionImpl;
 import no.ntnu.g44.net.co.SimpleConnection;
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
 
 public class Client {
 	Connection connection;
@@ -27,22 +35,23 @@ public class Client {
 		connection = new ConnectionImpl(6564);
 		try {
 			connection.connect(InetAddress.getByName(serverIP), serverPort);
-			connection.send("halla!!!");
-			new Thread(){
-				public void run() {
-					recieveLoop();
-				};
-			}.start();
-			new Thread(){
-				public void run() {
-					inputLoop();
-				}
-
-				
-			}.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Project getProject() throws ConnectException, IOException, ValidityException, ParseException, ParsingException{
+			
+		connection.send("hello");
+		String xml = connection.receive();
+		
+		
+		//Pen kode:
+		return new XmlSerializer()
+				.toProject(
+						new Builder()
+						.build(new ByteArrayInputStream(xml.getBytes("utf-8"))));
+				
 	}
 	
 	public void recieveLoop(){

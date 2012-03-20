@@ -124,7 +124,7 @@ public class MainFrame extends JPanel{
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
 		addMouseMotionListener(listener);
-		frame = new JFrame("Test");
+		frame = new JFrame("Logged in as " + Main.currentProject.getLoggedInPerson());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setBounds(0, 0, (int)dim.getWidth()-60, (int)dim.getHeight()-60);
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -287,6 +287,7 @@ public class MainFrame extends JPanel{
 		}
 		personnelModel.removeAllElements();
 		for(int i = 0; i < personnel.size(); i++){
+			if(personnel.get(i) == Main.currentProject.getLoggedInPerson())continue;
 			personnelModel.addElement(personnel.get(i));
 		}
 
@@ -323,6 +324,9 @@ public class MainFrame extends JPanel{
 		String person;
 		personnelModel.removeAllElements();
 		for(int i = 0; i < personnel.size(); i++){
+			if(personnel.get(i) == Main.currentProject.getLoggedInPerson()){
+				continue;
+			}
 			person = personnel.get(i).getName().toLowerCase();
 			if(person.startsWith(search) || person.equals(search)){
 				boolean b = true;
@@ -385,8 +389,6 @@ public class MainFrame extends JPanel{
 					if (notifBox.getSelectedIndex() == 0) {
 						System.out.println("Nothing happens");
 					}
-					//Her skal vi legge inn kall p� forskjellige dialogbokser som kommer
-					//som f�lge av man trykker p� en notifikasjon.
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CANCELLED){
 						//EventCancelled eventCancelled = new EventCancelled(event)
 						System.out.println("This event has been cancelled");

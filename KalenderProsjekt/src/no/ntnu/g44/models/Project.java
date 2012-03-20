@@ -366,9 +366,4 @@ public class Project implements PropertyChangeListener {
 	public Person getLoggedInPerson(){
 		return personLoggedIn;
 	}
-	public void setParticipants(){
-		for(int i = 0; i < eventList.size(); i++){
-			eventList.get(i).setParticipants();
-		}
-	}
 }

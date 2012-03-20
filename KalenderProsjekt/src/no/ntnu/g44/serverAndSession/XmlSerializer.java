@@ -271,11 +271,11 @@ public class XmlSerializer {
 			room.appendChild(event.getRoom().getRoomName());
 			element.appendChild(room);
 		}
-		if(event.getParticipants() != null){
+		if(event.getParticipantsStrings() != null){
 			Element participants = new Element("participants");
-			for(Person p : event.getParticipants()){
+			for(String p : event.getParticipantsStrings()){
 				Element personElem = new Element("person");
-				personElem.appendChild(p.getUsername());
+				personElem.appendChild(p);
 				participants.appendChild(personElem);
 			}
 			element.appendChild(participants);

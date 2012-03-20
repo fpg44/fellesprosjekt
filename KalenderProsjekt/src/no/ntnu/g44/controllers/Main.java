@@ -37,9 +37,9 @@ public class Main {
 		//TODO: Create new login here
 		//MainFrame should be created in Project constructor
 		try {
+			currentProject = new FileStorage().load(new File("project.xml"));
 			if(!usenet){
 				currentProject = new FileStorage().load(new File("project.xml"));
-				currentProject.setParticipants();
 			}
 
 		} catch (IllegalArgumentException | IOException | ParseException e) {

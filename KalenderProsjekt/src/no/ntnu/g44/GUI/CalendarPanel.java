@@ -177,12 +177,15 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 					break;
 				}
 			}
-			if(ignore)continue;
-			if(!e.isInWeek(Main.currentMainFrame.currentWeekNumber)) continue;
+			if(ignore){
+				continue;
+			}
+			if(!e.isInWeek(Main.currentMainFrame.currentWeekNumber)) {
+				continue;
+			}
 			EventView ev = new EventView(e);
 			ev.set(startHour,pixlsPerHour,dayWidth, leftOffset,topArea);
 			ev.paint(g2d, selectedEvent == e);
-
 		}
 		
 	}

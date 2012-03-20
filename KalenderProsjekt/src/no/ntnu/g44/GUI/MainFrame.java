@@ -299,7 +299,7 @@ public class MainFrame extends JPanel{
 		}
 	}
 	public void newEvent(){
-		new NewEventPanel(new Person("Foo Bar", "foobar"), new JFrame());
+		new NewEventPanel(Main.currentProject.getLoggedInPerson(), new JFrame());
 	}
 	public void deleteEvent(){
 		if(calendar.getSelectedEvent() != null){

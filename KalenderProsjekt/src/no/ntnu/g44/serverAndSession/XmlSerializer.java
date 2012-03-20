@@ -453,7 +453,6 @@ public class XmlSerializer {
 			name = element.getValue();
 		}
 		element = personElement.getFirstChildElement("username");
-		System.out.println("assemble " + element.getValue());
 		if(element!=null){
 			username = element.getValue();
 		}

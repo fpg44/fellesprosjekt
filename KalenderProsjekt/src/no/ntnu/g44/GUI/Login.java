@@ -48,7 +48,6 @@ public class Login {
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
 					for(int i = 0; i < Main.currentProject.getPersonCount(); i++){
-						System.out.println(i + Main.currentProject.getPerson(i).getUsername());
 						if(navnField.getText().equals(Main.currentProject.getPerson(i).getUsername())){
 							Main.onLogin(Main.currentProject.getPerson(i));
 							ramme.dispose();

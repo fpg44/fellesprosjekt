@@ -35,7 +35,6 @@ public class Main {
 		currentProject.setLoggedInPerson(user);
 		//currentProject = new Project();
 		currentMainFrame = new MainFrame();
-		System.out.println(currentProject.getLoggedInPerson().getUsername());
 	}
 
 }

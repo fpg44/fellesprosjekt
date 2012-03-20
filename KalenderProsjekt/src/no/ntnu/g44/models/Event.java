@@ -199,6 +199,7 @@ public class Event {
 			return location;
 		else{
 //			return "lol";
+			if(room == null)return "";
 			return room.getRoomName();
 		}
 	}

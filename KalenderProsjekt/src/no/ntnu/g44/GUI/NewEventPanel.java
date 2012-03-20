@@ -309,8 +309,10 @@ public class NewEventPanel extends JPanel {
 	private Event createEvent() {
 		String eventTitle = new String(eventDescription.getText());
 		ArrayList<Person> participants = new ArrayList<Person>();
-		for (int i = 0; i < participantsModel.getSize(); i++)
+		for (int i = 0; i < participantsModel.getSize(); i++){
 			participants.add(participantsModel.get(i));
+		}
+		participants.add(eventOwner);
 		Date eventStartTime = startTimeModel.getDate();
 		Date eventEndTime = endTimeModel.getDate();
 		String location = customLocation.getText();

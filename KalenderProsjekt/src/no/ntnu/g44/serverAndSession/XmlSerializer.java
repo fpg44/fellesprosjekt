@@ -176,7 +176,7 @@ public class XmlSerializer {
 		Calendar c = new GregorianCalendar();
 		c.setTime(date);
 		int pm = 0;
-		System.out.println("pm" + c.get(c.PM) + "am" + c.get(c.AM) + "ampm" + c.get(c.AM_PM));
+//		System.out.println("pm" + c.get(c.PM) + "am" + c.get(c.AM) + "ampm" + c.get(c.AM_PM));
 		if(c.get(c.AM) == c.get(c.AM_PM)){
 			pm = 12;
 		}
@@ -436,12 +436,11 @@ public class XmlSerializer {
 
 		element = eventElement.getFirstChildElement("participants");
 		if( element != null ){
-			Elements children = element.getChildElements("participant");
+			Elements children = element.getChildElements("person");
 			for ( int i = 0; i< children.size(); i++){
-				participants.add(String.valueOf(children.get(i).getFirstChildElement("participant")));				
+				participants.add(children.get(i).getValue());				
 			}
 		}
-
 		return new Event(id, title, owner_username, participants, eventStartDate, eventEndDate, location, roomString);
 	}
 	

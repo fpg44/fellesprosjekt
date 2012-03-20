@@ -143,7 +143,6 @@ public class Event {
 		this.location = location;
 		this.roomString = roomString;
 		propChangeSupp = new PropertyChangeSupport(this);
-		setParticipants();
 	}
 	public void setParticipants(){
 		for(int i = 0; i < participantsStrings.size(); i++){

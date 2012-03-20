@@ -176,7 +176,7 @@ public class XmlSerializer {
 		Calendar c = new GregorianCalendar();
 		c.setTime(date);
 		int pm = 0;
-		System.out.println("pm" + c.get(c.PM) + "am" + c.get(c.AM) + "ampm" + c.get(c.AM_PM));
+//		System.out.println("pm" + c.get(c.PM) + "am" + c.get(c.AM) + "ampm" + c.get(c.AM_PM));
 		if(c.get(c.AM) == c.get(c.AM_PM)){
 			pm = 12;
 		}

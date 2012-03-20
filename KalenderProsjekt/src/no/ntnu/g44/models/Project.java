@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 
 import no.ntnu.g44.serverAndSession.FileStorage;
@@ -70,33 +69,16 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp = new PropertyChangeSupport(this);
 		notificationList = new ArrayList<Notification>();
 		roomList = new ArrayList<Room>();
+		addDummyRooms();
 		attendanceStatus = new ArrayList<AttendanceStatus>();
-		//addTestStuff();
 		
 		storage = new FileStorage();
 	}
-
 	
-	
-	private void addTestStuff(){
-//		personList.add(new Person("Andreas L�ve Selvik", "lionleaf"));
-//		personList.add(new Person("Anders Eldhuset" , ""));
-//		personList.add(new Person("Jeppe Eriksen", ""));
-//		personList.add(new Person("Ander Dahlin", ""));
-//		personList.add(new Person("Robing Tordly", ""));
-		
-//		eventList.add(new Event("Ting 15.",null, new Date(2012,3,15,11,15),
-//				new Date(2012,3,15,13,6), null,null));
-//		
-//		eventList.add(new Event("haha 16",null, new Date(2012,3,16,10,15),
-//				new Date(2012,3,16,45,6), null,null));
-//		eventList.add(new Event("hoho 14",null, new Date(2012,3,14,10,15),
-//				new Date(2012,3,14,12,6), null,null));
-//		eventList.add(new Event("test",null, new Date(2012,3,17,10,15),
-//				new Date(2012,3,17,12,6), null,null));
-//		eventList.add(new Event("Ting 15.",null, new Date(2012,3,15,11,15),
-//				new Date(2012,3,15,13,6), null,null));
-		
+	private void addDummyRooms() {
+		String[] roomNames = { "P123", "P298", "G193", "F123" };
+		for (String name : roomNames)
+			addRoom(new Room(name));
 	}
 	
 	/**

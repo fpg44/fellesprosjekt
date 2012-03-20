@@ -162,8 +162,8 @@ public class ConnectionImpl extends AbstractConnection {
 		KtnDatagram ack = null;
 		do{
 			sendAck(syn, true);
-			//ack = receiveAck();
-			//System.out.println("Recieved ack " + ack);
+			ack = receiveAck();
+			System.out.println("Recieved ack " + ack);
 		}while(false/*ack == null /*|| !isValidAndExpectedSeq(ack) || validAck(syn, ack)*/ );
 		nextExpectedSeqNr++;
 		state = State.ESTABLISHED;

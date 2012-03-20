@@ -22,7 +22,10 @@ import no.ntnu.g44.serverAndSession.Storage;
  *
  */
 public class Project implements PropertyChangeListener {
-
+	/**
+	 * the one that is logged in.
+	 */
+	private Person personLoggedIn;
 	/**
 	 * The member variable storing all registered {@link Person} objects.
 	 */
@@ -374,5 +377,10 @@ public class Project implements PropertyChangeListener {
 		}
 		return s;
 	}
-	
+	public void setLoggedInPerson(Person user){
+		personLoggedIn = user;
+	}
+	public Person getLoggedInPerson(){
+		return personLoggedIn;
+	}
 }

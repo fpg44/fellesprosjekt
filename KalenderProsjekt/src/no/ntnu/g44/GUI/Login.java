@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import no.ntnu.g44.controllers.Main;
+import no.ntnu.g44.models.Person;
 
 public class Login {
 	
@@ -46,12 +47,16 @@ public class Login {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
-					Main.onLogin(navnField.getText());
-					ramme.dispose();
-					if(navnField.getText().equalsIgnoreCase("Anders")){
-						Main.onLogin(navnField.getText());
-						ramme.dispose();
+					for(int i = 0; i < Main.currentProject.getPersonCount(); i++){
+						System.out.println(i + Main.currentProject.getPerson(i).getUsername());
+						if(navnField.getText().equals(Main.currentProject.getPerson(i).getUsername())){
+							Main.onLogin(Main.currentProject.getPerson(i));
+							ramme.dispose();
+							return;
+						}
 					}
+					Main.onLogin(new Person("fooBar", "foo"));
+					ramme.dispose();
 				}
 			}
 			@Override
@@ -80,9 +85,7 @@ public class Login {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(navnField.getText().equals("jeppe")){
-					Main.onLogin(navnField.getText());
-				}
+				Main.onLogin(new Person("fooBar", "foo"));
 			}
 		});
 		panel.add(loginButt);

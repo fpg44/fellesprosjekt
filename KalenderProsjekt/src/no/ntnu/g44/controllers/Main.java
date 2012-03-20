@@ -17,14 +17,14 @@ import nu.xom.ValidityException;
 public class Main {
 	public static Project currentProject = null;
 	public static MainFrame currentMainFrame;
-	
+
 	static final boolean usenet = false;
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		
+
+
 		if(usenet){
 			try {
 				currentProject = new Client("78.91.12.130", 5545).getProject();
@@ -33,20 +33,24 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		
+
 		//TODO: Create new login here
 		//MainFrame should be created in Project constructor
 		try {
-			if(!usenet)currentProject = new FileStorage().load(new File("project.xml"));
+			if(!usenet){
+				currentProject = new FileStorage().load(new File("project.xml"));
+				currentProject.setParticipants();
+			}
+
 		} catch (IllegalArgumentException | IOException | ParseException e) {
 			e.printStackTrace();
 			System.out.println("No project file, creating blank project");
 			currentProject = new Project();
 		}
 		Login.login();
-		
+
 	}
-	
+
 	public static void onLogin(Person user){
 		currentProject.setLoggedInPerson(user);
 		//currentProject = new Project();

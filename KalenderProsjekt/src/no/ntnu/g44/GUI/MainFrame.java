@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -79,6 +80,7 @@ public class MainFrame extends JPanel{
 
 	int WEEK_NUMBER = 0;
 	int currentWeekNumber = WEEK_NUMBER;
+	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 	JLabel weeknumber = new JLabel("WEEK " + WEEK_NUMBER);
 	ListRenderer renderer = new ListRenderer();
 	NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
@@ -436,12 +438,18 @@ public class MainFrame extends JPanel{
 			}
 			if(e.getSource() == nextArrow){
 				currentWeekNumber +=1;
-				if(currentWeekNumber == 53)currentWeekNumber = 1;
+				if (currentWeekNumber == 53) {
+					currentWeekNumber = 1;
+					currentYear++;
+				}
 				calendar.repaint();
 			}
 			if(e.getSource() == backArrow){
 				currentWeekNumber -=1;
-				if(currentWeekNumber == 0)currentWeekNumber = 52;
+				if (currentWeekNumber == 0) {
+					currentWeekNumber = 52;
+					currentYear--;
+				}
 				calendar.repaint();
 			}
 			if(e.getSource() == todayButton){

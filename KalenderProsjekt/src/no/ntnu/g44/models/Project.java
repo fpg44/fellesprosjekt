@@ -69,17 +69,17 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp = new PropertyChangeSupport(this);
 		notificationList = new ArrayList<Notification>();
 		roomList = new ArrayList<Room>();
-		addDummyRooms();
+//		addDummyRooms();
 		attendanceStatus = new ArrayList<AttendanceStatus>();
 		
 		storage = new FileStorage();
 	}
 	
-	private void addDummyRooms() {
-		String[] roomNames = { "P123", "P298", "G193", "F123" };
-		for (String name : roomNames)
-			addRoom(new Room(name));
-	}
+//	private void addDummyRooms() {
+//		String[] roomNames = { "P123", "P298", "G193", "F123" };
+//		for (String name : roomNames)
+//			addRoom(new Room(name));
+//	}
 	
 	/**
 	 * Returns the number of {@linkplain #addPerson(Person) <code>Person</code> objects

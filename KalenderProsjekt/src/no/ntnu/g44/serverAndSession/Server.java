@@ -111,6 +111,13 @@ public class Server{
 		public void stopListening(){
 			listening = false;
 		}
+		public void push(String msg){
+			try {
+				conToClient.send(msg);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	
@@ -121,8 +128,10 @@ public class Server{
 	/**
 	 * When some changes are done in the calendar-application, this will notify the other online users.
 	 */
-	private  void notfyOnlineListeners(){
-		
+	private  void notfyOnlineListeners(String msg,ConnectionToAClient exception){
+		for (ConnectionToAClient con: connections) {
+			con.push(msg);
+		}
 	}
 	
 	private void tryPacketParse(Connection con) throws ConnectException, IOException {
@@ -131,6 +140,7 @@ public class Server{
 			String message = con.receive();
 			Log.writeToLog("Server.java received a message", "lololol");
 			System.out.println(message);
+			notfyOnlineListeners(message, null);
 			
 			
 			//This is the parser part where you read the incomming string and chooses what to do

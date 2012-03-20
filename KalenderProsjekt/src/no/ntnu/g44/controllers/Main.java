@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import no.ntnu.g44.gui.Login;
-import 
-no.ntnu.g44.gui.MainFrame;
+import no.ntnu.g44.gui.MainFrame;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Project;
 import no.ntnu.g44.serverAndSession.FileStorage;

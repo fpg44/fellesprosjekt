@@ -308,18 +308,18 @@ public class NewEventPanel extends JPanel {
 	
 	private Event createEvent() {
 		String eventTitle = new String(eventDescription.getText());
-		ArrayList<Person> participants = new ArrayList<Person>();
+		ArrayList<String> participants = new ArrayList<String>();
 		for (int i = 0; i < participantsModel.getSize(); i++){
-			participants.add(participantsModel.get(i));
+			participants.add(participantsModel.get(i).getUsername());
 		}
-		participants.add(eventOwner);
+		participants.add(eventOwner.getUsername());
 		Date eventStartTime = startTimeModel.getDate();
 		Date eventEndTime = endTimeModel.getDate();
 		String location = customLocation.getText();
 		Room room = (Room) this.location.getSelectedItem();
 		
-		return new Event(eventTitle, this.eventOwner, participants,
-				eventStartTime, eventEndTime, location, room);
+		return new Event(-1, eventTitle, this.eventOwner.getUsername(), participants,
+				eventStartTime, eventEndTime, location, room.getRoomName());
 	}
 	
 	private void closeWindow() {

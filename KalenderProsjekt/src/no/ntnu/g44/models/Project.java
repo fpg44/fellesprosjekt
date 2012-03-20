@@ -1,5 +1,6 @@
 package no.ntnu.g44.models;
 
+import java.beans.EventSetDescriptor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -382,5 +383,10 @@ public class Project implements PropertyChangeListener {
 	}
 	public Person getLoggedInPerson(){
 		return personLoggedIn;
+	}
+	public void setparticipants(){
+		for(int i = 0; i < eventList.size(); i++){
+			eventList.get(i).setParticipants();
+		}
 	}
 }

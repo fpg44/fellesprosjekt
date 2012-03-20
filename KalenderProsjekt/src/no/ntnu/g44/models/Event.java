@@ -17,7 +17,7 @@ import no.ntnu.g44.controllers.Main;
 public class Event {
 	
 	private String eventDescription, location;
-	private ArrayList<Person> participants;
+	private ArrayList<Person> participants = new ArrayList<Person>();
 	private ArrayList<String> participantsStrings;
 	private Date eventStartTime;
 	private Date eventEndTime;
@@ -143,9 +143,17 @@ public class Event {
 		this.location = location;
 		this.roomString = roomString;
 		propChangeSupp = new PropertyChangeSupport(this);
-		
+		setParticipants();
 	}
-	
+	public void setParticipants(){
+		for(int i = 0; i < participantsStrings.size(); i++){
+			for(int j = 0; j < Main.currentProject.getPersonCount(); j++){
+				if(participantsStrings.get(i) == Main.currentProject.getPerson(j).getUsername()){
+					participants.add(Main.currentProject.getPerson(j));
+				}
+			}
+		}
+	}
 	public ArrayList<String> getParticipantsStrings() {
 		return participantsStrings;
 	}
@@ -209,15 +217,15 @@ public class Event {
 	}
 
 	public ArrayList<Person> getParticipants() {
-		if(participants == null)return null;
-			participants.clear();
+		return participants;
+		/*if(participants != null)participants.clear();
 		for(int i = 0; i<participantsStrings.size(); i++){
 			for(int j = 0; j<Main.currentProject.getPersonCount(); j++){
 				if(Main.currentProject.getPersonList().get(j).getUsername().equals(participantsStrings.get(i)))
 				participants.add(Main.currentProject.getPersonList().get(j));
 			}
 		}
-		return participants;
+		return participants;*/
 	}
 
 	public void setParticipants(ArrayList<Person> participants) {

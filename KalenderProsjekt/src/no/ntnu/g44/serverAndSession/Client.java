@@ -26,6 +26,7 @@ public class Client {
 		connection = new ConnectionImpl(6565);
 		try {
 			connection.connect(InetAddress.getByName(serverIP), serverPort);
+			connection.send("halla!!!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

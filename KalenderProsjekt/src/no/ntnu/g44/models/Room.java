@@ -5,6 +5,8 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Date;
 
+import no.ntnu.g44.controllers.Main;
+
 /**
  * A class that represents a Room
  * @author JeppeE
@@ -16,32 +18,21 @@ public class Room {
 	public static final Room OTHER = new Room("OTHER");
 	
 	private String roomName;
-	private boolean isOccupied;
 	private PropertyChangeSupport pcs;
 	
 	/**
 	 * This method should check the database for rooms which are not occupied
 	 * within the given time range, and return an ArrayList<Room> of those.
 	 */
-	
-	public Room(String roomName, boolean isOccupied){
-		this.roomName = roomName;
-		this.isOccupied = isOccupied;
-		
-		pcs = new PropertyChangeSupport(this);
-	}
-	
 	public static ArrayList<Room> getAvailableRooms(Date startTime, Date endTime) {
 		ArrayList<Room> rooms = new ArrayList<Room>();
 		
-		// MOCK CONTENT
-		String[] roomNames = { "P123", "P298", "G193", "F123" };
-		for (String name : roomNames)
-			rooms.add(new Room(name));
-		// END MOCK CONTENT
+		for (Room room : Main.currentProject.getRoomList())
+			if (!room.isOccupied(startTime, endTime))
+				rooms.add(room);
 		
-		// this value indicates a custom location, and should always be 
-		// included in the list
+		/* this value indicates a custom location, and should always be 
+		   included in the list */
 		rooms.add(OTHER);
 		
 		return rooms;
@@ -66,10 +57,26 @@ public class Room {
 	}
 
 	/**
-	 * @return Returns whether this room is occupied or not 
+	 * Checks whether this room is occupied within the given time interval.
+	 * 
+	 * @param startTime - a <code>Date</code> representing the beginning of the
+	 * time interval
+	 * 
+	 * @param endTime - a <code>Date</code> representing the end of the time
+	 * interval
+	 * 
+	 * @return Returns true if the room is occupied, false if not
 	 */
-	public boolean isOccupied() {
-		return isOccupied;
+	public boolean isOccupied(Date startTime, Date endTime) {
+		for (Event event : Main.currentProject.getEventList()) {
+			if (event.getRoom() != this)
+				continue;
+			
+			if (event.getEventStartTime().before(endTime)
+					&& event.getEventEndTime().after(startTime))
+				return true;
+		}
+		return false;
 	}
 	
 	public void addPropertyChangeListener(PropertyChangeListener listener){

@@ -216,15 +216,13 @@ public class Event {
 	}
 
 	public ArrayList<Person> getParticipants() {
-		return participants;
-		/*if(participants != null)participants.clear();
 		for(int i = 0; i<participantsStrings.size(); i++){
 			for(int j = 0; j<Main.currentProject.getPersonCount(); j++){
 				if(Main.currentProject.getPersonList().get(j).getUsername().equals(participantsStrings.get(i)))
 				participants.add(Main.currentProject.getPersonList().get(j));
 			}
 		}
-		return participants;*/
+		return participants;
 	}
 
 	public void setParticipants(ArrayList<Person> participants) {

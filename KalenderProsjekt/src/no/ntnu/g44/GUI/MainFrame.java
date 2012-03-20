@@ -312,6 +312,7 @@ public class MainFrame extends JPanel{
 		}
 	}
 	public void editEvent(){
+		if(calendar.getSelectedEvent() == null)return;
 		EventEditPanel.makeEditPanel(calendar.getSelectedEvent());
 	}
 	public void logout(){

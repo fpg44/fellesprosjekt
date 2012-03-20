@@ -55,7 +55,7 @@ public class Server{
 			e.printStackTrace();
 		}
 		
-		server = new SimpleConnection(PORT);
+		server = new ConnectionImpl(PORT);
 		
 		
 		this.connectAcceptor = new Thread(){

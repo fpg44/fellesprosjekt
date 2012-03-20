@@ -21,7 +21,7 @@ public class Main {
 		//MainFrame should be created in Project constructor
 		try {
 			currentProject = new FileStorage().load(new File("project.xml"));
-			currentProject.setparticipants();
+			currentProject.setParticipants();
 		} catch (IllegalArgumentException | IOException | ParseException e) {
 			e.printStackTrace();
 			System.out.println("No project file, creating blank project");

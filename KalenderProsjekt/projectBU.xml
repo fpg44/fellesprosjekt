@@ -26,21 +26,34 @@
      </person>
      <person>
           <name>Robing Tordly</name>
-          <username>robing</username>
+          <username>tordly</username>
           <email/>
           <date-of-birth>Mar 20, 2012</date-of-birth>
      </person>
      <event>
           <event-id>-1</event-id>
-          <title>potato</title>
-          <owner>andersd</owner>
-          <event-start>?20:2;2012-23_13!</event-start>
-          <event-end>?20:2;2012-23_15!</event-end>
-          <location>hot</location>
-          <room>OTHER</room>
+          <title>Hei på dere</title>
+          <owner>tordly</owner>
+          <event-start>?20:2;2012-53_15!</event-start>
+          <event-end>?20:2;2012-53_16!</event-end>
+          <location/>
+          <room>P2</room>
           <participants>
-               <person>jeppee</person>
                <person>andersd</person>
+               <person>anderse</person>
+               <person>tordly</person>
           </participants>
      </event>
+     <room>
+          <name>P1</name>
+     </room>
+     <room>
+          <name>P2</name>
+     </room>
+     <room>
+          <name>G1</name>
+     </room>
+     <room>
+          <name>F1</name>
+     </room>
 </project>

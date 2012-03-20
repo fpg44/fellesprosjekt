@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.JPanel;
 
@@ -131,12 +132,15 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		}
 		
 		g2d.setPaint(prepaint);
-		//Add day text
 		
+		// Add date of day
 		Font dateFont = new Font("Helvetica", Font.PLAIN, 12);
 		g2d.setFont(dateFont);
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
+		// the locale needs to be set (to "no" for Norway) in order for monday 
+		// to be the first day of the week
+		Calendar cal = Calendar.getInstance(new Locale("no"));
+		cal.clear();
+		cal.set(Calendar.YEAR, Main.currentMainFrame.currentYear);
 		cal.set(Calendar.WEEK_OF_YEAR, Main.currentMainFrame.currentWeekNumber);
 		for (int i = 0; i < 7; i++) {
 			int xPos = Math.round(width * i / 7f) + margin + leftOffset;
@@ -146,6 +150,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 			cal.add(Calendar.DATE, 1);
 		}
 		
+		// Add name of day
 		Font f = new Font("Helvetica",Font.BOLD, 16);
 		g2d.setFont(f);
 		for(int i = 0; i < 7; i++){

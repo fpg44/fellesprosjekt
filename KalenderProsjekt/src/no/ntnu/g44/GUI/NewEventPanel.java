@@ -324,7 +324,7 @@ public class NewEventPanel extends JPanel {
 	
 	private void setCustomCaret(JSpinner.DateEditor ed) {
 		/* This is a hack to set the default value to change in the 'To' and
-		   'From' fields to the day of month, not year. */
+		   'From' fields to the hour, not year. */
 		
 		ed.getTextField().setCaret(new DefaultCaret() {  
 
@@ -334,10 +334,10 @@ public class NewEventPanel extends JPanel {
 			public void setDot(int dot) {
 				diverted = (dot == 0);
 				if (diverted) {
-					/* setting the dot (caret) value to 9 places it in the 
-					   middle of the 'day of month' field (dd), assuming the 
-					   date format is ISO-8601 (yyyy-MM-dd HH:mm) */
-					dot = 9;
+					/* setting the dot (caret) value to 12 places it in the 
+					   middle of the hour field (HH), assuming the date format
+					   is ISO-8601 (yyyy-MM-dd HH:mm) */
+					dot = 12;
 				}
 				super.setDot(dot);
 			}

@@ -209,7 +209,8 @@ public class Event {
 	}
 
 	public ArrayList<Person> getParticipants() {
-		participants.clear();
+		if(participants == null)return null;
+			participants.clear();
 		for(int i = 0; i<participantsStrings.size(); i++){
 			for(int j = 0; j<Main.currentProject.getPersonCount(); j++){
 				if(Main.currentProject.getPersonList().get(j).getUsername().equals(participantsStrings.get(i)))

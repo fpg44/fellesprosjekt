@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import no.ntnu.g44.controllers.Main;
+
 /**
  * Class representing an event
  * @author JeppeE
@@ -141,6 +143,7 @@ public class Event {
 		this.location = location;
 		this.roomString = roomString;
 		propChangeSupp = new PropertyChangeSupport(this);
+		
 	}
 	
 	public ArrayList<String> getParticipantsStrings() {

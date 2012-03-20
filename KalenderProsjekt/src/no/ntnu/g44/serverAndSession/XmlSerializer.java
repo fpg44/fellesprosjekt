@@ -436,12 +436,11 @@ public class XmlSerializer {
 
 		element = eventElement.getFirstChildElement("participants");
 		if( element != null ){
-			Elements children = element.getChildElements("participant");
+			Elements children = element.getChildElements("person");
 			for ( int i = 0; i< children.size(); i++){
-				participants.add(String.valueOf(children.get(i).getFirstChildElement("participant")));				
+				participants.add(children.get(i).getValue());				
 			}
 		}
-
 		return new Event(id, title, owner_username, participants, eventStartDate, eventEndDate, location, roomString);
 	}
 	

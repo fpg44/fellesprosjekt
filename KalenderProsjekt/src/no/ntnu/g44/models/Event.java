@@ -178,7 +178,12 @@ public class Event {
 	}
 
 	public Person getEventOwner() {
-		return eventOwner;
+		for(int i = 0; i<Main.currentProject.getPersonCount(); i++){
+			if(Main.currentProject.getPersonList().get(i).getUsername().equals(eventOwnerString)){
+				return Main.currentProject.getPersonList().get(i);
+			}
+		}
+		return null;
 	}
 
 	public String getEventDescription() {
@@ -193,8 +198,8 @@ public class Event {
 		if (room == Room.OTHER)
 			return location;
 		else{
-			return "lol";
-//			return room.getRoomName();
+//			return "lol";
+			return room.getRoomName();
 		}
 	}
 
@@ -203,6 +208,13 @@ public class Event {
 	}
 
 	public ArrayList<Person> getParticipants() {
+		participants.clear();
+		for(int i = 0; i<participantsStrings.size(); i++){
+			for(int j = 0; j<Main.currentProject.getPersonCount(); j++){
+				if(Main.currentProject.getPersonList().get(j).getUsername().equals(participantsStrings.get(i)))
+				participants.add(Main.currentProject.getPersonList().get(j));
+			}
+		}
 		return participants;
 	}
 
@@ -227,10 +239,17 @@ public class Event {
 	}
 
 	public Room getRoom() {
-		return room;
+		for(int i = 0; i<Main.currentProject.getRoomList().size(); i++){
+			if(Main.currentProject.getRoomList().get(i).getRoomName().equals(roomString)){
+				return Main.currentProject.getRoomList().get(i);
+			}
+		}
+		;
+		return null;
 	}
 
 	public void setRoom(Room room) {
+		this.roomString = room.getRoomName();
 		this.room = room;
 	}
 	
@@ -247,9 +266,10 @@ public class Event {
 	 * @param participant
 	 */
 	public void removeParticipant(Person participant) {
-		if (participants.contains(participant)) {
-			participants.remove(participant);
-		}
+		
+//		if (participants.contains(participant)) {
+//			participants.remove(participant);
+//		}
 	}
 	
 	/**

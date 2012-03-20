@@ -90,6 +90,7 @@ public Connection accept()
   @Override
 public void send(String msg) throws ConnectException, IOException {
     os.writeUTF(msg);
+    os.flush();
 
   }
 

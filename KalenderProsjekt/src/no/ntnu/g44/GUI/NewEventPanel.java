@@ -144,6 +144,8 @@ public class NewEventPanel extends JPanel {
 		startTimeModel.addChangeListener(roomListener);
 		endTimeModel.addChangeListener(roomListener);
 		location.addActionListener(roomListener);
+		// fire an event to have 'location' populated with available rooms
+		roomListener.stateChanged(new ChangeEvent(endTimeModel));
 		
 		// add some padding between the edge of the JTextArea and entered text
 		eventDescription.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));

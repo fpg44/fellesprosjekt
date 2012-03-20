@@ -166,7 +166,6 @@ public class XmlSerializer {
 				dato = parsedDate.getTime();
 			}
 		}
-		System.out.println("husk å legge til week lsik at week-day funker... tror dette skal til for at events blir painta fra xml");
 		return dato;
 	}
 	

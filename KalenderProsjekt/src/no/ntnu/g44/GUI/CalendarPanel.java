@@ -236,7 +236,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		startHour += 0.5f*e.getWheelRotation();
 		startHour = Math.max(0, Math.min(startHour,24-hoursShown));
-		System.out.println("startTime = "+startHour);
+//		System.out.println("startTime = "+startHour);
 
 		repaint();		
 	}

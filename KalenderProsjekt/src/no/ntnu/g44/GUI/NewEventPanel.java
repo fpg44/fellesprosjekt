@@ -273,9 +273,9 @@ public class NewEventPanel extends JPanel {
 	
 	private void populatePersonsModel() {
 		ArrayList<Person> persons = Main.currentProject.getPersonList();
-		for (Person person : persons) {
-			personsModel.addElement(person);
-		}
+		for (Person person : persons)
+			if (person != Main.currentProject.getLoggedInPerson())
+				personsModel.addElement(person);
 	}
 	
 	private void populatePersonsArray() {

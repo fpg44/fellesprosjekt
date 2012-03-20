@@ -26,9 +26,21 @@ public class Client {
 		connection = new ConnectionImpl(6565);
 		try {
 			connection.connect(InetAddress.getByName(serverIP), serverPort);
+			connection.send("halla!!!");
+			recieveLoop();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}	
+	}
+	
+	public void recieveLoop(){
+		while(true){
+			try {
+				System.out.println(connection.receive());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

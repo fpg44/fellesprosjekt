@@ -187,7 +187,8 @@ public class Event {
 	public String getLocation() {
 		System.out.println("Location: " + room);
 		//IF room = OTHER
-		if (room.getRoomName().equals("OTHER"))
+		
+		if (getRoom().getRoomName().equals("OTHER"))
 			return location;
 		else if (getRoom() == null)
 			return "";

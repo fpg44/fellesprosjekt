@@ -20,9 +20,10 @@ import no.ntnu.g44.models.Person;
 public class EventInfoPanel extends JPanel{
 	
 	JFrame frame;
-	JList<Person> participantsList;
-	JScrollPane participantsListScroller;
-	DefaultListModel<Person> participantsListModel;
+	DefaultListModel<Person> participantsListModel = new DefaultListModel<Person>();
+	JList participantsList = new JList(participantsListModel);
+	JScrollPane participantsListScroller = new JScrollPane(participantsList);
+	
 
 	public EventInfoPanel(Event event, Person eventOwner, JFrame frame){
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -87,6 +88,8 @@ public class EventInfoPanel extends JPanel{
 		messageField.setText(event.getEventDescription());
 		messageField.setLocation(ownerLabel.getX(), messageLabel.getY() + messageLabel.getHeight() + 4);
 		messageField.setSize(locationField.getX() + locationField.getWidth() - locationLabel.getX(), ownerField.getHeight() * 3);
+		participantsListScroller.setLocation(ownerField.getX() + ownerField.getWidth() + 4, ownerLabel.getY());
+		participantsListScroller.setSize((int) participantsListScroller.getPreferredSize().getWidth(), messageField.getY() + messageField.getHeight() - 12);
 		
 		add(ownerLabel);
 		add(startLabel);
@@ -98,8 +101,9 @@ public class EventInfoPanel extends JPanel{
 		add(endField);
 		add(locationField);
 		add(messageField);
+		add(participantsListScroller);
 		
-		frame.setSize(ownerField.getX() + ownerField.getWidth() + 8 + 14, messageField.getY() + messageField.getHeight() + 45);
+		frame.setSize(participantsListScroller.getX() + participantsListScroller.getWidth() + 8 + 12, messageField.getY() + messageField.getHeight() + 45);
 		frame.setLocation((int)(dim.getWidth() - frame.getWidth()) / 2, (int)(dim.getHeight() - frame.getHeight()) / 2);
 		frame.setResizable(false);
 		frame.setVisible(true);

@@ -261,7 +261,7 @@ public class NewEventPanel extends JPanel {
 		add(eventInformationPanel, c);
 		c.gridx = 1;
 		add(participantsPanel, c);
-		c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.SOUTHEAST;
 		c.gridx = c.gridy = 1;
 		add(buttonPanel, c);
 		

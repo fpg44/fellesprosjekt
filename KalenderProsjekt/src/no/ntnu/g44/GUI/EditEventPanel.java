@@ -1,9 +1,13 @@
 package no.ntnu.g44.gui;
 
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 
@@ -30,6 +35,10 @@ public class EditEventPanel extends JPanel {
 	/* upon saving, a new Event is created rather than the old one being 
 	   overwritten; this NewEventPanel creates that new Event */
 	NewEventPanel newEventPanel;
+	
+	// headings to seperate the original and new events
+	JLabel originalEventHeading;
+	JLabel newEventHeading;
 	
 	// components for displaying the details of the original Event
 	JPanel originalEventPanel;
@@ -93,7 +102,7 @@ public class EditEventPanel extends JPanel {
 		
 		originalEventInfoPanel = new JPanel(new GridBagLayout());
 		originalEventInfoPanel.setBorder(BorderFactory.createTitledBorder(
-				"Event Information"));
+				"Event information"));
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.WEST;
@@ -126,8 +135,6 @@ public class EditEventPanel extends JPanel {
 		originalEventParticipantsPanel.add(participantsListScroller);
 		
 		originalEventPanel = new JPanel(new GridBagLayout());
-		originalEventPanel.setBorder(BorderFactory.createTitledBorder(
-				"Original Event"));
 		c.anchor = GridBagConstraints.NORTH;
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = c.gridy = 0;
@@ -135,9 +142,26 @@ public class EditEventPanel extends JPanel {
 		c.gridx = 1;
 		originalEventPanel.add(originalEventParticipantsPanel, c);
 		
+		newEventPanel = new NewEventPanel(
+				Main.currentProject.getLoggedInPerson(), frame);
 		setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3)); // add padding
 		
+		Font headingFont = new Font("Helvetica", Font.BOLD, 18);
+		originalEventHeading = new JLabel("Original event");
+		originalEventHeading.setFont(headingFont);
+		newEventHeading = new JLabel("New (edited) event");
+		newEventHeading.setFont(headingFont);
+		
+		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
+		setLayout(layout);
+		add(Box.createRigidArea(new Dimension(0, 20)));
+		add(originalEventHeading);
+		add(Box.createRigidArea(new Dimension(0, 20)));
 		add(originalEventPanel);
+		add(Box.createRigidArea(new Dimension(0, 40)));
+		add(newEventHeading);
+		add(Box.createRigidArea(new Dimension(0, 20)));
+		add(newEventPanel);
 		
 		frame.setTitle("Edit Event");
 		frame.getContentPane().add(this);

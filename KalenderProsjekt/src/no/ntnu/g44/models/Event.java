@@ -205,15 +205,13 @@ public class Event {
 	}
 
 	public String getLocation() {
-		if (room == Room.OTHER) {
-			System.out.println("Room er OTHER!!!!");
+		System.out.println("Location: " + room);
+		if (room == Room.OTHER)
 			return location;
-		}
-		else{
-//			return "lol";
-			if(room == null)return "";
+		else if (room == null)
+			return "";
+		else
 			return room.getRoomName();
-		}
 	}
 
 	public void setLocation(String location) {

@@ -176,6 +176,12 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 					ignore = false;
 					break;
 				}
+				for(int k = 0; k < Main.currentMainFrame.calendarModel.getSize(); k++){
+					if(Main.currentMainFrame.calendarModel.get(k) == e.getParticipants().get(j)){
+						ignore = false;
+						break;
+					}
+				}
 			}
 			if(ignore){
 				continue;

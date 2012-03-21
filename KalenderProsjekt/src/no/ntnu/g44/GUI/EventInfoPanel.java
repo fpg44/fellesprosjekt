@@ -2,39 +2,66 @@ package no.ntnu.g44.gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import no.ntnu.g44.models.Event;
+import no.ntnu.g44.models.Person;
 
 public class EventInfoPanel extends JPanel{
-	public EventInfoPanel(Event event){
+	
+	JFrame frame;
+	
+	JList<Person> participantsList;
+	JScrollPane participantsListScroller;
+	DefaultListModel<Person> participantsListModel;
+	
+	public EventInfoPanel(Event event, Person eventOwner, JFrame frame){
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		JFrame frame = new JFrame(event.getEventDescription());
+//		JFrame frame = new JFrame(event.getEventDescription());
+		this.frame = frame;
+		
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.getContentPane().add(this);
+		
 		JLabel ownerLabel = new JLabel("Event owner:");
 		JLabel startLabel = new JLabel("Start time:");
 		JLabel endLabel = new JLabel("End time:");
 		JLabel locationLabel = new JLabel("Location:");
 		JLabel messageLabel = new JLabel("Info:");
-		JTextField ownerField = new JTextField();
+		
+		JTextField ownerField = new JTextField(eventOwner.getName());
 		JTextField startField = new JTextField();
 		JTextField endField = new JTextField();
-		JTextField locationField = new JTextField();
+		JTextField locationField = new JTextField(event.getLocation());
 		JTextField messageField = new JTextField();
+		
 		ownerField.setEditable(false);
 		startField.setEditable(false);
 		endField.setEditable(false);
 		locationField.setEditable(false);
 		messageField.setEditable(false);
+		
+		//Adding a JList with all the participants of this event
+		participantsListModel = new DefaultListModel<Person>();
+		participantsList = new JList<Person>(participantsListModel);
+		participantsListScroller = new JScrollPane(participantsList);
+		for (Person person : event.getParticipants()) {
+			participantsListModel.addElement(person);
+		}
+		
 		setLayout(null);
 		
+		//Some comments would have been nice here!
 		ownerLabel.setLocation(8, 12);
 		ownerLabel.setSize(ownerLabel.getPreferredSize());
 		startLabel.setLocation(ownerLabel.getX(), ownerLabel.getY() + ownerLabel.getHeight() + 4);
@@ -45,7 +72,7 @@ public class EventInfoPanel extends JPanel{
 		locationLabel.setSize(ownerLabel.getSize());
 		messageLabel.setLocation(ownerLabel.getX(), locationLabel.getY() + locationLabel.getHeight() + 4);
 		messageLabel.setSize(messageLabel.getPreferredSize());
-		ownerField.setText(event.getEventOwnerString());
+//		ownerField.setText(event.getEventOwnerString());
 		ownerField.setLocation(ownerLabel.getX() + ownerLabel.getWidth() + 4, ownerLabel.getY());
 		ownerField.setSize(250, (int) ownerField.getPreferredSize().getHeight());
 		Date date = event.getEventStartTime();
@@ -79,7 +106,9 @@ public class EventInfoPanel extends JPanel{
 		frame.setVisible(true);
 		
 	}
+	/*
 	public static void makeInfoPanel(Event event){
 		EventInfoPanel infoPanel = new EventInfoPanel(event);
 	}
+	*/
 }

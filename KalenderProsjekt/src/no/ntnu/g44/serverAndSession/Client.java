@@ -28,8 +28,15 @@ public class Client {
 	Connection connection;
 	
 	public static void main(String[] args) {
-		String server = JOptionPane.showInputDialog("server ip", "localhost");
-		new Client(server, 5545);
+		String server = JOptionPane.showInputDialog("server ip", "78.91.11.32");
+		Client c = new Client(server, 5545);
+		try {
+			c.getProject();
+		} catch ( IOException
+				| ParseException | ParsingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public Client(String serverIP, int serverPort){
 		connection = new ConnectionImpl(6564);

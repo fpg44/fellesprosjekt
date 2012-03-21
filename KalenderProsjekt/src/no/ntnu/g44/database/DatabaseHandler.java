@@ -150,10 +150,10 @@ public class DatabaseHandler {
 					event.setOldEvent(rsOld.getString(1));
 				}
 				rsOld = null;
-				
+
 				//add this event to array
 				events.add(event);
-				
+
 			}while(rsE.next());
 
 			rsE = null; //clear the ResultSet
@@ -275,16 +275,17 @@ public class DatabaseHandler {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM attends_at");
 
 			if(rs.first() == false){
-
-				do{
-
-					status.add( new AttendanceStatus(rs.getString(1), rs.getInt(2), AttendanceStatusType.getType(rs.getString(3))) );
-
-				}while(rs.next());
-
-				rs = null;
-
+				return null;
 			}
+
+			do{
+
+				status.add( new AttendanceStatus(rs.getString(1), rs.getInt(2), AttendanceStatusType.getType(rs.getString(3))) );
+
+			}while(rs.next());
+
+			rs = null;
+
 
 		}catch( Exception e){
 
@@ -343,7 +344,7 @@ public class DatabaseHandler {
 			ResultSet rs = stmt.getGeneratedKeys();
 			if(rs.next()){
 				int key = rs.getInt(1);
-				
+
 				//insert old and new event id in a table overview
 				stmt.executeUpdate("INSERT INTO old_events VALUES" +
 						"event_id ='" + key + "', " +

@@ -186,12 +186,12 @@ public class Event {
 
 	public String getLocation() {
 		System.out.println("Location: " + room);
-		if (room == Room.OTHER)
+		if (getRoom() == Room.OTHER)
 			return location;
-		else if (room == null)
+		else if (getRoom() == null)
 			return "";
 		else
-			return room.getRoomName();
+			return getRoom().getRoomName();
 	}
 
 	public void setLocation(String location) {

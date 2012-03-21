@@ -56,4 +56,7 @@
      <room>
           <name>F1</name>
      </room>
+     <room>
+          <name>OTHER</name>
+     </room>
 </project>

@@ -11,8 +11,10 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.serverAndSession.FileStorage;
 import no.ntnu.g44.serverAndSession.Storage;
+import no.ntnu.g44.serverAndSession.XmlSerializer;
 
 /**
  * The <code>Project</code> class is a list of zero or more {@link Person} objects.
@@ -22,6 +24,8 @@ import no.ntnu.g44.serverAndSession.Storage;
  *
  */
 public class Project implements PropertyChangeListener {
+	
+	private XmlSerializer xmlSerializer = new XmlSerializer();
 	/**
 	 * the one that is logged in.
 	 */
@@ -224,10 +228,10 @@ public class Project implements PropertyChangeListener {
 		try {
 			if(save){
 				String cuPath = new File(".").getAbsolutePath();
-				storage.save(new URL("file://"+cuPath+"/project.xml"), this);				
+				storage.save(new URL("file://"+cuPath+"/project.xml"), this);
+				Main.client.newEvent(xmlSerializer.eventToXml(event));
 			}
 		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

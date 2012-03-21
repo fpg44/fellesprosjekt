@@ -239,7 +239,7 @@ public class XmlSerializer {
 		return element;
 	}
 
-	protected Element eventToXml(Event event){		
+	public Element eventToXml(Event event){		
 		Element element = new Element("event");
 
 		Element id = new Element("event-id");

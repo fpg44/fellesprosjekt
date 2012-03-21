@@ -15,6 +15,7 @@ import nu.xom.ParsingException;
 public class Main {
 	public static Project currentProject = null;
 	public static MainFrame currentMainFrame;
+	public static Client client;
 
 	static final boolean usenet = false;
 	/**
@@ -25,7 +26,8 @@ public class Main {
 
 		if(usenet){
 			try {
-				currentProject = new Client("78.91.11.32", 5545).getProject();
+				client = new Client("78.91.11.32", 5545);
+				currentProject = client.getProject();
 			} catch (IOException | ParseException | ParsingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

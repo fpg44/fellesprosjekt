@@ -27,14 +27,14 @@ public class Server{
 	private XmlSerializer xmlSerializer;
 	private Project project;
 	private Thread connectAcceptor;
-	
+
 	ArrayList<ConnectionToAClient> connections = new ArrayList<>();
 
-	
+
 	public static void main(String[] args) {
 		new Server(5545,"localhost","3306","project","root","");
 	}
-	
+
 	/**
 	 * 
 	 * @param ServerPort : The Port-number the server is listening to 
@@ -46,19 +46,19 @@ public class Server{
 	 */
 	public Server(int ServerPort, String databaseIP, String databasePORT, String databaseName, String databaseUsername, String databasePassword){
 		this.PORT = ServerPort;
-		
+
 		dbHandler = new DatabaseHandler();
 		xmlSerializer = new XmlSerializer();
-		
+
 		try{
 			dbHandler.connectToDatabase(databaseIP, databasePORT, databaseName, databaseUsername, databasePassword);			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 		server = new ConnectionImpl(PORT);
-		
-		
+
+
 		this.connectAcceptor = new Thread(){
 			private boolean stop;
 
@@ -74,20 +74,20 @@ public class Server{
 					}
 				}
 			}
-			
+
 			@Override
 			public void interrupt() {
 				stop = true;
 				super.interrupt();
 			}
 		};
-		
-		
+
+
 		connectAcceptor.start();
-			
+
 	}
-	
-		
+
+
 	class ConnectionToAClient{
 		private Connection conToClient;
 		private boolean listening;
@@ -100,20 +100,20 @@ public class Server{
 				};
 			}.start();
 		}
-		
+
 		public void listen(){
 			this.listening = true;
 			while(listening){
-				
+
 				try {
 					tryPacketParse(conToClient);
-					
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		
+
 		public void stopListening(){
 			listening = false;
 		}
@@ -125,11 +125,11 @@ public class Server{
 			}
 		}
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 
 	/**
 	 * When some changes are done in the calendar-application, this will notify the other online users.
@@ -139,156 +139,123 @@ public class Server{
 			con.push(msg);
 		}
 	}
-	
+
 	private void tryPacketParse(Connection con) throws ConnectException, IOException {
-		
+
+
+		String message = con.receive();
+		Log.writeToLog("Server.java received a message", "lololol");
+		System.out.println(message);
+		//notfyOnlineListeners(message, null);
+
+
+		//This is the parser part where you read the incomming string and chooses what to do
+		if(message.equals("hello")){
 			
-			String message = con.receive();
-			Log.writeToLog("Server.java received a message", "lololol");
-			System.out.println(message);
-			//notfyOnlineListeners(message, null);
-			
-			
-			//This is the parser part where you read the incomming string and chooses what to do
-			if(message.equals("hello")){
-				System.out.println(":::" + getDataFromDatabase().toString());
-				con.send("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\r\n" + 
-						"<project>\r\n" + 
-						"     <person>\r\n" + 
-						"          <name>Andreas L&#xFFFD;ve Selvik</name>\r\n" + 
-						"          <username>lion</username>\r\n" + 
-						"          <email/>\r\n" + 
-						"          <date-of-birth>Mar 20, 2012</date-of-birth>\r\n" + 
-						"     </person>\r\n" + 
-						"     <person>\r\n" + 
-						"          <name>Anders Eldhuset</name>\r\n" + 
-						"          <username>anderse</username>\r\n" + 
-						"          <email/>\r\n" + 
-						"          <date-of-birth>Mar 20, 2012</date-of-birth>\r\n" + 
-						"     </person>\r\n" + 
-						"     <person>\r\n" + 
-						"          <name>Jeppe Eriksen</name>\r\n" + 
-						"          <username>jeppee</username>\r\n" + 
-						"          <email/>\r\n" + 
-						"          <date-of-birth>Mar 20, 2012</date-of-birth>\r\n" + 
-						"     </person>\r\n" + 
-						"     <person>\r\n" + 
-						"          <name>Anders Dahlin</name>\r\n" + 
-						"          <username>andersd</username>\r\n" + 
-						"          <email/>\r\n" + 
-						"          <date-of-birth>Mar 20, 2012</date-of-birth>\r\n" + 
-						"     </person>\r\n" + 
-						"     <person>\r\n" + 
-						"          <name>Robing Tordly</name>\r\n" + 
-						"          <username>robing</username>\r\n" + 
-						"          <email/>\r\n" + 
-						"          <date-of-birth>Mar 20, 2012</date-of-birth>\r\n" + 
-						"     </person>\r\n" + 
-						"     <event>\r\n" + 
-						"          <event-id>-1</event-id>\r\n" + 
-						"          <title>potato</title>\r\n" + 
-						"          <owner>andersd</owner>\r\n" + 
-						"          <event-start>?20:2;2012-23_13!</event-start>\r\n" + 
-						"          <event-end>?20:2;2012-23_15!</event-end>\r\n" + 
-						"          <location>hot</location>\r\n" + 
-						"          <room>OTHER</room>\r\n" + 
-						"          <participants>\r\n" + 
-						"               <person>jeppee</person>\r\n" + 
-						"               <person>andersd</person>\r\n" + 
-						"          </participants>\r\n" + 
-						"     </event>\r\n" + 
-						"</project>");
-			}
-//				
-//			else if(message.equals(""))
-//				
-//			else if(message.equals(""))
-//				
-//			else if(message.equals(""))
-//				
-//			else if(message.equals(""))
-				
-		
+			con.send(xmlSerializer.
+					toXml(getDataFromDatabase()).
+					toXML());
+		}
+		//				
+		//			else if(message.equals(""))
+		//				
+		//			else if(message.equals(""))
+		//				
+		//			else if(message.equals(""))
+		//				
+		//			else if(message.equals(""))
+
+
 	}
-	
+
 	protected void stopIncommingDatagramPacketParser(boolean b){
 		this.lookForIncommingDatagramPackets = b;
 	}
-	
+
 	/**
 	 * 
 	 * @return Project file with all information from the database
 	 */
 	protected Project getDataFromDatabase(){
 		project = new Project();
-		
+
 		ArrayList<Person> persons = dbHandler.getPersons();
-		for(Person person : persons){
-			project.addPerson(person);
+		if(persons != null){
+			for(Person person : persons){
+				project.addPerson(person);
+			}			
 		}
-		
+
 		ArrayList<Event> events = dbHandler.getEventsFromDatabase();
-		for(Event event : events){
-			project.addEvent(event, false);
+		if(events != null){
+			for(Event event : events){
+				project.addEvent(event, false);
+			}			
 		}
-		
+
 		ArrayList<Room> rooms = dbHandler.getRooms();
-		for(Room room : rooms){
-			project.addRoom(room);
+		if(rooms != null){
+			for(Room room : rooms){
+				project.addRoom(room);
+			}			
 		}
-		
+
 		ArrayList<Notification> notifications = dbHandler.getNotifications();
-		for(Notification notification: notifications){
-			project.addNotification(notification);
+		if(notifications != null){
+			for(Notification notification: notifications){
+				project.addNotification(notification);
+			}			
 		}
-		
+
 		ArrayList<AttendanceStatus> attendanceStatus = dbHandler.getAttendanceStatus();
-		for(AttendanceStatus status : attendanceStatus){
-			project.addAttendanceStatus(status);
+		if(attendanceStatus != null){
+			for(AttendanceStatus status : attendanceStatus){
+				project.addAttendanceStatus(status);
+			}
 		}
-		
+
 		return project;
 	}
-	
+
 	protected void updateAll(){
 		ArrayList<Event> events = project.getEventList();
 		dbHandler.updateEvents(events);
-		
+
 		ArrayList<Notification> notifications = project.getNotificationList();
 		dbHandler.updateNotifications(notifications);
-		
+
 		ArrayList<AttendanceStatus> status = project.getAttendanceStatusList();
 		dbHandler.updateAttendanceStatus(status);
 	}
-	
+
 	protected void update(Event event){
 		dbHandler.updateEvent(event);
 	}
-	
+
 	protected void update(Notification notification){
 		dbHandler.updateNotification(notification);
 	}
-	
+
 	protected void update(AttendanceStatus status){
 		dbHandler.updateAttendanceStatus(status);
 	}
-	
+
 	protected void insert(Event event){
 		dbHandler.newEvent(event);
 	}
-	
+
 	protected void insert(Notification notif){
 		dbHandler.newNotification(notif);
 	}
-	
+
 	protected void insert(AttendanceStatus status){
 		dbHandler.newAttendanceStatus(status);
 	}
-	
+
 	protected void delete(Event event){
 		dbHandler.deleteEvent(event);
 	}
-	
+
 	protected void delete(Notification notif){
 		dbHandler.deleteNotification(notif);
 	}

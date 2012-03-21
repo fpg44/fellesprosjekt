@@ -24,9 +24,6 @@ public class EventInfoPanel extends JPanel{
 	JScrollPane participantsListScroller;
 	DefaultListModel<Person> participantsListModel;
 
-	public EventInfoPanel(Event event){
-	}
-	
 	public EventInfoPanel(Event event, Person eventOwner, JFrame frame){
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 //		JFrame frame = new JFrame(event.getEventDescription());

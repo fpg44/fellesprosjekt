@@ -33,10 +33,8 @@ public class Client {
 		String server = JOptionPane.showInputDialog("server ip", "78.91.11.32");
 		Client c = new Client(server, 5545);
 		try {
-			c.getProject();
-		} catch ( IOException
-				| ParseException | ParsingException e) {
-			// TODO Auto-generated catch block
+//			c.updateEvent();
+		} catch ( Exception e){
 			e.printStackTrace();
 		}
 	}

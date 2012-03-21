@@ -19,17 +19,15 @@ import no.ntnu.g44.models.Person;
 
 public class EventInfoPanel extends JPanel{
 	
-<<<<<<< HEAD
-	public EventInfoPanel(Event event){
-=======
 	JFrame frame;
-	
 	JList<Person> participantsList;
 	JScrollPane participantsListScroller;
 	DefaultListModel<Person> participantsListModel;
+
+	public EventInfoPanel(Event event){
+	}
 	
 	public EventInfoPanel(Event event, Person eventOwner, JFrame frame){
->>>>>>> 9c335a2fb60970aefcc6483de50d40be975972fc
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 //		JFrame frame = new JFrame(event.getEventDescription());
 		this.frame = frame;

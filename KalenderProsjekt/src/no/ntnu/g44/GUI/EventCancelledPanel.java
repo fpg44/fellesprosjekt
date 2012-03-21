@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -72,9 +73,10 @@ public class EventCancelledPanel extends AbstractPanelClass {
 	/*
 	//For testing purposes
 	public static void main(String[] args) {
-
+		ArrayList<Person> par = new ArrayList<Person>();
 		Person person = new Person("Jeppe Eriksen", "jeppeer@gmail.com");
-		Event newEvent = new Event(1, "TestEvent", person, null, new Date(2012,3,15,11,15),
+		par.add(person);
+		Event newEvent = new Event(1, "TestEvent", person, par, new Date(2012,3,15,11,15),
 				new Date(2012,3,15,13,6), "G138", Room.OTHER);
 		EventCancelledPanel ec = new EventCancelledPanel(newEvent);
 	}

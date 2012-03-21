@@ -2,7 +2,6 @@ package no.ntnu.g44.controllers;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.text.ParseException;
 
 import no.ntnu.g44.gui.Login;
@@ -12,7 +11,6 @@ import no.ntnu.g44.models.Project;
 import no.ntnu.g44.serverAndSession.Client;
 import no.ntnu.g44.serverAndSession.FileStorage;
 import nu.xom.ParsingException;
-import nu.xom.ValidityException;
 
 public class Main {
 	public static Project currentProject = null;

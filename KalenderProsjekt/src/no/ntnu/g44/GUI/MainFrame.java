@@ -313,8 +313,10 @@ public class MainFrame extends JPanel{
 		}
 	}
 	public void editEvent(){
-		if(calendar.getSelectedEvent() == null)return;
-		EventEditPanel.makeEditPanel(calendar.getSelectedEvent());
+		if (calendar.getSelectedEvent() == null)
+			return;
+		new EditEventPanel(calendar.getSelectedEvent(),
+				Main.currentProject.getLoggedInPerson(), new JFrame());
 	}
 	public void logout(){
 		Login.login();
@@ -554,7 +556,9 @@ public class MainFrame extends JPanel{
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if(e.getClickCount() == 2 && e.getSource() == calendar){
-				EventInfoPanel.makeInfoPanel(calendar.getSelectedEvent());
+				new EventInfoPanel(calendar.getSelectedEvent(),
+						Main.currentProject.getLoggedInPerson(), new JFrame());
+//				EventInfoPanel.makeInfoPanel(calendar.getSelectedEvent());
 			}
 			if(e.getClickCount() == 2 && e.getSource() == personnelList){
 				if(personnelList.getSelectedValue() != null){

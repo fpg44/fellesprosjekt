@@ -357,6 +357,27 @@ public class NewEventPanel extends JPanel {
 		});
 	}
 	
+	// setters for use in EditEventPanel
+	protected void setEventStartTime(Date startTime) {
+		this.startTimeModel.setValue(startTime);
+	}
+	
+	protected void setEventEndTime(Date endTime) {
+		this.startTimeModel.setValue(endTime);
+	}
+	
+	protected void setLocation(Room room) {
+		this.location.setSelectedItem(room);
+	}
+	
+	protected void setCustomLocation(String locationDescription) {
+		this.customLocation.setText(locationDescription);
+	}
+	
+	protected void setEventDescription(String description) {
+		this.eventDescription.setText(description);
+	}
+	
 	class RoomListener implements ActionListener, ChangeListener {
 
 		@Override

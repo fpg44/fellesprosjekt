@@ -14,6 +14,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+
+import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
@@ -357,12 +359,16 @@ public class XmlSerializer {
 
 		Element element = e.getFirstChildElement("name");
 		if(element != null){
-			if(element.getValue().equals("OTHER")){
-				return Room.OTHER;
-			}
-			else{
+//			if(element.getValue().equals("OTHER")){
+//				for(int i = 0; i<Main.currentProject.getRoomList().size(); i++){
+//					if(Main.currentProject.getRoomList().get(i).getRoomName().equals("OTHER")){
+//						return Main.currentProject.getRoomList().get(i);
+//					}
+//				}
+//			}
+//			else{
 				return new Room(element.getValue());
-			}
+//			}
 		}
 
 		return null;

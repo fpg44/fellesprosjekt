@@ -366,4 +366,14 @@ public class Project implements PropertyChangeListener {
 	public Person getLoggedInPerson(){
 		return personLoggedIn;
 	}
+	
+	public Room getOtherRoom(){
+		
+		for(int i = 0; i<roomList.size(); i++){
+			if(roomList.get(i).getRoomName().equals("OTHER")){
+				return roomList.get(i);
+			}
+		}
+		return null;
+	}
 }

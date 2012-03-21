@@ -15,7 +15,7 @@ import no.ntnu.g44.controllers.Main;
 public class Room {
 	
 	// used as a 'custom location' flag
-	public static final Room OTHER = new Room("OTHER");
+//	public static final Room OTHER = new Room("OTHER");
 	
 	private String roomName;
 	private PropertyChangeSupport pcs;
@@ -28,12 +28,12 @@ public class Room {
 		ArrayList<Room> rooms = new ArrayList<Room>();
 		
 		for (Room room : Main.currentProject.getRoomList())
-			if (!room.isOccupied(startTime, endTime))
+			if (!room.isOccupied(startTime, endTime) && room != Main.currentProject.getOtherRoom())
 				rooms.add(room);
 		
 		/* this value indicates a custom location, and should always be 
 		   included in the list */
-		rooms.add(OTHER);
+		rooms.add(Main.currentProject.getOtherRoom());
 		
 		return rooms;
 	}

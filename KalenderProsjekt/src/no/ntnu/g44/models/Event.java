@@ -56,26 +56,6 @@ public class Event {
 		eventID = 0;
 		participants.add(eventOwner);
 	}
-	/** this should be deleted
-	 * Creates a new Event
-	 * @param eventDescription
-	 * @param participants
-	 * @param eventStartDate
-	 * @param eventEndDate
-	 * @param location
-	 * @param room
-	 */
-	@Deprecated
-	public Event(String eventDescription, ArrayList<Person> participants, 
-			Date eventStartTime, Date eventEndTime, String location, Room room) {
-		this.eventDescription = eventDescription;
-		this.participants = participants;
-		this.eventStartTime = eventStartTime;
-		this.eventEndTime = eventEndTime;
-		this.location = location;
-		this.room = room;
-		propChangeSupp = new PropertyChangeSupport(this);
-	}
 	
 	/**	This is the one used within the application (the right one)
 	 * @param event_ID

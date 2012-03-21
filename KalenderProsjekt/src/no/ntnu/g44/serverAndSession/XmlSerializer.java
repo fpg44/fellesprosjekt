@@ -267,7 +267,7 @@ public class XmlSerializer {
 
 		if(event.getRoom() != null){
 			Element room = new Element("room");
-			room.appendChild(event.getRoomString());
+			room.appendChild(event.getRoom().getRoomName());
 			element.appendChild(room);
 		}
 		if(event.getParticipantsStrings() != null){
@@ -285,7 +285,7 @@ public class XmlSerializer {
 	public Element notificationToXml(Notification notification){
 
 		Element element = new Element("notification");
-
+		
 		Element notificatioID = new Element("notification-id");
 		notificatioID.appendChild(String.valueOf(notification.getNotificationID()));
 		element.appendChild(notificatioID);

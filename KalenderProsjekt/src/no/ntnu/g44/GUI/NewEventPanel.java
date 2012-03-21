@@ -363,7 +363,7 @@ public class NewEventPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == location) {
 				Room room = (Room) location.getSelectedItem();
-				if (room != null && room == Room.OTHER) {
+				if (room.getRoomName().equals("OTHER")) {
 					customLocation.setEnabled(true);
 				} else {
 					customLocation.setText("");

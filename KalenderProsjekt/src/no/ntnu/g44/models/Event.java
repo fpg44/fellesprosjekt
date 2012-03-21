@@ -51,7 +51,7 @@ public class Event {
 		participants = new ArrayList<Person>();
 		eventStartTime = new Date();
 		eventEndTime = new Date();
-		room = Room.OTHER;
+//		room = Main.currentProject.isOtherRoom(room.getRoomName());
 		eventOwner = new Person("TestPerson", "tester69");
 		eventID = 0;
 		participants.add(eventOwner);
@@ -186,7 +186,8 @@ public class Event {
 
 	public String getLocation() {
 		System.out.println("Location: " + room);
-		if (getRoom() == Room.OTHER)
+		//IF room = OTHER
+		if (room.getRoomName().equals("OTHER"))
 			return location;
 		else if (getRoom() == null)
 			return "";

@@ -4,57 +4,43 @@
           <name>Andreas L&#xFFFD;ve Selvik</name>
           <username>lion</username>
           <email/>
-          <date-of-birth>Mar 20, 2012</date-of-birth>
+          <date-of-birth>Mar 21, 2012</date-of-birth>
      </person>
      <person>
           <name>Anders Eldhuset</name>
           <username>anderse</username>
           <email/>
-          <date-of-birth>Mar 20, 2012</date-of-birth>
+          <date-of-birth>Mar 21, 2012</date-of-birth>
      </person>
      <person>
           <name>Jeppe Eriksen</name>
           <username>jeppee</username>
           <email/>
-          <date-of-birth>Mar 20, 2012</date-of-birth>
+          <date-of-birth>Mar 21, 2012</date-of-birth>
      </person>
      <person>
           <name>Anders Dahlin</name>
           <username>andersd</username>
           <email/>
-          <date-of-birth>Mar 20, 2012</date-of-birth>
+          <date-of-birth>Mar 21, 2012</date-of-birth>
      </person>
      <person>
           <name>Robing Tordly</name>
           <username>tordly</username>
           <email/>
-          <date-of-birth>Mar 20, 2012</date-of-birth>
+          <date-of-birth>Mar 21, 2012</date-of-birth>
      </person>
-     <event>
-          <event-id>-1</event-id>
-          <title>Hei på dere</title>
-          <owner>tordly</owner>
-          <event-start>?20:2;2012-53_15!</event-start>
-          <event-end>?20:2;2012-53_16!</event-end>
-          <location/>
-          <room>P2</room>
-          <participants>
-               <person>andersd</person>
-               <person>anderse</person>
-               <person>tordly</person>
-          </participants>
-     </event>
      <room>
-          <name>P1</name>
+          <name>F204</name>
      </room>
      <room>
-          <name>P2</name>
+          <name>F302</name>
      </room>
      <room>
-          <name>G1</name>
+          <name>G138</name>
      </room>
      <room>
-          <name>F1</name>
+          <name>OTHER</name>
      </room>
      <room>
           <name>OTHER</name>

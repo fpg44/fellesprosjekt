@@ -366,6 +366,13 @@ public class DatabaseHandler {
 //						"event_id ='" + key + "', " +
 //						"event_old_id ='" + event.getEventID() + "'");
 //			}
+			for(Person user : event.getParticipants()){
+				
+				stmt.executeUpdate("UPDATE attends_at SET " +
+						"account username ='" + user.getUsername() + "', " +
+								"event_id ='" + event.getEventID() + "', " +
+						"status ='" + user.getAttendanceStatusType().toString() + "'");
+			}
 
 		} catch (SQLException e1) {
 

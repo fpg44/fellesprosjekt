@@ -15,6 +15,8 @@ import java.util.Date;
  */
 public class Person {
 	
+	private AttendanceStatusType status = AttendanceStatusType.UNANSWERED;
+	
 	/**
 	 * This class variable keeps a list of all Person objects created so they
 	 * can be recovered using findPersonByUsername
@@ -315,5 +317,12 @@ public class Person {
 	@Override
 	public String toString() {
 		return name;
+	}
+	
+	public void setAttendanceStatusType(AttendanceStatusType status){
+		this.status = status;
+	}
+	public AttendanceStatusType getAttendanceStatusType(){
+		return this.status;
 	}
 }

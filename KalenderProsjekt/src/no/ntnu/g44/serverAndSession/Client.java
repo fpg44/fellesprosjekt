@@ -98,30 +98,13 @@ public class Client {
 			
 		connection.send("get all");
 		
-		/* example :
-		get all<event>" +
-		"<event-id>6</event-id>" +
-		"<title>ssssss</title>" +
-		"<owner>tordly</owner>" +
-		"<event-start>?20:2;2012-3_16!</event-start>" +
-		"<event-end>?20:2;2012-3_17!</event-end>" +
-		"<location/>" +
-		"<room>F204</room>" + 
-		"<participants>" +
-		"<person>jeppee</person>" +
-		"<person>tordly</person>" +
-		"</participants>" +
-		"</event>
-		*/
 		String xml = connection.receive();
-		
 		
 		//Pen kode:
 		return new XmlSerializer()
 				.toProject(
 						new Builder()
 						.build(new ByteArrayInputStream(xml.getBytes("utf-8"))));
-				
 	}
 	
 	public void recieveLoop(){

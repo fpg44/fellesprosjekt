@@ -25,7 +25,7 @@ public class Main {
 
 		if(usenet){
 			try {
-				currentProject = new Client("78.91.12.130", 5545).getProject();
+				currentProject = new Client("78.91.11.32", 5545).getProject();
 			} catch (IOException | ParseException | ParsingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

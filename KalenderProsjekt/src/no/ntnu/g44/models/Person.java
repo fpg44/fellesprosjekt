@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class Person {
 	
-	private AttendanceStatus status = null;
+	private AttendanceStatusType status = AttendanceStatusType.UNANSWERED;
 	
 	/**
 	 * This class variable keeps a list of all Person objects created so they
@@ -319,10 +319,10 @@ public class Person {
 		return name;
 	}
 	
-	public void setAttendanceStatus(AttendanceStatus status){
+	public void setAttendanceStatusType(AttendanceStatusType status){
 		this.status = status;
 	}
-	public AttendanceStatus getAttendanceStatus(){
+	public AttendanceStatusType getAttendanceStatusType(){
 		return this.status;
 	}
 }

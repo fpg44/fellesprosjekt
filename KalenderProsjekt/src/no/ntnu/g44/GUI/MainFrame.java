@@ -313,8 +313,10 @@ public class MainFrame extends JPanel{
 		}
 	}
 	public void editEvent(){
-		if(calendar.getSelectedEvent() == null)return;
-		EventEditPanel.makeEditPanel(calendar.getSelectedEvent());
+		if (calendar.getSelectedEvent() == null)
+			return;
+		new EditEventPanel(calendar.getSelectedEvent(),
+				Main.currentProject.getLoggedInPerson(), new JFrame());
 	}
 	public void logout(){
 		Login.login();

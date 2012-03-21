@@ -16,6 +16,7 @@ import no.ntnu.g44.models.Room;
 import no.ntnu.g44.net.co.Connection;
 import no.ntnu.g44.net.co.ConnectionImpl;
 import no.ntnu.g44.net.co.SimpleConnection;
+import nu.xom.Document;
 
 public class Server{
 
@@ -31,14 +32,14 @@ public class Server{
 
 	
 	public static void main(String[] args) {
-		new Server(5545,"localhost","","","","");
+		new Server(5545,"localhost","3306","project","root","");
 	}
 	
 	/**
 	 * 
-	 * @param ServerPort : The Port-number the server is listening to (locally is 3306)
+	 * @param ServerPort : The Port-number the server is listening to 
 	 * @param databaseIP : The IPAddress that the database have ('localhost' if ran locally)
-	 * @param databasePORT : The Port-number to the database
+	 * @param databasePORT : The Port-number to the database(locally is 3306)
 	 * @param databaseName : The name of the database
 	 * @param databaseUsername : The username for the database
 	 * @param databasePassword : the password for the database
@@ -150,6 +151,7 @@ public class Server{
 			
 			//This is the parser part where you read the incomming string and chooses what to do
 			if(message.equals("hello")){
+				System.out.println(":::" + getDataFromDatabase().toString());
 				con.send("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\r\n" + 
 						"<project>\r\n" + 
 						"     <person>\r\n" + 

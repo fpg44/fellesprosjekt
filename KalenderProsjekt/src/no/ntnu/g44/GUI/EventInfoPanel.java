@@ -4,8 +4,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Date;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
@@ -13,6 +15,7 @@ import javax.swing.WindowConstants;
 import no.ntnu.g44.models.Event;
 
 public class EventInfoPanel extends JPanel{
+	
 	public EventInfoPanel(Event event){
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		JFrame frame = new JFrame(event.getEventDescription());
@@ -77,6 +80,7 @@ public class EventInfoPanel extends JPanel{
 		frame.setLocation((int)(dim.getWidth() - frame.getWidth()) / 2, (int)(dim.getHeight() - frame.getHeight()) / 2);
 		frame.setResizable(false);
 		frame.setVisible(true);
+		frame.setTitle("Show Event");
 		
 	}
 	public static void makeInfoPanel(Event event){

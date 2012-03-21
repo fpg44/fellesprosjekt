@@ -168,10 +168,7 @@ public class Event {
 	}
 
 	public String getEventOwnerString() {
-		if(eventOwner == null){
-			return "";
-		}
-		return eventOwner.toString();
+		return eventOwnerString;
 	}
 
 	public void setEventOwnerString(String eventOwnerString) {

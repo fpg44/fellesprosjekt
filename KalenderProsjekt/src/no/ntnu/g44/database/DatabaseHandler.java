@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import no.ntnu.g44.models.AttendanceStatus;
@@ -302,17 +303,24 @@ public class DatabaseHandler {
 	 */
 	public void updateEvents(ArrayList<Event> events){
 
-		for(Event e : events){
+		for(Event event : events){
+			java.util.Date s = event.getEventStartTime();
+			java.util.Date e = event.getEventEndTime();
+
+			java.text.SimpleDateFormat sdf =  new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+			String start = sdf.format(s);
+			String end = sdf.format(e);
 			try {
 
-				stmt.executeUpdate("UPDATE event SET" +
-						"owner_username = '" + e.getEventOwner().getUsername() + "', " +
-						"time_start = '" + e.getEventStartTime() + "', " +
-						"time_end = '" + e.getEventEndTime() + "', " +
-						"title = '" + e.getEventDescription() + "', " +
-						"location = '" + e.getLocation() + "' ," +
-						"room_name = '" + e.getRoom().getRoomName() + "'" +
-						"WHERE event_id = '" + e.getEventID() + "'"
+				stmt.executeUpdate("UPDATE event SET " +
+						"owner_username ='" + event.getEventOwnerString() + "', " +
+						"time_start ='" + start + "', " +
+						"time_end ='" + end + "', " +
+						"title ='" + event.getEventDescription() + "', " +
+						"location ='" + event.getLocation() + "' ," +
+						"room_name = (SELECT room.name FROM room WHERE room.name = '" + event.getRoomString() + "') " +
+								"WHERE event_id ='" + event.getEventID() + "';"
 						);
 
 			} catch (SQLException e1) {
@@ -327,29 +335,37 @@ public class DatabaseHandler {
 	 * Updates an event in database
 	 * @param e
 	 */
-	public void updateEvent(Event e){
+	public void updateEvent(Event event){
+		java.util.Date s = event.getEventStartTime();
+		java.util.Date e = event.getEventEndTime();
 
+		java.text.SimpleDateFormat sdf =  new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String start = sdf.format(s);
+		String end = sdf.format(e);
 		try {
 
-			stmt.executeUpdate("INSERT into event VALUES" +
-					"owner_username = '" + e.getEventOwner().getUsername() + "', " +
-					"time_start = '" + e.getEventStartTime() + "', " +
-					"time_end = '" + e.getEventEndTime() + "', " +
-					"title = '" + e.getEventDescription() + "', " +
-					"location = '" + e.getLocation() + "' ," +
-					"room_name = '" + e.getRoom().getRoomName() + "'"
+			stmt.executeUpdate("UPDATE event SET " +
+					"owner_username ='" + event.getEventOwnerString() + "', " +
+					"time_start ='" + start + "', " +
+					"time_end ='" + end + "', " +
+					"title ='" + event.getEventDescription() + "', " +
+					"location ='" + event.getLocation() + "' ," +
+					"room_name = (SELECT room.name FROM room WHERE room.name = '" + event.getRoomString() + "') " +
+							"WHERE event_id ='" + event.getEventID() + "';"
 					);
-
+			
+			//THIS HAVE TO WORK BUT IT DOESNT:
 			//gets the primary key the statement made (as per tutorial) could be incorrect
-			ResultSet rs = stmt.getGeneratedKeys();
-			if(rs.next()){
-				int key = rs.getInt(1);
-
-				//insert old and new event id in a table overview
-				stmt.executeUpdate("INSERT INTO old_events VALUES" +
-						"event_id ='" + key + "', " +
-						"event_old_id ='" + e.getEventID() + "'");
-			}
+//			ResultSet rs = stmt.getGeneratedKeys();
+//			if(rs.next()){
+//				int key = rs.getInt(1);
+//
+//				//insert old and new event id in a table overview
+//				stmt.executeUpdate("INSERT INTO old_events VALUES" +
+//						"event_id ='" + key + "', " +
+//						"event_old_id ='" + event.getEventID() + "'");
+//			}
 
 		} catch (SQLException e1) {
 
@@ -402,28 +418,28 @@ public class DatabaseHandler {
 		}
 	}
 
-	/**
-	 * Send an ArrayList with all the persons that shall be updated in the database
-	 * @param persons
-	 */
-	public void updatePersons(ArrayList<Person> persons){
-
-		try{
-			//iterates over all persons and adds them into the database
-			for(Person person : persons){
-
-				stmt.executeUpdate("UPDATE account SET" +
-						"name = '" + person.getName() + "' " +
-						"WHERE username = '" + person.getUsername() + "'");
-
-			}
-
-		}catch( Exception e ){
-
-			e.printStackTrace();
-
-		}
-	}
+//	/**
+//	 * Send an ArrayList with all the persons that shall be updated in the database
+//	 * @param persons
+//	 */
+//	public void updatePersons(ArrayList<Person> persons){
+//
+//		try{
+//			//iterates over all persons and adds them into the database
+//			for(Person person : persons){
+//
+//				stmt.executeUpdate("UPDATE account SET" +
+//						"name = '" + person.getName() + "' " +
+//						"WHERE username = '" + person.getUsername() + "'");
+//
+//			}
+//
+//		}catch( Exception e ){
+//
+//			e.printStackTrace();
+//
+//		}
+//	}
 
 	/**
 	 * Updates all the attendance statuses in the database (attends_at)
@@ -469,19 +485,26 @@ public class DatabaseHandler {
 	 * @param event
 	 */
 	public void newEvent(Event event){
+		java.util.Date s = event.getEventStartTime();
+		java.util.Date e = event.getEventEndTime();
 
+		java.text.SimpleDateFormat sdf =  new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String start = sdf.format(s);
+		String end = sdf.format(e);
+		
 		try{
-			stmt.executeUpdate("INSERT INTO event VALUES" +
-					"owner_username = '" + event.getEventOwner().getName() + "', " +
-					"time_start = '" + event.getEventStartTime().toString() + "', " +
-					"time_end = '" + event.getEventEndTime() + "', " +
-					"title = '" + event.getEventDescription() + "', " +
-					"location = '" + event.getLocation() + "', " +
-					"room_name = '" + event.getRoom().getRoomName() + "'");
+			stmt.executeUpdate("INSERT INTO event (owner_username, time_start, time_end, title, location, room_name) VALUES (" +
+					"'" + event.getEventOwnerString() + "', " +
+					"'" + start + "', " +
+					"'" + end + "', " +
+					"'" + event.getEventDescription() + "', " +
+					"'" + event.getLocation() + "', " +
+					"(SELECT room.name FROM room WHERE room.name ='" + event.getRoomString() + "'))");
 
-		}catch( Exception e ){
+		}catch( Exception ef ){
 
-			e.printStackTrace();
+			ef.printStackTrace();
 
 		}
 	}

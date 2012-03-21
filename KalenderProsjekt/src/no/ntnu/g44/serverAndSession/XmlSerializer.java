@@ -392,11 +392,11 @@ public class XmlSerializer {
 	
 	private Event assembleEvent(Element eventElement) throws ParseException {
 		int id  = -1;
-		String title = null, location = null;
+		String title = "", location = "";
 		ArrayList<String> participants = new ArrayList<String>();
 		//		Room room = null;
-		String roomString = null;
-		String owner_username = null;
+		String roomString = "";
+		String owner_username = "";
 		Date eventStartDate = null, eventEndDate = null;
 
 		Element element = eventElement.getFirstChildElement("event-id");
@@ -416,14 +416,11 @@ public class XmlSerializer {
 
 		element = eventElement.getFirstChildElement("event-start");
 		if (element != null){
-//			eventStartDate = parseDate(element.getValue());
 			eventStartDate = parseToDate(element.getValue());
-			System.out.println(eventStartDate);
 		}
 
 		element = eventElement.getFirstChildElement("event-end");
 		if (element != null){
-//			eventEndDate = parseDate(element.getValue());
 			eventEndDate = parseToDate(element.getValue());
 		}
 
@@ -434,7 +431,6 @@ public class XmlSerializer {
 
 		element = eventElement.getFirstChildElement("room");
 		if (element != null){
-			//			room = new Room(element.getValue());
 			roomString = element.getValue();
 		}
 

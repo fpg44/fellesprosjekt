@@ -3,8 +3,8 @@ package no.ntnu.g44.serverAndSession;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.text.ParseException;
 import java.util.ArrayList;
-
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.g44.database.DatabaseHandler;
 import no.ntnu.g44.models.AttendanceStatus;
@@ -15,8 +15,8 @@ import no.ntnu.g44.models.Project;
 import no.ntnu.g44.models.Room;
 import no.ntnu.g44.net.co.Connection;
 import no.ntnu.g44.net.co.ConnectionImpl;
-import no.ntnu.g44.net.co.SimpleConnection;
-import nu.xom.Document;
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
 
 public class Server{
 
@@ -108,7 +108,7 @@ public class Server{
 				try {
 					tryPacketParse(conToClient);
 
-				} catch (IOException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -135,36 +135,77 @@ public class Server{
 	 * When some changes are done in the calendar-application, this will notify the other online users.
 	 */
 	private  void notfyOnlineListeners(String msg,ConnectionToAClient exception){
+		//obs! make sure it filters the connection with the associated event
 		for (ConnectionToAClient con: connections) {
 			con.push(msg);
 		}
 	}
 
-	private void tryPacketParse(Connection con) throws ConnectException, IOException {
+	private void tryPacketParse(Connection con) throws ConnectException, IOException, ValidityException, ParseException, ParsingException {
 
 
 		String message = con.receive();
 		Log.writeToLog("Server.java received a message", "lololol");
-		System.out.println(message);
 		//notfyOnlineListeners(message, null);
 
-
 		//This is the parser part where you read the incomming string and chooses what to do
-		if(message.equals("hello")){
-			
-			con.send(xmlSerializer.
-					toXml(getDataFromDatabase()).
-					toXML());
+		if(message.equals("get all")){
+			con.send(xmlSerializer.toXml(getDataFromDatabase()).toXML());
 		}
-		//				
-		//			else if(message.equals(""))
-		//				
-		//			else if(message.equals(""))
-		//				
-		//			else if(message.equals(""))
-		//				
-		//			else if(message.equals(""))
+		//working:
+		else if(message.startsWith("insert event")){
+			message = message.replaceFirst("insert event", "");
+			Event e = xmlSerializer.toEvent(message);
+			insert( e );
+		}
 
+		else if(message.equals("insert notification")){
+			message = message.replaceFirst("insert notification", "");
+			Event e = xmlSerializer.toEvent(message);
+			insert( e );
+		}
+
+		else if(message.equals("insert attends_at")){
+			message = message.replaceFirst("insert attends_at", "");
+			Event e = xmlSerializer.toEvent(message);
+			insert( e );
+		}
+		//working:
+		else if(message.startsWith("update event")){
+			message = message.replaceFirst("update event", "");
+			Event e = xmlSerializer.toEvent(message);
+			update( e );
+		}
+
+		else if(message.equals("update notification")){
+			message = message.replaceFirst("update notification", "");
+			Event e = xmlSerializer.toEvent(message);
+			update( e );
+		}
+
+		else if(message.equals("update attends_at")){
+			message = message.replaceFirst("update attends_at", "");
+			Event e = xmlSerializer.toEvent(message);
+			update( e );
+		}
+
+		else if(message.equals("delete event")){
+			message = message.replaceFirst("delete event", "");
+			Event e = xmlSerializer.toEvent(message);
+			delete( e );
+		}
+
+		else if(message.equals("delete notification")){
+			message = message.replaceFirst("delete notification", "");
+			Event e = xmlSerializer.toEvent(message);
+			delete( e );
+		}
+
+		else if(message.equals("delete attends_at")){
+			message = message.replaceFirst("delete attends_at", "");
+			Event e = xmlSerializer.toEvent(message);
+			delete( e );
+		}
 
 	}
 
@@ -217,14 +258,14 @@ public class Server{
 		return project;
 	}
 
-	protected void updateAll(){
-		ArrayList<Event> events = project.getEventList();
+	protected void updateAll(Project p){
+		ArrayList<Event> events = p.getEventList();
 		dbHandler.updateEvents(events);
 
-		ArrayList<Notification> notifications = project.getNotificationList();
+		ArrayList<Notification> notifications = p.getNotificationList();
 		dbHandler.updateNotifications(notifications);
 
-		ArrayList<AttendanceStatus> status = project.getAttendanceStatusList();
+		ArrayList<AttendanceStatus> status = p.getAttendanceStatusList();
 		dbHandler.updateAttendanceStatus(status);
 	}
 
@@ -258,5 +299,9 @@ public class Server{
 
 	protected void delete(Notification notif){
 		dbHandler.deleteNotification(notif);
+	}
+
+	protected void delete(AttendanceStatus status){
+		dbHandler.deleteAttendanceStatus(status);
 	}
 }

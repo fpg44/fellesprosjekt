@@ -363,7 +363,7 @@ public class MainFrame extends JPanel{
 		int notifCounter = 0;
 		
 		unseenNotifications = notificationController.getUnseenNotifications();
-		System.out.println(unseenNotifications.size());
+//		System.out.println(unseenNotifications.size());
 
 		if (!unseenNotifications.isEmpty()) {
 			notificationCounter();

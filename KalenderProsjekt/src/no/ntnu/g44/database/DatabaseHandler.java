@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
@@ -23,9 +25,9 @@ public class DatabaseHandler {
 
 	private Connection con = null;
 	private Statement stmt = null;
+	private Calendar cal = new GregorianCalendar();
 
 	public DatabaseHandler(){
-
 	}
 	/**
 	 * 
@@ -78,7 +80,7 @@ public class DatabaseHandler {
 		try{
 
 			//get all the events with all their attributes
-			ResultSet rsE = stmt.executeQuery("SELECT (event_id, owner_username, time_start, time_end, title, location, room_name) FROM event");
+			ResultSet rsE = stmt.executeQuery("SELECT event_id, owner_username, time_start, time_end, title, location, room_name FROM event");
 
 			//Sets the pointer to the first line in the ResultSet, return if ResultSet is empty
 			if(rsE.first() == false){
@@ -130,10 +132,11 @@ public class DatabaseHandler {
 				/////////////////////
 
 				//convert from java.sql.Timestamp to java.util.Date
-//				Date dateStart = rsE.get
+				Date dateStart = rsE.getTimestamp(3, cal);
+				Date dateEnd = rsE.getTime(4, cal);
 				
-				Date dateStart = rsE.getTimestamp(3);		//date start
-				Date dateEnd = rsE.getTimestamp(4);			//date end
+//				Date dateStart = rsE.getTimestamp(3);		//date start
+//				Date dateEnd = rsE.getTimestamp(4);			//date end
 
 				//create new event and add all the persons involved
 				Event event = new Event(EVENT_ID,			//event_id

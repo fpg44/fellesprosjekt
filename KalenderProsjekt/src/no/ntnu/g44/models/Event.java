@@ -236,6 +236,7 @@ public class Event {
 	}
 
 	public Room getRoom() {
+		System.out.println(Main.currentProject.getRoomList().size());
 		for(int i = 0; i<Main.currentProject.getRoomList().size(); i++){
 			if(Main.currentProject.getRoomList().get(i).getRoomName().equals(roomString)){
 				return Main.currentProject.getRoomList().get(i);

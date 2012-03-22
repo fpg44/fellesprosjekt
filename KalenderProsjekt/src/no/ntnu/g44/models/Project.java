@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class Project implements PropertyChangeListener {
 	/**
 	 * All attendance statuses to the participants
 	 */
-	private ArrayList<AttendanceStatus> attendanceStatus;
+	private ArrayList<AttendanceStatus> attendanceStatusList;
 	/**
 	 * This member variable provides functionality for notifying of changes to
 	 * the <code>Project</code> class.
@@ -73,17 +74,10 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp = new PropertyChangeSupport(this);
 		notificationList = new ArrayList<Notification>();
 		roomList = new ArrayList<Room>();
-//		addDummyRooms();
-		attendanceStatus = new ArrayList<AttendanceStatus>();
+		attendanceStatusList = new ArrayList<AttendanceStatus>();
 		
 		storage = new FileStorage();
 	}
-	
-//	private void addDummyRooms() {
-//		String[] roomNames = { "P123", "P298", "G193", "F123" };
-//		for (String name : roomNames)
-//			addRoom(new Room(name));
-//	}
 	
 	/**
 	 * Returns the number of {@linkplain #addPerson(Person) <code>Person</code> objects
@@ -165,7 +159,7 @@ public class Project implements PropertyChangeListener {
 	}
 	
 	public Iterator<AttendanceStatus> attendanseStaturIterator(){
-		return attendanceStatus.iterator();
+		return attendanceStatusList.iterator();
 	}
 	
 	/**
@@ -189,7 +183,7 @@ public class Project implements PropertyChangeListener {
 	}
 	
 	public ArrayList<AttendanceStatus> getAttendanceStatusList(){
-		return attendanceStatus;
+		return attendanceStatusList;
 	}
 	
 	/**
@@ -226,10 +220,18 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp.firePropertyChange("event", null, event);
 		
 		try {
+			//true if the event shall be added to XML/database
+			//false if the event only should be added to eventList
 			if(save){
-				String cuPath = new File(".").getAbsolutePath();
-				storage.save(new URL("file://"+cuPath+"/project.xml"), this);
-				Main.client.newEvent(xmlSerializer.eventToXml(event));
+				//If Internet (A1, server and database is being used)
+				if(Main.usenet){
+					Main.client.newEvent(xmlSerializer.eventToXml(event));					
+				}
+				//If only XML to file is being used
+				else{
+					String cuPath = new File(".").getAbsolutePath();
+					storage.save(new URL("file://"+cuPath+"/project.xml"), this);					
+				}
 			}
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
@@ -242,16 +244,24 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp.firePropertyChange("room", null, room);
 	}
 	
-	public void addNotification(Notification notification){
+	public void addNotification(Notification notification) throws ConnectException, IOException{
 		notificationList.add(notification);
 		notification.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("notification", null, notification);
+		
+		if(Main.usenet){
+			Main.client.newNotification(xmlSerializer.notificationToXml(notification));
+		}
 	}
 	
-	public void addAttendanceStatus(AttendanceStatus status){
-		attendanceStatus.add(status);
+	public void addAttendanceStatus(AttendanceStatus status) throws ConnectException, IOException{
+		attendanceStatusList.add(status);
 		status.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("status", null, status);
+		
+		if(Main.usenet){
+			Main.client.newAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
+		}
 	}
 	
 	/**
@@ -285,23 +295,63 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp.firePropertyChange("person", person, index);
 	}
 
+	public void removeAttendanceStatus(AttendanceStatus status){
+		int i = attendanceStatusList.indexOf(status);
+		Integer index = new Integer(i);
+		attendanceStatusList.remove(status);
+		status.removePropertyChangeListener(this);
+		propChangeSupp.firePropertyChange("status", status, index);
+		
+	}
+	
+	public void removeNotification(Notification notification) throws ConnectException, IOException{
+		int i = notificationList.indexOf(notification);
+		notificationList.remove(notification);
+		notification.removePropertyChangeListener(this);
+		propChangeSupp.firePropertyChange("notification", notification, i);
+		
+		if(Main.usenet){
+			Main.client.deleteNotification(xmlSerializer.notificationToXml(notification));
+		}
+	}
 	
 	public void removeEvent(Event event){
 		int i = eventList.indexOf(event);
 		eventList.remove(event);
 		event.removePropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("event",event,i);
+		
 		try {
+			
 			String cuPath = new File(".").getAbsolutePath();
 			storage.save(new URL("file://"+cuPath+"/project.xml"), this);
+			
+			if(Main.usenet){
+				Main.client.deleteEvent(xmlSerializer.eventToXml(event));
+			}
+			
 		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
+	public void editEvent(Event event) throws ConnectException, IOException{
+		if(Main.usenet){
+			Main.client.updateEvent(xmlSerializer.eventToXml(event));
+		}
+	}
 	
+	public void editNotification(Notification notification) throws ConnectException, IOException{
+		if(Main.usenet){
+			Main.client.updateNotification(xmlSerializer.notificationToXml(notification));
+		}
+	}
 	
+	public void editAttendanceStatus(AttendanceStatus status) throws ConnectException, IOException{
+		if(Main.usenet){
+			Main.client.updateAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
+		}
+	}
 	
 	/**
 	 * Add a {@link java.beans.PropertyChangeListener} to the listener list.

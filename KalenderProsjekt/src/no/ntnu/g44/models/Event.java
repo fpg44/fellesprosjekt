@@ -236,12 +236,16 @@ public class Event {
 	}
 
 	public Room getRoom() {
-		for(int i = 0; i<Main.currentProject.getRoomList().size(); i++){
-			if(Main.currentProject.getRoomList().get(i).getRoomName().equals(roomString)){
-				return Main.currentProject.getRoomList().get(i);
-			}
+		if(Main.currentProject != null){
+			for(int i = 0; i<Main.currentProject.getRoomList().size(); i++){
+				if(Main.currentProject.getRoomList().get(i).getRoomName().equals(roomString)){
+					return Main.currentProject.getRoomList().get(i);
+				}
+			}			
 		}
-		;
+		else{
+			System.out.println("currentProject is NULL");
+		}
 		return null;
 	}
 

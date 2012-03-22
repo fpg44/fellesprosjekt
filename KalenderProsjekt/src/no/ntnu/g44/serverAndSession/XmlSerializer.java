@@ -7,6 +7,7 @@
 package no.ntnu.g44.serverAndSession;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ public class XmlSerializer {
 		return new Document(root);
 	}
 
-	public Project toProject(Document xmlDocument) throws ParseException {
+	public Project toProject(Document xmlDocument) throws ParseException, ConnectException, IOException {
 		Project aProject = new Project();
 		
 		Element groupElement = xmlDocument.getRootElement();

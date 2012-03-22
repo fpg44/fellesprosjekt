@@ -18,6 +18,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import no.ntnu.g44.controllers.Main;
+import no.ntnu.g44.models.AttendanceHelper;
+import no.ntnu.g44.models.AttendanceStatus;
+import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 
@@ -27,9 +31,11 @@ public class EventInfoPanel extends JPanel{
 	DefaultListModel<Person> participantsListModel = new DefaultListModel<Person>();
 	JList participantsList = new JList(participantsListModel);
 	JScrollPane participantsListScroller = new JScrollPane(participantsList);
+	Event event;
 	
 
 	public EventInfoPanel(Event event, JFrame frame){
+		this.event = event;
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 //		JFrame frame = new JFrame(event.getEventDescription());
 		this.frame = frame;
@@ -37,7 +43,7 @@ public class EventInfoPanel extends JPanel{
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.getContentPane().add(this);
 		
-		//participantsList.setCellRenderer(new colouredCellRenderer());
+		participantsList.setCellRenderer(new colourListCellRenderer());
 		JLabel ownerLabel = new JLabel("Event owner:");
 		JLabel startLabel = new JLabel("Start time:");
 		JLabel endLabel = new JLabel("End time:");
@@ -122,12 +128,8 @@ public class EventInfoPanel extends JPanel{
 	public class colourListCellRenderer extends DefaultListCellRenderer {
 	     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 	         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	         Paint[] colours = new Paint[4];
-	 		 colours[0] = Color.blue;
-	 		 colours[1] = Color.green;
-	 		 colours[2] = Color.magenta;
-	 		 colours[3] = Color.orange;
-	         c.setBackground((Color) colours[index%4]);
+	         c.setBackground(AttendanceHelper.getColor(event, (Person) value));
+//	         AttendanceStatusType.getColor(Main.currentProject.getAttendanceStatusList().get(2).getStatus());
 	         return c;
 	     }
 	}

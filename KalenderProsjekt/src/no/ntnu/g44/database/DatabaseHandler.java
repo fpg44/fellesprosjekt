@@ -90,7 +90,7 @@ public class DatabaseHandler {
 				EVENT_ID = rsE.getInt(1);
 
 				//get all the persons associated each event
-				ResultSet rsP = stmt.executeQuery("SELECT name, username FROM account, event  WHERE event.event_id='" + EVENT_ID + "'");
+				ResultSet rsP = stmt.executeQuery("SELECT account.name, account.username FROM account, attends_at  WHERE attends_at.event_id='" + EVENT_ID + "'");
 
 				//ITERATES THE PERSON RESULTSET
 				do{
@@ -174,7 +174,7 @@ public class DatabaseHandler {
 
 		try{
 
-			ResultSet rs = stmt.executeQuery("SELECT username, name FROM account");
+			ResultSet rs = stmt.executeQuery("SELECT name, username FROM account");
 
 			if(rs.first() == false){
 				return null;

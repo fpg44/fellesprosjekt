@@ -28,6 +28,7 @@ public class Main {
 				
 				client = new Client("78.91.11.168", 5545);
 				currentProject = client.getProject();
+				System.out.println(currentProject.getPersonCount());
 				
 			} catch (IOException | ParseException | ParsingException e) {
 				

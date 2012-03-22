@@ -170,6 +170,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		g2d.setStroke(new BasicStroke(2));
 		Event e;
 		System.out.println("LOOOOOOOOOOOOOOOOOOOL" + Main.currentProject.getEventCount());
+		System.out.println("ANTALL PERSONER: " + Main.currentProject.getPersonCount());
 		for(int i = 0; i < Main.currentProject.getEventCount(); i++){
 			int x = -1;
 			e = Main.currentProject.getEventList().get(i);

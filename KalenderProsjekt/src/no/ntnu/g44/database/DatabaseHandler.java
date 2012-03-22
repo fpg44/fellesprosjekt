@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
@@ -23,9 +25,9 @@ public class DatabaseHandler {
 
 	private Connection con = null;
 	private Statement stmt = null;
+	private Calendar cal = new GregorianCalendar();
 
 	public DatabaseHandler(){
-
 	}
 	/**
 	 * 
@@ -78,7 +80,7 @@ public class DatabaseHandler {
 		try{
 
 			//get all the events with all their attributes
-			ResultSet rsE = stmt.executeQuery("SELECT * FROM event");
+			ResultSet rsE = stmt.executeQuery("SELECT event_id, owner_username, time_start, time_end, title, location, room_name FROM event");
 
 			//Sets the pointer to the first line in the ResultSet, return if ResultSet is empty
 			if(rsE.first() == false){
@@ -95,27 +97,27 @@ public class DatabaseHandler {
 				ResultSet rsP = stmt.executeQuery("SELECT account.name, account.username FROM account, attends_at  WHERE attends_at.event_id='" + EVENT_ID + "'");
 
 				//ITERATES THE PERSON RESULTSET
-				do{
-					if(rsP.next()){
+				if(rsP.first()){
+					do{
 						//Create persons and add them to array
 						Person person = new Person(rsP.getString(1), rsP.getString(2));
 						persons.add(person.getUsername());						
-					}
 
-				}while(rsP.next());
+					}while(rsP.next());
+				}
 
 				rsP = null;	//clear the ResultSet for next iterate
 
 
 				//Finds the owner of the Event
-//				for(int i = 0; i<persons.size(); i++){
-//					if(persons.get(i).equals(rsE.getString(2))){
-//
-//						//If owner shall not be in the persons list, change to owner = persons.remove(i);
-//						owner = persons.get(i);
-//					}
-//
-//				}
+				//				for(int i = 0; i<persons.size(); i++){
+				//					if(persons.get(i).equals(rsE.getString(2))){
+				//
+				//						//If owner shall not be in the persons list, change to owner = persons.remove(i);
+				//						owner = persons.get(i);
+				//					}
+				//
+				//				}
 
 				/////////////////////			
 				/*	RESULTSET INDEX TO rsE:
@@ -130,8 +132,11 @@ public class DatabaseHandler {
 				/////////////////////
 
 				//convert from java.sql.Timestamp to java.util.Date
-				Date dateStart = rsE.getTimestamp(3);		//date start
-				Date dateEnd = rsE.getTimestamp(4);			//date end
+				Date dateStart = rsE.getTimestamp(3, cal);
+				Date dateEnd = rsE.getTime(4, cal);
+				
+//				Date dateStart = rsE.getTimestamp(3);		//date start
+//				Date dateEnd = rsE.getTimestamp(4);			//date end
 
 				//create new event and add all the persons involved
 				Event event = new Event(EVENT_ID,			//event_id
@@ -159,6 +164,7 @@ public class DatabaseHandler {
 		}catch(Exception e){
 
 			e.printStackTrace();
+			System.out.println("LOL FUCKER HAHAHA");
 
 		}
 

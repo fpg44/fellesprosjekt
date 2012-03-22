@@ -96,8 +96,9 @@ public class EditEventPanel extends JPanel {
 		descriptionTextScroller = new JScrollPane(descriptionText);
 		
 		participantsListModel = new DefaultListModel<Person>();
-		for (Person person : originalEvent.getParticipants())
-			participantsListModel.addElement(person);
+		for (Person person : originalEvent.getParticipants()){
+			if(person != eventOwner) participantsListModel.addElement(person);
+		}
 		participantsList = new JList<Person>(participantsListModel);
 		participantsList.setCellRenderer(new ParticipantsRenderer());
 		participantsListScroller = new JScrollPane(participantsList);

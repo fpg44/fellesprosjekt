@@ -106,7 +106,23 @@ public class NewEventPanel extends JPanel {
 	 */
 	public NewEventPanel(Person owner, JFrame frame, Event oldEvent) {
 		this(owner, frame);
-		this.oldEvent = oldEvent;
+		if (oldEvent != null) {
+			this.oldEvent = oldEvent;
+			eventStartTime.setValue(oldEvent.getEventStartTime());
+			eventEndTime.setValue(oldEvent.getEventEndTime());
+			location.addItem(oldEvent.getRoom());
+			location.setSelectedItem(oldEvent.getRoom());
+			customLocation.setText(oldEvent.getLocation());
+			eventDescription.setText(oldEvent.getEventDescription());
+			for (Person person : oldEvent.getParticipants()) {
+				if (person == this.eventOwner)
+					continue;
+				if (!participantsModel.contains(person))
+					participantsModel.addElement(person);
+				if (personsModel.contains(person))
+					personsModel.removeElement(person);
+			}
+		}
 	}
 	
 	/**
@@ -377,36 +393,6 @@ public class NewEventPanel extends JPanel {
 				super.moveDot(dot);
 			}  
 		});
-	}
-	
-	// setters for use in EditEventPanel
-	protected void setEventStartTime(Date startTime) {
-		this.startTimeModel.setValue(startTime);
-	}
-	
-	protected void setEventEndTime(Date endTime) {
-		this.startTimeModel.setValue(endTime);
-	}
-	
-	protected void setEventRoom(Room room) {
-		this.location.setSelectedItem(room);
-	}
-	
-	protected void setEventCustomLocation(String locationDescription) {
-		this.customLocation.setText(locationDescription);
-	}
-	
-	protected void setEventDescription(String description) {
-		this.eventDescription.setText(description);
-	}
-	
-	protected void setEventParticipantsList(ArrayList<Person> persons) {
-		for (Person person : persons) {
-			if (!participantsModel.contains(person))
-				participantsModel.addElement(person);
-			if (personsModel.contains(person))
-				personsModel.removeElement(person);
-		}
 	}
 	
 	class RoomListener implements ActionListener, ChangeListener {

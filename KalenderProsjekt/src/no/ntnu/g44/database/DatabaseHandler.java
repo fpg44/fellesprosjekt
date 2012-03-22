@@ -96,28 +96,26 @@ public class DatabaseHandler {
 
 				//ITERATES THE PERSON RESULTSET
 				do{
-					if(rsP.first()){
-						break;
-					}
-					//Create persons and add them to array
+					if(rsP.next()){
+						//Create persons and add them to array
 						Person person = new Person(rsP.getString(1), rsP.getString(2));
 						persons.add(person.getUsername());						
+					}
 
 				}while(rsP.next());
 
 				rsP = null;	//clear the ResultSet for next iterate
 
-				String owner = null;
 
 				//Finds the owner of the Event
-				for(int i = 0; i<persons.size(); i++){
-					if(persons.get(i).equals(rsE.getString(2))){
-
-						//If owner shall not be in the persons list, change to owner = persons.remove(i);
-						owner = persons.get(i);
-					}
-
-				}
+//				for(int i = 0; i<persons.size(); i++){
+//					if(persons.get(i).equals(rsE.getString(2))){
+//
+//						//If owner shall not be in the persons list, change to owner = persons.remove(i);
+//						owner = persons.get(i);
+//					}
+//
+//				}
 
 				/////////////////////			
 				/*	RESULTSET INDEX TO rsE:
@@ -138,11 +136,11 @@ public class DatabaseHandler {
 				//create new event and add all the persons involved
 				Event event = new Event(EVENT_ID,			//event_id
 						rsE.getString(5),					//eventTitle
-						owner,								//owner_username
+						rsE.getString(2),					//owner_username
 						persons,							//persons
 						dateStart, dateEnd,					//date start, end
 						rsE.getString(6),					//location 
-						rsE.getString(7));		//room
+						rsE.getString(7));					//room
 
 				//Finds old event id if excist
 				ResultSet rsOld = stmt.executeQuery("SELECT event_old_id FROM old_events WHERE event_id ='" + event.getEventID() + "'");
@@ -319,7 +317,7 @@ public class DatabaseHandler {
 						"title ='" + event.getEventDescription() + "', " +
 						"location ='" + event.getLocation() + "' ," +
 						"room_name = (SELECT room.name FROM room WHERE room.name = '" + event.getRoomString() + "') " +
-								"WHERE event_id ='" + event.getEventID() + "';"
+						"WHERE event_id ='" + event.getEventID() + "';"
 						);
 
 			} catch (SQLException e1) {
@@ -351,25 +349,25 @@ public class DatabaseHandler {
 					"title ='" + event.getEventDescription() + "', " +
 					"location ='" + event.getLocation() + "' ," +
 					"room_name = (SELECT room.name FROM room WHERE room.name = '" + event.getRoomString() + "') " +
-							"WHERE event_id ='" + event.getEventID() + "';"
+					"WHERE event_id ='" + event.getEventID() + "';"
 					);
-			
+
 			//THIS HAVE TO WORK BUT IT DOESNT:
 			//gets the primary key the statement made (as per tutorial) could be incorrect
-//			ResultSet rs = stmt.getGeneratedKeys();
-//			if(rs.next()){
-//				int key = rs.getInt(1);
-//
-//				//insert old and new event id in a table overview
-//				stmt.executeUpdate("INSERT INTO old_events VALUES" +
-//						"event_id ='" + key + "', " +
-//						"event_old_id ='" + event.getEventID() + "'");
-//			}
+			//			ResultSet rs = stmt.getGeneratedKeys();
+			//			if(rs.next()){
+			//				int key = rs.getInt(1);
+			//
+			//				//insert old and new event id in a table overview
+			//				stmt.executeUpdate("INSERT INTO old_events VALUES" +
+			//						"event_id ='" + key + "', " +
+			//						"event_old_id ='" + event.getEventID() + "'");
+			//			}
 			for(Person user : event.getParticipants()){
-				
+
 				stmt.executeUpdate("UPDATE attends_at SET " +
 						"account username ='" + user.getUsername() + "', " +
-								"event_id ='" + event.getEventID() + "', " +
+						"event_id ='" + event.getEventID() + "', " +
 						"status ='" + user.getAttendanceStatusType().toString() + "'");
 			}
 
@@ -424,28 +422,28 @@ public class DatabaseHandler {
 		}
 	}
 
-//	/**
-//	 * Send an ArrayList with all the persons that shall be updated in the database
-//	 * @param persons
-//	 */
-//	public void updatePersons(ArrayList<Person> persons){
-//
-//		try{
-//			//iterates over all persons and adds them into the database
-//			for(Person person : persons){
-//
-//				stmt.executeUpdate("UPDATE account SET" +
-//						"name = '" + person.getName() + "' " +
-//						"WHERE username = '" + person.getUsername() + "'");
-//
-//			}
-//
-//		}catch( Exception e ){
-//
-//			e.printStackTrace();
-//
-//		}
-//	}
+	//	/**
+	//	 * Send an ArrayList with all the persons that shall be updated in the database
+	//	 * @param persons
+	//	 */
+	//	public void updatePersons(ArrayList<Person> persons){
+	//
+	//		try{
+	//			//iterates over all persons and adds them into the database
+	//			for(Person person : persons){
+	//
+	//				stmt.executeUpdate("UPDATE account SET" +
+	//						"name = '" + person.getName() + "' " +
+	//						"WHERE username = '" + person.getUsername() + "'");
+	//
+	//			}
+	//
+	//		}catch( Exception e ){
+	//
+	//			e.printStackTrace();
+	//
+	//		}
+	//	}
 
 	/**
 	 * Updates all the attendance statuses in the database (attends_at)
@@ -498,7 +496,7 @@ public class DatabaseHandler {
 
 		String start = sdf.format(s);
 		String end = sdf.format(e);
-		
+
 		try{
 			stmt.executeUpdate("INSERT INTO event (owner_username, time_start, time_end, title, location, room_name) VALUES (" +
 					"'" + event.getEventOwnerString() + "', " +

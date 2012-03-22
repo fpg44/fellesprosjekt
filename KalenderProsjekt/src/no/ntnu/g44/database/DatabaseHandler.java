@@ -5,11 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
@@ -25,7 +22,6 @@ public class DatabaseHandler {
 
 	private Connection con = null;
 	private Statement stmt = null;
-	private Calendar cal = new GregorianCalendar();
 
 	public DatabaseHandler(){
 	}
@@ -92,7 +88,6 @@ public class DatabaseHandler {
 
 				//gets the event_id from the currently iterating event
 				EVENT_ID = rsE.getInt(1);
-
 				//get all the persons associated each event
 				ResultSet rsP = stmt.executeQuery("SELECT account.name, account.username FROM account, attends_at  WHERE attends_at.event_id='" + EVENT_ID + "'");
 
@@ -107,36 +102,9 @@ public class DatabaseHandler {
 				}
 
 				rsP = null;	//clear the ResultSet for next iterate
-
-
-				//Finds the owner of the Event
-				//				for(int i = 0; i<persons.size(); i++){
-				//					if(persons.get(i).equals(rsE.getString(2))){
-				//
-				//						//If owner shall not be in the persons list, change to owner = persons.remove(i);
-				//						owner = persons.get(i);
-				//					}
-				//
-				//				}
-
-				/////////////////////			
-				/*	RESULTSET INDEX TO rsE:
-				 * 1 : event_id
-				 * 2 : owner_username
-				 * 3 : time_start
-				 * 4 : time_end
-				 * 5 : title
-				 * 6 : location
-				 * 7 : room_name
-				 */
-				/////////////////////
-
-				//convert from java.sql.Timestamp to java.util.Date
-				Date dateStart = rsE.getTimestamp(3, cal);
-				Date dateEnd = rsE.getTime(4, cal);
 				
-//				Date dateStart = rsE.getTimestamp(3);		//date start
-//				Date dateEnd = rsE.getTimestamp(4);			//date end
+				Date dateStart = rsE.getTimestamp(3);		//date start
+				Date dateEnd = rsE.getTimestamp(4);			//date end
 
 				//create new event and add all the persons involved
 				Event event = new Event(EVENT_ID,			//event_id

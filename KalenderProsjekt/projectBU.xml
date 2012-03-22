@@ -30,6 +30,75 @@
           <email/>
           <date-of-birth>Mar 21, 2012</date-of-birth>
      </person>
+     <event>
+          <event-id>0</event-id>
+          <title/>
+          <owner>anderse</owner>
+          <event-start>?22:2;2012-29_15!</event-start>
+          <event-end>?22:2;2012-29_16!</event-end>
+          <location>other place</location>
+          <room>OTHER</room>
+          <participants>
+               <person>jeppee</person>
+               <person>anderse</person>
+          </participants>
+     </event>
+     <event>
+          <event-id>1</event-id>
+          <title/>
+          <owner>anderse</owner>
+          <event-start>?23:2;2012-34_15!</event-start>
+          <event-end>?23:2;2012-34_16!</event-end>
+          <location/>
+          <room>F302</room>
+          <participants>
+               <person>tordly</person>
+               <person>anderse</person>
+          </participants>
+     </event>
+     <event>
+          <event-id>2</event-id>
+          <title/>
+          <owner>jeppee</owner>
+          <event-start>?22:2;2012-30_13!</event-start>
+          <event-end>?22:2;2012-30_14!</event-end>
+          <location/>
+          <room>F302</room>
+          <participants>
+               <person>jeppee</person>
+               <person>andersd</person>
+          </participants>
+     </event>
+     <event>
+          <event-id>3</event-id>
+          <title/>
+          <owner>anderse</owner>
+          <event-start>?22:2;2012-30_11!</event-start>
+          <event-end>?22:2;2012-30_12!</event-end>
+          <location/>
+          <room>F204</room>
+          <participants>
+               <person>jeppee</person>
+               <person>anderse</person>
+               <person>andersd</person>
+               <person>tordly</person>
+          </participants>
+     </event>
+     <attendance-status>
+         <username>andersd</username>
+         <event-id>3</event-id>
+         <type>NOT_ATTENDING</type>
+     </attendance-status>
+     <attendance-status>
+         <username>jeppee</username>
+         <event-id>3</event-id>
+         <type>ATTENDING</type>
+     </attendance-status>
+     <attendance-status>
+         <username>tordly</username>
+         <event-id>3</event-id>
+         <type>UNANSWERED</type>
+     </attendance-status>
      <room>
           <name>F204</name>
      </room>

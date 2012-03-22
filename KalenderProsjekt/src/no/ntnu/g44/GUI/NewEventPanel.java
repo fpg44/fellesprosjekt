@@ -92,6 +92,23 @@ public class NewEventPanel extends JPanel {
 	private JButton saveButton;
 	private JButton cancelButton;
 	
+	// the old (original) Event, in the case of an update
+	private Event oldEvent = null;
+	
+	/**
+	 * A <code>NewEventPanel</code> provides the graphical interface for 
+	 * creating a new Event. <br><br>
+	 * 
+	 * @param owner - the Person creating the Event <br><br>
+	 * @param frame - the JFrame to contain this panel
+	 * @param oldEvent - this parameter is passed when updating an existing
+	 * Event; in this case, the original Event is deleted
+	 */
+	public NewEventPanel(Person owner, JFrame frame, Event oldEvent) {
+		this(owner, frame);
+		this.oldEvent = oldEvent;
+	}
+	
 	/**
 	 * A <code>NewEventPanel</code> provides the graphical interface for 
 	 * creating a new Event. <br><br>
@@ -312,19 +329,19 @@ public class NewEventPanel extends JPanel {
 	}
 	
 	private Event createEvent() {
+		String eventOwner = this.eventOwner.getUsername();
 		String eventTitle = new String(eventDescription.getText());
 		ArrayList<String> participants = new ArrayList<String>();
-		for (int i = 0; i < participantsModel.getSize(); i++){
+		for (int i = 0; i < participantsModel.getSize(); i++)
 			participants.add(participantsModel.get(i).getUsername());
-		}
-		participants.add(eventOwner.getUsername());
+		participants.add(eventOwner);
 		Date eventStartTime = startTimeModel.getDate();
 		Date eventEndTime = endTimeModel.getDate();
 		String location = customLocation.getText();
-		Room room = (Room) this.location.getSelectedItem();
+		String roomName = ((Room) this.location.getSelectedItem()).getRoomName();
 		
-		return new Event(-1, eventTitle, this.eventOwner.getUsername(), participants,
-				eventStartTime, eventEndTime, location, room.getRoomName());
+		return new Event(-1, eventTitle, eventOwner, participants,
+				eventStartTime, eventEndTime, location, roomName);
 	}
 	
 	private void closeWindow() {
@@ -429,6 +446,8 @@ public class NewEventPanel extends JPanel {
 			if (e.getSource() == cancelButton)
 				closeWindow();
 			else if (e.getSource() == saveButton) {
+				if (oldEvent != null)
+					Main.currentProject.removeEvent(oldEvent);
 				Main.currentProject.addEvent(createEvent(), true);
 				closeWindow();
 			}

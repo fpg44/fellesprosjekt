@@ -15,7 +15,7 @@ import no.ntnu.g44.controllers.Main;
  *
  */
 public class Event {
-	
+
 	private String eventDescription, location = "";
 	private ArrayList<Person> participants = new ArrayList<Person>();
 	private ArrayList<String> participantsStrings;
@@ -28,8 +28,8 @@ public class Event {
 	private int eventID;
 	private boolean hasOldEvent = false;
 	private String oldEventString;
-	
-	
+
+
 	public String getRoomString() {
 		return roomString;
 	}
@@ -51,12 +51,12 @@ public class Event {
 		participants = new ArrayList<Person>();
 		eventStartTime = new Date();
 		eventEndTime = new Date();
-//		room = Main.currentProject.isOtherRoom(room.getRoomName());
+		//		room = Main.currentProject.isOtherRoom(room.getRoomName());
 		eventOwner = new Person("TestPerson", "tester69");
 		eventID = 0;
 		participants.add(eventOwner);
 	}
-	
+
 	/**	This is the one used within the application (the right one)
 	 * @param event_ID
 	 * @param eventTitle
@@ -79,7 +79,7 @@ public class Event {
 		this.room = room;
 		propChangeSupp = new PropertyChangeSupport(this);
 	}
-	
+
 	/**
 	 * This constructor is for creating new events (because you don't know
 	 * the eventID at that point). NOTE: The eventID is always -1 when using
@@ -98,7 +98,7 @@ public class Event {
 		this(-1, eventTitle, eventOwner, participants, eventStartTime,
 				eventEndTime, location, room);
 	}
-	
+
 	/**
 	 * This is used when red from database and thrown after parsed to XML.
 	 * This constructor will also prevent duplicates of objects like Person and Room
@@ -123,12 +123,12 @@ public class Event {
 		this.location = location;
 		this.roomString = roomString;
 		propChangeSupp = new PropertyChangeSupport(this);
-		
-//		if(roomString.equals("OTHER")){
-//			this.room = Room.OTHER;
-//			
-//		}
-		
+
+		//		if(roomString.equals("OTHER")){
+		//			this.room = Room.OTHER;
+		//			
+		//		}
+
 	}
 	public void setParticipants(){
 		for(int i = 0; i < participantsStrings.size(); i++){
@@ -185,19 +185,19 @@ public class Event {
 	}
 
 	public String getLocation() {
-		
+
 		if(getRoom() == Main.currentProject.getOtherRoom()){
 			return location;				
 		}
 		return "";
-		
-//		
-//		if (getRoom().getRoomName().equals("OTHER"))
-//			return location;
-//		else if (getRoom() == null)
-//			return "";
-//		else
-//			return getRoom().getRoomName();
+
+		//		
+		//		if (getRoom().getRoomName().equals("OTHER"))
+		//			return location;
+		//		else if (getRoom() == null)
+		//			return "";
+		//		else
+		//			return getRoom().getRoomName();
 	}
 
 	public void setLocation(String location) {
@@ -209,7 +209,7 @@ public class Event {
 		for(int i = 0; i<participantsStrings.size(); i++){
 			for(int j = 0; j<Main.currentProject.getPersonCount(); j++){
 				if(Main.currentProject.getPersonList().get(j).getUsername().equals(participantsStrings.get(i)))
-				participants.add(Main.currentProject.getPersonList().get(j));
+					participants.add(Main.currentProject.getPersonList().get(j));
 			}
 		}
 		return participants;
@@ -236,15 +236,10 @@ public class Event {
 	}
 
 	public Room getRoom() {
-		if(Main.currentProject != null){
-			for(int i = 0; i<Main.currentProject.getRoomList().size(); i++){
-				if(Main.currentProject.getRoomList().get(i).getRoomName().equals(roomString)){
-					return Main.currentProject.getRoomList().get(i);
-				}
-			}			
-		}
-		else{
-			System.out.println("currentProject is NULL");
+		for(int i = 0; i<Main.currentProject.getRoomList().size(); i++){
+			if(Main.currentProject.getRoomList().get(i).getRoomName().equals(roomString)){
+				return Main.currentProject.getRoomList().get(i);
+			}
 		}
 		return null;
 	}
@@ -253,7 +248,7 @@ public class Event {
 		this.roomString = room.getRoomName();
 		this.room = room;
 	}
-	
+
 	/**
 	 * Adds participant to this event
 	 * @param participant
@@ -261,18 +256,18 @@ public class Event {
 	public void addParticipant(Person participant) {
 		participants.add(participant);
 	}
-	
+
 	/**
 	 * Removes participant from this event
 	 * @param participant
 	 */
 	public void removeParticipant(Person participant) {
-		
-//		if (participants.contains(participant)) {
-//			participants.remove(participant);
-//		}
+
+		//		if (participants.contains(participant)) {
+		//			participants.remove(participant);
+		//		}
 	}
-	
+
 	/**
 	 * Add a {@link java.beans.PropertyChangeListener} to the listener list.
 	 * 
@@ -281,7 +276,7 @@ public class Event {
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		propChangeSupp.addPropertyChangeListener(listener);
 	}
-	
+
 	/**
 	 * Remove a {@link java.beans.PropertyChangeListener} from the listener list.
 	 * 
@@ -299,7 +294,7 @@ public class Event {
 		}
 		return false;
 	}
-	
+
 	public String getOldEventId(){
 		if(hasOldEvent == true){
 			return oldEventString;

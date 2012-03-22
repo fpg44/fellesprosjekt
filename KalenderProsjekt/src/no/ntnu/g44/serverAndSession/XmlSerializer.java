@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
-import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
@@ -87,33 +86,33 @@ public class XmlSerializer {
 
 	public Project toProject(Document xmlDocument) throws ParseException, ConnectException, IOException {
 		Project aProject = new Project();
-		
+
 		Element groupElement = xmlDocument.getRootElement();
-		
+
 		Elements personElements = groupElement.getChildElements("person");
 		for (int i = 0; i < personElements.size(); i++) {
 			Element childElement = personElements.get(i);
 			aProject.addPerson(assemblePerson(childElement));
 		}
-		
+
 		Elements eventElements = groupElement.getChildElements("event");
 		for (int i = 0; i < eventElements.size(); i++){
 			Element child = eventElements.get(i);
 			aProject.addEvent(assembleEvent(child), false);
 		}
-		
+
 		Elements notificationElements = groupElement.getChildElements("notification");
 		for (int i = 0; i < notificationElements.size(); i++){
 			Element child = notificationElements.get(i);
 			aProject.addNotification(assembleNotification(child));
 		}
-		
+
 		Elements roomElements = groupElement.getChildElements("room");
 		for (int i = 0; i < roomElements.size(); i++){
 			Element child = roomElements.get(i);
 			aProject.addRoom(assembleRoom(child));
 		}
-		
+
 		Elements attendanceStatusElements = groupElement.getChildElements("attendance-status");
 		for (int i = 0; i < attendanceStatusElements.size(); i++){
 			Element child = attendanceStatusElements.get(i);
@@ -121,7 +120,7 @@ public class XmlSerializer {
 		}
 		return aProject;
 	}
-	
+
 	/**
 	 * TODO: handle this one to avoid duplicate code
 	 * @param date
@@ -129,16 +128,16 @@ public class XmlSerializer {
 	 * @throws ParseException
 	 */
 	private Date parseToDate(String date) throws ParseException {
-//		DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, java.util.Locale.US);
-//		return format.parse(date);
+		//		DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, java.util.Locale.US);
+		//		return format.parse(date);
 		String temp = "";
 		int day = -1, month = -1, year = -1, hour = -1, min = -1;
 		Calendar parsedDate = new GregorianCalendar();
 		Date dato = new Date();
-		
+
 		for(int i = 0; i<date.length(); i++){
 			temp += date.charAt(i);
-			
+
 			if(date.charAt(i) == '?'){
 				temp = temp.substring(0, temp.length()-1);
 			}
@@ -172,19 +171,19 @@ public class XmlSerializer {
 		}
 		return dato;
 	}
-	
+
 	private String parseToString(Date date){
 		String time = "?";
-		
+
 		Calendar c = new GregorianCalendar();
 		c.setTime(date);
 		int pm = 0;
-//		System.out.println("pm" + c.get(c.PM) + "am" + c.get(c.AM) + "ampm" + c.get(c.AM_PM));
+		//		System.out.println("pm" + c.get(c.PM) + "am" + c.get(c.AM) + "ampm" + c.get(c.AM_PM));
 		if(c.get(c.AM) == c.get(c.AM_PM)){
 			pm = 12;
 		}
 		time += c.get(c.DAY_OF_MONTH) + ":" + c.get(c.MONTH) + ";" + c.get(c.YEAR) + "-" + c.get(c.MINUTE) + "_" + (c.get(c.HOUR)+pm) + "!";
-		
+
 		return time;
 	}
 
@@ -193,13 +192,13 @@ public class XmlSerializer {
 		nu.xom.Document doc = parser.build(xml, "");
 		return assemblePerson(doc.getRootElement());
 	}
-	
+
 	public Event toEvent(String xml) throws java.io.IOException, java.text.ParseException, nu.xom.ParsingException {
 		nu.xom.Builder parser = new nu.xom.Builder(false);
 		nu.xom.Document doc = parser.build(xml, "");
 		return assembleEvent(doc.getRootElement());
 	}
-	
+
 	public Notification toNotification(String xml) throws ValidityException, ParsingException, IOException{
 		nu.xom.Builder parser = new nu.xom.Builder(false);
 		nu.xom.Document doc = parser.build(xml, "");
@@ -211,16 +210,16 @@ public class XmlSerializer {
 		nu.xom.Document doc = parser.build(xml, "");
 		return assembleRoom(doc.getRootElement());
 	}
-	
+
 	public AttendanceStatus toAttendanceStatus(String xml) throws ValidityException, ParsingException, IOException{
 		nu.xom.Builder parser = new nu.xom.Builder(false);
 		nu.xom.Document doc = parser.build(xml, "");
 		return assembleAttendanceStatus(doc.getRootElement());
 	}
-	
-	
-//////////////////////////////
-	
+
+
+	//////////////////////////////
+
 	private Element personToXml(Person aPerson) {
 		DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, java.util.Locale.US);
 		Element element = new Element("person");
@@ -289,7 +288,7 @@ public class XmlSerializer {
 	public Element notificationToXml(Notification notification){
 
 		Element element = new Element("notification");
-		
+
 		Element notificatioID = new Element("notification-id");
 		notificatioID.appendChild(String.valueOf(notification.getNotificationID()));
 		element.appendChild(notificatioID);
@@ -332,7 +331,7 @@ public class XmlSerializer {
 		return element;
 
 	}
-	
+
 	public AttendanceStatus assembleAttendanceStatus(Element e){
 		String username = null;
 		int id = -1;
@@ -355,27 +354,18 @@ public class XmlSerializer {
 		AttendanceHelper.updateStatus(id, username, type);
 		return new AttendanceStatus(username, id, type);
 	}
-	
+
 	public Room assembleRoom(Element e){
 		String name = null;
 
 		Element element = e.getFirstChildElement("name");
 		if(element != null){
-//			if(element.getValue().equals("OTHER")){
-//				for(int i = 0; i<Main.currentProject.getRoomList().size(); i++){
-//					if(Main.currentProject.getRoomList().get(i).getRoomName().equals("OTHER")){
-//						return Main.currentProject.getRoomList().get(i);
-//					}
-//				}
-//			}
-//			else{
-				return new Room(element.getValue());
-//			}
+			return new Room(element.getValue());
 		}
 
 		return null;
 	}
-	
+
 	public Notification assembleNotification(Element e){
 		int eventID = -1, notificationID = -1;
 		NotificationType type = null;
@@ -397,7 +387,7 @@ public class XmlSerializer {
 
 		return new Notification(notificationID, eventID, type);
 	}
-	
+
 	private Event assembleEvent(Element eventElement) throws ParseException {
 		int id  = -1;
 		String title = "", location = "";
@@ -451,7 +441,7 @@ public class XmlSerializer {
 		}
 		return new Event(id, title, owner_username, participants, eventStartDate, eventEndDate, location, roomString);
 	}
-	
+
 	private Person assemblePerson(Element personElement) throws ParseException {
 		String name = null, email = null, username = null;
 		Date date = null;
@@ -463,14 +453,14 @@ public class XmlSerializer {
 		if(element!=null){
 			username = element.getValue();
 		}
-//		element = personElement.getFirstChildElement("email");
-//		if (element != null) {
-//			email = element.getValue();
-//		}
-//		element = personElement.getFirstChildElement("date-of-birth");
-//		if (element != null && !element.getValue().equals("")) {
-//			date = parseDate(element.getValue());
-//		}
+		//		element = personElement.getFirstChildElement("email");
+		//		if (element != null) {
+		//			email = element.getValue();
+		//		}
+		//		element = personElement.getFirstChildElement("date-of-birth");
+		//		if (element != null && !element.getValue().equals("")) {
+		//			date = parseDate(element.getValue());
+		//		}
 		return new Person(name, username);
 	}
 }

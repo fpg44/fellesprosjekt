@@ -186,10 +186,11 @@ public class Event {
 
 	public String getLocation() {
 
-		if(getRoom() == Main.currentProject.getOtherRoom()){
-			return location;				
-		}
-		return "";
+		return location;
+//		if(getRoom() == Main.currentProject.getOtherRoom()){
+//			return location;				
+//		}
+//		return "";
 
 		//		
 		//		if (getRoom().getRoomName().equals("OTHER"))

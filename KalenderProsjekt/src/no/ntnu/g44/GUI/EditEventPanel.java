@@ -90,11 +90,13 @@ public class EditEventPanel extends JPanel {
 		descriptionText = new JTextArea(originalEvent.getEventDescription());
 		descriptionText.setEditable(false);
 		descriptionTextScroller = new JScrollPane(descriptionText);
+		
 		participantsListModel = new DefaultListModel<Person>();
 		for (Person person : originalEvent.getParticipants())
 			participantsListModel.addElement(person);
 		participantsList = new JList<Person>(participantsListModel);
 		participantsListScroller = new JScrollPane(participantsList);
+		
 		originalEventParticipantsPanel = new JPanel();
 		originalEventParticipantsPanel.setBorder(BorderFactory.createTitledBorder(
 				"Participants"));
@@ -143,7 +145,7 @@ public class EditEventPanel extends JPanel {
 		originalEventPanel.add(originalEventParticipantsPanel, c);
 		
 		newEventPanel = new NewEventPanel(
-				Main.currentProject.getLoggedInPerson(), frame);
+				Main.currentProject.getLoggedInPerson(), frame, originalEvent);
 		setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3)); // add padding
 		
 		Font headingFont = new Font("Helvetica", Font.BOLD, 18);

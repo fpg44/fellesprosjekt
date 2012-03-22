@@ -88,24 +88,24 @@ public class ConnectionImpl extends AbstractConnection {
 
 		KtnDatagram syn = constructInternalPacket(Flag.SYN);
 		KtnDatagram syn_ack = null;
-		int tries = 0;
+		long startStamp = System.currentTimeMillis();
 
 		//Send syn and wait for the synack
 		do{
-			if(tries++ >= CONNECTION_TRIES){
+				
+			if(System.currentTimeMillis() - startStamp > CONNECTION_TRIES*RETRANSMIT + RETRANSMIT){
 				throw new SocketTimeoutException("Could not get a syn_ack after "+CONNECTION_TRIES+" tries.");
 			}
 
 			Timer timer = new Timer();
 			timer.scheduleAtFixedRate(new SendTimer(new ClSocket(), syn), 0, RETRANSMIT);
 
+			state = State.SYN_SENT;
 			//recieveAck will block for a while.
 			syn_ack = receiveAck();
 			timer.cancel();
 			System.out.println("Recieved syn-ack " + syn_ack);
-
-
-		}while(syn_ack == null /*|| !validAck(syn, syn_ack)*/);
+		}while(syn_ack == null || !validAck(syn, syn_ack));
 
 		//We have now recieved a valid syn-ack
 		//assert validAck(syn,syn_ack);
@@ -117,7 +117,9 @@ public class ConnectionImpl extends AbstractConnection {
 	}
 
 	private boolean validAck(KtnDatagram datagram, KtnDatagram ack) {
-		boolean value = datagram.getSeq_nr() == ack.getAck() && isValid(ack);
+		System.out.println("Acked seqnr = "+ack.getAck()+" seqnr = " + datagram.getSeq_nr());
+		boolean value = datagram.getSeq_nr() == ack.getAck();
+		System.out.println("Ack valid:  " + value);
 		return value;
 	}
 
@@ -160,11 +162,19 @@ public class ConnectionImpl extends AbstractConnection {
 		remotePort = syn.getSrc_port();
 
 		KtnDatagram ack = null;
+		KtnDatagram synack = sendAck(syn, true);
 		do{
-			sendAck(syn, true);
+			
 			ack = receiveAck();
+
+			if(ack != null && ack.getFlag() == Flag.SYN && ack.getSeq_nr() == syn.getSeq_nr()){
+				//Our syn ack might've been lost. Lets reack the syn.
+				nextSequenceNo--;
+				synack = sendAck(ack, true);
+				continue;
+			}
 			System.out.println("Recieved ack " + ack);
-		}while(false/*ack == null /*|| !isValidAndExpectedSeq(ack) || validAck(syn, ack)*/ );
+		}while(ack == null || !isValidAndExpectedSeq(ack) || !validAck(synack, ack));
 		nextExpectedSeqNr++;
 		state = State.ESTABLISHED;
 	}
@@ -226,7 +236,7 @@ public class ConnectionImpl extends AbstractConnection {
 		if(disconnectRequest != null){
 			closeOnFinRecieved();
 		}
-		int timeout = 1800000; //2 min timeout
+		int timeout = 18000; //2 min timeout
 
 		long startTime = System.currentTimeMillis();
 
@@ -269,7 +279,8 @@ public class ConnectionImpl extends AbstractConnection {
 
 	private void closeOnFinRecieved() throws EOFException, IOException{
 		int timeout = 1800000; //2 min timeout
-
+		
+		state = State.CLOSE_WAIT;
 		//send ack
 		sendAck(this.disconnectRequest, false);
 
@@ -287,15 +298,14 @@ public class ConnectionImpl extends AbstractConnection {
 			//recieveAck will block for a while.
 			ack = receiveAck();
 			timer.cancel();
+			
 			System.out.println("Might have recieved ack " + ack);
 
-
-			//Check internal queue for fin packets that needs to be acked again
-			if(!internalQueue.isEmpty()){
-				KtnDatagram maybefin = receivePacket(true);
-				if(maybefin != null && maybefin.getFlag() == Flag.FIN){
-					sendAck(maybefin, false);
-				}
+			if(ack != null && ack.getFlag() == Flag.FIN){
+				//Our syn ack might've been lost. Lets reack the syn.
+				nextSequenceNo--;
+				sendAck(ack, true);
+				continue;
 			}
 
 		}while(ack == null && System.currentTimeMillis() - startTime < timeout/*|| !validAck(syn, syn_ack)*/);
@@ -330,9 +340,9 @@ public class ConnectionImpl extends AbstractConnection {
 	}
 
 	private boolean isValidAndExpectedSeq(KtnDatagram packet){
-		return packet.getSeq_nr() == nextExpectedSeqNr && isValid(packet);
+		System.out.println("seq nr: " +packet.getSeq_nr()+" next expected nr: " + nextExpectedSeqNr);
+		return packet.getSeq_nr() == nextExpectedSeqNr ;//&& isValid(packet);
 	}
 
-	private class NotImplementedException extends RuntimeException{}
 
 }

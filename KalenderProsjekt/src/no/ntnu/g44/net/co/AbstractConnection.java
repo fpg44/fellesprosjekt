@@ -264,11 +264,12 @@ public abstract class AbstractConnection implements Connection {
      * @param synAck
      *            true if a synack should be sent, false if a regular ack, see
      *            {@link KtnDatagram.Flag}.
+     * @return the sent KtnDatagram ACK.
      * @throws ConnectException
      *             Thrown if unable to send packet.
      * @see #constructInternalPacket(Flag)
      */
-    protected synchronized void sendAck(KtnDatagram packetToAck, boolean synAck)
+    protected synchronized KtnDatagram sendAck(KtnDatagram packetToAck, boolean synAck)
             throws IOException, ConnectException {
     
         /*
@@ -310,6 +311,8 @@ public abstract class AbstractConnection implements Connection {
         if (!sent) {
             nextSequenceNo--;
             throw new ConnectException("Unable to send ACK.");
+        }else{
+        	return ackToSend;
         }
     }
 

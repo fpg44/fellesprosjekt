@@ -173,6 +173,8 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		for(int i = 0; i < Main.currentProject.getEventCount(); i++){
 			int x = -1;
 			e = Main.currentProject.getEvent(i);
+			if (e.expired)
+				continue;
 			boolean ignore = true;
 			for(int j = 0; j < e.getParticipants().size(); j++){
 				if(Main.currentProject.getLoggedInPerson() == e.getParticipants().get(j)){

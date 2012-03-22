@@ -28,6 +28,10 @@ public class Event {
 	private int eventID;
 	private boolean hasOldEvent = false;
 	private String oldEventString;
+	
+	/* this flag should be set when an Event is deleted or replaced by an
+	   edited Event to prevent it from being shown in the calendar */
+	public boolean expired = false;
 
 
 	public String getRoomString() {

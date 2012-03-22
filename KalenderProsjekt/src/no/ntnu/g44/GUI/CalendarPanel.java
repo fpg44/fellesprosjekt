@@ -268,7 +268,19 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		for(int i = len-1;i>= 0;i--){
 			EventView ev = new EventView(events.get(i));
 			ev.set(startHour, pixlsPerHour, dayWidth, leftOffset,topArea);
-			if(ev.isAtPosition(e.getX(), e.getY())){
+			int x = -1;
+			for(int j = 0; j < events.get(i).getParticipants().size(); j++){
+				if(Main.currentProject.getLoggedInPerson() == events.get(i).getParticipants().get(j)){
+					break;
+				}
+				for(int k = 0; k < Main.currentMainFrame.calendarModel.getSize(); k++){
+					if(Main.currentMainFrame.calendarModel.get(k) == events.get(i).getParticipants().get(j)){
+						x = k;
+						break;
+					}
+				}
+			}
+			if(ev.isAtPosition(e.getX()- ((x+1)*5), e.getY())){
 				selectedEvent = events.get(i);
 				Main.currentProject.getEventList().remove(selectedEvent);
 				Main.currentProject.getEventList().add(selectedEvent);

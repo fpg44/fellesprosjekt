@@ -25,7 +25,7 @@ public class EventInfoPanel extends JPanel{
 	JScrollPane participantsListScroller = new JScrollPane(participantsList);
 	
 
-	public EventInfoPanel(Event event, Person eventOwner, JFrame frame){
+	public EventInfoPanel(Event event, JFrame frame){
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 //		JFrame frame = new JFrame(event.getEventDescription());
 		this.frame = frame;
@@ -39,7 +39,7 @@ public class EventInfoPanel extends JPanel{
 		JLabel locationLabel = new JLabel("Location:");
 		JLabel messageLabel = new JLabel("Info:");
 		
-		JTextField ownerField = new JTextField(eventOwner.getName());
+		JTextField ownerField = new JTextField(event.getEventOwnerString());
 		JTextField startField = new JTextField();
 		JTextField endField = new JTextField();
 		JTextField locationField = new JTextField(event.getLocation());

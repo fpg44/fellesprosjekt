@@ -169,6 +169,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		g2d.setStroke(new BasicStroke(2));
 		Event e;
 		for(int i = 0; i < Main.currentProject.getEventCount(); i++){
+			int x = -1;
 			e = Main.currentProject.getEvent(i);
 			boolean ignore = true;
 			for(int j = 0; j < e.getParticipants().size(); j++){
@@ -178,6 +179,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 				}
 				for(int k = 0; k < Main.currentMainFrame.calendarModel.getSize(); k++){
 					if(Main.currentMainFrame.calendarModel.get(k) == e.getParticipants().get(j)){
+						x = k;
 						ignore = false;
 						break;
 					}
@@ -191,7 +193,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 			}
 			EventView ev = new EventView(e);
 			ev.set(startHour,pixlsPerHour,dayWidth, leftOffset,topArea);
-			ev.paint(g2d, selectedEvent == e);
+			ev.paint(g2d, selectedEvent == e, x);
 		}
 		
 	}

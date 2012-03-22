@@ -3,6 +3,7 @@ package no.ntnu.g44.gui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Calendar;
 
@@ -31,7 +32,7 @@ public class EventView {
 		this.offsetY = offsetY;
 	}
 
-	public void paint(Graphics2D g2d, boolean selected){
+	public void paint(Graphics2D g2d, boolean selected, int x){
 
 
 		Calendar startTime = Calendar.getInstance();
@@ -50,10 +51,26 @@ public class EventView {
 		int startX = getStartX();
 		int endX = getEndX();
 
-		g2d.drawRoundRect(startX,startY,endX - startX , endY - startY,roundCorners,roundCorners);
-		g2d.setPaint(selected ? Color.red : Color.white);
-		g2d.fill(new RoundRectangle2D.Double(
-				startX,startY,endX - startX , endY - startY,roundCorners,roundCorners));
+		Paint[] colors = new Paint[4];
+		colors[0] = Color.blue;
+		colors[1] = Color.green;
+		colors[2] = Color.magenta;
+		colors[3] = Color.orange;
+		if(x == -1){
+			g2d.drawRoundRect(startX,startY,endX - startX , endY - startY,roundCorners,roundCorners);
+			g2d.setPaint(selected ? Color.red : Color.white);
+			g2d.fill(new RoundRectangle2D.Double(
+					startX,startY,endX - startX , endY - startY,roundCorners,roundCorners));
+		}
+		else{
+			startX = startX + ((x+1)*5);
+			endX = endX + ((x+1)*5);
+			g2d.drawRoundRect(startX , startY, (endX - startX), endY - startY, roundCorners, roundCorners);
+			g2d.setPaint(colors[x % 4]);
+			g2d.fill(new RoundRectangle2D.Double(
+					startX,startY,(endX - startX), endY - startY,roundCorners,roundCorners));
+		}
+		
 
 		//Draw the text
 		g2d.setPaint(Color.black);

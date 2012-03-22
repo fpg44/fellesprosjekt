@@ -556,8 +556,7 @@ public class MainFrame extends JPanel{
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if(e.getClickCount() == 2 && e.getSource() == calendar){
-				new EventInfoPanel(calendar.getSelectedEvent(),
-						Main.currentProject.getLoggedInPerson(), new JFrame());
+				new EventInfoPanel(calendar.getSelectedEvent(), new JFrame());
 //				EventInfoPanel.makeInfoPanel(calendar.getSelectedEvent());
 			}
 			if(e.getClickCount() == 2 && e.getSource() == personnelList){

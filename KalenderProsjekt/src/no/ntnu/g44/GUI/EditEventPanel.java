@@ -145,7 +145,14 @@ public class EditEventPanel extends JPanel {
 		originalEventPanel.add(originalEventParticipantsPanel, c);
 		
 		newEventPanel = new NewEventPanel(
-				Main.currentProject.getLoggedInPerson(), frame, originalEvent);
+				Main.currentProject.getLoggedInPerson(), frame);
+		newEventPanel.setEventStartTime(originalEvent.getEventStartTime());
+		newEventPanel.setEventEndTime(originalEvent.getEventEndTime());
+		newEventPanel.setEventRoom(originalEvent.getRoom());
+		newEventPanel.setEventCustomLocation(originalEvent.getLocation());
+		newEventPanel.setEventDescription(originalEvent.getEventDescription());
+		newEventPanel.setEventParticipantsList(originalEvent.getParticipants());
+		
 		setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3)); // add padding
 		
 		Font headingFont = new Font("Helvetica", Font.BOLD, 18);

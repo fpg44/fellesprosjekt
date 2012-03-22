@@ -98,10 +98,8 @@ public class NewEventPanel extends JPanel {
 	 * 
 	 * @param owner - the Person creating the Event <br><br>
 	 * @param frame - the JFrame to contain this panel
-	 * @param originalEvent - null if you are creating a brand new event. This variable
-	 * is used to find which persons is part of this event, from EditEventPanel
 	 */
-	public NewEventPanel(Person owner, JFrame frame, Event originalEvent) {
+	public NewEventPanel(Person owner, JFrame frame) {
 		this.frame = frame;
 
 		eventInformationPanel = new JPanel();
@@ -137,7 +135,7 @@ public class NewEventPanel extends JPanel {
 		location = new JComboBox<Room>();
 		customLocationLabel = new JLabel("Custom location");
 		customLocation = new JTextField(20);		// 20 columns
-		/* customLocation should only be enabled when 'Other' is selected
+		/* customLocation should only be enabled when 'OTHER' is selected
 		   in the location JComboBox */
 		customLocation.setEnabled(false);
 		eventDescriptionLabel = new JLabel("Description");
@@ -161,11 +159,7 @@ public class NewEventPanel extends JPanel {
 		participantsModel = new DefaultListModel<Person>();
 		invitedPersonsLabel = new JLabel("Invited persons");
 		
-		//Populate the invited persons list. Empty if this is a new event.
 		invitedList = new JList<Person>(participantsModel);
-		if (originalEvent != null) {
-			addSpesificParticipant(originalEvent);
-		}
 		invitedList.addMouseListener(searchListener);
 		invitedList.addKeyListener(searchListener);
 		invitedListScroller = new JScrollPane(invitedList);
@@ -317,17 +311,6 @@ public class NewEventPanel extends JPanel {
 		}
 	}
 	
-	private void addSpesificParticipant (Event originalEvent) {
-		for (Person person : originalEvent.getParticipants()) {
-			if (!participantsModel.contains(person)) {
-				participantsModel.addElement(person);
-			}
-//			if (participantsModel.contains(person)) {
-//				personsModel.removeElement(person);
-//			}
-		}
-	}
-	
 	private Event createEvent() {
 		String eventTitle = new String(eventDescription.getText());
 		ArrayList<String> participants = new ArrayList<String>();
@@ -388,16 +371,25 @@ public class NewEventPanel extends JPanel {
 		this.startTimeModel.setValue(endTime);
 	}
 	
-	protected void setLocation(Room room) {
+	protected void setEventRoom(Room room) {
 		this.location.setSelectedItem(room);
 	}
 	
-	protected void setCustomLocation(String locationDescription) {
+	protected void setEventCustomLocation(String locationDescription) {
 		this.customLocation.setText(locationDescription);
 	}
 	
 	protected void setEventDescription(String description) {
 		this.eventDescription.setText(description);
+	}
+	
+	protected void setEventParticipantsList(ArrayList<Person> persons) {
+		for (Person person : persons) {
+			if (!participantsModel.contains(person))
+				participantsModel.addElement(person);
+			if (personsModel.contains(person))
+				personsModel.removeElement(person);
+		}
 	}
 	
 	class RoomListener implements ActionListener, ChangeListener {
@@ -406,7 +398,7 @@ public class NewEventPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == location) {
 				Room room = (Room) location.getSelectedItem();
-				if (room.getRoomName().equals("OTHER")) {
+				if (room != null && room.getRoomName().equals("OTHER")) {
 					customLocation.setEnabled(true);
 				} else {
 					customLocation.setText("");

@@ -118,7 +118,7 @@ public class DatabaseHandler {
 				}
 
 				/////////////////////			
-				/*	RESULTSET INDEX:
+				/*	RESULTSET INDEX TO rsE:
 				 * 1 : event_id
 				 * 2 : owner_username
 				 * 3 : time_start

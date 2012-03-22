@@ -98,8 +98,10 @@ public class NewEventPanel extends JPanel {
 	 * 
 	 * @param owner - the Person creating the Event <br><br>
 	 * @param frame - the JFrame to contain this panel
+	 * @param originalEvent - null if you are creating a brand new event. This variable
+	 * is used to find which persons is part of this event, from EditEventPanel
 	 */
-	public NewEventPanel(Person owner, JFrame frame) {
+	public NewEventPanel(Person owner, JFrame frame, Event originalEvent) {
 		this.frame = frame;
 
 		eventInformationPanel = new JPanel();
@@ -157,18 +159,27 @@ public class NewEventPanel extends JPanel {
 		searchListener = new SearchListener();
 		personsModel = new DefaultListModel<Person>();
 		participantsModel = new DefaultListModel<Person>();
+		invitedPersonsLabel = new JLabel("Invited persons");
+		
+		//Populate the invited persons list. Empty if this is a new event.
+		invitedList = new JList<Person>(participantsModel);
+		if (originalEvent != null) {
+			addSpesificParticipant(originalEvent);
+		}
+		invitedList.addMouseListener(searchListener);
+		invitedList.addKeyListener(searchListener);
+		invitedListScroller = new JScrollPane(invitedList);
+		
 		searchField = new JTextField("Search", 20);	// 20 columns
 		searchField.addMouseListener(searchListener);
 		searchField.addKeyListener(searchListener);
+		
+		
 		searchList = new JList<Person>(personsModel);
 		searchList.addMouseListener(searchListener);
 		searchList.addKeyListener(searchListener);
 		searchListScroller = new JScrollPane(searchList);
-		invitedPersonsLabel = new JLabel("Invited persons");
-		invitedList = new JList<Person>(participantsModel);
-		invitedList.addMouseListener(searchListener);
-		invitedList.addKeyListener(searchListener);
-		invitedListScroller = new JScrollPane(invitedList);
+		
 		addPersonToParticipantsIcon = new ImageIcon(getClass().getResource(
 				"images/rightArrow.png"));
 		addPersonToParticipantsListLabel = new JLabel(
@@ -303,6 +314,17 @@ public class NewEventPanel extends JPanel {
 				participantsModel.addElement(person);
 			if (personsModel.contains(person))
 				personsModel.removeElement(person);
+		}
+	}
+	
+	private void addSpesificParticipant (Event originalEvent) {
+		for (Person person : originalEvent.getParticipants()) {
+			if (!participantsModel.contains(person)) {
+				participantsModel.addElement(person);
+			}
+//			if (participantsModel.contains(person)) {
+//				personsModel.removeElement(person);
+//			}
 		}
 	}
 	

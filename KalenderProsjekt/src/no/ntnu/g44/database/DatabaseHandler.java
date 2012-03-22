@@ -76,7 +76,7 @@ public class DatabaseHandler {
 		try{
 
 			//get all the events with all their attributes
-			ResultSet rsE = stmt.executeQuery("SELECT * FROM Event");
+			ResultSet rsE = stmt.executeQuery("SELECT * FROM event");
 
 			//Sets the pointer to the first line in the ResultSet, return if ResultSet is empty
 			if(rsE.first() == false){

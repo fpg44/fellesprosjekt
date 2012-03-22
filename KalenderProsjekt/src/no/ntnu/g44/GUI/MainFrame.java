@@ -391,7 +391,7 @@ public class MainFrame extends JPanel{
 					if (notifBox.getSelectedIndex() == 0) {
 						System.out.println("Nothing happens");
 					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CANCELLED){
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CANCELLED){
 						//EventCancelled eventCancelled = new EventCancelled(event)
 						System.out.println("This event has been cancelled");
 						
@@ -408,13 +408,13 @@ public class MainFrame extends JPanel{
 						notificationController.removeNotification(selectedNotification);
 						*/
 					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.INVITATION) {
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION) {
 						System.out.println("You have a new event invitation");
 					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.CHANGED) {
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CHANGED) {
 						System.out.println("This event have been changed");
 					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.DECLINER){
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.PARTICIPANT_DECLINED){
 						System.out.println("A participant has declined invitation");
 					}
 					notifBox.setSelectedIndex(0);

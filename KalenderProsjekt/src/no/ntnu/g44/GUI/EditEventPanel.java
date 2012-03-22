@@ -145,7 +145,7 @@ public class EditEventPanel extends JPanel {
 		originalEventPanel.add(originalEventParticipantsPanel, c);
 		
 		newEventPanel = new NewEventPanel(
-				Main.currentProject.getLoggedInPerson(), frame);
+				Main.currentProject.getLoggedInPerson(), frame, originalEvent);
 		newEventPanel.setEventStartTime(originalEvent.getEventStartTime());
 		newEventPanel.setEventEndTime(originalEvent.getEventEndTime());
 		newEventPanel.setEventRoom(originalEvent.getRoom());

@@ -17,7 +17,7 @@ public class Main {
 	public static MainFrame currentMainFrame;
 	public static Client client;
 
-	static final boolean usenet = false;
+	static final boolean usenet = true;
 	/**
 	 * @param args
 	 */
@@ -26,7 +26,7 @@ public class Main {
 
 		if(usenet){
 			try {
-				client = new Client("78.91.11.32", 5545);
+				client = new Client("78.91.11.168", 5545);
 				currentProject = client.getProject();
 			} catch (IOException | ParseException | ParsingException e) {
 				// TODO Auto-generated catch block
@@ -36,16 +36,18 @@ public class Main {
 
 		//TODO: Create new login here
 		//MainFrame should be created in Project constructor
-		try {
-			currentProject = new FileStorage().load(new File("project.xml"));
-			if(!usenet){
+		if(!usenet){
+			try {
 				currentProject = new FileStorage().load(new File("project.xml"));
-			}
-
-		} catch (IllegalArgumentException | IOException | ParseException e) {
-			e.printStackTrace();
-			System.out.println("No project file, creating blank project");
-			currentProject = new Project();
+				if(!usenet){
+					currentProject = new FileStorage().load(new File("project.xml"));
+				}
+				
+			} catch (IllegalArgumentException | IOException | ParseException e) {
+				e.printStackTrace();
+				System.out.println("No project file, creating blank project");
+				currentProject = new Project();
+			}			
 		}
 		Login.login();
 

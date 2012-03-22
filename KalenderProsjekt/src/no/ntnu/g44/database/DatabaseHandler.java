@@ -90,11 +90,12 @@ public class DatabaseHandler {
 				EVENT_ID = rsE.getInt(1);
 
 				//get all the persons associated each event
-				ResultSet rsP = stmt.executeQuery("SELECT name, username FROM Account WHERE event.event_id='" + EVENT_ID + "'");
+				ResultSet rsP = stmt.executeQuery("SELECT name, username FROM account, event  WHERE event.event_id='" + EVENT_ID + "'");
 
 				//Sets the pointer to the first line in the ResultSet, return if ResultSet is empty
 				if(rsP.first() == false){
-					return null;
+//					return null;
+					break;
 				}
 
 				//ITERATES THE PERSON RESULTSET

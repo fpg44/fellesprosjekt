@@ -23,20 +23,21 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
-
 		if(usenet){
 			try {
+				
 				client = new Client("78.91.11.168", 5545);
 				currentProject = client.getProject();
+				
 			} catch (IOException | ParseException | ParsingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				
+				System.exit(0);
 			}
 		}
 
 		//TODO: Create new login here
 		//MainFrame should be created in Project constructor
-		if(!usenet){
+		if(false){
 			try {
 				currentProject = new FileStorage().load(new File("project.xml"));
 				if(!usenet){

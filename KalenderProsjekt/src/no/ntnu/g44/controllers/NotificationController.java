@@ -13,13 +13,13 @@ public class NotificationController {
 	ArrayList<Notification> unseenNotifications;
 	
 	public NotificationController() {
-		unseenNotifications = new ArrayList();
+		unseenNotifications = new ArrayList<Notification>();
 		
 		//Notifications for testing purposes
-		addNotification(new Notification(123, 123, NotificationType.CANCELLED));
-		addNotification(new Notification(123, 123, NotificationType.INVITATION));
-		addNotification(new Notification(123, 123, NotificationType.DECLINER));
-		addNotification(new Notification(123, 123, NotificationType.CHANGED));
+		addNotification(new Notification(123, 123, NotificationType.EVENT_CANCELLED));
+		addNotification(new Notification(123, 123, NotificationType.EVENT_INVITATION));
+		addNotification(new Notification(123, 123, NotificationType.PARTICIPANT_DECLINED));
+		addNotification(new Notification(123, 123, NotificationType.EVENT_CHANGED));
 	}
 	
 	/**

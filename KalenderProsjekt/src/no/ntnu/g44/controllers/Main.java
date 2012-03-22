@@ -17,7 +17,7 @@ public class Main {
 	public static MainFrame currentMainFrame;
 	public static Client client;
 
-	public static final boolean usenet = false;
+	public static final boolean usenet = true;
 	/**
 	 * @param args
 	 */

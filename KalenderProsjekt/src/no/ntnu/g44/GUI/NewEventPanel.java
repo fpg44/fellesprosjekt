@@ -1,5 +1,7 @@
 package no.ntnu.g44.gui;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -30,12 +32,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultCaret;
 
 import no.ntnu.g44.controllers.Main;
+import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Room;
@@ -193,6 +197,7 @@ public class NewEventPanel extends JPanel {
 		invitedPersonsLabel = new JLabel("Invited persons");
 		
 		invitedList = new JList<Person>(participantsModel);
+		invitedList.setCellRenderer(new ParticipantsRenderer());
 		invitedList.addMouseListener(searchListener);
 		invitedList.addKeyListener(searchListener);
 		invitedListScroller = new JScrollPane(invitedList);
@@ -564,5 +569,23 @@ public class NewEventPanel extends JPanel {
 
 		@Override
 		public void mouseExited(MouseEvent e) { }
+	}
+	
+	protected class ParticipantsRenderer implements ListCellRenderer<Person> {
+
+		@Override
+		public Component getListCellRendererComponent(
+				JList<? extends Person> list, Person value, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			if (oldEvent == null)
+				return null;
+			Color color = AttendanceHelper.getColor(oldEvent, value);
+			JLabel personLabel = new JLabel(value.toString());
+			personLabel.setBackground(color);
+			personLabel.setOpaque(true);
+			
+			return personLabel;
+		}
+		
 	}
 }

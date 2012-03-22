@@ -1,5 +1,7 @@
 package no.ntnu.g44.gui;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -16,8 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 
 import no.ntnu.g44.controllers.Main;
+import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 
@@ -96,6 +100,7 @@ public class EditEventPanel extends JPanel {
 			if(person != eventOwner) participantsListModel.addElement(person);
 		}
 		participantsList = new JList<Person>(participantsListModel);
+		participantsList.setCellRenderer(new ParticipantsRenderer());
 		participantsListScroller = new JScrollPane(participantsList);
 		
 		originalEventParticipantsPanel = new JPanel();
@@ -171,5 +176,21 @@ public class EditEventPanel extends JPanel {
 		frame.getContentPane().add(this);
 		frame.pack();
 		frame.setVisible(true);
+	}
+	
+	protected class ParticipantsRenderer implements ListCellRenderer<Person> {
+
+		@Override
+		public Component getListCellRendererComponent(
+				JList<? extends Person> list, Person value, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			Color color = AttendanceHelper.getColor(originalEvent, value);
+			JLabel personLabel = new JLabel(value.toString());
+			personLabel.setBackground(color);
+			personLabel.setOpaque(true);
+			
+			return personLabel;
+		}
+		
 	}
 }

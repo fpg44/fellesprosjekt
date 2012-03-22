@@ -308,7 +308,7 @@ public class MainFrame extends JPanel{
 	public void deleteEvent(){
 		if(calendar.getSelectedEvent() != null){
 			if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
-				Main.currentProject.removeEvent(calendar.getSelectedEvent());
+				calendar.getSelectedEvent().expired = true;
 			}
 			else{
 				JOptionPane.showMessageDialog(null, "Let me know when you are certain.");

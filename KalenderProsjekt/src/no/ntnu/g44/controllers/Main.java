@@ -37,7 +37,7 @@ public class Main {
 
 		//TODO: Create new login here
 		//MainFrame should be created in Project constructor
-		if(false){
+		if(!usenet){
 			try {
 				currentProject = new FileStorage().load(new File("project.xml"));
 				if(!usenet){

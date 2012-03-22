@@ -1,10 +1,10 @@
 package no.ntnu.g44.models;
 
 public enum NotificationType {
-	INVITATION("New event invitation"),
-	CHANGED("Event changed"),
-	CANCELLED("Event cancelled"),
-	DECLINER("Participant declined");
+	EVENT_INVITATION("New event invitation"),
+	EVENT_CHANGED("Event changed"),
+	EVENT_CANCELLED("Event cancelled"),
+	PARTICIPANT_DECLINED("Participant declined");
 	
 	private String msg;
 	

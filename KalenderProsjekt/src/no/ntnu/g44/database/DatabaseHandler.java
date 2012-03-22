@@ -92,18 +92,14 @@ public class DatabaseHandler {
 				//get all the persons associated each event
 				ResultSet rsP = stmt.executeQuery("SELECT name, username FROM account, event  WHERE event.event_id='" + EVENT_ID + "'");
 
-				//Sets the pointer to the first line in the ResultSet, return if ResultSet is empty
-				if(rsP.first() == false){
-//					return null;
-					break;
-				}
-
 				//ITERATES THE PERSON RESULTSET
 				do{
-
+					if(rsP.first()){
+						break;
+					}
 					//Create persons and add them to array
-					Person person = new Person(rsP.getString(1), rsP.getString(2));
-					persons.add(person.getUsername());
+						Person person = new Person(rsP.getString(1), rsP.getString(2));
+						persons.add(person.getUsername());						
 
 				}while(rsP.next());
 

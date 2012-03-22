@@ -1,9 +1,11 @@
 package no.ntnu.g44.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
+import java.awt.Paint;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +20,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -88,7 +91,7 @@ public class MainFrame extends JPanel{
 	//Used by actionListener to check if the list of notifications is empty
 	NotificationController notificationController = new NotificationController();
 	ArrayList unseenNotifications = notificationController.getUnseenNotifications();
-
+	
 	public MainFrame(){
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -168,6 +171,7 @@ public class MainFrame extends JPanel{
 		personnelList.addKeyListener(listener);
 		personnelScroll.setVisible(true);
 		calendarScroll.setVisible(true);
+		calendarPersons.setCellRenderer(new colourListCellRenderer());
 		backArrow.setVisible(true);
 		backArrow.addActionListener(listener);
 		nextArrow.setVisible(true);
@@ -200,6 +204,7 @@ public class MainFrame extends JPanel{
 	}
 
 	public void resizing(){
+		
 		if(insets == null){
 			return;
 		}
@@ -243,7 +248,7 @@ public class MainFrame extends JPanel{
 		weeknumber.setText("Week number " + currentWeekNumber);
 		weeknumber.setSize(newEvent.getWidth(), backArrow.getHeight());
 		weeknumber.setLocation(calendar.getX() + calendar.getWidth() - newEvent.getWidth(), 16);
-
+		
 		calendarScroll.setSize(newEvent.getWidth(), (int)((getHeight() - 40 - 32 -(newEvent.getHeight() * 3.5)))/2);
 		calendarScroll.setLocation(newEvent.getX(), deleteEvent.getY() + deleteEvent.getHeight() + 24);
 
@@ -612,5 +617,18 @@ public class MainFrame extends JPanel{
 				resizing();
 			}
 		}
+	}
+	
+	public class colourListCellRenderer extends DefaultListCellRenderer {
+	     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	         Paint[] colours = new Paint[4];
+	 		 colours[0] = Color.blue;
+	 		 colours[1] = Color.green;
+	 		 colours[2] = Color.magenta;
+	 		 colours[3] = Color.orange;
+	         c.setBackground((Color) colours[index%4]);
+	         return c;
+	     }
 	}
 }

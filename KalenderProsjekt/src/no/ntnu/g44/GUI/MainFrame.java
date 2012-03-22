@@ -40,11 +40,9 @@ import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.controllers.NotificationController;
-import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Person;
-import no.ntnu.g44.models.Room;
 
 public class MainFrame extends JPanel{
 	ListeningClass listener = new ListeningClass();

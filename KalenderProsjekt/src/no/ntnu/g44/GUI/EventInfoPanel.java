@@ -1,11 +1,8 @@
 package no.ntnu.g44.gui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Paint;
 import java.awt.Toolkit;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.DefaultListCellRenderer;
@@ -18,10 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.AttendanceHelper;
-import no.ntnu.g44.models.AttendanceStatus;
-import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 
@@ -29,7 +23,7 @@ public class EventInfoPanel extends JPanel{
 	
 	JFrame frame;
 	DefaultListModel<Person> participantsListModel = new DefaultListModel<Person>();
-	JList participantsList = new JList(participantsListModel);
+	JList<Person> participantsList = new JList<Person>(participantsListModel);
 	JScrollPane participantsListScroller = new JScrollPane(participantsList);
 	Event event;
 	
@@ -42,7 +36,6 @@ public class EventInfoPanel extends JPanel{
 		
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.getContentPane().add(this);
-		
 		participantsList.setCellRenderer(new colourListCellRenderer());
 		JLabel ownerLabel = new JLabel("Event owner:");
 		JLabel startLabel = new JLabel("Start time:");
@@ -62,9 +55,6 @@ public class EventInfoPanel extends JPanel{
 		messageField.setEditable(false);
 		
 		//Adding a JList with all the participants of this event
-		participantsListModel = new DefaultListModel<Person>();
-		participantsList = new JList<Person>(participantsListModel);
-		participantsListScroller = new JScrollPane(participantsList);
 		for (Person person : event.getParticipants()) {
 			participantsListModel.addElement(person);
 		}
@@ -128,6 +118,7 @@ public class EventInfoPanel extends JPanel{
 	public class colourListCellRenderer extends DefaultListCellRenderer {
 	     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 	         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	         System.out.println(AttendanceHelper.getColor(event, (Person) value) + "k");
 	         c.setBackground(AttendanceHelper.getColor(event, (Person) value));
 //	         AttendanceStatusType.getColor(Main.currentProject.getAttendanceStatusList().get(2).getStatus());
 	         return c;

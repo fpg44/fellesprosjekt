@@ -38,7 +38,6 @@ public class EventInfoPanel extends JPanel{
 		JLabel endLabel = new JLabel("End time:");
 		JLabel locationLabel = new JLabel("Location:");
 		JLabel messageLabel = new JLabel("Info:");
-		
 		JTextField ownerField = new JTextField(event.getEventOwnerString());
 		JTextField startField = new JTextField();
 		JTextField endField = new JTextField();

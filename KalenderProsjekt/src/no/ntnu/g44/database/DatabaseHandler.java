@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
@@ -277,7 +279,7 @@ public class DatabaseHandler {
 			}
 
 			do{
-
+				AttendanceHelper.updateStatus(rs.getInt(2), rs.getString(1), AttendanceStatusType.getType(rs.getString(3)));
 				status.add( new AttendanceStatus(rs.getString(1), rs.getInt(2), AttendanceStatusType.getType(rs.getString(3))) );
 
 			}while(rs.next());

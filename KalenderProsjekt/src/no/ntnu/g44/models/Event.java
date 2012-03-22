@@ -16,7 +16,7 @@ import no.ntnu.g44.controllers.Main;
  */
 public class Event {
 	
-	private String eventDescription, location;
+	private String eventDescription, location = "";
 	private ArrayList<Person> participants = new ArrayList<Person>();
 	private ArrayList<String> participantsStrings;
 	private Date eventStartTime;
@@ -185,12 +185,19 @@ public class Event {
 	}
 
 	public String getLocation() {
-		if (getRoom().getRoomName().equals("OTHER"))
-			return location;
-		else if (getRoom() == null)
-			return "";
-		else
-			return getRoom().getRoomName();
+		
+		if(getRoom() == Main.currentProject.getOtherRoom()){
+			return location;				
+		}
+		return "";
+		
+//		
+//		if (getRoom().getRoomName().equals("OTHER"))
+//			return location;
+//		else if (getRoom() == null)
+//			return "";
+//		else
+//			return getRoom().getRoomName();
 	}
 
 	public void setLocation(String location) {

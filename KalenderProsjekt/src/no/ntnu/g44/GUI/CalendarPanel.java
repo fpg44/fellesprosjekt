@@ -46,6 +46,7 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 	/**Offset to make room for displaying times	 */
 	private int leftOffset = 50;
 	private int dayWidth;
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -168,9 +169,12 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 	private void paintEvents(Graphics2D g2d){
 		g2d.setStroke(new BasicStroke(2));
 		Event e;
+		System.out.println("LOOOOOOOOOOOOOOOOOOOL" + Main.currentProject.getEventCount());
 		for(int i = 0; i < Main.currentProject.getEventCount(); i++){
 			int x = -1;
-			e = Main.currentProject.getEvent(i);
+			e = Main.currentProject.getEventList().get(i);
+			if (e.expired)
+				continue;
 			boolean ignore = true;
 			for(int j = 0; j < e.getParticipants().size(); j++){
 				if(Main.currentProject.getLoggedInPerson() == e.getParticipants().get(j)){

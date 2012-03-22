@@ -331,6 +331,7 @@ public class MainFrame extends JPanel{
 		String person;
 		personnelModel.removeAllElements();
 		for(int i = 0; i < personnel.size(); i++){
+			if(search.equals("search..."))personnelModel.addElement(personnel.get(i));
 			if(personnel.get(i) == Main.currentProject.getLoggedInPerson()){
 				continue;
 			}

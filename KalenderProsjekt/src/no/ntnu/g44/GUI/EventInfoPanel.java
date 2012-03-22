@@ -1,10 +1,14 @@
 package no.ntnu.g44.gui;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Paint;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +37,7 @@ public class EventInfoPanel extends JPanel{
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.getContentPane().add(this);
 		
+		//participantsList.setCellRenderer(new colouredCellRenderer());
 		JLabel ownerLabel = new JLabel("Event owner:");
 		JLabel startLabel = new JLabel("Start time:");
 		JLabel endLabel = new JLabel("End time:");
@@ -114,4 +119,16 @@ public class EventInfoPanel extends JPanel{
 		EventInfoPanel infoPanel = new EventInfoPanel(event);
 	}
 	*/
+	public class colourListCellRenderer extends DefaultListCellRenderer {
+	     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	         Paint[] colours = new Paint[4];
+	 		 colours[0] = Color.blue;
+	 		 colours[1] = Color.green;
+	 		 colours[2] = Color.magenta;
+	 		 colours[3] = Color.orange;
+	         c.setBackground((Color) colours[index%4]);
+	         return c;
+	     }
+	}
 }

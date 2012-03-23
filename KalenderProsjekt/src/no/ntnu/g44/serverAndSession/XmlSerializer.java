@@ -335,7 +335,7 @@ public class XmlSerializer {
 	public AttendanceStatus assembleAttendanceStatus(Element e){
 		String username = "";
 		int id = -1;
-		AttendanceStatusType type = AttendanceStatusType.UNANSWERED;
+		AttendanceStatusType type = AttendanceStatusType.ATTENDING;
 
 		Element element = e.getFirstChildElement("username");
 		if(element != null){

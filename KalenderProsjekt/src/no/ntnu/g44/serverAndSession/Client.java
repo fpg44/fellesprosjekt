@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 
 import org.xml.sax.InputSource;
 
+import no.ntnu.g44.controllers.Main;
+import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Project;
 import no.ntnu.g44.net.co.Connection;
 import no.ntnu.g44.net.co.ConnectionImpl;
@@ -28,12 +30,24 @@ import nu.xom.ValidityException;
 public class Client {
 	Connection connection;
 	XmlSerializer xmlSerializer = new XmlSerializer();
-	
+	volatile boolean recieving = true;
+	Thread reciever = new Thread(){
+
+		public void run() {
+			try {
+				recieveLoop();
+			} catch (ParseException | ParsingException e) {
+				e.printStackTrace();
+			}
+
+		};
+	};
+
 	public static void main(String[] args) {
 		String server = JOptionPane.showInputDialog("server ip", "78.91.11.32");
 		Client c = new Client(server, 5545);
 		try {
-//			c.updateEvent();
+			//			c.updateEvent();
 		} catch ( Exception e){
 			e.printStackTrace();
 		}
@@ -42,77 +56,117 @@ public class Client {
 		connection = new ConnectionImpl(6564);
 		try {
 			connection.connect(InetAddress.getByName(serverIP), serverPort);
+			reciever.start();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void newEvent(Element e) throws ConnectException, IOException{
-		
+
 		connection.send("insert event" + e.toXML());
 	}
-	
+
 	public void newNotification(Element e) throws ConnectException, IOException{
-		
+
 		connection.send("insert notification" + e.toXML());
 	}
-	
+
 	public void newAttendanceStatus(Element e) throws ConnectException, IOException{
-		
+
 		connection.send("insert attends_at" + e.toXML());
 	}
-	
+
 	public void updateEvent(Element e) throws ConnectException, IOException{
-		
+
 		connection.send("update event" + e.toXML());
 	}
-	
+
 	public void updateNotification(Element e) throws ConnectException, IOException{
-		
+
 		connection.send("update notification" + e.toXML());
 	}
-	
+
 	public void updateAttendanceStatus(Element e) throws ConnectException, IOException{
-		
+
 		connection.send("update attends_at" + e.toXML());
 	}
-	
+
 	public void deleteEvent(Element e) throws ConnectException, IOException{
-		
+
 		connection.send("delete event" + e.toXML());
 	}
-	
+
 	public void deleteNotification(Element e) throws ConnectException, IOException{
-		
+
 		connection.send("delete notification" + e.toXML());
 	}
-	
+
 	public void deleteAttendanceStatus(Element e) throws ConnectException, IOException{
-		
+
 		connection.send("delete attends_at" + e.toXML());
 	}
-	
+
 	public Project getProject() throws ConnectException, IOException, ValidityException, ParseException, ParsingException{
-			
+
 		connection.send("get all");
-		
+
 		String xml = connection.receive();
-		
+
 		//Pen kode:
 		return new XmlSerializer()
-				.toProject(
-						new Builder()
-						.build(new ByteArrayInputStream(xml.getBytes("utf-8"))));
+		.toProject(
+				new Builder()
+				.build(new ByteArrayInputStream(xml.getBytes("utf-8"))));
 	}
-	
-	public void recieveLoop(){
-		while(true){
+
+	public void recieveLoop() throws ParseException, ParsingException{
+		while(recieving){
 			try {
-				System.out.println(connection.receive());
+				parseInput(connection.receive());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	private void parseInput(String message) throws IOException, ParseException, ParsingException {
+
+		if(message.startsWith("insert event")){
+			message = message.replaceFirst("insert event", "");
+			Event e = xmlSerializer.toEvent(message);
+			Main.currentProject.addEvent(e, false);
+		}
+		else if(message.equals("insert attends_at")){
+			//			message = message.replaceFirst("insert attends_at", "");
+			//			Event e = xmlSerializer.toEvent(message);
+			//			Main.currentProject.
+		}
+		//working:
+		else if(message.startsWith("update event")){
+			//			message = message.replaceFirst("update event", "");
+			//			Event e = xmlSerializer.toEvent(message);
+		}
+
+
+
+		else if(message.equals("update attends_at")){
+			//			message = message.replaceFirst("update attends_at", "");
+			//			Event e = xmlSerializer.toEvent(message);
+		}
+
+		else if(message.equals("delete event")){
+			//			message = message.replaceFirst("delete event", "");
+			//			Event e = xmlSerializer.toEvent(message);
+		}
+
+
+		else if(message.equals("delete attends_at")){
+			//			message = message.replaceFirst("delete attends_at", "");
+			//			Event e = xmlSerializer.toEvent(message);
+		}
+
+
 	}
 	private void inputLoop() {
 		while(true){

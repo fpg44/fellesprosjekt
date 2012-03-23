@@ -119,7 +119,8 @@ public class Server{
 		public void stopListening(){
 			listening = false;
 		}
-		public void push(String msg){
+		public void push(String msg, Connection exception){
+			if(conToClient == exception) return;
 			try {
 				conToClient.send(msg);
 			} catch (IOException e) {
@@ -136,10 +137,10 @@ public class Server{
 	/**
 	 * When some changes are done in the calendar-application, this will notify the other online users.
 	 */
-	private  void notfyOnlineListeners(String msg,ConnectionToAClient exception){
+	private  void notfyOnlineListeners(String msg,Connection exception){
 		//obs! make sure it filters the connection with the associated event
 		for (ConnectionToAClient con: connections) {
-			con.push(msg);
+			con.push(msg, exception);
 		}
 	}
 
@@ -159,6 +160,7 @@ public class Server{
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
 			insert( e );
+			notfyOnlineListeners(message, con);
 		}
 
 		else if(message.equals("insert notification")){
@@ -171,12 +173,14 @@ public class Server{
 			message = message.replaceFirst("insert attends_at", "");
 			Event e = xmlSerializer.toEvent(message);
 			insert( e );
+			notfyOnlineListeners(message, con);
 		}
 		//working:
 		else if(message.startsWith("update event")){
 			message = message.replaceFirst("update event", "");
 			Event e = xmlSerializer.toEvent(message);
 			update( e );
+			notfyOnlineListeners(message, con);
 		}
 
 		else if(message.equals("update notification")){
@@ -189,12 +193,14 @@ public class Server{
 			message = message.replaceFirst("update attends_at", "");
 			Event e = xmlSerializer.toEvent(message);
 			update( e );
+			notfyOnlineListeners(message, con);
 		}
 
 		else if(message.equals("delete event")){
 			message = message.replaceFirst("delete event", "");
 			Event e = xmlSerializer.toEvent(message);
 			delete( e );
+			notfyOnlineListeners(message, con);
 		}
 
 		else if(message.equals("delete notification")){
@@ -207,6 +213,7 @@ public class Server{
 			message = message.replaceFirst("delete attends_at", "");
 			Event e = xmlSerializer.toEvent(message);
 			delete( e );
+			notfyOnlineListeners(message, con);
 		}
 
 	}

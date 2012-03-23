@@ -252,8 +252,8 @@ public class XmlSerializer {
 		element.appendChild(title);
 
 		Element eventOwner = new Element("owner");
-		if(event.getEventOwner() != null){
-			eventOwner.appendChild(event.getEventOwner().getUsername());
+		if(event.getEventOwnerString() != null){
+			eventOwner.appendChild(event.getEventOwnerString());
 			element.appendChild(eventOwner);
 		}
 		Element eventStart = new Element("event-start");
@@ -268,9 +268,9 @@ public class XmlSerializer {
 		location.appendChild(event.getLocation());
 		element.appendChild(location);
 
-		if(event.getRoom() != null){
+		if(event.getRoomString() != null){
 			Element room = new Element("room");
-			room.appendChild(event.getRoom().getRoomName());
+			room.appendChild(event.getRoomString());
 			element.appendChild(room);
 		}
 		if(event.getParticipantsStrings() != null){

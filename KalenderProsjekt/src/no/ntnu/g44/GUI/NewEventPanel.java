@@ -465,6 +465,7 @@ public class NewEventPanel extends JPanel {
 				}
 				
 				// the owner of the event should be ATTENDING
+				System.out.println("HDAFSJADSFJSADFJASDJFJSADFJAJDSFADSJFJSSDJAFDFADJDFSJ : " + Main.currentProject.getStatus(event.getEventID(), event.getEventOwnerString()).toString());
 				Main.currentProject.getStatus(event.getEventID(),
 						event.getEventOwnerString()).setStatus(
 								AttendanceStatusType.ATTENDING);

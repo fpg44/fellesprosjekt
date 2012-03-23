@@ -23,6 +23,8 @@ import javax.swing.ListCellRenderer;
 
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.AttendanceHelper;
+import no.ntnu.g44.models.AttendanceStatus;
+import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 
@@ -189,7 +191,9 @@ public class EditEventPanel extends JPanel {
 		public Component getListCellRendererComponent(
 				JList<? extends Person> list, Person value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			Color color = AttendanceHelper.getColor(originalEvent, value);
+			AttendanceStatus status = Main.currentProject.getStatus(
+					originalEvent.getEventID(), value.getUsername());
+			Color color = AttendanceStatusType.getColor(status.getStatus());
 			JLabel personLabel = new JLabel(value.toString());
 			personLabel.setBackground(color);
 			personLabel.setOpaque(true);

@@ -1,5 +1,6 @@
 package no.ntnu.g44.gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -452,17 +453,19 @@ public class NewEventPanel extends JPanel {
 				for (Person person : event.getParticipants()) {
 					try {
 						// initialize to AttendanceStatusType.UNANSWERED
-						if(person.getUsername().equals(event.getEventOwnerString())){
+						if (person.getUsername().equals(
+								event.getEventOwnerString())) {
 							Main.currentProject.addAttendanceStatus(
 									new AttendanceStatus(person.getUsername(),
 											event.getEventID(),
-											AttendanceStatusType.ATTENDING), true);
-						}
-						else{
+											AttendanceStatusType.ATTENDING),
+											true);
+						} else {
 							Main.currentProject.addAttendanceStatus(
 									new AttendanceStatus(person.getUsername(),
 											event.getEventID(),
-											AttendanceStatusType.UNANSWERED), true);							
+											AttendanceStatusType.UNANSWERED),
+											true);							
 						}
 					} catch (ConnectException ex) {
 						ex.printStackTrace();
@@ -617,9 +620,13 @@ public class NewEventPanel extends JPanel {
 					cellHasFocus);
 
 			setText(value.toString());
-			if (oldEvent != null && !isSelected)
-				setBackground(AttendanceHelper.getColor(oldEvent,
-						(Person) value));
+			
+			if (oldEvent != null && !isSelected) {
+				AttendanceStatus status = Main.currentProject.getStatus(
+						oldEvent.getEventID(), ((Person) value).getUsername());
+				Color color = AttendanceStatusType.getColor(status.getStatus());
+				setBackground(color);
+			}
 
 			return this;
 		}

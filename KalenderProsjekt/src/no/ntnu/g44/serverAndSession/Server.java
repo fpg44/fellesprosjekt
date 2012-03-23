@@ -169,15 +169,15 @@ public class Server{
 
 		else if(message.equals("insert notification")){
 			message = message.replaceFirst("insert notification", "");
-			Event e = xmlSerializer.toEvent(message);
-			insert( e );
+			Notification notification = xmlSerializer.toNotification(message);
+			insert( notification );
 		}
 
 		else if(message.equals("insert attends_at")){
 			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("insert attends_at", "");
-			Event e = xmlSerializer.toEvent(message);
-			insert( e );
+			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
+			insert( status );
 			
 		}
 		//working:
@@ -191,15 +191,15 @@ public class Server{
 
 		else if(message.equals("update notification")){
 			message = message.replaceFirst("update notification", "");
-			Event e = xmlSerializer.toEvent(message);
-			update( e );
+			Notification notification = xmlSerializer.toNotification(message);
+			update( notification );
 		}
 
 		else if(message.equals("update attends_at")){
 			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("update attends_at", "");
-			Event e = xmlSerializer.toEvent(message);
-			update( e );
+			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
+			update( status );
 			
 		}
 
@@ -213,15 +213,15 @@ public class Server{
 
 		else if(message.equals("delete notification")){
 			message = message.replaceFirst("delete notification", "");
-			Event e = xmlSerializer.toEvent(message);
-			delete( e );
+			Notification notification = xmlSerializer.toNotification(message);
+			delete( notification );
 		}
 
 		else if(message.equals("delete attends_at")){
 			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("delete attends_at", "");
-			Event e = xmlSerializer.toEvent(message);
-			delete( e );
+			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
+			delete( status );
 			
 		}
 

@@ -333,7 +333,7 @@ public class XmlSerializer {
 	}
 
 	public AttendanceStatus assembleAttendanceStatus(Element e){
-		String username = null;
+		String username = "";
 		int id = -1;
 		AttendanceStatusType type = AttendanceStatusType.UNANSWERED;
 

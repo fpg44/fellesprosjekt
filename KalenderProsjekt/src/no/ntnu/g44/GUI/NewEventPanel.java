@@ -448,6 +448,7 @@ public class NewEventPanel extends JPanel {
 				//lagrer nytt event
 				Main.currentProject.addEvent(event, true);
 				
+				System.out.println(Main.currentProject.getEventById(event.getEventID()).getParticipantsStrings().size());
 				//lager notification for alle deltakere
 				for(Person person : event.getParticipants()){
 					try {

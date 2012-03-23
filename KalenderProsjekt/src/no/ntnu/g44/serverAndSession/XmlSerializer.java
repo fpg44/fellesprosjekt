@@ -335,7 +335,7 @@ public class XmlSerializer {
 	public AttendanceStatus assembleAttendanceStatus(Element e){
 		String username = null;
 		int id = -1;
-		AttendanceStatusType type = null;
+		AttendanceStatusType type = AttendanceStatusType.UNANSWERED;
 
 		Element element = e.getFirstChildElement("username");
 		if(element != null){
@@ -351,7 +351,9 @@ public class XmlSerializer {
 		if(element != null){
 			type = AttendanceStatusType.getType(element.getValue());
 		}
+		
 		AttendanceHelper.updateStatus(id, username, type);
+		
 		return new AttendanceStatus(username, id, type);
 	}
 
@@ -366,6 +368,7 @@ public class XmlSerializer {
 		return null;
 	}
 
+	
 	public Notification assembleNotification(Element e){
 		int eventID = -1, notificationID = -1;
 		NotificationType type = null;

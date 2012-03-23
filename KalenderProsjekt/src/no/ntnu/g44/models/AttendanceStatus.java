@@ -7,7 +7,7 @@ public class AttendanceStatus {
 
 	private String username;
 	private int eventID;
-	private AttendanceStatusType status;
+	private AttendanceStatusType status = AttendanceStatusType.UNANSWERED;
 	private PropertyChangeSupport pcs;
 	
 	public String getUsername() {

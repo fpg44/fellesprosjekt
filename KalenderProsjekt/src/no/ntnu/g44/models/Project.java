@@ -430,4 +430,13 @@ public class Project implements PropertyChangeListener {
 		}
 		return null;
 	}
+	
+	public AttendanceStatus getStatus(int event_id, String username){
+		for(AttendanceStatus status: attendanceStatusList){
+			if(status.getEventID() == event_id && status.getUsername().equals(username)){
+				return status;
+			}
+		}
+		return null;
+	}
 }

@@ -11,6 +11,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,15 +42,17 @@ import javax.swing.text.DefaultCaret;
 
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.AttendanceHelper;
+import no.ntnu.g44.models.AttendanceStatus;
+import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Room;
 
 public class NewEventPanel extends JPanel {
-	
+
 	// our container window
 	JFrame frame;
-	
+
 	// information about the event--the left side of our prototype
 	private JPanel eventInformationPanel;
 	private JLabel ownerLabel;
@@ -68,7 +72,7 @@ public class NewEventPanel extends JPanel {
 	private JLabel eventDescriptionLabel;
 	private JScrollPane eventDescriptionScroller;
 	private JTextArea eventDescription;
-	
+
 	// (invited) participants--the right side of our prototype
 	private JPanel participantsPanel;
 	private SearchListener searchListener;
@@ -89,16 +93,16 @@ public class NewEventPanel extends JPanel {
 	private HashMap<String, String> persons;
 	// this model should contain the persons to invite
 	private DefaultListModel<Person> participantsModel;
-	
+
 	// 'Save Event' and 'Cancel' buttons
 	private ButtonListener buttonListener;
 	private JPanel buttonPanel;
 	private JButton saveButton;
 	private JButton cancelButton;
-	
+
 	// the old (original) Event, in the case of an update
 	private Event oldEvent = null;
-	
+
 	/**
 	 * A <code>NewEventPanel</code> provides the graphical interface for 
 	 * creating a new Event. <br><br>
@@ -128,7 +132,7 @@ public class NewEventPanel extends JPanel {
 			}
 		}
 	}
-	
+
 	/**
 	 * A <code>NewEventPanel</code> provides the graphical interface for 
 	 * creating a new Event. <br><br>
@@ -153,7 +157,7 @@ public class NewEventPanel extends JPanel {
 				"yyyy-MM-dd HH:mm");
 		setCustomCaret(startEd);
 		eventStartTime.setEditor(startEd);
-		
+
 		eventEndLabel = new JLabel("To");
 		eventEndTime = new JSpinner();
 		endTimeModel = new SpinnerDateModel();
@@ -167,7 +171,7 @@ public class NewEventPanel extends JPanel {
 		Date endTime = new Date(new Date().getTime() + 3600000);
 		endTime.setTime(endTime.getTime());
 		eventEndTime.setValue(endTime);
-		
+
 		locationLabel = new JLabel("Location");
 		location = new JComboBox<Room>();
 		customLocationLabel = new JLabel("Custom location");
@@ -183,35 +187,35 @@ public class NewEventPanel extends JPanel {
 		location.addActionListener(roomListener);
 		// fire an event to have 'location' populated with available rooms
 		roomListener.stateChanged(new ChangeEvent(endTimeModel));
-		
+
 		// add some padding between the edge of the JTextArea and entered text
 		eventDescription.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 		/* put the description in a JScrollPane so scrollbars are added rather
 		   than the textearea resizing itself when a lot of text is entered */
 		eventDescriptionScroller = new JScrollPane(eventDescription);
-	
+
 		participantsPanel = new JPanel();
 		searchListener = new SearchListener();
 		personsModel = new DefaultListModel<Person>();
 		participantsModel = new DefaultListModel<Person>();
 		invitedPersonsLabel = new JLabel("Invited persons");
-		
+
 		invitedList = new JList<Person>(participantsModel);
 		invitedList.setCellRenderer(new ParticipantsRenderer());
 		invitedList.addMouseListener(searchListener);
 		invitedList.addKeyListener(searchListener);
 		invitedListScroller = new JScrollPane(invitedList);
-		
+
 		searchField = new JTextField("Search", 20);	// 20 columns
 		searchField.addMouseListener(searchListener);
 		searchField.addKeyListener(searchListener);
-		
-		
+
+
 		searchList = new JList<Person>(personsModel);
 		searchList.addMouseListener(searchListener);
 		searchList.addKeyListener(searchListener);
 		searchListScroller = new JScrollPane(searchList);
-		
+
 		addPersonToParticipantsIcon = new ImageIcon(getClass().getResource(
 				"images/rightArrow.png"));
 		addPersonToParticipantsListLabel = new JLabel(
@@ -227,18 +231,18 @@ public class NewEventPanel extends JPanel {
 				BoxLayout.PAGE_AXIS));
 		participantsButtonPanel.add(addPersonToParticipantsListLabel);
 		participantsButtonPanel.add(removePersonFromParticipantsListLabel);
-		
+
 		persons = new HashMap<String, String>();
 		populatePersonsModel();
 		populatePersonsArray();
-	
+
 		buttonPanel = new JPanel();
 		saveButton = new JButton("Save Event");
 		cancelButton = new JButton("Cancel");
 		buttonListener = new ButtonListener();
 		saveButton.addActionListener(buttonListener);
 		cancelButton.addActionListener(buttonListener);
-		
+
 		eventInformationPanel.setBorder(BorderFactory.createTitledBorder(
 				"Event information"));
 		eventInformationPanel.setLayout(new GridBagLayout());
@@ -271,7 +275,7 @@ public class NewEventPanel extends JPanel {
 		eventInformationPanel.add(customLocation, c);
 		c.gridy = 5;
 		eventInformationPanel.add(eventDescriptionScroller, c);
-		
+
 		participantsPanel.setBorder(BorderFactory.createTitledBorder(
 				"Add or remove participants"));
 		participantsPanel.setLayout(new GridBagLayout());
@@ -293,10 +297,10 @@ public class NewEventPanel extends JPanel {
 		c.fill = GridBagConstraints.BOTH;
 		participantsPanel.add(invitedListScroller, c);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		
+
 		buttonPanel.add(saveButton);
 		buttonPanel.add(cancelButton);
-		
+
 		setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3)); // add padding
 		setLayout(new GridBagLayout());
 		c.anchor = GridBagConstraints.NORTH;
@@ -307,20 +311,20 @@ public class NewEventPanel extends JPanel {
 		c.anchor = GridBagConstraints.SOUTHEAST;
 		c.gridx = c.gridy = 1;
 		add(buttonPanel, c);
-		
+
 		frame.setTitle("New Event");
 		frame.getContentPane().add(this);
 		frame.pack();
 		frame.setVisible(true);
 	}
-	
+
 	private void populatePersonsModel() {
 		ArrayList<Person> persons = Main.currentProject.getPersonList();
 		for (Person person : persons)
 			if (person != Main.currentProject.getLoggedInPerson())
 				personsModel.addElement(person);
 	}
-	
+
 	private void populatePersonsArray() {
 		for (int i = 0; i < personsModel.getSize(); i++)
 			if (personsModel.get(i) != null) {
@@ -328,7 +332,7 @@ public class NewEventPanel extends JPanel {
 				persons.put(p.getUsername(), p.getName());
 			}
 	}
-	
+
 	private void removePersons() {
 		List<Person> persons = invitedList.getSelectedValuesList();
 		for (Person person : persons) {
@@ -338,7 +342,7 @@ public class NewEventPanel extends JPanel {
 				personsModel.addElement(person);
 		}
 	}
-	
+
 	private void addParticipants() {
 		List<Person> persons = searchList.getSelectedValuesList();
 		for (Person person : persons) {
@@ -348,7 +352,7 @@ public class NewEventPanel extends JPanel {
 				personsModel.removeElement(person);
 		}
 	}
-	
+
 	private Event createEvent() {
 		String eventOwner = this.eventOwner.getUsername();
 		String eventTitle = new String(eventDescription.getText());
@@ -360,19 +364,19 @@ public class NewEventPanel extends JPanel {
 		Date eventEndTime = endTimeModel.getDate();
 		String location = customLocation.getText();
 		String roomName = ((Room) this.location.getSelectedItem()).getRoomName();
-		
+
 		return new Event(-1, eventTitle, eventOwner, participants,
 				eventStartTime, eventEndTime, location, roomName);
 	}
-	
+
 	private void closeWindow() {
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 	}
-	
+
 	private void setCustomCaret(JSpinner.DateEditor ed) {
 		/* This is a hack to set the default value to change in the 'To' and
 		   'From' fields to the hour, not year. */
-		
+
 		ed.getTextField().setCaret(new DefaultCaret() {  
 
 			private boolean diverted = false;
@@ -399,7 +403,7 @@ public class NewEventPanel extends JPanel {
 			}  
 		});
 	}
-	
+
 	class RoomListener implements ActionListener, ChangeListener {
 
 		@Override
@@ -422,14 +426,14 @@ public class NewEventPanel extends JPanel {
 				Date start = startTimeModel.getDate();
 				Date end = endTimeModel.getDate();
 				ArrayList<Room> rooms = Room.getAvailableRooms(start, end);
-				
+
 				location.removeAllItems();
 				for (Room room : rooms)
 					location.addItem(room);
 			}
 		}
 	}
-	
+
 	class ButtonListener implements ActionListener {
 
 		@Override
@@ -439,12 +443,25 @@ public class NewEventPanel extends JPanel {
 			else if (e.getSource() == saveButton) {
 				if (oldEvent != null)
 					oldEvent.expired = true;
-				Main.currentProject.addEvent(createEvent(), true);
-				closeWindow();
+				Event event = createEvent();
+				Main.currentProject.addEvent(event, true);
+				for(Person person : event.getParticipants()){
+					try {
+						//setter alle participants til unanswered
+						Main.currentProject.addAttendanceStatus(new AttendanceStatus(person.getUsername(), event.getEventID(), AttendanceStatusType.UNANSWERED), true);
+					} catch (ConnectException e1) {
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				//setter owner til eventet til attending
+				Main.currentProject.getStatus(event.getEventID(), event.getEventOwnerString()).setStatus(AttendanceStatusType.ATTENDING);
 			}
+			closeWindow();
 		}
 	}
-	
+
 	class SearchListener implements MouseListener, KeyListener {
 
 		@Override
@@ -456,7 +473,7 @@ public class NewEventPanel extends JPanel {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			boolean shiftKeyPressed = false;
-			
+
 			if ((e.getSource() == searchList || e.getSource() == searchField)
 					&& e.getKeyChar() == KeyEvent.VK_ENTER) {
 				addParticipants();
@@ -469,10 +486,10 @@ public class NewEventPanel extends JPanel {
 					shiftKeyPressed = true;
 					return;
 				}
-				
+
 				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 					int index = searchList.getLeadSelectionIndex();
-					
+
 					if (index == personsModel.getSize() - 1) {
 						if (shiftKeyPressed) {
 							searchList.addSelectionInterval(index, 0);
@@ -482,7 +499,7 @@ public class NewEventPanel extends JPanel {
 							return;
 						}
 					}
-					
+
 					if (shiftKeyPressed) {
 						searchList.addSelectionInterval(index, index + 1);
 						return;
@@ -505,7 +522,7 @@ public class NewEventPanel extends JPanel {
 							return;
 						}
 					}
-					
+
 					if (shiftKeyPressed) {
 						searchList.addSelectionInterval(index, index - 1);
 						return;
@@ -534,7 +551,7 @@ public class NewEventPanel extends JPanel {
 							personsModel.addElement(p);
 					}
 				}
-				
+
 				if (personsModel.size() > 0) {
 					searchList.setSelectedIndex(0);
 				}
@@ -570,7 +587,7 @@ public class NewEventPanel extends JPanel {
 		@Override
 		public void mouseExited(MouseEvent e) { }
 	}
-	
+
 	protected class ParticipantsRenderer implements ListCellRenderer<Person> {
 
 		@Override
@@ -583,9 +600,9 @@ public class NewEventPanel extends JPanel {
 			JLabel personLabel = new JLabel(value.toString());
 			personLabel.setBackground(color);
 			personLabel.setOpaque(true);
-			
+
 			return personLabel;
 		}
-		
+
 	}
 }

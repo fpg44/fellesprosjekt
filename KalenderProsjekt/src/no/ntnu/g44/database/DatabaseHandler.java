@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
@@ -77,9 +79,6 @@ public class DatabaseHandler {
 		
 		//This is where all the attendance statuses are stored
 		ArrayList<AttendanceStatus> tempStatus = getAttendanceStatus();
-		
-		//This is where the statuses associated with each event will be stored
-		ArrayList<AttendanceStatus> status = new ArrayList<AttendanceStatus>();
 		
 		try{
 			ResultSet rsE = stmt.executeQuery("SELECT event_id, owner_username, time_start, time_end, title, location, room_name FROM event");

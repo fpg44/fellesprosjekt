@@ -233,10 +233,14 @@ public class ConnectionImpl extends AbstractConnection {
 	 */
 	@Override
 	public void close() throws IOException {
+		
 		if(disconnectRequest != null){
 			closeOnFinRecieved();
+			return;
 		}
-		int timeout = 18000; //2 min timeout
+		
+		
+		int timeout = 180000; //2 min timeout
 
 		long startTime = System.currentTimeMillis();
 
@@ -263,8 +267,11 @@ public class ConnectionImpl extends AbstractConnection {
 			fin = receivePacket(true);
 		}while((fin == null || fin.getFlag() != Flag.FIN) && System.currentTimeMillis() - startTime < timeout);
 
+		
+		//Keep listening for fins to be acked!
 		do{
-			if(fin != null){
+			if(fin != null && fin.getFlag() == Flag.FIN){
+				nextSequenceNo--; //Resending an ack, do not increment seqno.
 				sendAck(fin, false);
 			}
 			fin = receivePacket(true);
@@ -299,7 +306,7 @@ public class ConnectionImpl extends AbstractConnection {
 			ack = receiveAck();
 			timer.cancel();
 			
-			System.out.println("Might have recieved ack " + ack);
+			System.out.println("Might have recieved ack " + ack == null ? "NULL" : "not null: " + ack.getFlag().toString());
 
 			if(ack != null && ack.getFlag() == Flag.FIN){
 				//Our syn ack might've been lost. Lets reack the syn.
@@ -308,7 +315,7 @@ public class ConnectionImpl extends AbstractConnection {
 				continue;
 			}
 
-		}while(ack == null && System.currentTimeMillis() - startTime < timeout/*|| !validAck(syn, syn_ack)*/);
+		}while((ack == null && System.currentTimeMillis() - startTime < timeout) || !validAck(fin, ack));
 
 		//recieved ack on the fin.
 		release();

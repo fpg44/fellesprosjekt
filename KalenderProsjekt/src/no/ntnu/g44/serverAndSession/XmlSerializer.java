@@ -315,7 +315,7 @@ public class XmlSerializer {
 	}
 
 	public Element attendanceStatusToXml(AttendanceStatus status){
-		Element element = new Element("Attendance-status");
+		Element element = new Element("attendance-status");
 
 		Element username = new Element("username");
 		username.appendChild(status.getUsername());
@@ -333,9 +333,9 @@ public class XmlSerializer {
 	}
 
 	public AttendanceStatus assembleAttendanceStatus(Element e){
-		String username = null;
+		String username = "";
 		int id = -1;
-		AttendanceStatusType type = AttendanceStatusType.UNANSWERED;
+		AttendanceStatusType type = AttendanceStatusType.ATTENDING;
 
 		Element element = e.getFirstChildElement("username");
 		if(element != null){

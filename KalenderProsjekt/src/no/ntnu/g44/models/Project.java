@@ -451,7 +451,8 @@ public class Project implements PropertyChangeListener {
 	}
 	public static HashMap<String, AttendanceStatusType> colourmap = new HashMap<String, AttendanceStatusType>();
 	public static Color getColor(Event e, Person p){
-		if(colourmap.get(p.getUsername() + "" + e.getEventID()) == null)return null;
+		if(colourmap.get(p.getUsername() + "" + e.getEventID()) == null)return AttendanceStatusType.getColor(AttendanceStatusType.UNANSWERED);
+		System.out.println(colourmap.get(p.getUsername() + e.getEventID()));
 		return AttendanceStatusType.getColor(colourmap.get(p.getUsername() + "" + e.getEventID()));
 	}
 	

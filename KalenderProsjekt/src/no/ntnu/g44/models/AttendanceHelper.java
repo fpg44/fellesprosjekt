@@ -9,6 +9,7 @@ public class AttendanceHelper {
 	public static HashMap<String, AttendanceStatusType> colourmap = new HashMap<String, AttendanceStatusType>();
 	
 	public static Color getColor(Event e, Person p){
+		if(colourmap.get(p.getUsername() + "" + e.getEventID()) == null)return null;
 		return AttendanceStatusType.getColor(colourmap.get(p.getUsername() + "" + e.getEventID()));
 	}
 	

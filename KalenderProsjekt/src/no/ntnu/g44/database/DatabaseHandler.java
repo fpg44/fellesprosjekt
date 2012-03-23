@@ -454,7 +454,8 @@ public class DatabaseHandler {
 		String end = sdf.format(e);
 
 		try{
-			stmt.executeUpdate("INSERT INTO event (owner_username, time_start, time_end, title, location, room_name) VALUES (" +
+			stmt.executeUpdate("INSERT INTO event (event_id, owner_username, time_start, time_end, title, location, room_name) VALUES (" +
+					"'" + event.getEventID() + "', " +
 					"'" + event.getEventOwnerString() + "', " +
 					"'" + start + "', " +
 					"'" + end + "', " +
@@ -492,31 +493,18 @@ public class DatabaseHandler {
 	 * @param status
 	 */
 	public void newAttendanceStatus(AttendanceStatus status){
-		try{
+		System.out.println("USERNAME IS : " + status.getUsername());
+		System.out.println("EVENT ID IS : " + status.getEventID());
+		System.out.println("STATUS   IS : " + status.getStatus().toString());
 
-			System.out.println("USERNAME IS : " + status.getUsername());
-			System.out.println("EVENT ID IS : " + status.getEventID());
-			System.out.println("STATUS   IS : " + status.getStatus().toString());
+		try{
 			
 			stmt.executeUpdate("INSERT INTO attends_at (account_username, event_id, status) VALUES (" +
-					"SELECT account.username FROM account WHERE account.username ='" + status.getUsername()	+ "', " +
-					"SELECT event.event_id FROM event WHERE event.event_id ='" + status.getEventID() + "', " +
+					"(SELECT account.username FROM account WHERE account.username ='" + status.getUsername()	+ "'), " +
+					"(SELECT event.event_id FROM event WHERE event.event_id ='" + status.getEventID() + "'), " +
 					"'" + status.getStatus().toString() + "'" +
 					")");
 
-
-
-
-
-
-
-
-
-			//			stmt.executeUpdate("INSERT INTO attends_at (account_username, event_id, status) VALUES (" +
-			//					"(SELECT account.username FROM account WHERE account.username='" + status.getUsername() + "'), " +
-			//					"(SELECT event.event_id FROM event WHERE event.event_id='" + status.getEventID() + "'), " +
-			//					"status ='" + status.getStatus().toString() + 
-			//					"')");
 
 		}catch(Exception e){
 

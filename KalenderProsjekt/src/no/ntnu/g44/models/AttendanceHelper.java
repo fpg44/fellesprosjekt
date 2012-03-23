@@ -1,6 +1,7 @@
 package no.ntnu.g44.models;
 
 import java.awt.Color;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class AttendanceHelper {
@@ -17,5 +18,8 @@ public class AttendanceHelper {
 	
 	public static void updateStatus(int eID, String username, AttendanceStatusType status){
 		colourmap.put(username + "" + eID, AttendanceStatusType.getColor(status));
+	}
+	public static Collection<Color> getAttendanceList(){
+		return colourmap.values();
 	}
 }

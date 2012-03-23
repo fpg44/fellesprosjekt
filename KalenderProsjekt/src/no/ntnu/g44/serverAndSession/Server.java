@@ -231,7 +231,7 @@ public class Server{
 			}			
 		}
 
-		ArrayList<Event> events = dbHandler.getEventsFromDatabase();
+		ArrayList<Event> events = dbHandler.getEvents();
 		System.out.println(events.size());
 		if(events != null){
 			for(Event event : events){

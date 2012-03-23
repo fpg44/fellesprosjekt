@@ -330,12 +330,11 @@ public class MainFrame extends JPanel{
 		String person;
 		personnelModel.removeAllElements();
 		for(int i = 0; i < personnel.size(); i++){
-			if(search.equals("search..."))personnelModel.addElement(personnel.get(i));
 			if(personnel.get(i) == Main.currentProject.getLoggedInPerson()){
 				continue;
 			}
 			person = personnel.get(i).getName().toLowerCase();
-			if(person.startsWith(search) || person.equals(search)){
+			if(person.startsWith(search) || person.equals(search) || search.equals("search...")){
 				boolean b = true;
 				for(int j = 0; j < calendarModel.getSize(); j++){
 					if(calendarModel.getElementAt(j).getName().toLowerCase().equals(person)){

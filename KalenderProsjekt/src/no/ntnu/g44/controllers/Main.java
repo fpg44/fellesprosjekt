@@ -26,7 +26,7 @@ public class Main {
 		if(usenet){
 			try {
 				
-				client = new Client("78.91.11.168", 5545);
+				client = new Client("78.91.11.62", 5545);
 				currentProject = client.getProject();
 				System.out.println(currentProject.getPersonCount());
 				

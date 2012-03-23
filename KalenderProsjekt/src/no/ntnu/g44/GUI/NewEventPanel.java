@@ -365,7 +365,6 @@ public class NewEventPanel extends JPanel {
 		String roomName = ((Room) this.location.getSelectedItem()).getRoomName();
 		int id = Main.currentProject.generateID();
 		return new Event(id, eventTitle, eventOwner, participants,
-
 				eventStartTime, eventEndTime, location, roomName);
 	}
 

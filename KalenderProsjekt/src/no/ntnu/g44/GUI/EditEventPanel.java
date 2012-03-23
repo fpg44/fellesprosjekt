@@ -22,7 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 
 import no.ntnu.g44.controllers.Main;
-import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
@@ -97,18 +96,18 @@ public class EditEventPanel extends JPanel {
 		descriptionText = new JTextArea(originalEvent.getEventDescription());
 		descriptionText.setEditable(false);
 		descriptionTextScroller = new JScrollPane(descriptionText);
-		
+
 		participantsListModel = new DefaultListModel<Person>();
-		for (Person person : originalEvent.getParticipants()){
-			if(person != eventOwner) participantsListModel.addElement(person);
-		}
+		for (Person person : originalEvent.getParticipants())
+			if (person != eventOwner)
+				participantsListModel.addElement(person);
 		participantsList = new JList<Person>(participantsListModel);
 		participantsList.setCellRenderer(new ParticipantsRenderer());
 		participantsListScroller = new JScrollPane(participantsList);
 		
 		originalEventParticipantsPanel = new JPanel();
-		originalEventParticipantsPanel.setBorder(BorderFactory.createTitledBorder(
-				"Participants"));
+		originalEventParticipantsPanel.setBorder(BorderFactory
+				.createTitledBorder("Participants"));
 		originalEventParticipantsPanel.add(participantsListScroller);
 		
 		originalEventInfoPanel = new JPanel(new GridBagLayout());

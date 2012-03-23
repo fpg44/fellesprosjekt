@@ -1,6 +1,5 @@
 package no.ntnu.g44.gui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -125,10 +124,11 @@ public class NewEventPanel extends JPanel {
 			for (Person person : oldEvent.getParticipants()) {
 				if (person == this.eventOwner)
 					continue;
-				if (!participantsModel.contains(person))
+				if (!participantsModel.contains(person)
+						&& personsModel.contains(person)) {
 					participantsModel.addElement(person);
-				if (personsModel.contains(person))
 					personsModel.removeElement(person);
+				}
 			}
 		}
 	}
@@ -333,23 +333,25 @@ public class NewEventPanel extends JPanel {
 			}
 	}
 
-	private void removePersons() {
+	private void removeParticipants() {
 		List<Person> persons = invitedList.getSelectedValuesList();
 		for (Person person : persons) {
-			if (participantsModel.contains(person))
+			if (participantsModel.contains(person)
+					&& !personsModel.contains(person)) {
 				participantsModel.removeElement(person);
-			if (!personsModel.contains(person))
 				personsModel.addElement(person);
+			}
 		}
 	}
 
 	private void addParticipants() {
 		List<Person> persons = searchList.getSelectedValuesList();
 		for (Person person : persons) {
-			if (!participantsModel.contains(person))
+			if (!participantsModel.contains(person)
+					&& personsModel.contains(person)) {
 				participantsModel.addElement(person);
-			if (personsModel.contains(person))
 				personsModel.removeElement(person);
+			}
 		}
 	}
 
@@ -501,7 +503,7 @@ public class NewEventPanel extends JPanel {
 			} else if (e.getSource() == invitedList
 					&& (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
 					|| e.getKeyCode() == KeyEvent.VK_DELETE)) {
-				removePersons();
+				removeParticipants();
 			} else if (e.getSource() == searchField) {
 				if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 					shiftKeyPressed = true;
@@ -563,12 +565,13 @@ public class NewEventPanel extends JPanel {
 				}
 
 				query = query.toLowerCase();
-				personsModel.removeAllElements();
+				personsModel.clear();
 				for (Map.Entry<String, String> entry : persons.entrySet()) {
 					String name = entry.getValue().toLowerCase();
 					if (name.startsWith(query) || name.equals(query)) {
 						Person p = Person.findPersonByUsername(entry.getKey());
-						if (!participantsModel.contains(p))
+						if (!participantsModel.contains(p)
+								&& !personsModel.contains(p))
 							personsModel.addElement(p);
 					}
 				}
@@ -592,13 +595,13 @@ public class NewEventPanel extends JPanel {
 				addParticipants();			
 			} else if (e.getSource() == removePersonFromParticipantsListLabel
 					&& invitedList.getSelectedValue() != null) {
-				removePersons();
+				removeParticipants();
 			} else if (e.getSource() == searchField) {
 				searchField.selectAll();
 			} else if (e.getSource() == searchList && e.getClickCount() == 2) {
 				addParticipants();
 			} else if (e.getSource() == invitedList && e.getClickCount() == 2) {
-				removePersons();
+				removeParticipants();
 			}
 		}
 

@@ -92,7 +92,7 @@ public class ConnectionImpl extends AbstractConnection {
 
 		//Send syn and wait for the synack
 		do{
-				
+
 			if(System.currentTimeMillis() - startStamp > CONNECTION_TRIES*RETRANSMIT + RETRANSMIT){
 				throw new SocketTimeoutException("Could not get a syn_ack after "+CONNECTION_TRIES+" tries.");
 			}
@@ -162,19 +162,13 @@ public class ConnectionImpl extends AbstractConnection {
 		remotePort = syn.getSrc_port();
 
 		KtnDatagram ack = null;
-		KtnDatagram synack = sendAck(syn, true);
+		KtnDatagram synack = null;
+		
 		do{
-			
+			synack = sendAck(syn, true);
 			ack = receiveAck();
-
-			if(ack != null && ack.getFlag() == Flag.SYN && ack.getSeq_nr() == syn.getSeq_nr()){
-				//Our syn ack might've been lost. Lets reack the syn.
-				nextSequenceNo--;
-				synack = sendAck(ack, true);
-				continue;
-			}
 			System.out.println("Recieved ack " + ack);
-		}while(ack == null || !isValidAndExpectedSeq(ack) || !validAck(synack, ack));
+		}while(ack == null || /*!isValid(ack) ||*/ !validAck(synack, ack));
 		nextExpectedSeqNr++;
 		state = State.ESTABLISHED;
 	}
@@ -195,19 +189,13 @@ public class ConnectionImpl extends AbstractConnection {
 	public void send(String msg) throws ConnectException, IOException {
 
 		KtnDatagram datagram = constructDataPacket(msg);
-		KtnDatagram ack = sendDataPacketWithRetransmit(datagram);
+		KtnDatagram ack;
+		do{
+			ack = sendDataPacketWithRetransmit(datagram);
+		}while(ack == null || !validAck(datagram, ack) /*|| !isValid(ack)*/);
 
-		//TODO CHECK SHIT!
 		nextExpectedSeqNr++; //for the ack.
 
-		//    	check connection state
-		//make packet
-		//	send with retransmit
-		//isvalid ACK
-		//check ACK
-		//
-		//WHAT IF WRONG ACK?!!!
-		//	Throw exceptions if something goes wrong.
 	}
 
 	/**
@@ -220,10 +208,23 @@ public class ConnectionImpl extends AbstractConnection {
 	 */
 	@Override
 	public String receive() throws ConnectException, IOException {
-		KtnDatagram datagram = receivePacket(false);
-		nextExpectedSeqNr++;
-		sendAck(datagram, false);
-		return (String) datagram.getPayload();
+		while(true){
+			KtnDatagram datagram = receivePacket(false);
+			if(datagram.getSeq_nr() < nextExpectedSeqNr){
+				nextSequenceNo--;
+				sendAck(datagram,false);
+				System.out.println("Reacking old packet.");
+				continue;
+			}else if(!isValidAndExpectedSeq(datagram)){
+				System.out.println("Recieved an invalid packet. Thrown away.");
+				continue; //Throw away this packet!
+			}else{
+				System.out.println("Got a valid packet!");
+				nextExpectedSeqNr++;
+				sendAck(datagram, false);
+				return (String) datagram.getPayload();
+			}
+		}
 	}
 
 	/**
@@ -233,13 +234,13 @@ public class ConnectionImpl extends AbstractConnection {
 	 */
 	@Override
 	public void close() throws IOException {
-		
+
 		if(disconnectRequest != null){
 			closeOnFinRecieved();
 			return;
 		}
-		
-		
+
+
 		int timeout = 180000; //2 min timeout
 
 		long startTime = System.currentTimeMillis();
@@ -257,7 +258,8 @@ public class ConnectionImpl extends AbstractConnection {
 			timer.cancel();
 			System.out.println("Might have recieved ack " + ack);
 		}while(ack == null && System.currentTimeMillis() - startTime < timeout/*|| !validAck(syn, syn_ack)*/);
-
+		
+		nextExpectedSeqNr++; //recieved the ack
 		//recieved ack on the fin.
 		//Wait for the fin
 
@@ -267,6 +269,7 @@ public class ConnectionImpl extends AbstractConnection {
 			fin = receivePacket(true);
 		}while((fin == null || fin.getFlag() != Flag.FIN) && System.currentTimeMillis() - startTime < timeout);
 
+		nextExpectedSeqNr++; //recieved the fin
 		
 		//Keep listening for fins to be acked!
 		do{
@@ -286,7 +289,7 @@ public class ConnectionImpl extends AbstractConnection {
 
 	private void closeOnFinRecieved() throws EOFException, IOException{
 		int timeout = 1800000; //2 min timeout
-		
+
 		state = State.CLOSE_WAIT;
 		//send ack
 		sendAck(this.disconnectRequest, false);
@@ -305,7 +308,7 @@ public class ConnectionImpl extends AbstractConnection {
 			//recieveAck will block for a while.
 			ack = receiveAck();
 			timer.cancel();
-			
+
 			System.out.println("Might have recieved ack " + ack == null ? "NULL" : "not null: " + ack.getFlag().toString());
 
 			if(ack != null && ack.getFlag() == Flag.FIN){

@@ -341,19 +341,16 @@ public class XmlSerializer {
 		Element element = e.getFirstChildElement("username");
 		if(element != null){
 			username = element.getValue();
-			System.out.println("DETTE ER USÆRN HAHA: " + username);
 		}
 
 		element = e.getFirstChildElement("event-id");
 		if(element != null){
 			id = Integer.parseInt(element.getValue());
-			System.out.println("DETTE ER EVENTEN HAHA: " + id);
 		}
 
 		element = e.getFirstChildElement("type");
 		if(element != null){
 			type = AttendanceStatusType.getType(element.getValue());
-			System.out.println("DETTE ER TYPEN HAHA: " + type.toString());
 		}
 		
 		AttendanceHelper.updateStatus(id, username, type);

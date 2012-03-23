@@ -365,7 +365,7 @@ public class NewEventPanel extends JPanel {
 		String roomName = ((Room) this.location.getSelectedItem()).getRoomName();
 		int id = Main.currentProject.generateID();
 		return new Event(id, eventTitle, eventOwner, participants,
-				
+
 				eventStartTime, eventEndTime, location, roomName);
 	}
 
@@ -443,12 +443,12 @@ public class NewEventPanel extends JPanel {
 			else if (e.getSource() == saveButton) {
 				if (oldEvent != null)
 					oldEvent.expired = true;
-				
+
 				Event event = createEvent();
-				
+
 				// save the new Event
 				Main.currentProject.addEvent(event, true);
-				
+
 				// create Notifications for all participants
 				for (Person person : event.getParticipants()) {
 					try {
@@ -457,20 +457,25 @@ public class NewEventPanel extends JPanel {
 								new AttendanceStatus(person.getUsername(),
 										event.getEventID(),
 										AttendanceStatusType.UNANSWERED), true);
+						if(person.getUsername().equals(event.getEventOwnerString())){
+							Main.currentProject.addAttendanceStatus(
+									new AttendanceStatus(person.getUsername(),
+											event.getEventID(),
+											AttendanceStatusType.ATTENDING), true);
+						}
 					} catch (ConnectException ex) {
 						ex.printStackTrace();
 					} catch (IOException ex) {
 						ex.printStackTrace();
 					}
 				}
-				
 				// the owner of the event should be ATTENDING
 				System.out.println("HDAFSJADSFJSADFJASDJFJSADFJAJDSFADSJFJSSDJAFDFADJDFSJ : " + Main.currentProject.getStatus(event.getEventID(), event.getEventOwnerString()).toString());
 				Main.currentProject.getStatus(event.getEventID(),
 						event.getEventOwnerString()).setStatus(
 								AttendanceStatusType.ATTENDING);
 			}
-			
+
 			closeWindow();
 		}
 	}
@@ -607,15 +612,15 @@ public class NewEventPanel extends JPanel {
 		public Component getListCellRendererComponent(
 				JList list, Object value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			
+
 			super.getListCellRendererComponent(list, value, index, isSelected,
 					cellHasFocus);
-			
+
 			setText(value.toString());
 			if (oldEvent != null && !isSelected)
 				setBackground(AttendanceHelper.getColor(oldEvent,
 						(Person) value));
-			
+
 			return this;
 		}
 	}

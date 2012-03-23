@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -78,7 +79,7 @@ public class EditEventPanel extends JPanel {
 		this.originalEvent = originalEvent;
 		
 		ownerLabel = new JLabel("Arranged by");
-		ownerNameLabel = new JLabel(originalEvent.getEventOwnerString());
+		ownerNameLabel = new JLabel(originalEvent.getEventOwner().toString());
 		fromLabel = new JLabel("From");
 		fromDateField = new JTextField(originalEvent.getEventStartTime()
 				.toString());
@@ -111,9 +112,12 @@ public class EditEventPanel extends JPanel {
 		originalEventInfoPanel = new JPanel(new GridBagLayout());
 		originalEventInfoPanel.setBorder(BorderFactory.createTitledBorder(
 				"Event information"));
+		Insets leftColumn = new Insets(0, 0, 0, 10);
+		Insets rightColumn = new Insets(0, 0, 0, 0);
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.WEST;
+		c.insets = leftColumn;
 		c.gridx = c.gridy = 0;
 		originalEventInfoPanel.add(ownerLabel, c);
 		c.gridy = 1;
@@ -125,6 +129,7 @@ public class EditEventPanel extends JPanel {
 		c.gridy = 4;
 		originalEventInfoPanel.add(descriptionLabel, c);
 		c.anchor = GridBagConstraints.EAST;
+		c.insets = rightColumn;
 		c.gridx = 1;
 		c.gridy = 0;
 		originalEventInfoPanel.add(ownerNameLabel, c);

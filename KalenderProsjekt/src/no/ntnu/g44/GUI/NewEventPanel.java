@@ -444,7 +444,11 @@ public class NewEventPanel extends JPanel {
 				if (oldEvent != null)
 					oldEvent.expired = true;
 				Event event = createEvent();
+				
+				//lagrer nytt event
 				Main.currentProject.addEvent(event, true);
+				
+				//lager notification for alle deltakere
 				for(Person person : event.getParticipants()){
 					try {
 						//setter alle participants til unanswered
@@ -455,6 +459,7 @@ public class NewEventPanel extends JPanel {
 						e1.printStackTrace();
 					}
 				}
+				
 				//setter owner til eventet til attending
 				Main.currentProject.getStatus(event.getEventID(), event.getEventOwnerString()).setStatus(AttendanceStatusType.ATTENDING);
 			}

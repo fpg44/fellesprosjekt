@@ -6,20 +6,20 @@ import java.util.HashMap;
 
 public class AttendanceHelper {
 	
-	public static HashMap<String, Color> colourmap = new HashMap<String, Color>();
+	public static HashMap<String, AttendanceStatusType> colourmap = new HashMap<String, AttendanceStatusType>();
 	
 	public static Color getColor(Event e, Person p){
-		return colourmap.get(p.getUsername() + "" + e.getEventID());
+		return AttendanceStatusType.getColor(colourmap.get(p.getUsername() + "" + e.getEventID()));
 	}
 	
 	public static void updateStatus(Event e, Person p, AttendanceStatusType status){
-		colourmap.put(p.getUsername() + "" + e.getEventID(), AttendanceStatusType.getColor(status));
+		colourmap.put(p.getUsername() + "" + e.getEventID(), status);
 	}
 	
 	public static void updateStatus(int eID, String username, AttendanceStatusType status){
-		colourmap.put(username + "" + eID, AttendanceStatusType.getColor(status));
+		colourmap.put(username + "" + eID, status);
 	}
-	public static Collection<Color> getAttendanceList(){
+	public static Collection<AttendanceStatusType> getAttendanceList(){
 		return colourmap.values();
 	}
 }

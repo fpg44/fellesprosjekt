@@ -495,8 +495,8 @@ public class DatabaseHandler {
 		try{
 			
 			stmt.executeUpdate("INSERT INTO attends_at VALUES " +
-					"account_username ='" + status.getUsername() + "', " +
-					"event_id ='" + status.getEventID() + "', " +
+					"account_username = (SELECT username FROM account WHERE username='" + status.getUsername() + "'), " +
+					"event_id = (SELECT event_id FROM event WHERE event_id ='" + status.getEventID() + "'), " +
 					"status ='" + status.getStatus().toString() + "'");
 
 		}catch(Exception e){

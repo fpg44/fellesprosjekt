@@ -350,6 +350,7 @@ public class XmlSerializer {
 		element = e.getFirstChildElement("type");
 		if(element != null){
 			type = AttendanceStatusType.getType(element.getValue());
+			System.out.println("DETTE ER TYPEN HAHA: " + type.toString());
 		}
 		
 		AttendanceHelper.updateStatus(id, username, type);

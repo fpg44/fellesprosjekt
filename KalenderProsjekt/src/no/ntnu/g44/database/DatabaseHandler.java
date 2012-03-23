@@ -65,8 +65,22 @@ public class DatabaseHandler {
 	}
 	
 	
-	public ArrayList<Event> getEventsFromDatabase(){
-		ArrayList<Event> array = new ArrayList<Event>();
+	public ArrayList<Event> getEvents(){
+		//This is where the events are stored
+		ArrayList<Event> events = new ArrayList<Event>();
+		
+		//This is where all the persons are stored
+		ArrayList<String> persons = new ArrayList<String>();
+		
+		//This is where the persons associated with each event will be stored
+		ArrayList<Person> tempPerson = getPersons();
+		
+		//This is where all the attendance statuses are stored
+		ArrayList<AttendanceStatus> tempStatus = getAttendanceStatus();
+		
+		//This is where the statuses associated with each event will be stored
+		ArrayList<AttendanceStatus> status = new ArrayList<AttendanceStatus>();
+		
 		try{
 			ResultSet rsE = stmt.executeQuery("SELECT event_id, owner_username, time_start, time_end, title, location, room_name FROM event");
 			
@@ -74,104 +88,36 @@ public class DatabaseHandler {
 				return null;
 			}
 			do{
-				Date dateStart = rsE.getTimestamp(3);		//date start
-				Date dateEnd = rsE.getTimestamp(4);			//date end
+				int event_id = rsE.getInt(1);
+				String eventTitle = rsE.getString(5);
+				String owner_username = rsE.getString(2);
+				//List with persons
+				Date dateStart = rsE.getTimestamp(3);
+				Date dateEnd = rsE.getTimestamp(4);
+				String location = rsE.getString(6);
+				String roomname = rsE.getString(7);
 				
-				//create new event and add all the persons involved
-				Event event = new Event(rsE.getInt(1),		//event_id
-						rsE.getString(5),					//eventTitle
-						rsE.getString(2),					//owner_username
-						null,							//persons
-						dateStart, dateEnd,					//date start, end
-						rsE.getString(6),					//location 
-						rsE.getString(7));					//room
+				//Find all the associated persons to the current event
+				for(int i = 0; i<tempPerson.size(); i++){
+					for(int j = 0; j<tempStatus.size(); j++){
+						if(tempStatus.get(j).getEventID() == event_id){ //filtrerer attends_at med event_id til current event
+							if(tempPerson.get(i).getUsername().equals(tempStatus.get(j).getUsername())){ //filtrerer username fra attends_at
+								persons.add(tempPerson.get(i).getUsername());
+							}
+						}
+					}
+				}
+				Event event = new Event(event_id, eventTitle, owner_username, persons, dateStart, dateEnd, location, roomname);
+				events.add(event);
 				
-				array.add(event);
 			}while(rsE.next());
 			
 		}catch(Exception e){
-			System.out.println("HAAAAAHAHAHAHHAHAH");
+			e.printStackTrace();
 		}
 		
-		return array;
+		return events;
 	}
-
-//	/**
-//	 * 
-//	 * @return An ArrayList<Event> with all the events
-//	 */
-//	public ArrayList<Event> getEventsFromDatabase(){
-//		ArrayList<Event> events = new ArrayList<Event>();
-//		ArrayList<String> persons = new ArrayList<String>();
-//		int EVENT_ID;
-//
-//		try{
-//
-//			//get all the events with all their attributes
-//			ResultSet rsE = stmt.executeQuery("SELECT event_id, owner_username, time_start, time_end, title, location, room_name FROM event");
-//
-//			//Sets the pointer to the first line in the ResultSet, return if ResultSet is empty
-//			if(rsE.first() == false){
-//				return null;
-//			}
-//
-//			//ITERATES THE EVENT RESULTSET
-//			do{
-//
-//				//gets the event_id from the currently iterating event
-//				EVENT_ID = rsE.getInt(1);
-//				//get all the persons associated each event
-//				ResultSet rsP = stmt.executeQuery("SELECT account.name, account.username FROM account, attends_at  WHERE attends_at.event_id='" + EVENT_ID + "'");
-//
-//				//ITERATES THE PERSON RESULTSET
-//				if(rsP.first()){
-//					do{
-//						//Create persons and add them to array
-//						Person person = new Person(rsP.getString(1), rsP.getString(2));
-//						persons.add(person.getUsername());						
-//
-//					}while(rsP.next());
-//				}
-//
-//				rsP = null;	//clear the ResultSet for next iterate
-//				
-//				System.out.println("TTTTTTTTTTTTTTTTTTTTT" + rsE.getString(5));
-//				
-//				Date dateStart = rsE.getTimestamp(3);		//date start
-//				Date dateEnd = rsE.getTimestamp(4);			//date end
-//
-//				//create new event and add all the persons involved
-//				Event event = new Event(EVENT_ID,			//event_id
-//						rsE.getString(5),					//eventTitle
-//						rsE.getString(2),					//owner_username
-//						persons,							//persons
-//						dateStart, dateEnd,					//date start, end
-//						rsE.getString(6),					//location 
-//						rsE.getString(7));					//room
-//
-//				//Finds old event id if excist
-//				ResultSet rsOld = stmt.executeQuery("SELECT event_old_id FROM old_events WHERE event_id ='" + event.getEventID() + "'");
-//				if(rsOld.next()){
-//					event.setOldEvent(rsOld.getString(1));
-//				}
-////				rsOld = null;
-//
-//				//add this event to array
-//				events.add(event);
-//
-//			}while(rsE.next());
-//
-////			rsE = null; //clear the ResultSet
-//
-//		}catch(Exception e){
-//
-//			e.printStackTrace();
-//			System.out.println("LOL FUCKER HAHAHA");
-//
-//		}
-//
-//		return events;
-//	}
 
 	/**
 	 * 

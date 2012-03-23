@@ -223,9 +223,12 @@ public class Project implements PropertyChangeListener {
 			//true if the event shall be added to XML/database
 			//false if the event only should be added to eventList
 			if(save){
+				
 				//If Internet (A1, server and database is being used)
 				if(Main.usenet){
-					Main.client.newEvent(xmlSerializer.eventToXml(event));					
+					Main.client.newEvent(xmlSerializer.eventToXml(event));
+					
+					
 				}
 				//If only XML to file is being used
 				else{

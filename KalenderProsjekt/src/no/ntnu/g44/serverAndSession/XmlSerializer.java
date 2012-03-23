@@ -315,7 +315,7 @@ public class XmlSerializer {
 	}
 
 	public Element attendanceStatusToXml(AttendanceStatus status){
-		Element element = new Element("Attendance-status");
+		Element element = new Element("attendance-status");
 
 		Element username = new Element("username");
 		username.appendChild(status.getUsername());

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.serverAndSession.FileStorage;
@@ -28,6 +29,9 @@ import no.ntnu.g44.serverAndSession.XmlSerializer;
  *
  */
 public class Project implements PropertyChangeListener {
+	
+	
+	private Random generateID = new Random();
 	
 	private XmlSerializer xmlSerializer = new XmlSerializer();
 	/**
@@ -479,5 +483,9 @@ public class Project implements PropertyChangeListener {
 			}
 		}
 		return list;
+	}
+	
+	public int generateID(){
+		return generateID.nextInt(11);
 	}
 }

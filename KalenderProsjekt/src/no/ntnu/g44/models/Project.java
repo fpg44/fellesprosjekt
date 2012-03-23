@@ -244,22 +244,22 @@ public class Project implements PropertyChangeListener {
 		propChangeSupp.firePropertyChange("room", null, room);
 	}
 	
-	public void addNotification(Notification notification) throws ConnectException, IOException{
+	public void addNotification(Notification notification, boolean save) throws ConnectException, IOException{
 		notificationList.add(notification);
 		notification.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("notification", null, notification);
 		
-		if(Main.usenet){
+		if(Main.usenet && save){
 			Main.client.newNotification(xmlSerializer.notificationToXml(notification));
 		}
 	}
 	
-	public void addAttendanceStatus(AttendanceStatus status) throws ConnectException, IOException{
+	public void addAttendanceStatus(AttendanceStatus status, boolean save) throws ConnectException, IOException{
 		attendanceStatusList.add(status);
 		status.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("status", null, status);
 		
-		if(Main.usenet){
+		if(Main.usenet && save){
 			Main.client.newAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
 		}
 	}

@@ -252,8 +252,8 @@ public class XmlSerializer {
 		element.appendChild(title);
 
 		Element eventOwner = new Element("owner");
-		if(event.getEventOwner() != null){
-			eventOwner.appendChild(event.getEventOwner().getUsername());
+		if(event.getEventOwnerString() != null){
+			eventOwner.appendChild(event.getEventOwnerString());
 			element.appendChild(eventOwner);
 		}
 		Element eventStart = new Element("event-start");

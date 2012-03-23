@@ -1,5 +1,6 @@
 package no.ntnu.g44.models;
 
+import java.awt.Color;
 import java.beans.EventSetDescriptor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -10,6 +11,8 @@ import java.net.ConnectException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import no.ntnu.g44.controllers.Main;
@@ -441,5 +444,20 @@ public class Project implements PropertyChangeListener {
 			}
 		}
 		return null;
+	}
+	public static HashMap<String, AttendanceStatusType> colourmap = new HashMap<String, AttendanceStatusType>();
+	public static Color getColor(Event e, Person p){
+		if(colourmap.get(p.getUsername() + "" + e.getEventID()) == null)return null;
+		return AttendanceStatusType.getColor(colourmap.get(p.getUsername() + "" + e.getEventID()));
+	}
+	
+	public static void updateStatus(Event e, Person p, AttendanceStatusType status){
+		colourmap.put(p.getUsername() + "" + e.getEventID(), status);
+	}
+	public static void updateStatus(int eID, String username, AttendanceStatusType status){
+		colourmap.put(username + "" + eID, status);
+	}
+	public static Collection<AttendanceStatusType> getAttendanceList(){
+		return colourmap.values();
 	}
 }

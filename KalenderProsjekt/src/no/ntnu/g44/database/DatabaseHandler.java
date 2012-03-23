@@ -66,7 +66,10 @@ public class DatabaseHandler {
 		}
 	}
 	
-	
+	/**
+	 * 
+	 * @return All the events from the database
+	 */
 	public ArrayList<Event> getEvents(){
 		//This is where the events are stored
 		ArrayList<Event> events = new ArrayList<Event>();

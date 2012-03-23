@@ -448,6 +448,7 @@ public class NewEventPanel extends JPanel {
 				//lagrer nytt event
 				Main.currentProject.addEvent(event, true);
 				
+				System.out.println(Main.currentProject.getEventById(event.getEventID()).getParticipantsStrings().size());
 				//lager notification for alle deltakere
 				for(Person person : event.getParticipants()){
 					try {
@@ -599,14 +600,16 @@ public class NewEventPanel extends JPanel {
 		public Component getListCellRendererComponent(
 				JList<? extends Person> list, Person value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			if (oldEvent == null)
-				return null;
-			Color color = AttendanceHelper.getColor(oldEvent, value);
-			JLabel personLabel = new JLabel(value.toString());
-			personLabel.setBackground(color);
-			personLabel.setOpaque(true);
+			if (oldEvent == null) {
+				return new JLabel(value.toString());
+			} else {
+				Color color = AttendanceHelper.getColor(oldEvent, value);
+				JLabel personLabel = new JLabel(value.toString());
+				personLabel.setBackground(color);
+				personLabel.setOpaque(true);
 
-			return personLabel;
+				return personLabel;
+			}
 		}
 
 	}

@@ -466,6 +466,11 @@ public class Project implements PropertyChangeListener {
 		return colourmap.values();
 	}
 	
+	/**
+	 * 
+	 * @param event
+	 * @return an ArrayList with all the attendance statuses associated with the input event
+	 */
 	public ArrayList<AttendanceStatus> getStatusToEvent(Event e){
 		ArrayList<AttendanceStatus> list = new ArrayList<AttendanceStatus>();
 		for(AttendanceStatus status : attendanceStatusList){

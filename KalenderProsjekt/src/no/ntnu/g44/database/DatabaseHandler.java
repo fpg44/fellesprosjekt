@@ -494,9 +494,6 @@ public class DatabaseHandler {
 	public void newAttendanceStatus(AttendanceStatus status){
 		try{
 			
-		ResultSet rs = stmt.executeQuery(arg0)
-			
-			
 			stmt.executeUpdate("INSERT INTO attends_at VALUES " +
 					"account_username ='" + status.getUsername() + "', " +
 					"event_id ='" + status.getEventID() + "', " +

@@ -229,9 +229,13 @@ public class Project implements PropertyChangeListener {
 				
 				//If Internet (A1, server and database is being used)
 				if(Main.usenet){
+					//Sender event til clienten
 					Main.client.newEvent(xmlSerializer.eventToXml(event));
 					
-					
+					//Sender alle statuser som tilhørere eventet til clienten
+					for(AttendanceStatus status : getStatusToEvent(event)){
+						Main.client.newAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
+					}
 				}
 				//If only XML to file is being used
 				else{
@@ -459,5 +463,15 @@ public class Project implements PropertyChangeListener {
 	}
 	public static Collection<AttendanceStatusType> getAttendanceList(){
 		return colourmap.values();
+	}
+	
+	public ArrayList<AttendanceStatus> getStatusToEvent(Event e){
+		ArrayList<AttendanceStatus> list = new ArrayList<AttendanceStatus>();
+		for(AttendanceStatus status : attendanceStatusList){
+			if(status.getEventID() == e.getEventID()){
+				list.add(status);
+			}
+		}
+		return list;
 	}
 }

@@ -1,6 +1,5 @@
 package no.ntnu.g44.gui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -444,27 +443,33 @@ public class NewEventPanel extends JPanel {
 			else if (e.getSource() == saveButton) {
 				if (oldEvent != null)
 					oldEvent.expired = true;
+				
 				Event event = createEvent();
 				
-				//lagrer nytt event
+				// save the new Event
 				Main.currentProject.addEvent(event, true);
 				
-				System.out.println(Main.currentProject.getEventById(event.getEventID()).getParticipantsStrings().size());
-				//lager notification for alle deltakere
-				for(Person person : event.getParticipants()){
+				// create Notifications for all participants
+				for (Person person : event.getParticipants()) {
 					try {
-						//setter alle participants til unanswered
-						Main.currentProject.addAttendanceStatus(new AttendanceStatus(person.getUsername(), event.getEventID(), AttendanceStatusType.UNANSWERED), true);
-					} catch (ConnectException e1) {
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						e1.printStackTrace();
+						// initialize to AttendanceStatusType.UNANSWERED
+						Main.currentProject.addAttendanceStatus(
+								new AttendanceStatus(person.getUsername(),
+										event.getEventID(),
+										AttendanceStatusType.UNANSWERED), true);
+					} catch (ConnectException ex) {
+						ex.printStackTrace();
+					} catch (IOException ex) {
+						ex.printStackTrace();
 					}
 				}
 				
-				//setter owner til eventet til attending
-				Main.currentProject.getStatus(event.getEventID(), event.getEventOwnerString()).setStatus(AttendanceStatusType.ATTENDING);
+				// the owner of the event should be ATTENDING
+				Main.currentProject.getStatus(event.getEventID(),
+						event.getEventOwnerString()).setStatus(
+								AttendanceStatusType.ATTENDING);
 			}
+			
 			closeWindow();
 		}
 	}

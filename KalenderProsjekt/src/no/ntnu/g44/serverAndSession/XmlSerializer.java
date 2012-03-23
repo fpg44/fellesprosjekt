@@ -327,6 +327,7 @@ public class XmlSerializer {
 
 		Element type = new Element("type");
 		type.appendChild(status.getStatus().toString());
+		element.appendChild(type);
 
 		return element;
 

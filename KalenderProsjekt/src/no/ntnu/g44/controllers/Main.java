@@ -31,7 +31,7 @@ public class Main {
 				System.out.println(currentProject.getPersonCount());
 				
 			} catch (IOException | ParseException | ParsingException e) {
-				
+				System.out.println("ERROR");
 				System.exit(0);
 			}
 		}

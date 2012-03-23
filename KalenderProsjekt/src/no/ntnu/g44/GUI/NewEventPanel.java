@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,7 +35,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -594,23 +594,22 @@ public class NewEventPanel extends JPanel {
 		public void mouseExited(MouseEvent e) { }
 	}
 
-	protected class ParticipantsRenderer implements ListCellRenderer<Person> {
+	protected class ParticipantsRenderer extends DefaultListCellRenderer {
 
 		@Override
 		public Component getListCellRendererComponent(
-				JList<? extends Person> list, Person value, int index,
+				JList list, Object value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			if (oldEvent == null) {
-				return new JLabel(value.toString());
-			} else {
-				Color color = AttendanceHelper.getColor(oldEvent, value);
-				JLabel personLabel = new JLabel(value.toString());
-				personLabel.setBackground(color);
-				personLabel.setOpaque(true);
-
-				return personLabel;
-			}
+			
+			super.getListCellRendererComponent(list, value, index, isSelected,
+					cellHasFocus);
+			
+			setText(value.toString());
+			if (oldEvent != null && !isSelected)
+				setBackground(AttendanceHelper.getColor(oldEvent,
+						(Person) value));
+			
+			return this;
 		}
-
 	}
 }

@@ -256,14 +256,14 @@ public class Server{
 		ArrayList<Notification> notifications = dbHandler.getNotifications();
 		if(notifications != null){
 			for(Notification notification: notifications){
-				project.addNotification(notification);
+				project.addNotification(notification, false);
 			}			
 		}
 
 		ArrayList<AttendanceStatus> attendanceStatus = dbHandler.getAttendanceStatus();
 		if(attendanceStatus != null){
 			for(AttendanceStatus status : attendanceStatus){
-				project.addAttendanceStatus(status);
+				project.addAttendanceStatus(status, false);
 			}
 		}
 

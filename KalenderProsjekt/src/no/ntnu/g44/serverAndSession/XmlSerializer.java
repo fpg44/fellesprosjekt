@@ -104,7 +104,7 @@ public class XmlSerializer {
 		Elements notificationElements = groupElement.getChildElements("notification");
 		for (int i = 0; i < notificationElements.size(); i++){
 			Element child = notificationElements.get(i);
-			aProject.addNotification(assembleNotification(child));
+			aProject.addNotification(assembleNotification(child), false);
 		}
 
 		Elements roomElements = groupElement.getChildElements("room");
@@ -116,7 +116,7 @@ public class XmlSerializer {
 		Elements attendanceStatusElements = groupElement.getChildElements("attendance-status");
 		for (int i = 0; i < attendanceStatusElements.size(); i++){
 			Element child = attendanceStatusElements.get(i);
-			aProject.addAttendanceStatus(assembleAttendanceStatus(child));
+			aProject.addAttendanceStatus(assembleAttendanceStatus(child), false);
 		}
 		return aProject;
 	}

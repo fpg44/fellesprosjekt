@@ -144,6 +144,9 @@ public class Server{
 		}
 	}
 
+	/**
+	 * open a connection with a client and speaks with it
+	 */
 	private void tryPacketParse(Connection con) throws ConnectException, IOException, ValidityException, ParseException, ParsingException {
 
 
@@ -224,15 +227,12 @@ public class Server{
 
 	}
 
-	protected void stopIncommingDatagramPacketParser(boolean b){
+	private void stopIncommingDatagramPacketParser(boolean b){
 		this.lookForIncommingDatagramPackets = b;
 	}
 
 	/**
-	 * 
-	 * @return Project file with all information from the database
-	 * @throws IOException 
-	 * @throws ConnectException 
+	 * @return returns a project file with all information from the database
 	 */
 	protected Project getDataFromDatabase() throws ConnectException, IOException{
 		project = new Project();
@@ -275,7 +275,7 @@ public class Server{
 		return project;
 	}
 
-	protected void updateAll(Project p){
+	private void updateAll(Project p){
 		ArrayList<Event> events = p.getEventList();
 		dbHandler.updateEvents(events);
 
@@ -286,39 +286,39 @@ public class Server{
 		dbHandler.updateAttendanceStatus(status);
 	}
 
-	protected void update(Event event){
+	private void update(Event event){
 		dbHandler.updateEvent(event);
 	}
 
-	protected void update(Notification notification){
+	private void update(Notification notification){
 		dbHandler.updateNotification(notification);
 	}
 
-	protected void update(AttendanceStatus status){
+	private void update(AttendanceStatus status){
 		dbHandler.updateAttendanceStatus(status);
 	}
 
-	protected void insert(Event event){
+	private void insert(Event event){
 		dbHandler.newEvent(event);
 	}
 
-	protected void insert(Notification notif){
+	private void insert(Notification notif){
 		dbHandler.newNotification(notif);
 	}
 
-	protected void insert(AttendanceStatus status){
+	private void insert(AttendanceStatus status){
 		dbHandler.newAttendanceStatus(status);
 	}
 
-	protected void delete(Event event){
+	private void delete(Event event){
 		dbHandler.deleteEvent(event);
 	}
 
-	protected void delete(Notification notif){
+	private void delete(Notification notif){
 		dbHandler.deleteNotification(notif);
 	}
 
-	protected void delete(AttendanceStatus status){
+	private void delete(AttendanceStatus status){
 		dbHandler.deleteAttendanceStatus(status);
 	}
 }

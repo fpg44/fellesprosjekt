@@ -178,7 +178,6 @@ public class Server{
 			message = message.replaceFirst("insert attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			insert( status );
-			System.out.println("JAJAJAJAJAJAJAJAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		}
 		//working:
 		else if(message.startsWith("update event")){

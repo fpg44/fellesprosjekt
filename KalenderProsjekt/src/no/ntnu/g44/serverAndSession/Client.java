@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 
 import org.xml.sax.InputSource;
 
+import no.ntnu.fp.net.cl.KtnDatagram.Flag;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Project;
@@ -56,7 +57,6 @@ public class Client {
 		connection = new ConnectionImpl(6564);
 		try {
 			connection.connect(InetAddress.getByName(serverIP), serverPort);
-			reciever.start();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -107,7 +107,9 @@ public class Client {
 
 		connection.send("delete attends_at" + e.toXML());
 	}
-
+	public void startListenin(){
+			reciever.start();
+	}
 	public Project getProject() throws ConnectException, IOException, ValidityException, ParseException, ParsingException{
 
 		connection.send("get all");

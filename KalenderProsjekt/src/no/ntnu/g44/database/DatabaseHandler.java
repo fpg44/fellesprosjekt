@@ -65,7 +65,7 @@ public class DatabaseHandler {
 			System.out.println("Failed to close database connection");
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return All the events from the database
@@ -73,19 +73,19 @@ public class DatabaseHandler {
 	public ArrayList<Event> getEvents(){
 		//This is where the events are stored
 		ArrayList<Event> events = new ArrayList<Event>();
-		
+
 		//This is where all the persons are stored
 		ArrayList<String> persons = new ArrayList<String>();
-		
+
 		//This is where the persons associated with each event will be stored
 		ArrayList<Person> tempPerson = getPersons();
-		
+
 		//This is where all the attendance statuses are stored
 		ArrayList<AttendanceStatus> tempStatus = getAttendanceStatus();
-		
+
 		try{
 			ResultSet rsE = stmt.executeQuery("SELECT event_id, owner_username, time_start, time_end, title, location, room_name FROM event");
-			
+
 			if(!rsE.first()){
 				return null;
 			}
@@ -98,7 +98,7 @@ public class DatabaseHandler {
 				Date dateEnd = rsE.getTimestamp(4);
 				String location = rsE.getString(6);
 				String roomname = rsE.getString(7);
-				
+
 				//Find all the associated persons to the current event
 				for(int i = 0; i<tempPerson.size(); i++){
 					for(int j = 0; j<tempStatus.size(); j++){
@@ -111,13 +111,13 @@ public class DatabaseHandler {
 				}
 				Event event = new Event(event_id, eventTitle, owner_username, persons, dateStart, dateEnd, location, roomname);
 				events.add(event);
-				
+
 			}while(rsE.next());
-			
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 		return events;
 	}
 
@@ -454,7 +454,8 @@ public class DatabaseHandler {
 		String end = sdf.format(e);
 
 		try{
-			stmt.executeUpdate("INSERT INTO event (owner_username, time_start, time_end, title, location, room_name) VALUES (" +
+			stmt.executeUpdate("INSERT INTO event (event_id, owner_username, time_start, time_end, title, location, room_name) VALUES (" +
+					"'" + event.getEventID() + "', " +
 					"'" + event.getEventOwnerString() + "', " +
 					"'" + start + "', " +
 					"'" + end + "', " +
@@ -492,12 +493,18 @@ public class DatabaseHandler {
 	 * @param status
 	 */
 	public void newAttendanceStatus(AttendanceStatus status){
-		try{
+		System.out.println("USERNAME IS : " + status.getUsername());
+		System.out.println("EVENT ID IS : " + status.getEventID());
+		System.out.println("STATUS   IS : " + status.getStatus().toString());
 
-			stmt.executeUpdate("INSERT INTO attends_at VALUES " +
-					"account_username ='" + status.getUsername() + "', " +
-					"event_id ='" + status.getEventID() + "', " +
-					"status ='" + status.getStatus().toString() + "'");
+		try{
+			
+			stmt.executeUpdate("INSERT INTO attends_at (account_username, event_id, status) VALUES (" +
+					"(SELECT account.username FROM account WHERE account.username ='" + status.getUsername()	+ "'), " +
+					"(SELECT event.event_id FROM event WHERE event.event_id ='" + status.getEventID() + "'), " +
+					"'" + status.getStatus().toString() + "'" +
+					")");
+
 
 		}catch(Exception e){
 

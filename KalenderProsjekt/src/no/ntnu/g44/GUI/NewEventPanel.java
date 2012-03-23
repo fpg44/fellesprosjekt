@@ -453,15 +453,17 @@ public class NewEventPanel extends JPanel {
 				for (Person person : event.getParticipants()) {
 					try {
 						// initialize to AttendanceStatusType.UNANSWERED
-						Main.currentProject.addAttendanceStatus(
-								new AttendanceStatus(person.getUsername(),
-										event.getEventID(),
-										AttendanceStatusType.UNANSWERED), true);
 						if(person.getUsername().equals(event.getEventOwnerString())){
 							Main.currentProject.addAttendanceStatus(
 									new AttendanceStatus(person.getUsername(),
 											event.getEventID(),
 											AttendanceStatusType.ATTENDING), true);
+						}
+						else{
+							Main.currentProject.addAttendanceStatus(
+									new AttendanceStatus(person.getUsername(),
+											event.getEventID(),
+											AttendanceStatusType.UNANSWERED), true);							
 						}
 					} catch (ConnectException ex) {
 						ex.printStackTrace();

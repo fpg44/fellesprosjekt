@@ -621,12 +621,9 @@ public class NewEventPanel extends JPanel {
 
 			setText(value.toString());
 			
-			if (oldEvent != null && !isSelected) {
-				AttendanceStatus status = Main.currentProject.getStatus(
-						oldEvent.getEventID(), ((Person) value).getUsername());
-				Color color = AttendanceStatusType.getColor(status.getStatus());
-				setBackground(color);
-			}
+			 if (oldEvent != null && !isSelected)
+				 setBackground(AttendanceHelper.getColor(oldEvent,
+						 (Person) value));
 
 			return this;
 		}

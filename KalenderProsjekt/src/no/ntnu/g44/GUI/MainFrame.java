@@ -16,7 +16,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,7 +42,6 @@ import no.ntnu.g44.controllers.NotificationController;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Person;
-import no.ntnu.g44.models.Project;
 
 public class MainFrame extends JPanel{
 	ListeningClass listener = new ListeningClass();
@@ -213,7 +211,12 @@ public class MainFrame extends JPanel{
 		editEvent.setSize(newEvent.getSize());
 		editEvent.setLocation(newEvent.getX(), newEvent.getY() + newEvent.getHeight());
 		if(calendar.getSelectedEvent() != null){
-			editEvent.setEnabled(true);
+			if (calendar.getSelectedEvent().getEventOwner() == Main
+					.currentProject.getLoggedInPerson()) {
+				editEvent.setEnabled(true);
+			} else {
+				editEvent.setEnabled(false);
+			}
 		}
 		else{
 			editEvent.setEnabled(false);
@@ -222,7 +225,12 @@ public class MainFrame extends JPanel{
 		deleteEvent.setLocation(newEvent.getX(), editEvent.getY() + editEvent.getHeight());
 		deleteEvent.setSize(newEvent.getSize());
 		if(calendar.getSelectedEvent() != null){
-			deleteEvent.setEnabled(true);
+			if (calendar.getSelectedEvent().getEventOwner() == Main
+					.currentProject.getLoggedInPerson()) {
+				deleteEvent.setEnabled(true);
+			} else {
+				deleteEvent.setEnabled(false);
+			}
 		}
 		else{
 			deleteEvent.setEnabled(false);

@@ -486,6 +486,6 @@ public class Project implements PropertyChangeListener {
 	}
 	
 	public int generateID(){
-		return generateID.nextInt(11);
+		return generateID.nextInt(999999999) + 1;
 	}
 }

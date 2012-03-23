@@ -50,6 +50,8 @@ public class Event {
 	 * no parameters
 	 */
 	public Event(){
+		
+		//Her må vi endre så den finner riktig ID osv.
 		eventDescription = "desc";
 		location = "somewhere";
 		participants = new ArrayList<Person>();

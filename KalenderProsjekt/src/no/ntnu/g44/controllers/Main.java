@@ -17,7 +17,7 @@ public class Main {
 	public static MainFrame currentMainFrame;
 	public static Client client;
 
-	public static final boolean usenet = false;
+	public static final boolean usenet = true;
 	/**
 	 * @param args
 	 */
@@ -29,7 +29,7 @@ public class Main {
 				client = new Client("78.91.11.62", 5545);
 				currentProject = client.getProject();
 				client.startListenin();//Start listening for server pushes after we've gotten the project.
-				System.out.println(currentProject.generateID());
+				System.out.println("IIIIIIIIIIIIIIIIIIIIIIIIID: " + currentProject.generateID());
 			} catch (IOException | ParseException | ParsingException e) {
 				System.out.println("ERROR");
 				System.exit(0);

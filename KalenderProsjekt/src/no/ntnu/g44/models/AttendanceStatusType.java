@@ -21,7 +21,7 @@ public enum AttendanceStatusType{
 		switch(type){
 			case ATTENDING 		: return Color.green;
 			case NOT_ATTENDING 	: return Color.red;
-			case UNANSWERED 	: return new Color(255, 255, 0, 200);
+			case UNANSWERED 	: return new Color(0xff, 0xff, 0x00, 0xaa);
 //			case UNANSWERED 	: return Color.white;
 			default 			: return null;
 		}

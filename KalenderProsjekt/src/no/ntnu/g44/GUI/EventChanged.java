@@ -43,7 +43,7 @@ public class EventChanged extends JPanel{
 	
 	public EventChanged(Event e){
 		newEvent = e;
-		oldEvent = new Event();
+		oldEvent = e;
 		ramme = new JFrame("Event changed");
 		ramme.setVisible(true);
 		ramme.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

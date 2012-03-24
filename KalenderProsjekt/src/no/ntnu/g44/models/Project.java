@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import no.ntnu.g44.controllers.Main;
+import no.ntnu.g44.controllers.NotificationController;
 import no.ntnu.g44.serverAndSession.FileStorage;
 import no.ntnu.g44.serverAndSession.Storage;
 import no.ntnu.g44.serverAndSession.XmlSerializer;
@@ -32,6 +33,8 @@ public class Project implements PropertyChangeListener {
 	
 	
 	private Random generateID = new Random();
+	
+	private NotificationController nc = new NotificationController();
 	
 	private XmlSerializer xmlSerializer = new XmlSerializer();
 	/**
@@ -488,4 +491,9 @@ public class Project implements PropertyChangeListener {
 	public int generateID(){
 		return generateID.nextInt(999999999) + 1;
 	}
+	
+	public void addNotificationToController(Notification n) {
+		nc.addNotification(n);
+	}
+	
 }

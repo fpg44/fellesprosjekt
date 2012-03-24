@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
-import no.ntnu.g44.models.AttendanceHelper;
+//import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
@@ -315,7 +315,7 @@ public class XmlSerializer {
 	}
 
 	public Element attendanceStatusToXml(AttendanceStatus status){
-		Element element = new Element("Attendance-status");
+		Element element = new Element("attendance-status");
 
 		Element username = new Element("username");
 		username.appendChild(status.getUsername());
@@ -327,15 +327,16 @@ public class XmlSerializer {
 
 		Element type = new Element("type");
 		type.appendChild(status.getStatus().toString());
+		element.appendChild(type);
 
 		return element;
 
 	}
 
 	public AttendanceStatus assembleAttendanceStatus(Element e){
-		String username = null;
+		String username = "";
 		int id = -1;
-		AttendanceStatusType type = null;
+		AttendanceStatusType type = AttendanceStatusType.ATTENDING;
 
 		Element element = e.getFirstChildElement("username");
 		if(element != null){
@@ -351,7 +352,9 @@ public class XmlSerializer {
 		if(element != null){
 			type = AttendanceStatusType.getType(element.getValue());
 		}
-		AttendanceHelper.updateStatus(id, username, type);
+		
+//		AttendanceHelper.updateStatus(id, username, type);
+		
 		return new AttendanceStatus(username, id, type);
 	}
 
@@ -366,6 +369,7 @@ public class XmlSerializer {
 		return null;
 	}
 
+	
 	public Notification assembleNotification(Element e){
 		int eventID = -1, notificationID = -1;
 		NotificationType type = null;

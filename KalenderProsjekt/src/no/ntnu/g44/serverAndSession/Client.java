@@ -139,7 +139,7 @@ public class Client {
 			Event e = xmlSerializer.toEvent(message);
 			Main.currentProject.addEvent(e, false);
 		}
-		else if(message.equals("insert attends_at")){
+		else if(message.startsWith("insert attends_at")){
 			//			message = message.replaceFirst("insert attends_at", "");
 			//			Event e = xmlSerializer.toEvent(message);
 			//			Main.currentProject.
@@ -152,18 +152,18 @@ public class Client {
 
 
 
-		else if(message.equals("update attends_at")){
+		else if(message.startsWith("update attends_at")){
 			//			message = message.replaceFirst("update attends_at", "");
 			//			Event e = xmlSerializer.toEvent(message);
 		}
 
-		else if(message.equals("delete event")){
+		else if(message.startsWith("delete event")){
 			//			message = message.replaceFirst("delete event", "");
 			//			Event e = xmlSerializer.toEvent(message);
 		}
 
 
-		else if(message.equals("delete attends_at")){
+		else if(message.startsWith("delete attends_at")){
 			//			message = message.replaceFirst("delete attends_at", "");
 			//			Event e = xmlSerializer.toEvent(message);
 		}

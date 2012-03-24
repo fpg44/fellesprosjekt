@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,7 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 
 import no.ntnu.g44.controllers.Main;
-import no.ntnu.g44.models.AttendanceHelper;
+import no.ntnu.g44.models.AttendanceStatus;
+import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 
@@ -78,7 +80,7 @@ public class EditEventPanel extends JPanel {
 		this.originalEvent = originalEvent;
 		
 		ownerLabel = new JLabel("Arranged by");
-		ownerNameLabel = new JLabel(originalEvent.getEventOwnerString());
+		ownerNameLabel = new JLabel(originalEvent.getEventOwner().toString());
 		fromLabel = new JLabel("From");
 		fromDateField = new JTextField(originalEvent.getEventStartTime()
 				.toString());
@@ -94,26 +96,29 @@ public class EditEventPanel extends JPanel {
 		descriptionText = new JTextArea(originalEvent.getEventDescription());
 		descriptionText.setEditable(false);
 		descriptionTextScroller = new JScrollPane(descriptionText);
-		
+
 		participantsListModel = new DefaultListModel<Person>();
-		for (Person person : originalEvent.getParticipants()){
-			if(person != eventOwner) participantsListModel.addElement(person);
-		}
+		for (Person person : originalEvent.getParticipants())
+			if (person != eventOwner)
+				participantsListModel.addElement(person);
 		participantsList = new JList<Person>(participantsListModel);
 		participantsList.setCellRenderer(new ParticipantsRenderer());
 		participantsListScroller = new JScrollPane(participantsList);
 		
 		originalEventParticipantsPanel = new JPanel();
-		originalEventParticipantsPanel.setBorder(BorderFactory.createTitledBorder(
-				"Participants"));
+		originalEventParticipantsPanel.setBorder(BorderFactory
+				.createTitledBorder("Participants"));
 		originalEventParticipantsPanel.add(participantsListScroller);
 		
 		originalEventInfoPanel = new JPanel(new GridBagLayout());
 		originalEventInfoPanel.setBorder(BorderFactory.createTitledBorder(
 				"Event information"));
+		Insets leftColumn = new Insets(0, 0, 0, 10);
+		Insets rightColumn = new Insets(0, 0, 0, 0);
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.WEST;
+		c.insets = leftColumn;
 		c.gridx = c.gridy = 0;
 		originalEventInfoPanel.add(ownerLabel, c);
 		c.gridy = 1;
@@ -125,6 +130,7 @@ public class EditEventPanel extends JPanel {
 		c.gridy = 4;
 		originalEventInfoPanel.add(descriptionLabel, c);
 		c.anchor = GridBagConstraints.EAST;
+		c.insets = rightColumn;
 		c.gridx = 1;
 		c.gridy = 0;
 		originalEventInfoPanel.add(ownerNameLabel, c);
@@ -184,7 +190,9 @@ public class EditEventPanel extends JPanel {
 		public Component getListCellRendererComponent(
 				JList<? extends Person> list, Person value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			Color color = AttendanceHelper.getColor(originalEvent, value);
+			AttendanceStatus status = Main.currentProject.getStatus(
+					originalEvent.getEventID(), value.getUsername());
+			Color color = AttendanceStatusType.getColor(status.getStatus());
 			JLabel personLabel = new JLabel(value.toString());
 			personLabel.setBackground(color);
 			personLabel.setOpaque(true);

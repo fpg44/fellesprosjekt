@@ -1,6 +1,5 @@
 package no.ntnu.g44.gui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,6 +21,7 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,14 +34,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultCaret;
 
 import no.ntnu.g44.controllers.Main;
-import no.ntnu.g44.models.AttendanceHelper;
+//import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
@@ -125,10 +124,11 @@ public class NewEventPanel extends JPanel {
 			for (Person person : oldEvent.getParticipants()) {
 				if (person == this.eventOwner)
 					continue;
-				if (!participantsModel.contains(person))
+				if (!participantsModel.contains(person)
+						&& personsModel.contains(person)) {
 					participantsModel.addElement(person);
-				if (personsModel.contains(person))
 					personsModel.removeElement(person);
+				}
 			}
 		}
 	}
@@ -333,23 +333,25 @@ public class NewEventPanel extends JPanel {
 			}
 	}
 
-	private void removePersons() {
+	private void removeParticipants() {
 		List<Person> persons = invitedList.getSelectedValuesList();
 		for (Person person : persons) {
-			if (participantsModel.contains(person))
+			if (participantsModel.contains(person)
+					&& !personsModel.contains(person)) {
 				participantsModel.removeElement(person);
-			if (!personsModel.contains(person))
 				personsModel.addElement(person);
+			}
 		}
 	}
 
 	private void addParticipants() {
 		List<Person> persons = searchList.getSelectedValuesList();
 		for (Person person : persons) {
-			if (!participantsModel.contains(person))
+			if (!participantsModel.contains(person)
+					&& personsModel.contains(person)) {
 				participantsModel.addElement(person);
-			if (personsModel.contains(person))
 				personsModel.removeElement(person);
+			}
 		}
 	}
 
@@ -364,8 +366,8 @@ public class NewEventPanel extends JPanel {
 		Date eventEndTime = endTimeModel.getDate();
 		String location = customLocation.getText();
 		String roomName = ((Room) this.location.getSelectedItem()).getRoomName();
-
-		return new Event(-1, eventTitle, eventOwner, participants,
+		int id = Main.currentProject.generateID();
+		return new Event(id, eventTitle, eventOwner, participants,
 				eventStartTime, eventEndTime, location, roomName);
 	}
 
@@ -443,27 +445,42 @@ public class NewEventPanel extends JPanel {
 			else if (e.getSource() == saveButton) {
 				if (oldEvent != null)
 					oldEvent.expired = true;
+
 				Event event = createEvent();
-				
-				//lagrer nytt event
+
+				// save the new Event
 				Main.currentProject.addEvent(event, true);
-				
-				System.out.println(Main.currentProject.getEventById(event.getEventID()).getParticipantsStrings().size());
-				//lager notification for alle deltakere
-				for(Person person : event.getParticipants()){
+
+				// create Notifications for all participants
+				for (Person person : event.getParticipants()) {
 					try {
-						//setter alle participants til unanswered
-						Main.currentProject.addAttendanceStatus(new AttendanceStatus(person.getUsername(), event.getEventID(), AttendanceStatusType.UNANSWERED), true);
-					} catch (ConnectException e1) {
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						e1.printStackTrace();
+						// initialize to AttendanceStatusType.UNANSWERED
+						if (person.getUsername().equals(
+								event.getEventOwnerString())) {
+							Main.currentProject.addAttendanceStatus(
+									new AttendanceStatus(person.getUsername(),
+											event.getEventID(),
+											AttendanceStatusType.ATTENDING),
+											true);
+						} else {
+							Main.currentProject.addAttendanceStatus(
+									new AttendanceStatus(person.getUsername(),
+											event.getEventID(),
+											AttendanceStatusType.UNANSWERED),
+											true);							
+						}
+					} catch (ConnectException ex) {
+						ex.printStackTrace();
+					} catch (IOException ex) {
+						ex.printStackTrace();
 					}
 				}
-				
-				//setter owner til eventet til attending
-				Main.currentProject.getStatus(event.getEventID(), event.getEventOwnerString()).setStatus(AttendanceStatusType.ATTENDING);
+				// the owner of the event should be ATTENDING
+				Main.currentProject.getStatus(event.getEventID(),
+						event.getEventOwnerString()).setStatus(
+								AttendanceStatusType.ATTENDING);
 			}
+
 			closeWindow();
 		}
 	}
@@ -486,7 +503,7 @@ public class NewEventPanel extends JPanel {
 			} else if (e.getSource() == invitedList
 					&& (e.getKeyCode() == KeyEvent.VK_BACK_SPACE
 					|| e.getKeyCode() == KeyEvent.VK_DELETE)) {
-				removePersons();
+				removeParticipants();
 			} else if (e.getSource() == searchField) {
 				if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 					shiftKeyPressed = true;
@@ -548,12 +565,13 @@ public class NewEventPanel extends JPanel {
 				}
 
 				query = query.toLowerCase();
-				personsModel.removeAllElements();
+				personsModel.clear();
 				for (Map.Entry<String, String> entry : persons.entrySet()) {
 					String name = entry.getValue().toLowerCase();
 					if (name.startsWith(query) || name.equals(query)) {
 						Person p = Person.findPersonByUsername(entry.getKey());
-						if (!participantsModel.contains(p))
+						if (!participantsModel.contains(p)
+								&& !personsModel.contains(p))
 							personsModel.addElement(p);
 					}
 				}
@@ -577,13 +595,13 @@ public class NewEventPanel extends JPanel {
 				addParticipants();			
 			} else if (e.getSource() == removePersonFromParticipantsListLabel
 					&& invitedList.getSelectedValue() != null) {
-				removePersons();
+				removeParticipants();
 			} else if (e.getSource() == searchField) {
 				searchField.selectAll();
 			} else if (e.getSource() == searchList && e.getClickCount() == 2) {
 				addParticipants();
 			} else if (e.getSource() == invitedList && e.getClickCount() == 2) {
-				removePersons();
+				removeParticipants();
 			}
 		}
 
@@ -594,23 +612,23 @@ public class NewEventPanel extends JPanel {
 		public void mouseExited(MouseEvent e) { }
 	}
 
-	protected class ParticipantsRenderer implements ListCellRenderer<Person> {
+	protected class ParticipantsRenderer extends DefaultListCellRenderer {
 
 		@Override
 		public Component getListCellRendererComponent(
-				JList<? extends Person> list, Person value, int index,
+				JList list, Object value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			if (oldEvent == null) {
-				return new JLabel(value.toString());
-			} else {
-				Color color = AttendanceHelper.getColor(oldEvent, value);
-				JLabel personLabel = new JLabel(value.toString());
-				personLabel.setBackground(color);
-				personLabel.setOpaque(true);
 
-				return personLabel;
-			}
+			super.getListCellRendererComponent(list, value, index, isSelected,
+					cellHasFocus);
+
+			setText(value.toString());
+			
+			 if (oldEvent != null && !isSelected)
+				 setBackground(AttendanceStatusType.getColor(Main.currentProject.getStatus(oldEvent.getEventID(), ((Person) value).getUsername()).getStatus()));
+//				 setBackground(AttendanceHelper.getColor(oldEvent,(Person) value));
+
+			return this;
 		}
-
 	}
 }

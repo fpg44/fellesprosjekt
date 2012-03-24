@@ -3,6 +3,8 @@ package no.ntnu.g44.models;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import no.ntnu.g44.controllers.Main;
+
 public class Notification {
 	
 	private String message;
@@ -23,6 +25,7 @@ public class Notification {
 	}
 	*/
 	/**
+	 * DO NOT USE THIS CONSTRUCTOR USE Notification(int, type)
 	 * The notification constructor with all fields
 	 * @param notificationID
 	 * @param username
@@ -36,6 +39,10 @@ public class Notification {
 		this.type = type;
 		
 		pcs = new PropertyChangeSupport(this);
+	}
+	
+	public Notification(int eventId, NotificationType type){
+		this(Main.currentProject.generateID(), eventId, type);
 	}
 
 	public int getNotificationID() {

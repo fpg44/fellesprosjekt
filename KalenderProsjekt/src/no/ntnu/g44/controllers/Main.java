@@ -29,10 +29,8 @@ public class Main {
 				client = new Client("78.91.11.62", 5545);
 				currentProject = client.getProject();
 				client.startListenin();//Start listening for server pushes after we've gotten the project.
-				System.out.println(currentProject.getPersonCount());
-				
 			} catch (IOException | ParseException | ParsingException e) {
-				System.out.println("ERROR");
+				e.printStackTrace();
 				System.exit(0);
 			}
 		}

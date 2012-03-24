@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.serverAndSession.FileStorage;
@@ -28,6 +29,9 @@ import no.ntnu.g44.serverAndSession.XmlSerializer;
  *
  */
 public class Project implements PropertyChangeListener {
+	
+	
+	private Random generateID = new Random();
 	
 	private XmlSerializer xmlSerializer = new XmlSerializer();
 	/**
@@ -449,22 +453,22 @@ public class Project implements PropertyChangeListener {
 		}
 		return null;
 	}
-	public static HashMap<String, AttendanceStatusType> colourmap = new HashMap<String, AttendanceStatusType>();
-	public static Color getColor(Event e, Person p){
-		if(colourmap.get(p.getUsername() + "" + e.getEventID()) == null)return AttendanceStatusType.getColor(AttendanceStatusType.UNANSWERED);
-		System.out.println(colourmap.get(p.getUsername() + e.getEventID()));
-		return AttendanceStatusType.getColor(colourmap.get(p.getUsername() + "" + e.getEventID()));
-	}
-	
-	public static void updateStatus(Event e, Person p, AttendanceStatusType status){
-		colourmap.put(p.getUsername() + "" + e.getEventID(), status);
-	}
-	public static void updateStatus(int eID, String username, AttendanceStatusType status){
-		colourmap.put(username + "" + eID, status);
-	}
-	public static Collection<AttendanceStatusType> getAttendanceList(){
-		return colourmap.values();
-	}
+//	public static HashMap<String, AttendanceStatusType> colourmap = new HashMap<String, AttendanceStatusType>();
+//	public static Color getColor(Event e, Person p){
+//		if(colourmap.get(p.getUsername() + "" + e.getEventID()) == null)return AttendanceStatusType.getColor(AttendanceStatusType.UNANSWERED);
+//		System.out.println(colourmap.get(p.getUsername() + e.getEventID()));
+//		return AttendanceStatusType.getColor(colourmap.get(p.getUsername() + "" + e.getEventID()));
+//	}
+//	
+//	public static void updateStatus(Event e, Person p, AttendanceStatusType status){
+//		colourmap.put(p.getUsername() + "" + e.getEventID(), status);
+//	}
+//	public static void updateStatus(int eID, String username, AttendanceStatusType status){
+//		colourmap.put(username + "" + eID, status);
+//	}
+//	public static Collection<AttendanceStatusType> getAttendanceList(){
+//		return colourmap.values();
+//	}
 	
 	/**
 	 * 
@@ -479,5 +483,9 @@ public class Project implements PropertyChangeListener {
 			}
 		}
 		return list;
+	}
+	
+	public int generateID(){
+		return generateID.nextInt(999999999) + 1;
 	}
 }

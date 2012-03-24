@@ -16,7 +16,9 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import no.ntnu.g44.controllers.Main;
-import no.ntnu.g44.models.AttendanceHelper;
+//import no.ntnu.g44.models.AttendanceHelper;
+import no.ntnu.g44.models.AttendanceStatus;
+import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Person;
 
@@ -119,7 +121,16 @@ public class EventInfoPanel extends JPanel{
 	public class colourListCellRenderer extends DefaultListCellRenderer {
 	     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 	         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+<<<<<<< HEAD
 	         c.setBackground(Main.currentProject.getColor(event, (Person) value));
+=======
+//	         c.setBackground(Main.currentProject.getColor(event, (Person) value));
+	         
+	         AttendanceStatus status = Main.currentProject.getStatus(event.getEventID(), ((Person)value).getUsername());
+	         AttendanceStatusType statusType = status.getStatus();
+	         c.setBackground(AttendanceStatusType.getColor(statusType));
+//	         AttendanceStatusType.getColor(Main.currentProject.getAttendanceStatusList().get(2).getStatus());
+>>>>>>> 9c85f51a6310d9479133a49f38be4a4864756c33
 	         return c;
 	     }
 	}

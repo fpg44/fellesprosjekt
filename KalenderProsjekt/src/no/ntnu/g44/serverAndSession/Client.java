@@ -136,8 +136,8 @@ public class Client {
 	private void parseInput(String message) throws IOException, ParseException, ParsingException {
 
 		//Creates a new event invitation
-		if (message.startsWith("INVITATION")) {
-			message.replaceFirst("INVITATION", "");
+		if (message.startsWith("invitation")) {
+			message.replaceFirst("invitation", "");
 			Notification notif = xmlSerializer.toNotification(message);
 			Main.currentProject.addNotificationToController(notif);
 		}

@@ -31,15 +31,10 @@ import no.ntnu.g44.serverAndSession.XmlSerializer;
  */
 public class Project implements PropertyChangeListener {
 
-
 	private Random generateID = new Random();
-<<<<<<< HEAD
 
-=======
-	
 	private NotificationController nc = new NotificationController();
 	
->>>>>>> ce45a455e6ffd992d9095b66f4fa3988f4407149
 	private XmlSerializer xmlSerializer = new XmlSerializer();
 	/**
 	 * the one that is logged in.
@@ -483,22 +478,6 @@ public class Project implements PropertyChangeListener {
 		}
 		return null;
 	}
-	//	public static HashMap<String, AttendanceStatusType> colourmap = new HashMap<String, AttendanceStatusType>();
-	//	public static Color getColor(Event e, Person p){
-	//		if(colourmap.get(p.getUsername() + "" + e.getEventID()) == null)return AttendanceStatusType.getColor(AttendanceStatusType.UNANSWERED);
-	//		System.out.println(colourmap.get(p.getUsername() + e.getEventID()));
-	//		return AttendanceStatusType.getColor(colourmap.get(p.getUsername() + "" + e.getEventID()));
-	//	}
-	//	
-	//	public static void updateStatus(Event e, Person p, AttendanceStatusType status){
-	//		colourmap.put(p.getUsername() + "" + e.getEventID(), status);
-	//	}
-	//	public static void updateStatus(int eID, String username, AttendanceStatusType status){
-	//		colourmap.put(username + "" + eID, status);
-	//	}
-	//	public static Collection<AttendanceStatusType> getAttendanceList(){
-	//		return colourmap.values();
-	//	}
 
 	/**
 	 * 
@@ -519,7 +498,6 @@ public class Project implements PropertyChangeListener {
 		return generateID.nextInt(999999999) + 1;
 	}
 	
-<<<<<<< HEAD
 	public Notification getNotification(int event_id){
 		for(Notification n : notificationList){
 			if(n.getEventID() == event_id){
@@ -528,10 +506,8 @@ public class Project implements PropertyChangeListener {
 		}
 		return null;
 	}
-=======
 	public void addNotificationToController(Notification n) {
 		nc.addNotification(n);
 	}
 	
->>>>>>> ce45a455e6ffd992d9095b66f4fa3988f4407149
 }

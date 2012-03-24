@@ -474,9 +474,10 @@ public class DatabaseHandler {
 
 		try{
 
-			stmt.executeUpdate("INSERT INTO notification VALUES" +
-					"event_id = '" + notification.getEventID() + "', " +
-					"type = '" + notification.getType().toString() + "'");
+			stmt.executeUpdate("INSERT INTO notification (notif_id, event_id, type) VALUES " +
+					"'" + notification.getNotificationID() + "', " +
+					"'" + notification.getEventID() + "', " +
+					"'" + notification.getType().toString() + "'");
 		}catch( Exception e ){
 
 			e.printStackTrace();

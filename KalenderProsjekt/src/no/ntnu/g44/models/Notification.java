@@ -47,9 +47,11 @@ public class Notification {
 	}
 
 	public Notification(int eventId, NotificationType type){
-//		this(Main.currentProject.generateID(), eventId, type);
-		System.out.println("IS THIS NULL? " + eventId);
-		System.out.println("IS THIS NULL? " + type.toString());
+		this.notificationID = Main.currentProject.generateID();
+		this.eventID = eventId;
+		this.type = type;
+		
+		pcs = new PropertyChangeSupport(this);
 	}
 
 	public int getNotificationID() {

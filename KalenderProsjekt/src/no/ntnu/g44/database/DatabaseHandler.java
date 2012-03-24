@@ -474,10 +474,10 @@ public class DatabaseHandler {
 
 		try{
 
-			stmt.executeUpdate("INSERT INTO notification (notif_id, event_id, type) VALUES " +
+			stmt.executeUpdate("INSERT INTO notification (notif_id, event_id, type) VALUES (" +
 					"'" + notification.getNotificationID() + "', " +
 					"'" + notification.getEventID() + "', " +
-					"'" + notification.getType().toString() + "'");
+					"'" + notification.getType().toString() + "')");
 		}catch( Exception e ){
 
 			e.printStackTrace();

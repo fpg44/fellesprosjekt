@@ -135,7 +135,13 @@ public class Client {
 	}
 	private void parseInput(String message) throws IOException, ParseException, ParsingException {
 
-		if(message.startsWith("insert event")){
+		//Creates a new event invitation
+		if (message.startsWith("INVITATION")) {
+			message.replaceFirst("INVITATION", "");
+			Notification notif = xmlSerializer.toNotification(message);
+			Main.currentProject.addNotificationToController(notif);
+		}
+		else if(message.startsWith("insert event")){
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
 			Main.currentProject.addEvent(e, false);
@@ -143,19 +149,6 @@ public class Client {
 		else if(message.startsWith("NOT_ATTENDING")){
 			
 			message = message.replaceFirst("NOT_ATTENDING", "");
-			Notification notif = xmlSerializer.toNotification(message);
-			Main.currentProject.addNotificationToController(notif);
-			
-			
-			//			message = message.replaceFirst("insert attends_at", "");
-			//			Event e = xmlSerializer.toEvent(message);
-			//			Main.currentProject.
-		}
-		
-		
-		//Creates a new event invitation
-		else if (message.startsWith("INVITATION")) {
-			message.replaceFirst("INVITATION", "");
 			Notification notif = xmlSerializer.toNotification(message);
 			Main.currentProject.addNotificationToController(notif);
 		}

@@ -199,8 +199,9 @@ public class XmlSerializer {
 		return assembleEvent(doc.getRootElement());
 	}
 
-	public Notification toNotification(String xml) throws ValidityException, ParsingException, IOException{
+	public Notification toNotification(String xml) throws ValidityException, ParsingException, IOException {
 		nu.xom.Builder parser = new nu.xom.Builder(false);
+		System.out.println("løkafjsdøkljadskløafjløkdsjfølaksdfjløkadjsflkøadjsfkladlkfj" + xml);
 		nu.xom.Document doc = parser.build(xml, "");
 		return assembleNotification(doc.getRootElement());
 	}

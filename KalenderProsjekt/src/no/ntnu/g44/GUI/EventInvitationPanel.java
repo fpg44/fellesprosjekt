@@ -4,7 +4,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.ConnectException;
 import java.util.Date;
+import no.ntnu.g44.controllers.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -12,8 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import no.ntnu.g44.models.Event;
-import no.ntnu.g44.models.Person;
+import no.ntnu.g44.models.*;
 
 public class EventInvitationPanel extends AbstractPanelClass {
 	
@@ -71,13 +73,17 @@ public class EventInvitationPanel extends AbstractPanelClass {
 		frame.setVisible(true);		
 	}
 	
-	//For testing purposes
-	public static void main(String[] args) {
-
-		Person person = new Person("Jeppe Eriksen", "jeppeer@gmail.com");
-		Event newEvent = new Event(1, "MIXER! \n�rets event! Sykt kult! blalbalbalba", person, null, new Date(2012,3,15,11,15),
-				new Date(2012,3,15,13,6), "G138" ,null);
-		EventInvitationPanel e = new EventInvitationPanel(newEvent);
+//	//For testing purposes
+//	public static void main(String[] args) {
+//
+//		Person person = new Person("Jeppe Eriksen", "jeppeer@gmail.com");
+//		Event newEvent = new Event(1, "MIXER! \n�rets event! Sykt kult! blalbalbalba", person, null, new Date(2012,3,15,11,15),
+//				new Date(2012,3,15,13,6), "G138" ,null);
+//		EventInvitationPanel e = new EventInvitationPanel(newEvent);
+//	}
+	
+	private Event getEvent(){
+		return this.event;
 	}
 	
 	class ButtonListener implements ActionListener {
@@ -85,10 +91,25 @@ public class EventInvitationPanel extends AbstractPanelClass {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == yesButton) {
-				//Her m� det legges til slik at eventet legges til p� personen
+				try {
+					//Removes the Notification from the notification Array in currentProject
+					Main.currentProject.removeNotification(Main.currentProject.getNotification(getEvent().getEventID()));
+				
+				} catch (ConnectException e1) {
+					
+					e1.printStackTrace();
+					
+				} catch (IOException e1) {
+					
+					e1.printStackTrace();
+					
+				}
 				closeWindow();
 			}
 			else if (e.getSource() == noButton) {
+				
+				//Participant declined, all users will get notified
+				Main.currentProject.getNotification(getEvent().getEventID()).setType(NotificationType.PARTICIPANT_DECLINED);
 				closeWindow();
 			}
 			else if (e.getSource() == cancelButton) {

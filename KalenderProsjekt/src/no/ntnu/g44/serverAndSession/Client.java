@@ -18,6 +18,7 @@ import org.xml.sax.InputSource;
 import no.ntnu.fp.net.cl.KtnDatagram.Flag;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.Event;
+import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.Project;
 import no.ntnu.g44.net.co.Connection;
 import no.ntnu.g44.net.co.ConnectionImpl;
@@ -139,37 +140,28 @@ public class Client {
 			Event e = xmlSerializer.toEvent(message);
 			Main.currentProject.addEvent(e, false);
 		}
-		else if(message.startsWith("insert attends_at")){
+		else if(message.startsWith("NOT_ATTENDING")){
+			
+			message = message.replaceFirst("NOT_ATTENDING", "");
+			Notification notif = xmlSerializer.toNotification(message);
+			Main.currentProject.addNotificationToController(notif);
+			
+			
 			//			message = message.replaceFirst("insert attends_at", "");
 			//			Event e = xmlSerializer.toEvent(message);
 			//			Main.currentProject.
 		}
-		//working:
-		else if(message.startsWith("update event")){
-			//			message = message.replaceFirst("update event", "");
-			//			Event e = xmlSerializer.toEvent(message);
+		
+		
+		//Creates a new event invitation
+		else if (message.startsWith("INVITATION")) {
+			message.replaceFirst("INVITATION", "");
+			Notification notif = xmlSerializer.toNotification(message);
+			Main.currentProject.addNotificationToController(notif);
 		}
-
-
-
-		else if(message.startsWith("update attends_at")){
-			//			message = message.replaceFirst("update attends_at", "");
-			//			Event e = xmlSerializer.toEvent(message);
-		}
-
-		else if(message.startsWith("delete event")){
-			//			message = message.replaceFirst("delete event", "");
-			//			Event e = xmlSerializer.toEvent(message);
-		}
-
-
-		else if(message.startsWith("delete attends_at")){
-			//			message = message.replaceFirst("delete attends_at", "");
-			//			Event e = xmlSerializer.toEvent(message);
-		}
-
-
 	}
+	
+	
 	private void inputLoop() {
 		while(true){
 			try {

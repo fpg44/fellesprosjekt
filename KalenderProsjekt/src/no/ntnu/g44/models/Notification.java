@@ -47,10 +47,9 @@ public class Notification {
 	}
 
 	public Notification(int eventId, NotificationType type){
-		this(Main.currentProject.generateID(), eventId, type);
+//		this(Main.currentProject.generateID(), eventId, type);
 		System.out.println("IS THIS NULL? " + eventId);
 		System.out.println("IS THIS NULL? " + type.toString());
-		System.out.println("IS THIS NULL? " + this.eventID);
 	}
 
 	public int getNotificationID() {

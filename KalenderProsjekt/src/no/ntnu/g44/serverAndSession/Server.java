@@ -10,6 +10,7 @@ import no.ntnu.g44.database.DatabaseHandler;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Notification;
+import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Project;
 import no.ntnu.g44.models.Room;
@@ -137,8 +138,7 @@ public class Server{
 	/**
 	 * When some changes are done in the calendar-application, this will notify the other online users.
 	 */
-	private  void notfyOnlineListeners(String msg,Connection exception){
-		//obs! make sure it filters the connection with the associated event
+	private void notifyOnlineListeners(String msg, Connection exception){
 		for (ConnectionToAClient con: connections) {
 			con.push(msg, exception);
 		}
@@ -160,7 +160,7 @@ public class Server{
 		}
 		//working:
 		else if(message.startsWith("insert event")){
-			notfyOnlineListeners(message, con);
+//			notifyOnlineListeners(message, con);
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
 			insert( e );
@@ -174,14 +174,25 @@ public class Server{
 		}
 
 		else if(message.startsWith("insert attends_at")){
-			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("insert attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			insert( status );
+			
+			//CREATES A NOTIFICATION
+			if(status.getStatus().toString().equals("NOT_ATTENDING")){
+				Notification notification = new Notification(status.getEventID(), NotificationType.PARTICIPANT_DECLINED);
+	
+				//Sends the notification to all online clients
+				String msg = xmlSerializer.notificationToXml(notification).toXML();
+				notifyOnlineListeners("NOT_ATTENDING" + msg, con);
+				
+				//Inserts the notification into the database
+				insert( notification );
+			}
 		}
 		//working:
 		else if(message.startsWith("update event")){
-			notfyOnlineListeners(message, con);
+//			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("update event", "");
 			Event e = xmlSerializer.toEvent(message);
 			update( e );
@@ -195,15 +206,14 @@ public class Server{
 		}
 
 		else if(message.startsWith("update attends_at")){
-			notfyOnlineListeners(message, con);
+//			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("update attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			update( status );
-			
 		}
 
 		else if(message.startsWith("delete event")){
-			notfyOnlineListeners(message, con);
+//			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("delete event", "");
 			Event e = xmlSerializer.toEvent(message);
 			delete( e );
@@ -217,7 +227,7 @@ public class Server{
 		}
 
 		else if(message.startsWith("delete attends_at")){
-			notfyOnlineListeners(message, con);
+//			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("delete attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			delete( status );

@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import no.ntnu.g44.controllers.Main;
+import no.ntnu.g44.controllers.NotificationController;
 import no.ntnu.g44.serverAndSession.FileStorage;
 import no.ntnu.g44.serverAndSession.Storage;
 import no.ntnu.g44.serverAndSession.XmlSerializer;
@@ -29,9 +30,10 @@ import no.ntnu.g44.serverAndSession.XmlSerializer;
  *
  */
 public class Project implements PropertyChangeListener {
-	
-	
+
 	private Random generateID = new Random();
+
+	private NotificationController nc = new NotificationController();
 	
 	private XmlSerializer xmlSerializer = new XmlSerializer();
 	/**
@@ -42,23 +44,23 @@ public class Project implements PropertyChangeListener {
 	 * The member variable storing all registered {@link Person} objects.
 	 */
 	private ArrayList<Person> personList;
-	
-	
+
+
 	/**
 	 * All events
 	 */
 	private ArrayList<Event> eventList; 
-	
+
 	/**
 	 * All rooms
 	 */
 	private ArrayList<Room> roomList;
-	
+
 	/**
 	 * All notifications
 	 */
 	private ArrayList<Notification> notificationList;
-	
+
 	/**
 	 * All attendance statuses to the participants
 	 */
@@ -68,10 +70,10 @@ public class Project implements PropertyChangeListener {
 	 * the <code>Project</code> class.
 	 */
 	private java.beans.PropertyChangeSupport propChangeSupp;
-	
+
 	private Storage storage;
-	
-	
+
+
 	/**
 	 * Default constructor.  Must be called to initialise the object's member variables.
 	 */
@@ -82,10 +84,10 @@ public class Project implements PropertyChangeListener {
 		notificationList = new ArrayList<Notification>();
 		roomList = new ArrayList<Room>();
 		attendanceStatusList = new ArrayList<AttendanceStatus>();
-		
+
 		storage = new FileStorage();
 	}
-	
+
 	/**
 	 * Returns the number of {@linkplain #addPerson(Person) <code>Person</code> objects
 	 * registered} with this class.
@@ -95,11 +97,11 @@ public class Project implements PropertyChangeListener {
 	public int getPersonCount() {
 		return personList.size();
 	}
-	
+
 	public int getEventCount(){
 		return eventList.size();
 	}
-	
+
 	/**
 	 * Returns the {@link Person} object at the specified position in the list.
 	 * 
@@ -110,11 +112,11 @@ public class Project implements PropertyChangeListener {
 	public Person getPerson(int i) {
 		return personList.get(i);
 	}
-	
+
 	public Event getEvent(int i){
 		return eventList.get(i);
 	}
-	
+
 	/**
 	 * This is used when i.e viewing changed-event
 	 * @param id
@@ -128,7 +130,7 @@ public class Project implements PropertyChangeListener {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns the index of the first occurrence of the specified object, or 
 	 * -1 if the list does not contain this object.
@@ -156,19 +158,19 @@ public class Project implements PropertyChangeListener {
 	public Iterator<Event> eventIterator(){
 		return eventList.iterator();
 	}
-	
+
 	public Iterator<Notification> notificationIterator(){
 		return notificationList.iterator();
 	}
-	
+
 	public Iterator<Room> roomIterator(){
 		return roomList.iterator();
 	}
-	
+
 	public Iterator<AttendanceStatus> attendanseStaturIterator(){
 		return attendanceStatusList.iterator();
 	}
-	
+
 	/**
 	 * WARNING: USE ONLY FOR READING!!
 	 * @return the raw ArrayList
@@ -176,23 +178,23 @@ public class Project implements PropertyChangeListener {
 	public ArrayList<Event> getEventList(){
 		return eventList;
 	}
-	
+
 	public ArrayList<Person> getPersonList(){
 		return personList;
 	}
-	
+
 	public ArrayList<Notification> getNotificationList(){
 		return notificationList;
 	}
-	
+
 	public ArrayList<Room> getRoomList(){
 		return roomList;
 	}
-	
+
 	public ArrayList<AttendanceStatus> getAttendanceStatusList(){
 		return attendanceStatusList;
 	}
-	
+
 	/**
 	 * Adds a new {@link Person} object to the <code>Project</code>.<P>
 	 * 
@@ -225,17 +227,17 @@ public class Project implements PropertyChangeListener {
 		eventList.add(event);
 		event.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("event", null, event);
-		
+
 		try {
 			//true if the event shall be added to XML/database
 			//false if the event only should be added to eventList
 			if(save){
-				
+
 				//If Internet (A1, server and database is being used)
 				if(Main.usenet){
 					//Sender event til clienten
 					Main.client.newEvent(xmlSerializer.eventToXml(event));
-					
+
 					//Sender alle statuser som tilhørere eventet til clienten
 					for(AttendanceStatus status : getStatusToEvent(event)){
 						Main.client.newAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
@@ -246,38 +248,43 @@ public class Project implements PropertyChangeListener {
 					String cuPath = new File(".").getAbsolutePath();
 					storage.save(new URL("file://"+cuPath+"/project.xml"), this);					
 				}
+
+				//SEND INVITATION NOTIFICATION TO ONLINE USERS
+				Main.client.newNotification(xmlSerializer.notificationToXml(
+						new Notification(event.getEventID(), NotificationType.EVENT_INVITATION)));
+
 			}
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void addRoom(Room room){
 		roomList.add(room);
 		room.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("room", null, room);
 	}
-	
+
 	public void addNotification(Notification notification, boolean save) throws ConnectException, IOException{
 		notificationList.add(notification);
 		notification.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("notification", null, notification);
-		
+
 		if(Main.usenet && save){
 			Main.client.newNotification(xmlSerializer.notificationToXml(notification));
 		}
 	}
-	
+
 	public void addAttendanceStatus(AttendanceStatus status, boolean save) throws ConnectException, IOException{
 		attendanceStatusList.add(status);
 		status.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("status", null, status);
-		
+
 		if(Main.usenet && save){
 			Main.client.newAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
 		}
 	}
-	
+
 	/**
 	 * Removes the specified {@link Person} object from the <code>Project</code>.<P>
 	 * 
@@ -315,58 +322,58 @@ public class Project implements PropertyChangeListener {
 		attendanceStatusList.remove(status);
 		status.removePropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("status", status, index);
-		
+
 	}
-	
+
 	public void removeNotification(Notification notification) throws ConnectException, IOException{
 		int i = notificationList.indexOf(notification);
 		notificationList.remove(notification);
 		notification.removePropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("notification", notification, i);
-		
+
 		if(Main.usenet){
 			Main.client.deleteNotification(xmlSerializer.notificationToXml(notification));
 		}
 	}
-	
+
 	public void removeEvent(Event event){
 		int i = eventList.indexOf(event);
 		eventList.remove(event);
 		event.removePropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("event",event,i);
-		
+
 		try {
-			
+
 			String cuPath = new File(".").getAbsolutePath();
 			storage.save(new URL("file://"+cuPath+"/project.xml"), this);
-			
+
 			if(Main.usenet){
 				Main.client.deleteEvent(xmlSerializer.eventToXml(event));
 			}
-			
+
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void editEvent(Event event) throws ConnectException, IOException{
 		if(Main.usenet){
 			Main.client.updateEvent(xmlSerializer.eventToXml(event));
 		}
 	}
-	
+
 	public void editNotification(Notification notification) throws ConnectException, IOException{
 		if(Main.usenet){
 			Main.client.updateNotification(xmlSerializer.notificationToXml(notification));
 		}
 	}
-	
+
 	public void editAttendanceStatus(AttendanceStatus status) throws ConnectException, IOException{
 		if(Main.usenet){
 			Main.client.updateAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
 		}
 	}
-	
+
 	/**
 	 * Add a {@link java.beans.PropertyChangeListener} to the listener list.
 	 * 
@@ -375,7 +382,7 @@ public class Project implements PropertyChangeListener {
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		propChangeSupp.addPropertyChangeListener(listener);
 	}
-	
+
 	/**
 	 * Remove a {@link java.beans.PropertyChangeListener} from the listener list.
 	 * 
@@ -388,6 +395,24 @@ public class Project implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		propChangeSupp.firePropertyChange(event);
+		
+		
+		
+		if(event.getPropertyName().equals("notificationType")){
+			try {
+				
+				//Notifies the client about the updates
+				Main.client.updateNotification(xmlSerializer.notificationToXml((Notification)event.getSource()));
+		
+			} catch (ConnectException e) {
+			
+				e.printStackTrace();
+			
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -400,22 +425,22 @@ public class Project implements PropertyChangeListener {
 
 		if (o.getClass() != this.getClass())
 			return false;
-		
+
 		Project aProject = (Project)o;
-		
+
 		if (aProject.getPersonCount() != getPersonCount())
 			return false;
-		
+
 		Iterator it = this.personIterator();
 		while (it.hasNext()) {
 			Person aPerson = (Person)it.next();
 			if (aProject.indexOf(aPerson) < 0)
 				return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -434,9 +459,9 @@ public class Project implements PropertyChangeListener {
 	public Person getLoggedInPerson(){
 		return personLoggedIn;
 	}
-	
+
 	public Room getOtherRoom(){
-		
+
 		for(int i = 0; i<roomList.size(); i++){
 			if(roomList.get(i).getRoomName().equals("OTHER")){
 				return roomList.get(i);
@@ -444,7 +469,7 @@ public class Project implements PropertyChangeListener {
 		}
 		return null;
 	}
-	
+
 	public AttendanceStatus getStatus(int event_id, String username){
 		for(AttendanceStatus status: attendanceStatusList){
 			if(status.getEventID() == event_id && status.getUsername().equals(username)){
@@ -453,23 +478,7 @@ public class Project implements PropertyChangeListener {
 		}
 		return null;
 	}
-//	public static HashMap<String, AttendanceStatusType> colourmap = new HashMap<String, AttendanceStatusType>();
-//	public static Color getColor(Event e, Person p){
-//		if(colourmap.get(p.getUsername() + "" + e.getEventID()) == null)return AttendanceStatusType.getColor(AttendanceStatusType.UNANSWERED);
-//		System.out.println(colourmap.get(p.getUsername() + e.getEventID()));
-//		return AttendanceStatusType.getColor(colourmap.get(p.getUsername() + "" + e.getEventID()));
-//	}
-//	
-//	public static void updateStatus(Event e, Person p, AttendanceStatusType status){
-//		colourmap.put(p.getUsername() + "" + e.getEventID(), status);
-//	}
-//	public static void updateStatus(int eID, String username, AttendanceStatusType status){
-//		colourmap.put(username + "" + eID, status);
-//	}
-//	public static Collection<AttendanceStatusType> getAttendanceList(){
-//		return colourmap.values();
-//	}
-	
+
 	/**
 	 * 
 	 * @param event
@@ -484,8 +493,21 @@ public class Project implements PropertyChangeListener {
 		}
 		return list;
 	}
-	
+
 	public int generateID(){
 		return generateID.nextInt(999999999) + 1;
 	}
+	
+	public Notification getNotification(int event_id){
+		for(Notification n : notificationList){
+			if(n.getEventID() == event_id){
+				return n;
+			}
+		}
+		return null;
+	}
+	public void addNotificationToController(Notification n) {
+		nc.addNotification(n);
+	}
+	
 }

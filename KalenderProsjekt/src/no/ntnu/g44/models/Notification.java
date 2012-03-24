@@ -41,8 +41,17 @@ public class Notification {
 		pcs = new PropertyChangeSupport(this);
 	}
 	
+	public void setType(NotificationType type) {
+		pcs.firePropertyChange("notificationType", this.type, type);
+		this.type = type;
+	}
+
 	public Notification(int eventId, NotificationType type){
-		this(Main.currentProject.generateID(), eventId, type);
+		this.notificationID = Main.currentProject.generateID();
+		this.eventID = eventId;
+		this.type = type;
+		
+		pcs = new PropertyChangeSupport(this);
 	}
 
 	public int getNotificationID() {

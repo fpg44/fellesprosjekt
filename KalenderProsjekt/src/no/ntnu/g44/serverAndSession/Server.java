@@ -33,9 +33,9 @@ public class Server{
 
 
 	public static void main(String[] args) {
-		 new Server(5545,"localhost","3306","project","root","");
-//		new Server(5545, "mysql.stud.ntnu.no", "3306", "andereld_fp_gr44",
-//				"andereld_fp_gr44", "gruppe44");
+		new Server(5545,"localhost","3306","project","root","");
+		//		new Server(5545, "mysql.stud.ntnu.no", "3306", "andereld_fp_gr44",
+		//				"andereld_fp_gr44", "gruppe44");
 	}
 
 	/**
@@ -152,72 +152,77 @@ public class Server{
 
 		String message = con.receive();
 		Log.writeToLog("Server.java received a message", "lololol");
-		//notfyOnlineListeners(message, null);
 
 		//This is the parser part where you read the incomming string and chooses what to do
 		if(message.equals("get all")){
 			con.send(xmlSerializer.toXml(getDataFromDatabase()).toXML());
 		}
-		//working:
 		else if(message.startsWith("insert event")){
-//			notifyOnlineListeners(message, con);
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
 			insert( e );
 			
+			//CREATE NOTIFICATIONS FOR THIS NEW EVENT
+			Notification notification = new Notification(e.getEventID(), NotificationType.EVENT_INVITATION);
+
+			//INSERT NOTIFICATION INTO DATABASE
+			insert( notification );
+			
+			//Sends the notification to all online clients
+			String msg = xmlSerializer.notificationToXml(notification).toXML();
+			notifyOnlineListeners("INVITATION" + msg, con);
 		}
 
 		else if(message.startsWith("insert notification")){
 			message = message.replaceFirst("insert notification", "");
 			Notification notification = xmlSerializer.toNotification(message);
 			insert( notification );
+
+			//If notification is an Invitation
+			if(notification.getType() == NotificationType.EVENT_INVITATION){
+				notifyOnlineListeners("INVITATION" + xmlSerializer.notificationToXml(notification).toXML(), con);
+			}
 		}
 
 		else if(message.startsWith("insert attends_at")){
 			message = message.replaceFirst("insert attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			insert( status );
-			
-			//CREATES A NOTIFICATION
-			if(status.getStatus().toString().equals("NOT_ATTENDING")){
-				Notification notification = new Notification(status.getEventID(), NotificationType.PARTICIPANT_DECLINED);
-	
-				//Sends the notification to all online clients
-				String msg = xmlSerializer.notificationToXml(notification).toXML();
-				notifyOnlineListeners("NOT_ATTENDING" + msg, con);
-				
-				//Inserts the notification into the database
-				insert( notification );
-			}
 		}
-		//working:
+		
 		else if(message.startsWith("update event")){
-//			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("update event", "");
 			Event e = xmlSerializer.toEvent(message);
 			update( e );
-			
 		}
 
 		else if(message.startsWith("update notification")){
 			message = message.replaceFirst("update notification", "");
 			Notification notification = xmlSerializer.toNotification(message);
 			update( notification );
+
+			//CREATES A NOTIFICATION
+			if(notification.getType() == NotificationType.PARTICIPANT_DECLINED){
+
+				//Send notification to all online users
+				notifyOnlineListeners("NOT_ATTENDING" + message, con);
+
+				//updates the notification into the database
+				update( notification );
+			}
 		}
 
 		else if(message.startsWith("update attends_at")){
-//			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("update attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			update( status );
 		}
 
 		else if(message.startsWith("delete event")){
-//			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("delete event", "");
 			Event e = xmlSerializer.toEvent(message);
 			delete( e );
-			
+
 		}
 
 		else if(message.startsWith("delete notification")){
@@ -227,13 +232,10 @@ public class Server{
 		}
 
 		else if(message.startsWith("delete attends_at")){
-//			notfyOnlineListeners(message, con);
 			message = message.replaceFirst("delete attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			delete( status );
-			
 		}
-
 	}
 
 	private void stopIncommingDatagramPacketParser(boolean b){

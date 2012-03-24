@@ -40,7 +40,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultCaret;
 
 import no.ntnu.g44.controllers.Main;
-import no.ntnu.g44.models.AttendanceHelper;
+//import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
@@ -625,8 +625,8 @@ public class NewEventPanel extends JPanel {
 			setText(value.toString());
 			
 			 if (oldEvent != null && !isSelected)
-				 setBackground(AttendanceHelper.getColor(oldEvent,
-						 (Person) value));
+				 setBackground(AttendanceStatusType.getColor(Main.currentProject.getStatus(oldEvent.getEventID(), ((Person) value).getUsername()).getStatus()));
+//				 setBackground(AttendanceHelper.getColor(oldEvent,(Person) value));
 
 			return this;
 		}

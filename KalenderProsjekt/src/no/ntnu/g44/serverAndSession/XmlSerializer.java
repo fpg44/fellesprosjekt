@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
-import no.ntnu.g44.models.AttendanceHelper;
+//import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
@@ -353,7 +353,7 @@ public class XmlSerializer {
 			type = AttendanceStatusType.getType(element.getValue());
 		}
 		
-		AttendanceHelper.updateStatus(id, username, type);
+//		AttendanceHelper.updateStatus(id, username, type);
 		
 		return new AttendanceStatus(username, id, type);
 	}

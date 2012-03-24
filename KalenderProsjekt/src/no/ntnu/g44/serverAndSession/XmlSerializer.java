@@ -201,8 +201,6 @@ public class XmlSerializer {
 
 	public Notification toNotification(String xml) throws ValidityException, ParsingException, IOException {
 		nu.xom.Builder parser = new nu.xom.Builder(false);
-		System.out.println("løkafjsdøkljadskløafjløkdsjfølaksdfjløkadjsflkøadjsfkladlkfj" + xml);
-		System.out.println("FØRSTE BOKSTAV: " + xml.charAt(0));
 		nu.xom.Document doc = parser.build(xml, "");
 		return assembleNotification(doc.getRootElement());
 	}
@@ -377,19 +375,16 @@ public class XmlSerializer {
 		NotificationType type = null;
 
 		Element element = e.getFirstChildElement("notification-id");
-		System.out.println(element.getValue());
 		if(element != null){
 			notificationID = Integer.parseInt(element.getValue());
 		}
 
 		element = e.getFirstChildElement("event-id");
-		System.out.println(element.getValue());
 		if(element != null){
 			eventID = Integer.parseInt(element.getValue());
 		}
 
 		element = e.getFirstChildElement("type");
-		System.out.println(element.getValue());
 		if(element != null){
 			type = NotificationType.valueOf(element.getValue());
 		}

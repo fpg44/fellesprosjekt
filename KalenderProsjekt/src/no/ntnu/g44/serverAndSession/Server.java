@@ -170,7 +170,7 @@ public class Server{
 			
 			//Sends the notification to all online clients
 			String msg = xmlSerializer.notificationToXml(notification).toXML();
-			notifyOnlineListeners("INVITATION" + msg, con);
+			notifyOnlineListeners("invitation" + msg, con);
 		}
 
 		else if(message.startsWith("insert notification")){
@@ -178,10 +178,10 @@ public class Server{
 			Notification notification = xmlSerializer.toNotification(message);
 			insert( notification );
 
-			//If notification is an Invitation
-			if(notification.getType() == NotificationType.EVENT_INVITATION){
-				notifyOnlineListeners("INVITATION" + xmlSerializer.notificationToXml(notification).toXML(), con);
-			}
+//			//If notification is an Invitation
+//			if(notification.getType() == NotificationType.EVENT_INVITATION){
+//				notifyOnlineListeners("invitation" + xmlSerializer.notificationToXml(notification).toXML(), con);
+//			}
 		}
 
 		else if(message.startsWith("insert attends_at")){

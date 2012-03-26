@@ -392,7 +392,7 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (!Main.currentProject.getNotificationList().isEmpty()){
+			if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()){
 				if (e.getSource() == notifBox) {
 					if (notifBox.getSelectedIndex() == 0) {
 						System.out.println("Nothing happens");

@@ -358,32 +358,29 @@ public class MainFrame extends JPanel{
 	
 	public void notificationCounter() {
 		int notifCounter = 0;
-		for (int i = 0; i < Main.currentProject.getNotificationList().size(); i++) {
+		for (int i = 0; i < Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size(); i++) {
 			notifCounter++;
 		}
 		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
 	}
 	
-//	/**
-//	 * Checks for new notifications and puts them in 'notifBox'
-//	 */
-//	public void checkForNewNotifications() {
-//		int notifCounter = 0;
-//		
-//		unseenNotifications = notificationController.getUnseenNotifications();
-////		System.out.println(unseenNotifications.size());
-//
-//		if (!unseenNotifications.isEmpty()) {
-//			notificationCounter();
-//			for (int i = 0; i < unseenNotifications.size(); i++) {
-//				notifBox.addItem((unseenNotifications.get(i)));
-//			}
-//		}
-//
-//		else {
-//			notifBox.addItem(new String ("There is no new notifications"));
-//		}
-//	}
+	/**
+	 * Checks for new notifications and puts them in 'notifBox'
+	 */
+	public void checkForNewNotifications() {
+		
+
+		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {
+			notificationCounter();
+			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
+				notifBox.addItem(notification);
+			}
+		}
+
+		else {
+			notifBox.addItem(new String ("There is no new notifications"));
+		}
+	}
 	
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;

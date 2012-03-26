@@ -416,19 +416,19 @@ public class MainFrame extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			//			if(e.getSource() == notifBox){
-			//				if(!Main.currentProject.getNotificationList().isEmpty()){
-			//					if(notifBox.getSelectedIndex() != 0){
-			//						System.out.println("NÅ SKJER DET!");
-			//						if(((Notification)notifBox
-			//								.getSelectedItem())
-			//								.getType() == NotificationType.EVENT_INVITATION){
-			//							EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
-			//						}
-			//					}
-			//				}
-			//				notifBox.setSelectedIndex(0);
-			//			}
+			if(e.getSource() == notifBox){
+				if(!Main.currentProject.getNotificationList().isEmpty()){
+					if(notifBox.getSelectedIndex() != 0){
+						System.out.println("NÅ SKJER DET!");
+						if(((Notification)notifBox
+								.getSelectedItem())
+								.getType() == NotificationType.EVENT_INVITATION){
+							EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
+						}
+					}
+				}
+				notifBox.setSelectedIndex(0);
+			}
 			if(e.getSource() == item1){
 				newEvent();
 			}

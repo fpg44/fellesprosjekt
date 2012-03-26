@@ -163,14 +163,14 @@ public class Server{
 			insert( e );
 			
 			//CREATE NOTIFICATIONS FOR THIS NEW EVENT
-			Notification notification = new Notification(e.getEventID(), NotificationType.EVENT_INVITATION);
+//			Notification notification = new Notification(e.getEventID(), NotificationType.EVENT_INVITATION);
 
 			//INSERT NOTIFICATION INTO DATABASE
-			insert( notification );
+//			insert( notification );
 			
 			//Sends the notification to all online clients
-			String msg = xmlSerializer.notificationToXml(notification).toXML();
-			notifyOnlineListeners("invitation" + msg, con);
+//			String msg = xmlSerializer.notificationToXml(notification).toXML();
+//			notifyOnlineListeners("invitation" + msg, con);
 		}
 
 		else if(message.startsWith("insert notification")){
@@ -178,6 +178,9 @@ public class Server{
 			Notification notification = xmlSerializer.toNotification(message);
 			insert( notification );
 
+			//Send the notification to all online clients
+			String msg = xmlSerializer.notificationToXml(notification).toXML();
+			notifyOnlineListeners("notification" + msg, con);
 //			//If notification is an Invitation
 //			if(notification.getType() == NotificationType.EVENT_INVITATION){
 //				notifyOnlineListeners("invitation" + xmlSerializer.notificationToXml(notification).toXML(), con);

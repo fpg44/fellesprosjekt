@@ -300,6 +300,10 @@ public class XmlSerializer {
 		Element type = new Element("type");
 		type.appendChild(notification.getType().toString());
 		element.appendChild(type);
+		
+		Element person = new Element("person");
+		person.appendChild(notification.getPersonString());
+		element.appendChild(person);
 
 		return element;
 	}
@@ -373,6 +377,7 @@ public class XmlSerializer {
 	public Notification assembleNotification(Element e){
 		int eventID = -1, notificationID = -1;
 		NotificationType type = null;
+		String person = "";
 
 		Element element = e.getFirstChildElement("notification-id");
 		if(element != null){
@@ -388,8 +393,13 @@ public class XmlSerializer {
 		if(element != null){
 			type = NotificationType.valueOf(element.getValue());
 		}
+		
+		element = e.getFirstChildElement("person");
+		if(element != null){
+			person = element.getValue();
+		}
 
-		return new Notification(notificationID, eventID, type);
+		return new Notification(notificationID, eventID, type, person);
 	}
 
 	private Event assembleEvent(Element eventElement) throws ParseException {

@@ -139,7 +139,7 @@ public class Client {
 		if (message.startsWith("invitation")) {
 			message.replaceFirst("invitation", "");
 			Notification notif = xmlSerializer.toNotification(message);
-			Main.currentProject.addNotificationToController(notif);
+			Main.currentProject.addNotification(notif, false);	//unsure if false or true here
 		}
 		else if(message.startsWith("insert event")){
 			message = message.replaceFirst("insert event", "");
@@ -150,7 +150,7 @@ public class Client {
 			
 			message = message.replaceFirst("NOT_ATTENDING", "");
 			Notification notif = xmlSerializer.toNotification(message);
-			Main.currentProject.addNotificationToController(notif);
+			Main.currentProject.addNotification(notif, false); //unsure if false  or true here
 		}
 	}
 	

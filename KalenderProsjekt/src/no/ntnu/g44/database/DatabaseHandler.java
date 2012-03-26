@@ -374,29 +374,6 @@ public class DatabaseHandler {
 		}
 	}
 
-	//	/**
-	//	 * Send an ArrayList with all the persons that shall be updated in the database
-	//	 * @param persons
-	//	 */
-	//	public void updatePersons(ArrayList<Person> persons){
-	//
-	//		try{
-	//			//iterates over all persons and adds them into the database
-	//			for(Person person : persons){
-	//
-	//				stmt.executeUpdate("UPDATE account SET" +
-	//						"name = '" + person.getName() + "' " +
-	//						"WHERE username = '" + person.getUsername() + "'");
-	//
-	//			}
-	//
-	//		}catch( Exception e ){
-	//
-	//			e.printStackTrace();
-	//
-	//		}
-	//	}
-
 	/**
 	 * Updates all the attendance statuses in the database (attends_at)
 	 * @param attendanceStatus
@@ -423,6 +400,12 @@ public class DatabaseHandler {
 	public void updateAttendanceStatus(AttendanceStatus status){
 
 		try{
+
+			stmt.executeUpdate("UPDATE attends_at SET" +
+					"status = '" + status.getStatus().toString() + "'" +
+					"WHERE account_username = (SELECT username FROM account WHERE username ='" + status.getUsername() + "')" +
+					"AND event_id = (SELECT event_id FROM event WHERE event_id ='" + status.getEventID() + "')");
+
 
 			stmt.executeUpdate("UPDATE attends_at SET" +
 					"status ='" + status.getStatus().toString() + "' " +

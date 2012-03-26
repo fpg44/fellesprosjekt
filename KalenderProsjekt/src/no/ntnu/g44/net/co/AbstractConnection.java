@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 
-import no.ntnu.fp.net.admin.Log;
+//import no.ntnu.fp.net.admin.Log;
 import no.ntnu.fp.net.cl.ClException;
 import no.ntnu.fp.net.cl.ClSocket;
 import no.ntnu.fp.net.cl.KtnDatagram;
@@ -285,7 +285,7 @@ public abstract class AbstractConnection implements Connection {
         ackToSend.setAck(packetToAck.getSeq_nr());
     
         // Send the ack, trying at most `tries' times.
-        Log.writeToLog(ackToSend, "Sending Ack: " + ackToSend.getAck(), "AbstractConnection");
+//        Log.writeToLog(ackToSend, "Sending Ack: " + ackToSend.getAck(), "AbstractConnection");
     
         do {
             try {
@@ -293,8 +293,8 @@ public abstract class AbstractConnection implements Connection {
                 sent = true;
             }
             catch (ClException e) {
-                Log.writeToLog(ackToSend, "CLException: Could not establish a "
-                        + "connection to the specified address/port!", "AbstractConnection");
+//                Log.writeToLog(ackToSend, "CLException: Could not establish a "
+//                        + "connection to the specified address/port!", "AbstractConnection");
             }
             catch (ConnectException e) {
                 // Silently ignore: Maybe recipient was processing and didn't
@@ -381,7 +381,7 @@ public abstract class AbstractConnection implements Connection {
             isReceiving = true;
         }
     
-        Log.writeToLog("Waiting for incoming packet in doReceive()", "AbstractConnection");
+//        Log.writeToLog("Waiting for incoming packet in doReceive()", "AbstractConnection");
     
         KtnDatagram incomingPacket;
     
@@ -418,8 +418,8 @@ public abstract class AbstractConnection implements Connection {
                     // We have a packet
                     if (incomingPacket.getFlag() != Flag.NONE) {
                         // Packet is internal
-                        Log.writeToLog("Received an internal packet in doReceive",
-                                "AbstractConnection");
+//                        Log.writeToLog("Received an internal packet in doReceive",
+//                                "AbstractConnection");
     
                         if (incomingPacket.getFlag() == Flag.FIN && state == State.ESTABLISHED) {
                             // A FIN-packet has arrived in established state,
@@ -444,8 +444,8 @@ public abstract class AbstractConnection implements Connection {
                     else {
                         // Packet was meant for the application, continue
                         // listening until timeout.
-                        Log.writeToLog("Received an external packet in doReceive",
-                                "AbstractConnection");
+//                        Log.writeToLog("Received an external packet in doReceive",
+//                                "AbstractConnection");
     
                         synchronized (this) {
                             synchronized (this) {
@@ -480,7 +480,7 @@ public abstract class AbstractConnection implements Connection {
                 // We have a packet
                 if (incomingPacket.getFlag() != Flag.NONE) {
                     // Packet is internal
-                    Log.writeToLog("Received an internal packet in doReceive", "AbstractConnection");
+//                    Log.writeToLog("Received an internal packet in doReceive", "AbstractConnection");
     
                     if (incomingPacket.getFlag() == Flag.FIN && state == State.ESTABLISHED) {
                         // A FIN-packet has arrived in established state,
@@ -504,7 +504,7 @@ public abstract class AbstractConnection implements Connection {
                 }
                 else {
                     // Packet was meant for the application, yei!
-                    Log.writeToLog("Received an external packet in doReceive", "AbstractConnection");
+//                    Log.writeToLog("Received an external packet in doReceive", "AbstractConnection");
     
                     synchronized (this) {
                         isReceiving = false;
@@ -574,8 +574,8 @@ public abstract class AbstractConnection implements Connection {
             isReceiving = true;
         }
 
-        Log.writeToLog("Waiting for incoming packet in receiveAck()", "AbstractConnection");
-
+//        Log.writeToLog("Waiting for incoming packet in receiveAck()", "AbstractConnection");
+//
         KtnDatagram incomingPacket;
 
         // We are waiting for an ack or syn_ack packet
@@ -605,8 +605,8 @@ public abstract class AbstractConnection implements Connection {
                 // We have a packet
                 if (incomingPacket.getFlag() != Flag.NONE) {
                     // Packet is internal
-                    Log.writeToLog("Received an internal packet in receiveAck",
-                            "AbstractConnection");
+//                    Log.writeToLog("Received an internal packet in receiveAck",
+//                            "AbstractConnection");
 
                     if (incomingPacket.getFlag() == Flag.FIN && state == State.ESTABLISHED) {
                         // A FIN-packet has arrived in established state,
@@ -640,8 +640,8 @@ public abstract class AbstractConnection implements Connection {
                 else {
                     // Packet was meant for the application, continue
                     // listening until timeout.
-                    Log.writeToLog("Received an external packet in receiveAck",
-                            "AbstractConnection");
+//                    Log.writeToLog("Received an external packet in receiveAck",
+//                            "AbstractConnection");
 
                     synchronized (this) {
                         synchronized (this) {

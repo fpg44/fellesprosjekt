@@ -5,7 +5,7 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import no.ntnu.fp.net.admin.Log;
+//import no.ntnu.fp.net.admin.Log;
 import no.ntnu.g44.database.DatabaseHandler;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.Event;

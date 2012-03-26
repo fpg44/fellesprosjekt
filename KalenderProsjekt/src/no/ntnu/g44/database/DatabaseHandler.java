@@ -401,17 +401,10 @@ public class DatabaseHandler {
 
 		try{
 
-			stmt.executeUpdate("UPDATE attends_at SET" +
-					"status = '" + status.getStatus().toString() + "'" +
-					"WHERE account_username = (SELECT username FROM account WHERE username ='" + status.getUsername() + "')" +
-					"AND event_id = (SELECT event_id FROM event WHERE event_id ='" + status.getEventID() + "')");
-
-
-			stmt.executeUpdate("UPDATE attends_at SET" +
+			stmt.executeUpdate("UPDATE attends_at SET " +
 					"status ='" + status.getStatus().toString() + "' " +
 					"WHERE account_username ='" + status.getUsername() + "' " +
 					"AND event_id ='" + status.getEventID() + "'");
-
 
 		}catch(Exception e){
 

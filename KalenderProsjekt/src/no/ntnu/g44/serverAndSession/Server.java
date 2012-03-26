@@ -151,7 +151,7 @@ public class Server{
 
 
 		String message = con.receive();
-		Log.writeToLog("Server.java received a message", "lololol");
+//		Log.writeToLog("Server.java received a message", "lololol");
 
 		//This is the parser part where you read the incomming string and chooses what to do
 		if(message.equals("get all")){

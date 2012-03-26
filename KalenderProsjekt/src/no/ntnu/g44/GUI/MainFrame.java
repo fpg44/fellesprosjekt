@@ -84,26 +84,26 @@ public class MainFrame extends JPanel{
 	int currentWeekNumber = WEEK_NUMBER;
 	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 	JLabel weeknumber = new JLabel("WEEK " + WEEK_NUMBER);
-	
-	
+
+
 	public void notificationFuck(){
 		notifBox.removeAllItems();
-//		notifBox.addItem(new String("You have " + countNotificationFuck() + " Notifications"));
+		//		notifBox.addItem(new String("You have " + countNotificationFuck() + " Notifications"));
 
 		for(Notification n : Main.currentProject.getNotificationList()){
 			notifBox.addItem(n);
 		}
 	}
 
-//	public int countNotificationFuck(){
-//		int counter = 0;
-//		for(Notification n : Main.currentProject.getNotificationList()){
-//			if(Main.currentProject.getStatus(n.getEventID(), n.getPersonString()).getStatus() != AttendanceStatusType.ATTENDING){
-//				counter ++;
-//			}
-//		}
-//		return counter;
-//	}
+	//	public int countNotificationFuck(){
+	//		int counter = 0;
+	//		for(Notification n : Main.currentProject.getNotificationList()){
+	//			if(Main.currentProject.getStatus(n.getEventID(), n.getPersonString()).getStatus() != AttendanceStatusType.ATTENDING){
+	//				counter ++;
+	//			}
+	//		}
+	//		return counter;
+	//	}
 
 	public MainFrame(){
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -418,13 +418,11 @@ public class MainFrame extends JPanel{
 
 			if(e.getSource() == notifBox){
 				if(!Main.currentProject.getNotificationList().isEmpty()){
-					if(notifBox.getSelectedIndex() != 0){
-						System.out.println("NÅ SKJER DET!");
-						if(((Notification)notifBox
-								.getSelectedItem())
-								.getType() == NotificationType.EVENT_INVITATION){
-							EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
-						}
+					System.out.println("NÅ SKJER DET!");
+					if(((Notification)notifBox
+							.getSelectedItem())
+							.getType() == NotificationType.EVENT_INVITATION){
+						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
 					}
 				}
 				notifBox.setSelectedIndex(0);

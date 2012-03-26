@@ -89,12 +89,12 @@ public class MainFrame extends JPanel{
 	
 	public void notificationFuck(){
 		notifBox.removeAllItems();
-		notifBox.addItem(new String("You have " + countNotificationFuck() + " Notifications"));
 		for(Notification n : Main.currentProject.getNotificationList()){
 			if(Main.currentProject.getStatus(n.getEventID(), n.getPersonString()).getStatus() != AttendanceStatusType.ATTENDING){
 				notifBox.addItem(n);
 			}
 		}
+		notifBox.addItem(new String("You have " + countNotificationFuck() + " Notifications"));
 	}
 	
 	public int countNotificationFuck(){

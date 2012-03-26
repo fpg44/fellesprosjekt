@@ -140,6 +140,7 @@ public class Client {
 			message = message.replaceFirst("notification", "");
 			Notification notif = xmlSerializer.toNotification(message);
 			Main.currentProject.addNotification(notif, false);
+			Main.currentMainFrame.notificationFuck();
 		}
 		else if(message.startsWith("insert event")){
 			message = message.replaceFirst("insert event", "");
@@ -152,6 +153,7 @@ public class Client {
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			Main.currentProject.addAttendanceStatus(status, false);
 //			Main.currentMainFrame.checkForNewNotifications();
+			
 		}
 
 	}

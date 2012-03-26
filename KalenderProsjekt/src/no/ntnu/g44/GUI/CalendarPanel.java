@@ -56,7 +56,9 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		paintHours(g2d);
 		paintFrame(g2d);
 		paintEvents(g2d);
+		
 		paintNowLine(g2d);
+		
 		paintDayText(g2d);
 	}
 
@@ -221,7 +223,9 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		nowTime = Calendar.getInstance();
 		//		nowTime.setTimeZone(tz);
 		nowTime.setTime(new Date());
-
+		if(nowTime.get(Calendar.WEEK_OF_YEAR) != Main.currentMainFrame.currentWeekNumber){
+			return;
+		}
 		int Y = (int) ((((nowTime.get(Calendar.HOUR_OF_DAY)-this.startHour)+
 				nowTime.get(Calendar.MINUTE)/60f) * pixlsPerHour) + topArea);
 

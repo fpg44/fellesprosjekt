@@ -229,7 +229,7 @@ public class DatabaseHandler {
 			}
 
 			do{
-//				AttendanceHelper.updateStatus(rs.getInt(2), rs.getString(1), AttendanceStatusType.getType(rs.getString(3)));
+				//				AttendanceHelper.updateStatus(rs.getInt(2), rs.getString(1), AttendanceStatusType.getType(rs.getString(3)));
 				status.add( new AttendanceStatus(rs.getString(1), rs.getInt(2), AttendanceStatusType.getType(rs.getString(3))) );
 
 			}while(rs.next());
@@ -474,10 +474,11 @@ public class DatabaseHandler {
 
 		try{
 
-			stmt.executeUpdate("INSERT INTO notification (notif_id, event_id, type) VALUES (" +
+			stmt.executeUpdate("INSERT INTO notification (notif_id, event_id, type, person) VALUES (" +
 					"'" + notification.getNotificationID() + "', " +
 					"'" + notification.getEventID() + "', " +
-					"'" + notification.getType().toString() + "')");
+					"'" + notification.getType().toString() + "', " +
+					"'" + notification.getPersonString() + "')");
 		}catch( Exception e ){
 
 			e.printStackTrace();
@@ -495,7 +496,7 @@ public class DatabaseHandler {
 		System.out.println("STATUS   IS : " + status.getStatus().toString());
 
 		try{
-			
+
 			stmt.executeUpdate("INSERT INTO attends_at (account_username, event_id, status) VALUES (" +
 					"(SELECT account.username FROM account WHERE account.username ='" + status.getUsername()	+ "'), " +
 					"(SELECT event.event_id FROM event WHERE event.event_id ='" + status.getEventID() + "'), " +

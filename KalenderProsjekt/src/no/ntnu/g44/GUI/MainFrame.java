@@ -377,10 +377,10 @@ public class MainFrame extends JPanel{
 				notifBox.addItem(notification);
 			}
 		}
-
-		else {
-			notifBox.addItem(new String ("There is no new notifications"));
-		}
+//
+//		else {
+//			notifBox.addItem(new String ("There is no new notifications"));
+//		}
 	}
 	
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{

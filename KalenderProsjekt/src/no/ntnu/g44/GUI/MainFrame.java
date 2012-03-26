@@ -175,7 +175,7 @@ public class MainFrame extends JPanel{
 		notifBox.setVisible(true);
 		weeknumber.setVisible(true);
 		todayButton.addActionListener(listener);
-		
+
 		checkForNewNotifications();
 
 		add(personnelScroll);
@@ -400,234 +400,234 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//			if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()){
-			if (e.getSource() == notifBox && notifBox.getSelectedIndex() != 0) {
-				if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CANCELLED){
-					System.out.println("This event has been cancelled");
+			if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()){
+				if (e.getSource() == notifBox && notifBox.getSelectedIndex() != 0) {
+					if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CANCELLED){
+						System.out.println("This event has been cancelled");
 
+					}
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION) {
+						System.out.println("You have a new event invitation");
+						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(
+								((Notification) notifBox.getSelectedItem()).getEventID()));
+						checkForNewNotifications();
+					}
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CHANGED) {
+						System.out.println("This event have been changed");
+					}
+					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.PARTICIPANT_DECLINED){
+						System.out.println("A participant has declined invitation");
+					}
+					notifBox.setSelectedIndex(0);
 				}
-				else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION) {
-					System.out.println("You have a new event invitation");
-					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(
-							((Notification) notifBox.getSelectedItem()).getEventID()));
-					checkForNewNotifications();
+				//			}
+				if(e.getSource() == item1){
+					newEvent();
 				}
-				else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CHANGED) {
-					System.out.println("This event have been changed");
+				if(e.getSource() == item2){
+					editEvent();
 				}
-				else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.PARTICIPANT_DECLINED){
-					System.out.println("A participant has declined invitation");
+				if(e.getSource() == item3){
+					deleteEvent();
 				}
-				notifBox.setSelectedIndex(0);
-			}
-			//			}
-			if(e.getSource() == item1){
-				newEvent();
-			}
-			if(e.getSource() == item2){
-				editEvent();
-			}
-			if(e.getSource() == item3){
-				deleteEvent();
-			}
-			/*
+				/*
 			if(e.getSource() == item4){
 				logout();
 			}
-			 */
-			if(e.getSource() == newAction){
-				newEvent();
-			}
-			if(e.getSource() == logoutAction){
-				logout();
-			}
-			if(e.getSource() == exitAction){
-				System.exit(0);
-			}
-			if(e.getSource() == nextArrow){
-				currentWeekNumber +=1;
-				if (currentWeekNumber == 53) {
-					currentWeekNumber = 1;
-					currentYear++;
+				 */
+				if(e.getSource() == newAction){
+					newEvent();
 				}
-				calendar.repaint();
-			}
-			if(e.getSource() == backArrow){
-				currentWeekNumber -=1;
-				if (currentWeekNumber == 0) {
-					currentWeekNumber = 52;
-					currentYear--;
+				if(e.getSource() == logoutAction){
+					logout();
 				}
-				calendar.repaint();
-			}
-			if(e.getSource() == todayButton){
-				currentWeekNumber = WEEK_NUMBER;
-				calendar.repaint();
-			}
-			resizing();
-			if(e.getSource() == editEvent){
-				editEvent();
-			}
-			if(e.getSource() == newEvent){
-				newEvent();
-			}
-			if(e.getSource() == deleteEvent){
-				deleteEvent();
-			}
-			if(e.getSource() == editEvent){
-				if(calendar.getSelectedEvent() != null){
-					//edit
+				if(e.getSource() == exitAction){
+					System.exit(0);
 				}
-			}
-			if(e.getSource() == arrowButton && personnelList.getSelectedValue() != null){
-				addPersons();			
-			}
-			else if(e.getSource() == removeButton && calendarPersons.getSelectedValue() != null){
-				calendarModel.removeElement(calendarPersons.getSelectedValue());
-				search(searchField.getText().toLowerCase());
-			}
-		}
-		@Override
-		public void keyPressed(KeyEvent e) {
-
-			if((e.getSource() == personnelList || e.getSource() == searchField)&& e.getKeyChar() == KeyEvent.VK_ENTER){
-				addPersons();
-				return;
-			}
-			if(e.getSource() == searchField){
-				if(e.getKeyCode() == KeyEvent.VK_SHIFT){
-					shift = true;
-					return;
-				}
-				//arrow
-				if(e.getKeyCode() == KeyEvent.VK_DOWN){
-					int index = personnelList.getLeadSelectionIndex();
-					if(index == personnelModel.getSize() -1){
-						if(shift){
-							personnelList.addSelectionInterval(index, 0);
-							return;
-						}
-						personnelList.setSelectedIndex(0);
-						return;
+				if(e.getSource() == nextArrow){
+					currentWeekNumber +=1;
+					if (currentWeekNumber == 53) {
+						currentWeekNumber = 1;
+						currentYear++;
 					}
-					if(shift){
-						personnelList.addSelectionInterval(index, index+1);
-						return;
+					calendar.repaint();
+				}
+				if(e.getSource() == backArrow){
+					currentWeekNumber -=1;
+					if (currentWeekNumber == 0) {
+						currentWeekNumber = 52;
+						currentYear--;
 					}
-					personnelList.setSelectedIndex(index + 1);
-					return;
+					calendar.repaint();
 				}
-				if(e.getKeyCode() == KeyEvent.VK_UP){
-					int index = personnelList.getSelectedIndex();
-					if(index == 0){
-						if(shift){
-							personnelList.addSelectionInterval(index, personnelModel.size() -1);
-							return;
-						}
-						personnelList.setSelectedIndex(personnelModel.size() -1);
-						return;
+				if(e.getSource() == todayButton){
+					currentWeekNumber = WEEK_NUMBER;
+					calendar.repaint();
+				}
+				resizing();
+				if(e.getSource() == editEvent){
+					editEvent();
+				}
+				if(e.getSource() == newEvent){
+					newEvent();
+				}
+				if(e.getSource() == deleteEvent){
+					deleteEvent();
+				}
+				if(e.getSource() == editEvent){
+					if(calendar.getSelectedEvent() != null){
+						//edit
 					}
-					if(shift){
-						personnelList.addSelectionInterval(index, index -1);
-						return;
-					}
-					personnelList.setSelectedIndex(index -1);
-					return;
 				}
-				//search
-				String search = searchField.getText();
-				if(Character.isLetter(e.getKeyChar()) || e.getKeyChar() == '-'){
-					search += e.getKeyChar();
-				}
-				else if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE && search.length() > 0){
-					search = search.substring(0, search.length() -1);
-				}
-				search = search.toLowerCase();
-				search(search);
-			}
-		}
-		@Override
-		public void keyReleased(KeyEvent e) {
-			if(e.getKeyCode() == KeyEvent.VK_SHIFT){
-				shift = false;
-			}
-		}
-		@Override
-		public void keyTyped(KeyEvent e) {
-
-		}
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			if(e.getClickCount() == 2 && e.getSource() == calendar){
-				if(calendar.getSelectedEvent()==null)return;
-				new EventInfoPanel(calendar.getSelectedEvent(), new JFrame());
-				//				EventInfoPanel.makeInfoPanel(calendar.getSelectedEvent());
-			}
-			if(e.getClickCount() == 2 && e.getSource() == personnelList){
-				if(personnelList.getSelectedValue() != null){
+				if(e.getSource() == arrowButton && personnelList.getSelectedValue() != null){
 					addPersons();			
 				}
+				else if(e.getSource() == removeButton && calendarPersons.getSelectedValue() != null){
+					calendarModel.removeElement(calendarPersons.getSelectedValue());
+					search(searchField.getText().toLowerCase());
+				}
 			}
-			if(e.getSource() == searchField){
-				searchField.selectAll();
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+				if((e.getSource() == personnelList || e.getSource() == searchField)&& e.getKeyChar() == KeyEvent.VK_ENTER){
+					addPersons();
+					return;
+				}
+				if(e.getSource() == searchField){
+					if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+						shift = true;
+						return;
+					}
+					//arrow
+					if(e.getKeyCode() == KeyEvent.VK_DOWN){
+						int index = personnelList.getLeadSelectionIndex();
+						if(index == personnelModel.getSize() -1){
+							if(shift){
+								personnelList.addSelectionInterval(index, 0);
+								return;
+							}
+							personnelList.setSelectedIndex(0);
+							return;
+						}
+						if(shift){
+							personnelList.addSelectionInterval(index, index+1);
+							return;
+						}
+						personnelList.setSelectedIndex(index + 1);
+						return;
+					}
+					if(e.getKeyCode() == KeyEvent.VK_UP){
+						int index = personnelList.getSelectedIndex();
+						if(index == 0){
+							if(shift){
+								personnelList.addSelectionInterval(index, personnelModel.size() -1);
+								return;
+							}
+							personnelList.setSelectedIndex(personnelModel.size() -1);
+							return;
+						}
+						if(shift){
+							personnelList.addSelectionInterval(index, index -1);
+							return;
+						}
+						personnelList.setSelectedIndex(index -1);
+						return;
+					}
+					//search
+					String search = searchField.getText();
+					if(Character.isLetter(e.getKeyChar()) || e.getKeyChar() == '-'){
+						search += e.getKeyChar();
+					}
+					else if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE && search.length() > 0){
+						search = search.substring(0, search.length() -1);
+					}
+					search = search.toLowerCase();
+					search(search);
+				}
 			}
-
-			if (e.getSource() == newEvent) {
-				newEvent();
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+					shift = false;
+				}
 			}
+			@Override
+			public void keyTyped(KeyEvent e) {
 
-		}
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2 && e.getSource() == calendar){
+					if(calendar.getSelectedEvent()==null)return;
+					new EventInfoPanel(calendar.getSelectedEvent(), new JFrame());
+					//				EventInfoPanel.makeInfoPanel(calendar.getSelectedEvent());
+				}
+				if(e.getClickCount() == 2 && e.getSource() == personnelList){
+					if(personnelList.getSelectedValue() != null){
+						addPersons();			
+					}
+				}
+				if(e.getSource() == searchField){
+					searchField.selectAll();
+				}
 
-		}
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-		}
-		@Override
-		public void mousePressed(MouseEvent e) {
-			if(e.getSource() == calendar){
-				if(e.getButton() == MouseEvent.BUTTON3){
-					if(e.isPopupTrigger()){
-						popup.show(calendar, e.getX(), e.getY());
+				if (e.getSource() == newEvent) {
+					newEvent();
+				}
+
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if(e.getSource() == calendar){
+					if(e.getButton() == MouseEvent.BUTTON3){
+						if(e.isPopupTrigger()){
+							popup.show(calendar, e.getX(), e.getY());
+						}
 					}
 				}
 			}
-		}
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			if(e.getSource() == calendar){
-				if(e.getButton() == MouseEvent.BUTTON3){
-					if(e.isPopupTrigger()){
-						popup.show(calendar, e.getX(), e.getY());
-					}
-					/*
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if(e.getSource() == calendar){
+					if(e.getButton() == MouseEvent.BUTTON3){
+						if(e.isPopupTrigger()){
+							popup.show(calendar, e.getX(), e.getY());
+						}
+						/*
 					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
 						Main.currentProject.removeEvent(calendar.getSelectedEvent());
 					}
 					else{
 						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
 					}
-					 */
+						 */
+					}
+					resizing();
 				}
-				resizing();
 			}
 		}
-	}
 
-	public class colourListCellRenderer extends DefaultListCellRenderer {
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-			Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			Paint[] colours = new Paint[4];
-			colours[0] = Color.blue;
-			colours[1] = Color.green;
-			colours[2] = Color.magenta;
-			colours[3] = Color.orange;
-			c.setBackground((Color) colours[index%4]);
-			return c;
+		public class colourListCellRenderer extends DefaultListCellRenderer {
+			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				Paint[] colours = new Paint[4];
+				colours[0] = Color.blue;
+				colours[1] = Color.green;
+				colours[2] = Color.magenta;
+				colours[3] = Color.orange;
+				c.setBackground((Color) colours[index%4]);
+				return c;
+			}
 		}
-	}
 
-}
+	}

@@ -239,21 +239,19 @@ public class Project implements PropertyChangeListener {
 					for(AttendanceStatus status : getStatusToEvent(event)){
 						Main.client.newAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
 					}
+					//SEND INVITATION NOTIFICATION TO ONLINE USERS
+					for(Person person : event.getParticipants()){
+						if(!person.getUsername().equals(event.getEventOwner().getUsername())){
+							Main.client.newNotification(xmlSerializer.notificationToXml(
+									new Notification(event.getEventID(), NotificationType.EVENT_INVITATION, person.getUsername())));						
+						}
+					}
 				}
 				//If only XML to file is being used
 				else{
 					String cuPath = new File(".").getAbsolutePath();
 					storage.save(new URL("file://"+cuPath+"/project.xml"), this);					
 				}
-
-				//SEND INVITATION NOTIFICATION TO ONLINE USERS
-				for(Person person : event.getParticipants()){
-					if(!person.getUsername().equals(event.getEventOwner().getUsername())){
-						Main.client.newNotification(xmlSerializer.notificationToXml(
-								new Notification(event.getEventID(), NotificationType.EVENT_INVITATION, person.getUsername())));						
-					}
-				}
-
 			}
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();

@@ -373,7 +373,9 @@ public class MainFrame extends JPanel{
 
 		notificationCounter();
 		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {
+			System.out.println("DET FINNES NOTIFICATIONS");
 			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
+				System.out.println("NOTIFICATION ALERT: " + notification.toString());
 				notifBox.addItem(notification);
 			}
 		}

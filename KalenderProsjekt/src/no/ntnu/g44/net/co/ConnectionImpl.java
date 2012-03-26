@@ -185,8 +185,18 @@ public class ConnectionImpl extends AbstractConnection {
 
 		KtnDatagram datagram = constructDataPacket(msg);
 		KtnDatagram ack;
+		KtnDatagram potentialReack = null;
 		do{
 			ack = sendDataPacketWithRetransmit(datagram);
+			
+			//If we're stuck here and recieve an old package that has to be re-acked.
+			if(!externalQueue.isEmpty()){
+				potentialReack = receivePacket(false);
+				if(potentialReack.getSeq_nr() < nextExpectedSeqNr){
+					sendAck(potentialReack, false); //reack an old package
+				}
+			}
+			
 		}while(ack == null || !validAck(datagram, ack) /*|| !isValid(ack)*/);
 
 		nextExpectedSeqNr++; //for the ack.

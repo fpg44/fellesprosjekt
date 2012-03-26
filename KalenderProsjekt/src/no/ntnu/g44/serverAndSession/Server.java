@@ -161,16 +161,6 @@ public class Server{
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
 			insert( e );
-			
-			//CREATE NOTIFICATIONS FOR THIS NEW EVENT
-//			Notification notification = new Notification(e.getEventID(), NotificationType.EVENT_INVITATION);
-
-			//INSERT NOTIFICATION INTO DATABASE
-//			insert( notification );
-			
-			//Sends the notification to all online clients
-//			String msg = xmlSerializer.notificationToXml(notification).toXML();
-//			notifyOnlineListeners("invitation" + msg, con);
 		}
 
 		else if(message.startsWith("insert notification")){
@@ -181,10 +171,11 @@ public class Server{
 			//Send the notification to all online clients
 			String msg = xmlSerializer.notificationToXml(notification).toXML();
 			notifyOnlineListeners("notification" + msg, con);
+			
 //			//If notification is an Invitation
-//			if(notification.getType() == NotificationType.EVENT_INVITATION){
-//				notifyOnlineListeners("invitation" + xmlSerializer.notificationToXml(notification).toXML(), con);
-//			}
+			if(notification.getType() == NotificationType.EVENT_INVITATION){
+				notifyOnlineListeners("invitation" + xmlSerializer.notificationToXml(notification).toXML(), con);
+			}
 		}
 
 		else if(message.startsWith("insert attends_at")){

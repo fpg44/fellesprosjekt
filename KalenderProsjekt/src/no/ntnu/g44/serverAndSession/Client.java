@@ -152,6 +152,12 @@ public class Client {
 			Notification notif = xmlSerializer.toNotification(message);
 			Main.currentProject.addNotification(notif, false); //unsure if false  or true here
 		}
+		
+		else if(message.startsWith("notification")){
+			message = message.replaceFirst("notification", "");
+			Notification notif = xmlSerializer.toNotification(message);
+			Main.currentProject.addNotification(notif, false);
+		}
 	}
 	
 	

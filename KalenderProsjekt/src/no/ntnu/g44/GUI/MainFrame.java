@@ -37,7 +37,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.AttendanceStatus;
@@ -71,7 +70,7 @@ public class MainFrame extends JPanel{
 	JList calendarPersons = new JList(calendarModel);
 	JScrollPane personnelScroll = new JScrollPane(personnelList);
 	JScrollPane calendarScroll = new JScrollPane(calendarPersons);
-	protected JComboBox notifBox = new JComboBox();
+	private JComboBox<Notification> notifBox = new JComboBox<Notification>();
 	JButton backArrow = new JButton(" < < ");
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
@@ -85,18 +84,17 @@ public class MainFrame extends JPanel{
 	int currentWeekNumber = WEEK_NUMBER;
 	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 	JLabel weeknumber = new JLabel("WEEK " + WEEK_NUMBER);
-	ListRenderer renderer = new ListRenderer();
+	
 	
 	public void notificationFuck(){
 		notifBox.removeAllItems();
+//		notifBox.addItem(new String("You have " + countNotificationFuck() + " Notifications"));
+
 		for(Notification n : Main.currentProject.getNotificationList()){
-			if(Main.currentProject.getStatus(n.getEventID(), n.getPersonString()).getStatus() != AttendanceStatusType.ATTENDING){
-				notifBox.addItem(n);
-			}
+			notifBox.addItem(n);
 		}
-		notifBox.addItem(new String("You have " + countNotificationFuck() + " Notifications"));
 	}
-	
+
 	public int countNotificationFuck(){
 		int counter = 0;
 		for(Notification n : Main.currentProject.getNotificationList()){
@@ -106,9 +104,7 @@ public class MainFrame extends JPanel{
 		}
 		return counter;
 	}
-	
-	
-	
+
 	public MainFrame(){
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -117,11 +113,11 @@ public class MainFrame extends JPanel{
 				WEEK_NUMBER = calendar.getWeekNumber();
 				if(currentWeekNumber == 0)currentWeekNumber = WEEK_NUMBER;
 				resizing();
+				notificationFuck();
 			}
 		}, 0, 1000);
 
 		fillModel();
-		notificationFuck();
 
 		newEvent.addMouseMotionListener(listener);
 		newEvent.addMouseListener(listener);
@@ -135,9 +131,8 @@ public class MainFrame extends JPanel{
 		popup.add(item3);
 		//		popup.add(item4);
 
-		NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
 		notifBox.addActionListener(new ListeningClass());
-		notifBox.setRenderer(notifRender);
+		notifBox.setRenderer(new NotificationListCellRenderer());
 
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
@@ -195,7 +190,7 @@ public class MainFrame extends JPanel{
 		weeknumber.setVisible(true);
 		todayButton.addActionListener(listener);
 
-//		checkForNewNotifications();
+		//		checkForNewNotifications();
 
 		add(personnelScroll);
 		add(calendarScroll);
@@ -380,36 +375,36 @@ public class MainFrame extends JPanel{
 		}
 	}
 
-//	public void notificationCounter() {
-//		int notifCounter = 0;
-//		for (int i = 0; i < Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size(); i++) {
-//			notifCounter++;
-//		}
-//		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
-//	}
+	//	public void notificationCounter() {
+	//		int notifCounter = 0;
+	//		for (int i = 0; i < Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size(); i++) {
+	//			notifCounter++;
+	//		}
+	//		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
+	//	}
 
-//	public void checkForNewNotifications() {
-////		notifBox.removeAll();
-//
-//		notificationCounter();
-//		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {
-//			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
-//
-//				//If attendance status is answered, the notification is not shown.
-////				if(Main.currentProject.
-////						getStatus(notification.
-////								getEventID(), notification.
-////								getPersonString()).
-////								getStatus() != AttendanceStatusType.ATTENDING){
-////				}
-//				notifBox.addItem(notification);
-//			}				
-//		}
-//		//
-//		//		else {
-//		//			notifBox.addItem(new String ("There is no new notifications"));
-//		//		}
-//	}
+	//	public void checkForNewNotifications() {
+	////		notifBox.removeAll();
+	//
+	//		notificationCounter();
+	//		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {
+	//			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
+	//
+	//				//If attendance status is answered, the notification is not shown.
+	////				if(Main.currentProject.
+	////						getStatus(notification.
+	////								getEventID(), notification.
+	////								getPersonString()).
+	////								getStatus() != AttendanceStatusType.ATTENDING){
+	////				}
+	//				notifBox.addItem(notification);
+	//			}				
+	//		}
+	//		//
+	//		//		else {
+	//		//			notifBox.addItem(new String ("There is no new notifications"));
+	//		//		}
+	//	}
 
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
@@ -420,20 +415,20 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			if(e.getSource() == notifBox){
-				if(!Main.currentProject.getNotificationList().isEmpty()){
-					if(notifBox.getSelectedIndex() != 0){
-						System.out.println("NÅ SKJER DET!");
-						if(((Notification)notifBox
-								.getSelectedItem())
-								.getType() == NotificationType.EVENT_INVITATION){
-							EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
-						}
-					}
-				}
-				notifBox.setSelectedIndex(0);
-			}
+
+			//			if(e.getSource() == notifBox){
+			//				if(!Main.currentProject.getNotificationList().isEmpty()){
+			//					if(notifBox.getSelectedIndex() != 0){
+			//						System.out.println("NÅ SKJER DET!");
+			//						if(((Notification)notifBox
+			//								.getSelectedItem())
+			//								.getType() == NotificationType.EVENT_INVITATION){
+			//							EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
+			//						}
+			//					}
+			//				}
+			//				notifBox.setSelectedIndex(0);
+			//			}
 			if(e.getSource() == item1){
 				newEvent();
 			}

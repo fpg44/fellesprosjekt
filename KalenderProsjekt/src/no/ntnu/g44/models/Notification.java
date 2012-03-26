@@ -11,6 +11,7 @@ public class Notification {
 	private NotificationType type;
 	private int notificationID, eventID;
 	private PropertyChangeSupport pcs;
+	private String person;
 	
 	/**
 	 * Create a new <code>Notification</code> with the specified message and type. <br><br>
@@ -33,10 +34,11 @@ public class Notification {
 	 * @param Message
 	 * @param type
 	 */
-	public Notification(int notificationID, int eventID, NotificationType type){
+	public Notification(int notificationID, int eventID, NotificationType type, String person){
 		this.notificationID = notificationID;
 		this.eventID = eventID;
 		this.type = type;
+		this.person = person;
 		
 		pcs = new PropertyChangeSupport(this);
 	}
@@ -46,10 +48,11 @@ public class Notification {
 		this.type = type;
 	}
 
-	public Notification(int eventId, NotificationType type){
+	public Notification(int eventId, NotificationType type, String person){
 		this.notificationID = Main.currentProject.generateID();
 		this.eventID = eventId;
 		this.type = type;
+		this.person = person;
 		
 		pcs = new PropertyChangeSupport(this);
 	}
@@ -106,5 +109,22 @@ public class Notification {
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		pcs.removePropertyChangeListener(listener);
 		
+	}
+	
+	public void setPerson(String p){
+		this.person = p;
+	}
+	
+	public Person getPerson(){
+		for(Person person : Main.currentProject.getPersonList()){
+			if(person.getUsername().equals(this.person)){
+				return person;
+			}
+		}
+		return null;
+	}
+	
+	public String getPersonString(){
+		return this.person;
 	}
 }

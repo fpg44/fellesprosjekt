@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.Random;
 
 import no.ntnu.g44.controllers.Main;
-import no.ntnu.g44.controllers.NotificationController;
 import no.ntnu.g44.serverAndSession.FileStorage;
 import no.ntnu.g44.serverAndSession.Storage;
 import no.ntnu.g44.serverAndSession.XmlSerializer;
@@ -33,8 +32,6 @@ public class Project implements PropertyChangeListener {
 
 	private Random generateID = new Random();
 
-	private NotificationController nc = new NotificationController();
-	
 	private XmlSerializer xmlSerializer = new XmlSerializer();
 	/**
 	 * the one that is logged in.
@@ -250,8 +247,10 @@ public class Project implements PropertyChangeListener {
 				}
 
 				//SEND INVITATION NOTIFICATION TO ONLINE USERS
-				Main.client.newNotification(xmlSerializer.notificationToXml(
-						new Notification(event.getEventID(), NotificationType.EVENT_INVITATION)));
+				for(Person person : event.getParticipants()){
+					Main.client.newNotification(xmlSerializer.notificationToXml(
+							new Notification(event.getEventID(), NotificationType.EVENT_INVITATION, person.getUsername())));
+				}
 
 			}
 		} catch (IOException | ParseException e) {
@@ -506,8 +505,14 @@ public class Project implements PropertyChangeListener {
 		}
 		return null;
 	}
-	public void addNotificationToController(Notification n) {
-		nc.addNotification(n);
+
+	public ArrayList<Notification> getNotificationsForPerson(Person p){
+		ArrayList<Notification> notifications = new ArrayList<Notification>();
+		for(Notification n : notificationList){
+			if(n.getPerson() == p){
+				notifications.add(n);
+			}
+		}
+		return notifications;
 	}
-	
 }

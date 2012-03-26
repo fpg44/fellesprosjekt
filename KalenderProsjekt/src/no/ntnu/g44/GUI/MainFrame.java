@@ -38,7 +38,6 @@ import javax.swing.JTextField;
 import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.controllers.Main;
-import no.ntnu.g44.controllers.NotificationController;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Person;
@@ -85,10 +84,6 @@ public class MainFrame extends JPanel{
 	ListRenderer renderer = new ListRenderer();
 	NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
 
-	//Used by actionListener to check if the list of notifications is empty
-	NotificationController notificationController = new NotificationController();
-	ArrayList unseenNotifications = notificationController.getUnseenNotifications();
-	
 	public MainFrame(){
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -117,7 +112,7 @@ public class MainFrame extends JPanel{
 		popup.add(item3);
 //		popup.add(item4);
 
-		checkForNewNotifications();
+//		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
 		notifBox.setRenderer(notifRender);
 
@@ -362,31 +357,32 @@ public class MainFrame extends JPanel{
 	
 	public void notificationCounter() {
 		int notifCounter = 0;
-		for (int i = 0; i < unseenNotifications.size(); i++) {
+		for (int i = 0; i < Main.currentProject.getNotificationList().size(); i++) {
 			notifCounter++;
 		}
 		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
 	}
 	
-	/**
-	 * Checks for new notifications and puts them in 'notifBox'
-	 */
-	public void checkForNewNotifications() {
-		
-		unseenNotifications = notificationController.getUnseenNotifications();
-//		System.out.println(unseenNotifications.size());
-
-		if (!unseenNotifications.isEmpty()) {
-			notificationCounter();
-			for (int i = 0; i < unseenNotifications.size(); i++) {
-				notifBox.addItem((unseenNotifications.get(i)));
-			}
-		}
-
-		else {
-			notifBox.addItem(new String ("There is no new notifications"));
-		}
-	}
+//	/**
+//	 * Checks for new notifications and puts them in 'notifBox'
+//	 */
+//	public void checkForNewNotifications() {
+//		int notifCounter = 0;
+//		
+//		unseenNotifications = notificationController.getUnseenNotifications();
+////		System.out.println(unseenNotifications.size());
+//
+//		if (!unseenNotifications.isEmpty()) {
+//			notificationCounter();
+//			for (int i = 0; i < unseenNotifications.size(); i++) {
+//				notifBox.addItem((unseenNotifications.get(i)));
+//			}
+//		}
+//
+//		else {
+//			notifBox.addItem(new String ("There is no new notifications"));
+//		}
+//	}
 	
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
@@ -397,7 +393,7 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (!unseenNotifications.isEmpty()){
+			if (!Main.currentProject.getNotificationList().isEmpty()){
 				if (e.getSource() == notifBox) {
 					if (notifBox.getSelectedIndex() == 0) {
 						System.out.println("Nothing happens");

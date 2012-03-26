@@ -379,7 +379,8 @@ public class MainFrame extends JPanel{
 		}
 
 		else {
-			notifBox.addItem(new String ("There is no new notifications"));
+			notifBox.addItem(new Notification(-1, NotificationType.NO_NOTIFICATIONS, null));
+//			notifBox.addItem(new String ("There is no new notifications"));
 		}
 	}
 	

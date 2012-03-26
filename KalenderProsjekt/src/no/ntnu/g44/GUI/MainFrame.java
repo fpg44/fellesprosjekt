@@ -380,13 +380,13 @@ public class MainFrame extends JPanel{
 			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
 
 				//If attendance status is answered, the notification is not shown.
-				if(Main.currentProject.
-						getStatus(notification.
-								getEventID(), notification.
-								getPersonString()).
-								getStatus() != AttendanceStatusType.ATTENDING){
-					notifBox.addItem(notification);
-				}
+//				if(Main.currentProject.
+//						getStatus(notification.
+//								getEventID(), notification.
+//								getPersonString()).
+//								getStatus() != AttendanceStatusType.ATTENDING){
+//				}
+				notifBox.addItem(notification);
 			}				
 		}
 		//

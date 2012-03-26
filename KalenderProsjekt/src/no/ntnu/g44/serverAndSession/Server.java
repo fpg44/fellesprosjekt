@@ -158,9 +158,12 @@ public class Server{
 			con.send(xmlSerializer.toXml(getDataFromDatabase()).toXML());
 		}
 		else if(message.startsWith("insert event")){
+			notifyOnlineListeners(message, con);
+			
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
 			insert( e );
+			
 		}
 
 		else if(message.startsWith("insert notification")){
@@ -179,6 +182,7 @@ public class Server{
 		}
 
 		else if(message.startsWith("insert attends_at")){
+			notifyOnlineListeners(message, con);
 			message = message.replaceFirst("insert attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			insert( status );

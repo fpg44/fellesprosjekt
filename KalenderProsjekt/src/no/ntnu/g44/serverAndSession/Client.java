@@ -17,6 +17,7 @@ import org.xml.sax.InputSource;
 
 import no.ntnu.fp.net.cl.KtnDatagram.Flag;
 import no.ntnu.g44.controllers.Main;
+import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.Project;
@@ -144,6 +145,11 @@ public class Client {
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
 			Main.currentProject.addEvent(e, false);
+		}
+		else if(message.startsWith("insert attends_at")){
+			message = message.replaceFirst("insert attends_at", "");
+			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
+			Main.currentProject.addAttendanceStatus(status, false);
 		}
 //		else if(message.startsWith("not_attending")){
 //			message = message.replaceFirst("not_attending", "");

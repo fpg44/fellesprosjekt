@@ -373,19 +373,19 @@ public class MainFrame extends JPanel{
 	 * Checks for new notifications and puts them in 'notifBox'
 	 */
 	public void checkForNewNotifications() {
-//		notifBox.removeAll();
+		//		notifBox.removeAll();
 
 		notificationCounter();
 		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {
 			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
 
 				//If attendance status is answered, the notification is not shown.
-//				if(Main.currentProject.
-//						getStatus(notification.
-//								getEventID(), notification.
-//								getPersonString()).
-//								getStatus() != AttendanceStatusType.ATTENDING){
-//				}
+				//				if(Main.currentProject.
+				//						getStatus(notification.
+				//								getEventID(), notification.
+				//								getPersonString()).
+				//								getStatus() != AttendanceStatusType.ATTENDING){
+				//				}
 				notifBox.addItem(notification);
 			}				
 		}
@@ -404,7 +404,7 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("STØRRELSEN PÅ ARRAYET OVER ALLE NOTIFIKASJONENE ER: " + Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size());
+			//			System.out.println("STØRRELSEN PÅ ARRAYET OVER ALLE NOTIFIKASJONENE ER: " + Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size());
 			if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()){
 				if (e.getSource() == notifBox && notifBox.getSelectedIndex() != 0) {
 					if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CANCELLED){
@@ -424,72 +424,72 @@ public class MainFrame extends JPanel{
 					}
 					notifBox.setSelectedIndex(0);
 				}
-				//			}
-				if(e.getSource() == item1){
-					newEvent();
-				}
-				if(e.getSource() == item2){
-					editEvent();
-				}
-				if(e.getSource() == item3){
-					deleteEvent();
-				}
-				/*
+			}
+			//			}
+			if(e.getSource() == item1){
+				newEvent();
+			}
+			if(e.getSource() == item2){
+				editEvent();
+			}
+			if(e.getSource() == item3){
+				deleteEvent();
+			}
+			/*
 			if(e.getSource() == item4){
 				logout();
 			}
-				 */
-				if(e.getSource() == newAction){
-					newEvent();
+			 */
+			if(e.getSource() == newAction){
+				newEvent();
+			}
+			if(e.getSource() == logoutAction){
+				logout();
+			}
+			if(e.getSource() == exitAction){
+				System.exit(0);
+			}
+			if(e.getSource() == nextArrow){
+				currentWeekNumber +=1;
+				if (currentWeekNumber == 53) {
+					currentWeekNumber = 1;
+					currentYear++;
 				}
-				if(e.getSource() == logoutAction){
-					logout();
+				calendar.repaint();
+			}
+			if(e.getSource() == backArrow){
+				currentWeekNumber -=1;
+				if (currentWeekNumber == 0) {
+					currentWeekNumber = 52;
+					currentYear--;
 				}
-				if(e.getSource() == exitAction){
-					System.exit(0);
+				calendar.repaint();
+			}
+			if(e.getSource() == todayButton){
+				currentWeekNumber = WEEK_NUMBER;
+				calendar.repaint();
+			}
+			resizing();
+			if(e.getSource() == editEvent){
+				editEvent();
+			}
+			if(e.getSource() == newEvent){
+				newEvent();
+			}
+			if(e.getSource() == deleteEvent){
+				deleteEvent();
+			}
+			if(e.getSource() == editEvent){
+				if(calendar.getSelectedEvent() != null){
+					//edit
 				}
-				if(e.getSource() == nextArrow){
-					currentWeekNumber +=1;
-					if (currentWeekNumber == 53) {
-						currentWeekNumber = 1;
-						currentYear++;
-					}
-					calendar.repaint();
-				}
-				if(e.getSource() == backArrow){
-					currentWeekNumber -=1;
-					if (currentWeekNumber == 0) {
-						currentWeekNumber = 52;
-						currentYear--;
-					}
-					calendar.repaint();
-				}
-				if(e.getSource() == todayButton){
-					currentWeekNumber = WEEK_NUMBER;
-					calendar.repaint();
-				}
-				resizing();
-				if(e.getSource() == editEvent){
-					editEvent();
-				}
-				if(e.getSource() == newEvent){
-					newEvent();
-				}
-				if(e.getSource() == deleteEvent){
-					deleteEvent();
-				}
-				if(e.getSource() == editEvent){
-					if(calendar.getSelectedEvent() != null){
-						//edit
-					}
-				}
-				if(e.getSource() == arrowButton && personnelList.getSelectedValue() != null){
-					addPersons();			
-				}
-				else if(e.getSource() == removeButton && calendarPersons.getSelectedValue() != null){
-					calendarModel.removeElement(calendarPersons.getSelectedValue());
-					search(searchField.getText().toLowerCase());
-				}
+			}
+			if(e.getSource() == arrowButton && personnelList.getSelectedValue() != null){
+				addPersons();			
+			}
+			else if(e.getSource() == removeButton && calendarPersons.getSelectedValue() != null){
+				calendarModel.removeElement(calendarPersons.getSelectedValue());
+				search(searchField.getText().toLowerCase());
 			}
 		}
 		@Override

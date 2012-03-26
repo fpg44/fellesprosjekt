@@ -272,8 +272,6 @@ public class Project implements PropertyChangeListener {
 		if(Main.usenet && save){
 			Main.client.newNotification(xmlSerializer.notificationToXml(notification));
 		}
-		
-		Main.currentMainFrame.checkForNewNotifications();
 	}
 
 	public void addAttendanceStatus(AttendanceStatus status, boolean save) throws ConnectException, IOException{
@@ -413,6 +411,9 @@ public class Project implements PropertyChangeListener {
 				
 				e.printStackTrace();
 			}
+		}
+		else if(event.getPropertyName().equals("notification")){
+			Main.currentMainFrame.checkForNewNotifications();
 		}
 	}
 

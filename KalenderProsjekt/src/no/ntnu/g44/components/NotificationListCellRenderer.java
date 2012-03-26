@@ -19,19 +19,20 @@ public class NotificationListCellRenderer extends JLabel implements ListCellRend
 			setBackground(list.getSelectionBackground());
 			setForeground(list.getSelectionForeground());
 		} else {
-			setText(value.toString());
 			setBackground(list.getBackground());
 			setForeground(list.getForeground());
 		}
 
+		setText(((Notification) value).getMessage());
+		/*
 		if(index > 0) {
-			setText(((Notification) value).getMessage());
 		}
 
 		else {
 			setText(value.toString());
 		}
 
+*/
 		setOpaque(true);
 
 		return this;

@@ -19,7 +19,7 @@ public class NotificationListCellRenderer extends JLabel implements ListCellRend
 			setBackground(list.getSelectionBackground());
 			setForeground(list.getSelectionForeground());
 		} else {
-			setText(((Notification) value).getMessage());
+			setText(value.toString());
 			setBackground(list.getBackground());
 			setForeground(list.getForeground());
 		}
@@ -29,7 +29,7 @@ public class NotificationListCellRenderer extends JLabel implements ListCellRend
 		}
 		
 		else {
-			setText(((Notification) value).getMessage());
+			setText(value.toString());
 		}
 
 		setOpaque(true);

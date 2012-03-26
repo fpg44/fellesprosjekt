@@ -362,8 +362,7 @@ public class MainFrame extends JPanel{
 		for (int i = 0; i < Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size(); i++) {
 			notifCounter++;
 		}
-		notifBox.addItem(new Notification(-1, NotificationType.NO_NOTIFICATIONS, null));
-//		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
+		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
 	}
 	
 	/**
@@ -380,8 +379,7 @@ public class MainFrame extends JPanel{
 		}
 
 		else {
-			notifBox.addItem(new Notification(-1, NotificationType.NO_NOTIFICATIONS, null));
-//			notifBox.addItem(new String ("There is no new notifications"));
+			notifBox.addItem(new String ("There is no new notifications"));
 		}
 	}
 	

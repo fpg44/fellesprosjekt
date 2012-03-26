@@ -372,7 +372,6 @@ public class MainFrame extends JPanel{
 	 * Checks for new notifications and puts them in 'notifBox'
 	 */
 	public void checkForNewNotifications() {
-		int notifCounter = 0;
 		
 		unseenNotifications = notificationController.getUnseenNotifications();
 //		System.out.println(unseenNotifications.size());

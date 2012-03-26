@@ -153,7 +153,6 @@ public class Client {
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			Main.currentProject.addAttendanceStatus(status, false);
 //			Main.currentMainFrame.checkForNewNotifications();
-			
 		}
 
 	}

@@ -71,7 +71,7 @@ public class MainFrame extends JPanel{
 	JList calendarPersons = new JList(calendarModel);
 	JScrollPane personnelScroll = new JScrollPane(personnelList);
 	JScrollPane calendarScroll = new JScrollPane(calendarPersons);
-	JComboBox notifBox = new JComboBox();
+	protected JComboBox notifBox = new JComboBox();
 	JButton backArrow = new JButton(" < < ");
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
@@ -420,28 +420,18 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//			System.out.println("STØRRELSEN PÅ ARRAYET OVER ALLE NOTIFIKASJONENE ER: " + Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size());
-			if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()){
-				if (e.getSource() == notifBox && notifBox.getSelectedIndex() != 0) {
-					if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CANCELLED){
-						System.out.println("This event has been cancelled");
-
+			
+			if(e.getSource() == notifBox){
+				if(!Main.currentProject.getNotificationList().isEmpty()){
+					if(notifBox.getSelectedIndex() != 0){
+						System.out.println("NÅ SKJER DET!");
+						if(((Notification)notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
+							EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
+						}
 					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION) {
-						System.out.println("You have a new event invitation");
-						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(
-								((Notification) notifBox.getSelectedItem()).getEventID()));
-					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CHANGED) {
-						System.out.println("This event have been changed");
-					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.PARTICIPANT_DECLINED){
-						System.out.println("A participant has declined invitation");
-					}
-					notifBox.setSelectedIndex(0);
 				}
+				notifBox.setSelectedIndex(0);
 			}
-			//			}
 			if(e.getSource() == item1){
 				newEvent();
 			}
@@ -451,11 +441,7 @@ public class MainFrame extends JPanel{
 			if(e.getSource() == item3){
 				deleteEvent();
 			}
-			/*
-			if(e.getSource() == item4){
-				logout();
-			}
-			 */
+
 			if(e.getSource() == newAction){
 				newEvent();
 			}

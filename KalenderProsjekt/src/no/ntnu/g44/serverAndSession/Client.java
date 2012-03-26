@@ -139,19 +139,21 @@ public class Client {
 		if(message.startsWith("notification")){
 			message = message.replaceFirst("notification", "");
 			Notification notif = xmlSerializer.toNotification(message);
+			Main.currentMainFrame.checkForNewNotifications();
 			Main.currentProject.addNotification(notif, false);
 		}
 		else if(message.startsWith("insert event")){
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
+			Main.currentMainFrame.checkForNewNotifications();
 			Main.currentProject.addEvent(e, false);
 		}
 		else if(message.startsWith("insert attends_at")){
 			message = message.replaceFirst("insert attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
+			Main.currentMainFrame.checkForNewNotifications();
 			Main.currentProject.addAttendanceStatus(status, false);
 		}
-		Main.currentMainFrame.checkForNewNotifications();
 
 	}
 	

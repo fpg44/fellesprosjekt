@@ -145,13 +145,13 @@ public class Client {
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
 			Main.currentProject.addEvent(e, false);
-			Main.currentMainFrame.checkForNewNotifications();
+//			Main.currentMainFrame.checkForNewNotifications();
 		}
 		else if(message.startsWith("insert attends_at")){
 			message = message.replaceFirst("insert attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			Main.currentProject.addAttendanceStatus(status, false);
-			Main.currentMainFrame.checkForNewNotifications();
+//			Main.currentMainFrame.checkForNewNotifications();
 		}
 
 	}

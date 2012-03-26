@@ -374,6 +374,9 @@ public class MainFrame extends JPanel{
 	 */
 	public void checkForNewNotifications() {
 
+		if(Main.currentProject.getNotificationList().isEmpty()){
+			return;
+		}
 		//		notifBox.removeAll();
 		notificationCounter();
 		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {

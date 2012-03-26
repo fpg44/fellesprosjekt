@@ -60,6 +60,8 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		paintNowLine(g2d);
 		
 		paintDayText(g2d);
+		
+		Main.currentMainFrame.checkForNewNotifications();
 	}
 
 	private void paintFrame(Graphics2D g2d) {

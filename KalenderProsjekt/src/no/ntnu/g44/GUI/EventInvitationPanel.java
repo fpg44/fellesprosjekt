@@ -105,6 +105,7 @@ public class EventInvitationPanel extends AbstractPanelClass {
 					
 				}
 				closeWindow();
+				
 			}
 			else if (e.getSource() == noButton) {
 				

@@ -248,8 +248,10 @@ public class Project implements PropertyChangeListener {
 
 				//SEND INVITATION NOTIFICATION TO ONLINE USERS
 				for(Person person : event.getParticipants()){
-					Main.client.newNotification(xmlSerializer.notificationToXml(
-							new Notification(event.getEventID(), NotificationType.EVENT_INVITATION, person.getUsername())));
+					if(!person.getUsername().equals(event.getEventOwner().getUsername())){
+						Main.client.newNotification(xmlSerializer.notificationToXml(
+								new Notification(event.getEventID(), NotificationType.EVENT_INVITATION, person.getUsername())));						
+					}
 				}
 
 			}

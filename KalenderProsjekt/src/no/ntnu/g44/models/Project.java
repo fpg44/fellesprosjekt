@@ -513,7 +513,6 @@ public class Project implements PropertyChangeListener {
 				notifications.add(n);
 			}
 		}
-		notifications.add(new Notification(-1, NotificationType.NO_NOTIFICATIONS, getLoggedInPerson().getUsername()));
 		return notifications;
 	}
 }

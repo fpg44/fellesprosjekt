@@ -4,8 +4,7 @@ public enum NotificationType {
 	EVENT_INVITATION("New event invitation"),
 	EVENT_CHANGED("Event changed"),
 	EVENT_CANCELLED("Event cancelled"),
-	PARTICIPANT_DECLINED("Participant declined"),
-	NO_NOTIFICATIONS("test");
+	PARTICIPANT_DECLINED("Participant declined");
 	
 	private String msg;
 	

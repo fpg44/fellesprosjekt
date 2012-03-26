@@ -400,6 +400,7 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("STØRRELSEN PÅ ARRAYET OVER ALLE NOTIFIKASJONENE ER: " + Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size());
 			if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()){
 				if (e.getSource() == notifBox && notifBox.getSelectedIndex() != 0) {
 					if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CANCELLED){

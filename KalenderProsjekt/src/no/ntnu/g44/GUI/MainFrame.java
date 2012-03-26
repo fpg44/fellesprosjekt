@@ -40,6 +40,7 @@ import javax.swing.JTextField;
 import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.controllers.Main;
+import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.NotificationType;
@@ -85,8 +86,29 @@ public class MainFrame extends JPanel{
 	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 	JLabel weeknumber = new JLabel("WEEK " + WEEK_NUMBER);
 	ListRenderer renderer = new ListRenderer();
-
-
+	
+	public void notificationFuck(){
+		notifBox.removeAllItems();
+		notifBox.addItem(new String("You have " + countNotificationFuck() + " Notifications"));
+		for(Notification n : Main.currentProject.getNotificationList()){
+			if(Main.currentProject.getStatus(n.getEventID(), n.getPersonString()).getStatus() != AttendanceStatusType.ATTENDING){
+				notifBox.addItem(n);
+			}
+		}
+	}
+	
+	public int countNotificationFuck(){
+		int counter = 0;
+		for(Notification n : Main.currentProject.getNotificationList()){
+			if(Main.currentProject.getStatus(n.getEventID(), n.getPersonString()).getStatus() != AttendanceStatusType.ATTENDING){
+				counter ++;
+			}
+		}
+		return counter;
+	}
+	
+	
+	
 	public MainFrame(){
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -97,12 +119,9 @@ public class MainFrame extends JPanel{
 				resizing();
 			}
 		}, 0, 1000);
-		//		calendarPersons.setCellRenderer(renderer);
-		//		calendarPersons.addMouseListener(renderer.getHandler(calendarPersons));  
-		//		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
 
 		fillModel();
-		//		checkForNewNotifications();
+		notificationFuck();
 
 		newEvent.addMouseMotionListener(listener);
 		newEvent.addMouseListener(listener);
@@ -176,7 +195,7 @@ public class MainFrame extends JPanel{
 		weeknumber.setVisible(true);
 		todayButton.addActionListener(listener);
 
-		checkForNewNotifications();
+//		checkForNewNotifications();
 
 		add(personnelScroll);
 		add(calendarScroll);
@@ -361,39 +380,36 @@ public class MainFrame extends JPanel{
 		}
 	}
 
-	public void notificationCounter() {
-		int notifCounter = 0;
-		for (int i = 0; i < Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size(); i++) {
-			notifCounter++;
-		}
-		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
-	}
+//	public void notificationCounter() {
+//		int notifCounter = 0;
+//		for (int i = 0; i < Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size(); i++) {
+//			notifCounter++;
+//		}
+//		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
+//	}
 
-	/**
-	 * Checks for new notifications and puts them in 'notifBox'
-	 */
-	public void checkForNewNotifications() {
-		//		notifBox.removeAll();
-
-		notificationCounter();
-		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {
-			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
-
-				//If attendance status is answered, the notification is not shown.
-				//				if(Main.currentProject.
-				//						getStatus(notification.
-				//								getEventID(), notification.
-				//								getPersonString()).
-				//								getStatus() != AttendanceStatusType.ATTENDING){
-				//				}
-				notifBox.addItem(notification);
-			}				
-		}
-		//
-		//		else {
-		//			notifBox.addItem(new String ("There is no new notifications"));
-		//		}
-	}
+//	public void checkForNewNotifications() {
+////		notifBox.removeAll();
+//
+//		notificationCounter();
+//		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {
+//			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
+//
+//				//If attendance status is answered, the notification is not shown.
+////				if(Main.currentProject.
+////						getStatus(notification.
+////								getEventID(), notification.
+////								getPersonString()).
+////								getStatus() != AttendanceStatusType.ATTENDING){
+////				}
+//				notifBox.addItem(notification);
+//			}				
+//		}
+//		//
+//		//		else {
+//		//			notifBox.addItem(new String ("There is no new notifications"));
+//		//		}
+//	}
 
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;

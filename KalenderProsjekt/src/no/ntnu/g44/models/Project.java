@@ -395,26 +395,26 @@ public class Project implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent event) {
 		propChangeSupp.firePropertyChange(event);
 		
-		
-		
-		if(event.getPropertyName().equals("notificationType")){
-			try {
-				
-				//Notifies the client about the updates
-				Main.client.updateNotification(xmlSerializer.notificationToXml((Notification)event.getSource()));
-		
-			} catch (ConnectException e) {
-			
-				e.printStackTrace();
-			
-			} catch (IOException e) {
-				
-				e.printStackTrace();
-			}
-		}
-		else if(event.getPropertyName().equals("notification")){
-//			Main.currentMainFrame.checkForNewNotifications();
-		}
+//		
+//		
+//		if(event.getPropertyName().equals("notificationType")){
+//			try {
+//				
+//				//Notifies the client about the updates
+//				Main.client.updateNotification(xmlSerializer.notificationToXml((Notification)event.getSource()));
+//		
+//			} catch (ConnectException e) {
+//			
+//				e.printStackTrace();
+//			
+//			} catch (IOException e) {
+//				
+//				e.printStackTrace();
+//			}
+//		}
+//		else if(event.getPropertyName().equals("notification")){
+////			Main.currentMainFrame.checkForNewNotifications();
+//		}
 	}
 
 	/**

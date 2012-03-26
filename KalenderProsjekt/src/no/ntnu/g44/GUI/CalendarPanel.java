@@ -61,7 +61,9 @@ public class CalendarPanel extends JPanel implements MouseWheelListener, MouseLi
 		
 		paintDayText(g2d);
 		
-		Main.currentMainFrame.checkForNewNotifications();
+		if(!Main.currentProject.getNotificationList().isEmpty()){
+			Main.currentMainFrame.checkForNewNotifications();
+		}
 	}
 
 	private void paintFrame(Graphics2D g2d) {

@@ -116,6 +116,7 @@ public abstract class AbstractPanelClass {
 	 * Closes the window.
 	 */
 	protected void closeWindow() {
-		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+//		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		frame.dispose();
 	}
 }

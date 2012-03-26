@@ -410,6 +410,7 @@ public class MainFrame extends JPanel{
 					System.out.println("You have a new event invitation");
 					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(
 							((Notification) notifBox.getSelectedItem()).getEventID()));
+					checkForNewNotifications();
 				}
 				else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CHANGED) {
 					System.out.println("This event have been changed");

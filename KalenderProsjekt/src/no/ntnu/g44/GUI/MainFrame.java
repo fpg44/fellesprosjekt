@@ -52,7 +52,7 @@ public class MainFrame extends JPanel{
 	JMenuItem item3 = new JMenuItem("Delete Event");
 	JMenuItem item2 = new JMenuItem("Edit Event");
 	JMenuItem item1 = new JMenuItem("New Event");
-	JMenuItem item4 = new JMenuItem("Logout");
+//	JMenuItem item4 = new JMenuItem("Logout");
 
 	JButton newEvent = new JButton("New Event");
 	JButton editEvent = new JButton("Edit Event");
@@ -106,11 +106,11 @@ public class MainFrame extends JPanel{
 		item1.addActionListener(listener);
 		item2.addActionListener(listener);
 		item3.addActionListener(listener);
-		item4.addActionListener(listener);
+//		item4.addActionListener(listener);
 		popup.add(item1);
 		popup.add(item2);
 		popup.add(item3);
-		popup.add(item4);
+//		popup.add(item4);
 
 //		checkForNewNotifications();
 		notifBox.addActionListener(new ListeningClass());
@@ -419,7 +419,6 @@ public class MainFrame extends JPanel{
 						System.out.println("You have a new event invitation");
 						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(
 								((Notification) notifBox.getSelectedItem()).getEventID()));
-						
 					}
 					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CHANGED) {
 						System.out.println("This event have been changed");
@@ -439,9 +438,11 @@ public class MainFrame extends JPanel{
 			if(e.getSource() == item3){
 				deleteEvent();
 			}
+			/*
 			if(e.getSource() == item4){
 				logout();
 			}
+			*/
 			if(e.getSource() == newAction){
 				newEvent();
 			}

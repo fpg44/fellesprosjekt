@@ -140,7 +140,6 @@ public class Client {
 			message = message.replaceFirst("notification", "");
 			Notification notif = xmlSerializer.toNotification(message);
 			Main.currentProject.addNotification(notif, false);
-			Main.currentMainFrame.checkForNewNotifications();
 		}
 		else if(message.startsWith("insert event")){
 			message = message.replaceFirst("insert event", "");

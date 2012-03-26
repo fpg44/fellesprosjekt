@@ -38,6 +38,7 @@ import javax.swing.JTextField;
 import no.ntnu.g44.components.ListRenderer;
 import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.controllers.Main;
+import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Person;
@@ -52,7 +53,7 @@ public class MainFrame extends JPanel{
 	JMenuItem item3 = new JMenuItem("Delete Event");
 	JMenuItem item2 = new JMenuItem("Edit Event");
 	JMenuItem item1 = new JMenuItem("New Event");
-//	JMenuItem item4 = new JMenuItem("Logout");
+	//	JMenuItem item4 = new JMenuItem("Logout");
 
 	JButton newEvent = new JButton("New Event");
 	JButton editEvent = new JButton("Edit Event");
@@ -72,7 +73,7 @@ public class MainFrame extends JPanel{
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
 	CalendarPanel calendar = new CalendarPanel();
-	
+
 	JMenuItem newAction;
 	JMenuItem logoutAction;
 	JMenuItem exitAction;
@@ -82,7 +83,7 @@ public class MainFrame extends JPanel{
 	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 	JLabel weeknumber = new JLabel("WEEK " + WEEK_NUMBER);
 	ListRenderer renderer = new ListRenderer();
-	
+
 
 	public MainFrame(){
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -99,21 +100,21 @@ public class MainFrame extends JPanel{
 		//		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
 
 		fillModel();
-		checkForNewNotifications();
+		//		checkForNewNotifications();
 
 		newEvent.addMouseMotionListener(listener);
 		newEvent.addMouseListener(listener);
-		
+
 		item1.addActionListener(listener);
 		item2.addActionListener(listener);
 		item3.addActionListener(listener);
-//		item4.addActionListener(listener);
+		//		item4.addActionListener(listener);
 		popup.add(item1);
 		popup.add(item2);
 		popup.add(item3);
-//		popup.add(item4);
+		//		popup.add(item4);
 
-//		checkForNewNotifications();
+		//		checkForNewNotifications();
 		NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
 		notifBox.addActionListener(new ListeningClass());
 		notifBox.setRenderer(notifRender);
@@ -129,7 +130,7 @@ public class MainFrame extends JPanel{
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		insets = frame.getInsets();
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 		JMenu systemMenu = new JMenu("System");
@@ -143,7 +144,7 @@ public class MainFrame extends JPanel{
 		newAction.addActionListener(listener);
 		logoutAction.addActionListener(listener);
 		exitAction.addActionListener(listener);
-		
+
 		addMouseMotionListener(listener);
 		editEvent.setVisible(true);
 		editEvent.addActionListener(listener);
@@ -198,7 +199,7 @@ public class MainFrame extends JPanel{
 	}
 
 	public void resizing(){
-		
+
 		if(insets == null){
 			return;
 		}
@@ -252,7 +253,7 @@ public class MainFrame extends JPanel{
 		weeknumber.setText("Week number " + currentWeekNumber);
 		weeknumber.setSize(newEvent.getWidth(), backArrow.getHeight());
 		weeknumber.setLocation(calendar.getX() + calendar.getWidth() - newEvent.getWidth(), 16);
-		
+
 		calendarScroll.setSize(newEvent.getWidth(), (int)((getHeight() - 40 - 32 -(newEvent.getHeight() * 3.5)))/2);
 		calendarScroll.setLocation(newEvent.getX(), deleteEvent.getY() + deleteEvent.getHeight() + 24);
 
@@ -273,7 +274,7 @@ public class MainFrame extends JPanel{
 
 		searchField.setSize(newEvent.getWidth(), newEvent.getHeight() /2);
 		searchField.setLocation(newEvent.getX(), personnelScroll.getY() + personnelScroll.getHeight());
-
+//		checkForNewNotifications();
 	}
 
 
@@ -356,7 +357,7 @@ public class MainFrame extends JPanel{
 			personnelList.setSelectedIndex(0);
 		}
 	}
-	
+
 	public void notificationCounter() {
 		int notifCounter = 0;
 		for (int i = 0; i < Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size(); i++) {
@@ -364,29 +365,29 @@ public class MainFrame extends JPanel{
 		}
 		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
 	}
-	
+
 	/**
 	 * Checks for new notifications and puts them in 'notifBox'
 	 */
 	public void checkForNewNotifications() {
-		
 
+		notifBox.removeAll();
 		notificationCounter();
 		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {
-			System.out.println("DET FINNES NOTIFICATIONS");
-			if(!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()){
-				for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
-					System.out.println("NOTIFICATION ALERT: " + notification.toString() + " " + Main.currentProject.getLoggedInPerson().getUsername());
+			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
+
+				//If attendance status is answered, the notification is not shown.
+				if(Main.currentProject.getStatus(notification.getEventID(), notification.getPersonString()).getStatus() != AttendanceStatusType.ATTENDING){
 					notifBox.addItem(notification);
-				}				
-			}
+				}
+			}				
 		}
-//
-//		else {
-//			notifBox.addItem(new String ("There is no new notifications"));
-//		}
+		//
+		//		else {
+		//			notifBox.addItem(new String ("There is no new notifications"));
+		//		}
 	}
-	
+
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
 		@Override
@@ -396,42 +397,26 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()){
-				if (e.getSource() == notifBox) {
-					if (notifBox.getSelectedIndex() == 0) {
-						System.out.println("Nothing happens");
-					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CANCELLED){
-						//EventCancelled eventCancelled = new EventCancelled(event)
-						System.out.println("This event has been cancelled");
-						
-						/*
-						//Testevent.
-						Person person = new Person("Jeppe Eriksen", "jeppeer@gmail.com");
-						Event newEvent = new Event(1, "TestEvent", person, null, new Date(2012,3,15,11,15),
-								new Date(2012,3,15,13,6), "G138", Room.OTHER);
-						EventCancelledPanel ec = new EventCancelledPanel(newEvent);
-						
-						Notification selectedNotification = (Notification) notifBox.getSelectedItem();
-						notifBox.setSelectedIndex(0);
-						notifBox.removeItem(selectedNotification);
-						notificationController.removeNotification(selectedNotification);
-						*/
-					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION) {
-						System.out.println("You have a new event invitation");
-						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(
-								((Notification) notifBox.getSelectedItem()).getEventID()));
-					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CHANGED) {
-						System.out.println("This event have been changed");
-					}
-					else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.PARTICIPANT_DECLINED){
-						System.out.println("A participant has declined invitation");
-					}
-					notifBox.setSelectedIndex(0);
+			//			if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()){
+			if (e.getSource() == notifBox && notifBox.getSelectedIndex() != 0) {
+				if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CANCELLED){
+					System.out.println("This event has been cancelled");
+
 				}
+				else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION) {
+					System.out.println("You have a new event invitation");
+					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(
+							((Notification) notifBox.getSelectedItem()).getEventID()));
+				}
+				else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.EVENT_CHANGED) {
+					System.out.println("This event have been changed");
+				}
+				else if (((Notification) notifBox.getSelectedItem()).getType() == NotificationType.PARTICIPANT_DECLINED){
+					System.out.println("A participant has declined invitation");
+				}
+				notifBox.setSelectedIndex(0);
 			}
+			//			}
 			if(e.getSource() == item1){
 				newEvent();
 			}
@@ -445,7 +430,7 @@ public class MainFrame extends JPanel{
 			if(e.getSource() == item4){
 				logout();
 			}
-			*/
+			 */
 			if(e.getSource() == newAction){
 				newEvent();
 			}
@@ -572,7 +557,7 @@ public class MainFrame extends JPanel{
 			if(e.getClickCount() == 2 && e.getSource() == calendar){
 				if(calendar.getSelectedEvent()==null)return;
 				new EventInfoPanel(calendar.getSelectedEvent(), new JFrame());
-//				EventInfoPanel.makeInfoPanel(calendar.getSelectedEvent());
+				//				EventInfoPanel.makeInfoPanel(calendar.getSelectedEvent());
 			}
 			if(e.getClickCount() == 2 && e.getSource() == personnelList){
 				if(personnelList.getSelectedValue() != null){
@@ -582,7 +567,7 @@ public class MainFrame extends JPanel{
 			if(e.getSource() == searchField){
 				searchField.selectAll();
 			}
-			
+
 			if (e.getSource() == newEvent) {
 				newEvent();
 			}
@@ -627,17 +612,18 @@ public class MainFrame extends JPanel{
 			}
 		}
 	}
-	
+
 	public class colourListCellRenderer extends DefaultListCellRenderer {
-	     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-	         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	         Paint[] colours = new Paint[4];
-	 		 colours[0] = Color.blue;
-	 		 colours[1] = Color.green;
-	 		 colours[2] = Color.magenta;
-	 		 colours[3] = Color.orange;
-	         c.setBackground((Color) colours[index%4]);
-	         return c;
-	     }
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			Paint[] colours = new Paint[4];
+			colours[0] = Color.blue;
+			colours[1] = Color.green;
+			colours[2] = Color.magenta;
+			colours[3] = Color.orange;
+			c.setBackground((Color) colours[index%4]);
+			return c;
+		}
 	}
+	
 }

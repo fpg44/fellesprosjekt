@@ -82,7 +82,7 @@ public class MainFrame extends JPanel{
 	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 	JLabel weeknumber = new JLabel("WEEK " + WEEK_NUMBER);
 	ListRenderer renderer = new ListRenderer();
-	NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
+	
 
 	public MainFrame(){
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -113,6 +113,7 @@ public class MainFrame extends JPanel{
 //		popup.add(item4);
 
 //		checkForNewNotifications();
+		NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
 		notifBox.addActionListener(new ListeningClass());
 		notifBox.setRenderer(notifRender);
 

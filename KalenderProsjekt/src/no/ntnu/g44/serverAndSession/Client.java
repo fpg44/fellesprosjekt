@@ -135,29 +135,30 @@ public class Client {
 	}
 	private void parseInput(String message) throws IOException, ParseException, ParsingException {
 
-		//Creates a new event invitation
-		if (message.startsWith("invitation")) {
-			message = message.replaceFirst("invitation", "");
+//		//Creates a new event invitation
+//		if (message.startsWith("invitation")) {
+//			message = message.replaceFirst("invitation", "");
+//			Notification notif = xmlSerializer.toNotification(message);
+//			Main.currentProject.addNotification(notif, false);	//unsure if false or true here
+//		}
+		if(message.startsWith("notification")){
+			message = message.replaceFirst("notification", "");
 			Notification notif = xmlSerializer.toNotification(message);
-			Main.currentProject.addNotification(notif, false);	//unsure if false or true here
+			Main.currentProject.addNotification(notif, false);
 		}
 		else if(message.startsWith("insert event")){
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
 			Main.currentProject.addEvent(e, false);
 		}
-		else if(message.startsWith("not_attending")){
-			
-			message = message.replaceFirst("not_attending", "");
-			Notification notif = xmlSerializer.toNotification(message);
-			Main.currentProject.addNotification(notif, false); //unsure if false  or true here
-		}
+//		else if(message.startsWith("not_attending")){
+//			
+//			message = message.replaceFirst("not_attending", "");
+//			Notification notif = xmlSerializer.toNotification(message);
+//			Main.currentProject.addNotification(notif, false); //unsure if false  or true here
+//		}
 		
-		else if(message.startsWith("notification")){
-			message = message.replaceFirst("notification", "");
-			Notification notif = xmlSerializer.toNotification(message);
-			Main.currentProject.addNotification(notif, false);
-		}
+
 	}
 	
 	

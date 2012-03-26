@@ -174,7 +174,7 @@ public class Server{
 			
 //			//If notification is an Invitation
 			if(notification.getType() == NotificationType.EVENT_INVITATION){
-				notifyOnlineListeners("invitation" + xmlSerializer.notificationToXml(notification).toXML(), con);
+				notifyOnlineListeners("notification" + xmlSerializer.notificationToXml(notification).toXML(), con);
 			}
 		}
 
@@ -199,7 +199,7 @@ public class Server{
 			if(notification.getType() == NotificationType.PARTICIPANT_DECLINED){
 
 				//Send notification to all online users
-				notifyOnlineListeners("not_attending" + message, con);
+				notifyOnlineListeners("notification" + message, con);
 
 				//updates the notification into the database
 				update( notification );

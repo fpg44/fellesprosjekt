@@ -199,7 +199,7 @@ public class Server{
 			if(notification.getType() == NotificationType.PARTICIPANT_DECLINED){
 
 				//Send notification to all online users
-				notifyOnlineListeners("NOT_ATTENDING" + message, con);
+				notifyOnlineListeners("not_attending" + message, con);
 
 				//updates the notification into the database
 				update( notification );

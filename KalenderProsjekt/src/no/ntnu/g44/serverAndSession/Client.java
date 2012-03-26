@@ -137,7 +137,7 @@ public class Client {
 
 		//Creates a new event invitation
 		if (message.startsWith("invitation")) {
-			message.replaceFirst("invitation", "");
+			message = message.replaceFirst("invitation", "");
 			Notification notif = xmlSerializer.toNotification(message);
 			Main.currentProject.addNotification(notif, false);	//unsure if false or true here
 		}
@@ -146,9 +146,9 @@ public class Client {
 			Event e = xmlSerializer.toEvent(message);
 			Main.currentProject.addEvent(e, false);
 		}
-		else if(message.startsWith("NOT_ATTENDING")){
+		else if(message.startsWith("not_attending")){
 			
-			message = message.replaceFirst("NOT_ATTENDING", "");
+			message = message.replaceFirst("not_attending", "");
 			Notification notif = xmlSerializer.toNotification(message);
 			Main.currentProject.addNotification(notif, false); //unsure if false  or true here
 		}

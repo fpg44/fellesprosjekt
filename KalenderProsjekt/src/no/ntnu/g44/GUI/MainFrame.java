@@ -116,7 +116,6 @@ public class MainFrame extends JPanel{
 		popup.add(item3);
 		//		popup.add(item4);
 
-		//		checkForNewNotifications();
 		NotificationListCellRenderer notifRender = new NotificationListCellRenderer();
 		notifBox.addActionListener(new ListeningClass());
 		notifBox.setRenderer(notifRender);
@@ -176,6 +175,8 @@ public class MainFrame extends JPanel{
 		notifBox.setVisible(true);
 		weeknumber.setVisible(true);
 		todayButton.addActionListener(listener);
+		
+		checkForNewNotifications();
 
 		add(personnelScroll);
 		add(calendarScroll);
@@ -276,7 +277,7 @@ public class MainFrame extends JPanel{
 
 		searchField.setSize(newEvent.getWidth(), newEvent.getHeight() /2);
 		searchField.setLocation(newEvent.getX(), personnelScroll.getY() + personnelScroll.getHeight());
-//		checkForNewNotifications();
+		//		checkForNewNotifications();
 	}
 
 
@@ -373,7 +374,7 @@ public class MainFrame extends JPanel{
 	 */
 	public void checkForNewNotifications() {
 
-		notifBox.removeAll();
+		//		notifBox.removeAll();
 		notificationCounter();
 		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {
 			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
@@ -627,5 +628,5 @@ public class MainFrame extends JPanel{
 			return c;
 		}
 	}
-	
+
 }

@@ -145,11 +145,6 @@ public class ConnectionImpl extends AbstractConnection {
 		ConnectionImpl con = new ConnectionImpl();
 		con.synRcvd(syn);
 
-
-
-		//Listen for syn packet
-		//respond with synack with retransmit
-		//init vars
 		return con;
 	}
 

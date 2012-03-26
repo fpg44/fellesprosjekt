@@ -14,14 +14,6 @@ public class NotificationController {
 	
 	public NotificationController() {
 		unseenNotifications = new ArrayList<Notification>();
-		
-		/*
-		//Notifications for testing purposes
-		addNotification(new Notification(123, 123, NotificationType.EVENT_CANCELLED));
-		addNotification(new Notification(123, 123, NotificationType.EVENT_INVITATION));
-		addNotification(new Notification(123, 123, NotificationType.PARTICIPANT_DECLINED));
-		addNotification(new Notification(123, 123, NotificationType.EVENT_CHANGED));
-		*/
 	}
 	
 	/**

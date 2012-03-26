@@ -96,6 +96,7 @@ public class EventInvitationPanel extends AbstractPanelClass {
 					Main.currentProject.removeNotification(Main.currentProject.getNotification(getEvent().getEventID()));
 
 					Main.currentProject.getStatus(getEvent().getEventID(), Main.currentProject.getLoggedInPerson().getUsername()).setStatus(AttendanceStatusType.ATTENDING);
+					Main.currentProject.updateAttendanceStatus(Main.currentProject.getStatus(getEvent().getEventID(), Main.currentProject.getLoggedInPerson().getUsername()));
 				} catch (ConnectException e1) {
 					
 					e1.printStackTrace();

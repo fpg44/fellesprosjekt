@@ -518,4 +518,8 @@ public class Project implements PropertyChangeListener {
 		}
 		return notifications;
 	}
+	
+	public void updateAttendanceStatus(AttendanceStatus status) throws ConnectException, IOException{
+		Main.client.updateAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
+	}
 }

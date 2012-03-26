@@ -151,18 +151,7 @@ public class Client {
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			Main.currentProject.addAttendanceStatus(status, false);
 		}
-//		else if(message.startsWith("not_attending")){
-//			message = message.replaceFirst("not_attending", "");
-//			Notification notif = xmlSerializer.toNotification(message);
-//			Main.currentProject.addNotification(notif, false); //unsure if false  or true here
-//		}
-		
-//		//Creates a new event invitation
-//		else if (message.startsWith("invitation")) {
-//			message = message.replaceFirst("invitation", "");
-//			Notification notif = xmlSerializer.toNotification(message);
-//			Main.currentProject.addNotification(notif, false);	//unsure if false or true here
-//		}
+		Main.currentMainFrame.checkForNewNotifications();
 
 	}
 	

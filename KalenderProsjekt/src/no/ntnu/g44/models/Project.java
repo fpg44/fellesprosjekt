@@ -415,7 +415,7 @@ public class Project implements PropertyChangeListener {
 			}
 		}
 		else if(event.getPropertyName().equals("notification")){
-			Main.currentMainFrame.checkForNewNotifications();
+//			Main.currentMainFrame.checkForNewNotifications();
 		}
 	}
 

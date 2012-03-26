@@ -95,15 +95,15 @@ public class MainFrame extends JPanel{
 		}
 	}
 
-	public int countNotificationFuck(){
-		int counter = 0;
-		for(Notification n : Main.currentProject.getNotificationList()){
-			if(Main.currentProject.getStatus(n.getEventID(), n.getPersonString()).getStatus() != AttendanceStatusType.ATTENDING){
-				counter ++;
-			}
-		}
-		return counter;
-	}
+//	public int countNotificationFuck(){
+//		int counter = 0;
+//		for(Notification n : Main.currentProject.getNotificationList()){
+//			if(Main.currentProject.getStatus(n.getEventID(), n.getPersonString()).getStatus() != AttendanceStatusType.ATTENDING){
+//				counter ++;
+//			}
+//		}
+//		return counter;
+//	}
 
 	public MainFrame(){
 		timer.scheduleAtFixedRate(new TimerTask() {

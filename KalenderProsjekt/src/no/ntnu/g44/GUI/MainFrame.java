@@ -373,9 +373,9 @@ public class MainFrame extends JPanel{
 	 * Checks for new notifications and puts them in 'notifBox'
 	 */
 	public void checkForNewNotifications() {
-		notifBox.removeAll();
+//		notifBox.removeAll();
 
-		notificationCounter();
+//		notificationCounter();
 		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {
 			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
 

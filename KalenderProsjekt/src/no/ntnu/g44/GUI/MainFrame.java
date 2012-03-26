@@ -99,6 +99,7 @@ public class MainFrame extends JPanel{
 		//		calendarPersons.addMouseMotionListener(renderer.getHandler(calendarPersons)); 
 
 		fillModel();
+		checkForNewNotifications();
 
 		newEvent.addMouseMotionListener(listener);
 		newEvent.addMouseListener(listener);

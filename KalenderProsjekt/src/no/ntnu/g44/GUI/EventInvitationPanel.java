@@ -113,6 +113,7 @@ public class EventInvitationPanel extends AbstractPanelClass {
 				
 				//Participant declined, all users will get notified
 				Main.currentProject.getNotification(getEvent().getEventID()).setType(NotificationType.PARTICIPANT_DECLINED);
+				Main.currentProject.getStatus(getEvent().getEventID(), Main.currentProject.getLoggedInPerson().getUsername()).setStatus(AttendanceStatusType.NOT_ATTENDING);
 				closeWindow();
 			}
 			else if (e.getSource() == cancelButton) {

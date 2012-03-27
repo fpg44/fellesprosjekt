@@ -398,18 +398,18 @@ public class MainFrame extends JPanel{
 	
 	public void notificationFuck(){
 		notifBox.removeAllItems();
+		notifBox.addItem(null);
 
 		for(Notification n : Main.currentProject.getNotificationList()){
 			notifBox.addItem(n);
 		}
-		/*
 		
+		/*
 		//Checks if the notifbox has more items
-		boolean isEmpty = notifBox.getItemCount() > 0;
-		System.out.println("ER DEN TOM : " + isEmpty);
+		boolean hasMoreItems = notifBox.getItemCount() > 0;
 		
 		//If the box is empty, it should not be enabled
-		if (isEmpty) {
+		if (!hasMoreItems) {
 			notifBox.setEnabled(false);
 		}
 		*/
@@ -424,11 +424,20 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			/*
+			if (notifBox.getSelectedItem() == null) {
+				System.out.println("NÅ SKAL DEN VÆRE NULL!!!!");
+			}
+			*/
+			if (notifBox.getItemCount() == 0) {
+				notifBox.setEnabled(false);
+				System.out.println("LISTEN ER TOM");
+			}
 
-			if(e.getSource() == notifBox && notifBox.getItemCount() > 0){
+			if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
 				if(!Main.currentProject.getNotificationList().isEmpty()){
 					System.out.println("NÅ SKJER DET!");
-					
+					notifBox.setEnabled(true);
 					if(((Notification)notifBox
 							.getSelectedItem())
 							.getType() == NotificationType.EVENT_INVITATION){

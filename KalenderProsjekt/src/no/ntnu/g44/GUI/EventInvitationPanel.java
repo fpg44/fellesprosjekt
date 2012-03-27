@@ -106,7 +106,8 @@ public class EventInvitationPanel extends AbstractPanelClass {
 					e1.printStackTrace();
 					
 				}
-				closeWindow();
+//				closeWindow();
+				frame.dispose();
 				
 			}
 			else if (e.getSource() == noButton) {
@@ -128,10 +129,12 @@ public class EventInvitationPanel extends AbstractPanelClass {
 					e1.printStackTrace();
 				}
 				
-				closeWindow();
+//				closeWindow();
+				frame.dispose();
 			}
 			else if (e.getSource() == cancelButton) {
 				closeWindow();
+				frame.dispose();
 			}
 		}
 	}

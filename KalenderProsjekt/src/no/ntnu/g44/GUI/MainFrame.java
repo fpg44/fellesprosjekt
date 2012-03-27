@@ -564,21 +564,17 @@ public class MainFrame extends JPanel{
 					if(e.isPopupTrigger()){
 						popup.show(calendar, e.getX(), e.getY());
 					}
-					/*
-					if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
-						Main.currentProject.removeEvent(calendar.getSelectedEvent());
-					}
-					else{
-						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
-					}
-					 */
 				}
-				if(e.getSource() == notifBox && notifBox.getItemCount() >= 0){					
-					if(((Notification)notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
-						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
-					}
-				}
+				
+				
 				resizing();
+			}
+			if(e.getSource() == notifBox){		
+				System.out.println("null???????????????????????");
+				if(((Notification)notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
+					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
+					System.out.println("howhowhowhwohw null????????");
+				}
 			}
 		}
 	}

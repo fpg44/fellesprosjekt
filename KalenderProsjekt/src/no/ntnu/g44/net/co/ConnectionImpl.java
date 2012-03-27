@@ -163,7 +163,7 @@ public class ConnectionImpl extends AbstractConnection {
 			synack = sendAck(syn, true);
 			ack = receiveAck();
 			System.out.println("Recieved ack " + ack);
-		}while(ack == null || /*!isValid(ack) ||*/ !validAck(synack, ack));
+		}while(ack == null || /*!isValid(ack) || !validAck(synack, ack)*/ ack.getFlag() != Flag.ACK); //TODO DIRTY FIX
 		nextExpectedSeqNr++;
 		state = State.ESTABLISHED;
 	}
@@ -187,6 +187,7 @@ public class ConnectionImpl extends AbstractConnection {
 		System.out.println("Making new datagram with sequence number " + nextSequenceNo + " got " + datagram.getSeq_nr());
 		KtnDatagram ack;
 		KtnDatagram potentialReack = null;
+		int tries = 5;
 		do{
 			ack = sendDataPacketWithRetransmit(datagram);
 			
@@ -198,7 +199,7 @@ public class ConnectionImpl extends AbstractConnection {
 				}
 			}
 			
-		}while(ack == null || !validAck(datagram, ack) /*|| !isValid(ack)*/);
+		}while( tries-- > 0 && ack == null/*|| !validAck(datagram, ack) /*|| !isValid(ack)*/);
 
 		nextExpectedSeqNr++; //for the ack.
 
@@ -216,6 +217,11 @@ public class ConnectionImpl extends AbstractConnection {
 	public String receive() throws ConnectException, IOException {
 		while(true){
 			KtnDatagram datagram = receivePacket(false);
+			//TODO TEMP FIX
+			sendAck(datagram, false);
+			return (String) datagram.getPayload();
+			
+			/*
 			if(datagram.getSeq_nr() < nextExpectedSeqNr){
 				nextSequenceNo--;
 				sendAck(datagram,false);
@@ -229,7 +235,7 @@ public class ConnectionImpl extends AbstractConnection {
 				nextExpectedSeqNr++;
 				sendAck(datagram, false);
 				return (String) datagram.getPayload();
-			}
+			}*/
 		}
 	}
 

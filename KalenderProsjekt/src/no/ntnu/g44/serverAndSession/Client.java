@@ -140,18 +140,21 @@ public class Client {
 			message = message.replaceFirst("insert notification", "");
 			Notification notif = xmlSerializer.toNotification(message);
 			Main.currentProject.addNotification(notif, false);
+			Main.currentMainFrame.notificationFuck();
 		}
 		
 		else if(message.startsWith("insert event")){
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
 			Main.currentProject.addEvent(e, false);
+			Main.currentMainFrame.notificationFuck();
 		}
 		
 		else if(message.startsWith("insert attends_at")){
 			message = message.replaceFirst("insert attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			Main.currentProject.addAttendanceStatus(status, false);
+			Main.currentMainFrame.notificationFuck();
 		}
 		
 		else if(message.startsWith("update event")){
@@ -159,18 +162,21 @@ public class Client {
 			Event e = xmlSerializer.toEvent(message);
 			Main.currentProject.removeEvent(Main.currentProject.getEventById(e.getEventID()));
 			Main.currentProject.addEvent(e, false);
+			Main.currentMainFrame.notificationFuck();
 		}
 		else if(message.startsWith("update notification")){
 			message = message.replaceFirst("update notification", "");
 			Notification notification = xmlSerializer.toNotification(message);
 			Main.currentProject.removeNotification(Main.currentProject.getNotificationByID(notification.getNotificationID()));
 			Main.currentProject.addNotification(notification, false);
+			Main.currentMainFrame.notificationFuck();
 		}
 		else if(message.startsWith("update attends_at")){
 			message = message.replaceFirst("update attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			Main.currentProject.removeAttendanceStatus(Main.currentProject.getStatus(status.getEventID(), status.getUsername()));
 			Main.currentProject.addAttendanceStatus(status, false);
+			Main.currentMainFrame.notificationFuck();
 		}
 //		else if(message.startsWith("delete event")){
 //			message = message.replaceFirst("delete event", "");

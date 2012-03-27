@@ -106,7 +106,7 @@ public class MainFrame extends JPanel{
 				WEEK_NUMBER = calendar.getWeekNumber();
 				if(currentWeekNumber == 0)currentWeekNumber = WEEK_NUMBER;
 				resizing();
-				notificationFuck();
+//				notificationFuck();
 			}
 		}, 0, 1000);
 
@@ -306,19 +306,7 @@ public class MainFrame extends JPanel{
 
 
 	public void fillModel(){
-		/*
-		personnel.add(new Person("Kari", "Kari44"));
-		personnel.add(new Person("Per", "Per92"));
-		personnel.add(new Person("Andreas", "Andreas77"));
-		personnel.add(new Person("Per-Olav", "Perol"));
-		personnel.add(new Person("Anders", "anders007"));
-		personnel.add(new Person("Karl", "Karl"));
-		personnel.add(new Person("Fridtjof", "Fridtj"));
-		personnel.add(new Person("Bjarne", "Bjarn69"));
-		personnel.add(new Person("John", "John22"));
-		personnel.add(new Person("Beate", "Bea22"));
-		personnel.add(new Person("Karl-Ove", "Karo"));
-		 */
+
 		for(int i = 0; i < Main.currentProject.getPersonCount(); i++){
 			personnel.add(Main.currentProject.getPerson(i));
 		}
@@ -387,7 +375,6 @@ public class MainFrame extends JPanel{
 
 
 	public void notificationFuck(){
-//		m.removeAllElements();
 		notifBox.removeAllItems();
 		
 		for(Notification n : Main.currentProject.getNotificationList()){

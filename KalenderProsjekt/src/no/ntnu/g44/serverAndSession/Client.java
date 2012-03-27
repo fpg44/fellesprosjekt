@@ -136,24 +136,57 @@ public class Client {
 	}
 	private void parseInput(String message) throws IOException, ParseException, ParsingException {
 
-		if(message.startsWith("notification")){
+		if(message.startsWith("insert notification")){
 			message = message.replaceFirst("notification", "");
 			Notification notif = xmlSerializer.toNotification(message);
 			Main.currentProject.addNotification(notif, false);
-//			Main.currentMainFrame.notificationFuck();
 		}
+		
 		else if(message.startsWith("insert event")){
 			message = message.replaceFirst("insert event", "");
 			Event e = xmlSerializer.toEvent(message);
 			Main.currentProject.addEvent(e, false);
-//			Main.currentMainFrame.checkForNewNotifications();
 		}
+		
 		else if(message.startsWith("insert attends_at")){
 			message = message.replaceFirst("insert attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			Main.currentProject.addAttendanceStatus(status, false);
-//			Main.currentMainFrame.checkForNewNotifications();
 		}
+		
+		else if(message.startsWith("update event")){
+			message = message.replaceFirst("update event", "");
+			Event e = xmlSerializer.toEvent(message);
+			Main.currentProject.removeEvent(Main.currentProject.getEventById(e.getEventID()));
+			Main.currentProject.addEvent(e, false);
+		}
+		else if(message.startsWith("update notification")){
+			message = message.replaceFirst("update notification", "");
+			Notification notification = xmlSerializer.toNotification(message);
+			Main.currentProject.removeNotification(Main.currentProject.getNotificationByID(notification.getNotificationID()));
+			Main.currentProject.addNotification(notification, false);
+		}
+		else if(message.startsWith("update attends_at")){
+			message = message.replaceFirst("update attends_at", "");
+			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
+			Main.currentProject.removeAttendanceStatus(Main.currentProject.getStatus(status.getEventID(), status.getUsername()));
+			Main.currentProject.addAttendanceStatus(status, false);
+		}
+//		else if(message.startsWith("delete event")){
+//			message = message.replaceFirst("delete event", "");
+//			Event e = xmlSerializer.toEvent(message);
+//			
+//		}
+//		else if(message.startsWith("delete notification")){
+//			message = message.replaceFirst("delete notification", "");
+//			Notification notification = xmlSerializer.toNotification(message);
+//			
+//		}
+//		else if(message.startsWith("delete attends_at")){
+//			message = message.replaceFirst("delete attends_at", "");
+//			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
+//			
+//		}
 
 	}
 	

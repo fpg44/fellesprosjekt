@@ -522,4 +522,13 @@ public class Project implements PropertyChangeListener {
 	public void updateAttendanceStatus(AttendanceStatus status) throws ConnectException, IOException{
 		Main.client.updateAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
 	}
+	
+	public Notification getNotificationByID(int notificationID){
+		for(Notification n : notificationList){
+			if(n.getNotificationID() == notificationID){
+				return n;
+			}
+		}
+		return null;
+	}
 }

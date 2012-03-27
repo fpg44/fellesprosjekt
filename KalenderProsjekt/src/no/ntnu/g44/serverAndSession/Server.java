@@ -149,9 +149,7 @@ public class Server{
 	 */
 	private void tryPacketParse(Connection con) throws ConnectException, IOException, ValidityException, ParseException, ParsingException {
 
-
 		String message = con.receive();
-//		Log.writeToLog("Server.java received a message", "lololol");
 
 		//This is the parser part where you read the incomming string and chooses what to do
 		if(message.equals("get all")){
@@ -167,56 +165,48 @@ public class Server{
 		}
 
 		else if(message.startsWith("insert notification")){
+			notifyOnlineListeners(message, con);
+			
 			message = message.replaceFirst("insert notification", "");
 			Notification notification = xmlSerializer.toNotification(message);
 			insert( notification );
-
-			//Send the notification to all online clients
-			String msg = xmlSerializer.notificationToXml(notification).toXML();
-			notifyOnlineListeners("notification" + msg, con);
-			
-//			//If notification is an Invitation
-			if(notification.getType() == NotificationType.EVENT_INVITATION){
-				notifyOnlineListeners("notification" + xmlSerializer.notificationToXml(notification).toXML(), con);
-			}
 		}
 
 		else if(message.startsWith("insert attends_at")){
 			notifyOnlineListeners(message, con);
+			
 			message = message.replaceFirst("insert attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			insert( status );
 		}
 		
 		else if(message.startsWith("update event")){
+			notifyOnlineListeners(message, con);
+			
 			message = message.replaceFirst("update event", "");
 			Event e = xmlSerializer.toEvent(message);
 			update( e );
 		}
 
 		else if(message.startsWith("update notification")){
+			notifyOnlineListeners(message, con);
+			
 			message = message.replaceFirst("update notification", "");
 			Notification notification = xmlSerializer.toNotification(message);
 			update( notification );
-
-			//CREATES A NOTIFICATION
-			if(notification.getType() == NotificationType.PARTICIPANT_DECLINED){
-
-				//Send notification to all online users
-				notifyOnlineListeners("notification" + message, con);
-
-				//updates the notification into the database
-				update( notification );
-			}
 		}
 
 		else if(message.startsWith("update attends_at")){
+			notifyOnlineListeners(message, con);
+			
 			message = message.replaceFirst("update attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			update( status );
 		}
 
 		else if(message.startsWith("delete event")){
+			notifyOnlineListeners(message, con);
+			
 			message = message.replaceFirst("delete event", "");
 			Event e = xmlSerializer.toEvent(message);
 			delete( e );
@@ -224,12 +214,16 @@ public class Server{
 		}
 
 		else if(message.startsWith("delete notification")){
+			notifyOnlineListeners(message, con);
+			
 			message = message.replaceFirst("delete notification", "");
 			Notification notification = xmlSerializer.toNotification(message);
 			delete( notification );
 		}
 
 		else if(message.startsWith("delete attends_at")){
+			notifyOnlineListeners(message, con);
+			
 			message = message.replaceFirst("delete attends_at", "");
 			AttendanceStatus status = xmlSerializer.toAttendanceStatus(message);
 			delete( status );

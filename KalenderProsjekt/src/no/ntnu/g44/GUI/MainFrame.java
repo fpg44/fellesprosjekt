@@ -367,37 +367,7 @@ public class MainFrame extends JPanel{
 		}
 	}
 
-	//	public void notificationCounter() {
-	//		int notifCounter = 0;
-	//		for (int i = 0; i < Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).size(); i++) {
-	//			notifCounter++;
-	//		}
-	//		notifBox.addItem(new String ("You have " + notifCounter + " notifications."));
-	//	}
 
-	//	public void checkForNewNotifications() {
-	////		notifBox.removeAll();
-	//
-	//		notificationCounter();
-	//		if (!Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson()).isEmpty()) {
-	//			for(Notification notification : Main.currentProject.getNotificationsForPerson(Main.currentProject.getLoggedInPerson())){
-	//
-	//				//If attendance status is answered, the notification is not shown.
-	////				if(Main.currentProject.
-	////						getStatus(notification.
-	////								getEventID(), notification.
-	////								getPersonString()).
-	////								getStatus() != AttendanceStatusType.ATTENDING){
-	////				}
-	//				notifBox.addItem(notification);
-	//			}				
-	//		}
-	//		//
-	//		//		else {
-	//		//			notifBox.addItem(new String ("There is no new notifications"));
-	//		//		}
-	//	}
-	
 	public void notificationFuck(){
 //		m.removeAllElements();
 		notifBox.removeAllItems();
@@ -407,29 +377,13 @@ public class MainFrame extends JPanel{
 		}
 		
 		if(notifBox.getItemCount() == 0){
-			notifBox.addItem(new Notification(0, null, null));
+			notifBox.addItem(new Notification(0, NotificationType.NO_NOTIFICATION, ""));
 			notifBox.setEnabled(false);
 		}
 		else{
 			notifBox.setEnabled(true);
 		}
-//		
-//		if(m.getSize() == 0){
-//			notifBox.setEditable(false);
-//		}
-//		else{
-//			notifBox.setEditable(true);
-//		}
-//		
-		/*
-		//Checks if the notifbox has more items
-		boolean hasMoreItems = notifBox.getItemCount() > 0;
-		
-		//If the box is empty, it should not be enabled
-		if (!hasMoreItems) {
-			notifBox.setEnabled(false);
-		}
-		*/
+
 	}
 
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{

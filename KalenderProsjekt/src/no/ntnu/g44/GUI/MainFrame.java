@@ -78,7 +78,7 @@ public class MainFrame extends JPanel{
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
 	CalendarPanel calendar = new CalendarPanel();
-	DefaultComboBoxModel m = new DefaultComboBoxModel();
+	DefaultComboBoxModel<Notification> aModel = new DefaultComboBoxModel<Notification>();
 	JMenuItem newAction;
 	JMenuItem logoutAction;
 	JMenuItem exitAction;
@@ -126,6 +126,7 @@ public class MainFrame extends JPanel{
 
 		notifBox.addMouseListener(listener);
 		notifBox.setRenderer(new NotificationListCellRenderer());
+		notifBox.setModel(aModel);
 
 
 		setLayout(null);
@@ -360,10 +361,14 @@ public class MainFrame extends JPanel{
 
 
 	public void notificationFuck(){
-		notifBox.removeAllItems();
-
+//		notifBox.removeAllItems();
+//
+//		for(Notification n : Main.currentProject.getNotificationList()){
+//			notifBox.addItem(n);
+//		}
+		aModel.removeAllElements();
 		for(Notification n : Main.currentProject.getNotificationList()){
-			notifBox.addItem(n);
+			aModel.addElement(n);
 		}
 
 		if(notifBox.getItemCount() == 0){
@@ -561,8 +566,8 @@ public class MainFrame extends JPanel{
 		public void mouseReleased(MouseEvent e) {
 			if(e.getSource() == notifBox){		
 				System.out.println("null???????????????????????");
-				if(((Notification)notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
-					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
+				if(((Notification)aModel.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
+					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)aModel.getSelectedItem()).getEventID()));
 					System.out.println("howhowhowhwohw null????????");
 				}
 			}

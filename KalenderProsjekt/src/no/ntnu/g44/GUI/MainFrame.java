@@ -407,6 +407,7 @@ public class MainFrame extends JPanel{
 		}
 		
 		if(notifBox.getItemCount() == 0){
+			notifBox.addItem(new Notification(0, null, null));
 			notifBox.setEnabled(false);
 		}
 		else{

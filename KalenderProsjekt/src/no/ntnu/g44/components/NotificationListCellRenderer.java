@@ -26,15 +26,11 @@ public class NotificationListCellRenderer extends JLabel implements ListCellRend
 		if (value != null) {
 			setText(((Notification) value).getMessage());
 		}
-		/*
-		if(index > 0) {
-		}
-
-		else {
-			setText(value.toString());
-		}
-
-*/
+		
+//		else {
+//			list.setEnabled(false);
+//		}
+		
 		setOpaque(true);
 
 		return this;

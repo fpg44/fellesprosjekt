@@ -85,16 +85,6 @@ public class MainFrame extends JPanel{
 	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 	JLabel weeknumber = new JLabel("WEEK " + WEEK_NUMBER);
 
-
-	public void notificationFuck(){
-		notifBox.removeAllItems();
-		//		notifBox.addItem(new String("You have " + countNotificationFuck() + " Notifications"));
-
-		for(Notification n : Main.currentProject.getNotificationList()){
-			notifBox.addItem(n);
-		}
-	}
-
 	//	public int countNotificationFuck(){
 	//		int counter = 0;
 	//		for(Notification n : Main.currentProject.getNotificationList()){
@@ -405,6 +395,25 @@ public class MainFrame extends JPanel{
 	//		//			notifBox.addItem(new String ("There is no new notifications"));
 	//		//		}
 	//	}
+	
+	public void notificationFuck(){
+		notifBox.removeAllItems();
+
+		for(Notification n : Main.currentProject.getNotificationList()){
+			notifBox.addItem(n);
+		}
+		/*
+		
+		//Checks if the notifbox has more items
+		boolean isEmpty = notifBox.getItemCount() > 0;
+		System.out.println("ER DEN TOM : " + isEmpty);
+		
+		//If the box is empty, it should not be enabled
+		if (isEmpty) {
+			notifBox.setEnabled(false);
+		}
+		*/
+	}
 
 	public class ListeningClass implements MouseMotionListener, ActionListener, MouseListener, KeyListener{
 		boolean shift = false;
@@ -425,8 +434,9 @@ public class MainFrame extends JPanel{
 						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
 					}
 				}
-				notifBox.setSelectedIndex(0);
+//				notifBox.setSelectedIndex(0);
 			}
+			
 			if(e.getSource() == item1){
 				newEvent();
 			}
@@ -436,7 +446,6 @@ public class MainFrame extends JPanel{
 			if(e.getSource() == item3){
 				deleteEvent();
 			}
-
 			if(e.getSource() == newAction){
 				newEvent();
 			}

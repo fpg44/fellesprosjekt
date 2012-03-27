@@ -385,19 +385,6 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-//			System.out.println("ACTION COMMAND: " + e.getActionCommand());
-//			if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
-//				if(!Main.currentProject.getNotificationList().isEmpty()){
-//					System.out.println("NÅ SKJER DET!");
-//					
-//					if(((Notification)notifBox
-//							.getSelectedItem())
-//							.getType() == NotificationType.EVENT_INVITATION){
-//						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
-//					}
-//				}
-//			}
 			
 			if(e.getSource() == item1){
 				newEvent();
@@ -586,7 +573,7 @@ public class MainFrame extends JPanel{
 					}
 					 */
 				}
-				if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
+				if(e.getSource() == notifBox){
 					if(!Main.currentProject.getNotificationList().isEmpty()){
 						
 						if(((Notification)notifBox

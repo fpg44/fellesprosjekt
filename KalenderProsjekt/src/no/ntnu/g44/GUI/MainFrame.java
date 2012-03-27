@@ -219,6 +219,7 @@ public class MainFrame extends JPanel{
 		//add(personnelList);
 		//add(calendarPersons);
 		resizing();
+		notificationFuck();
 	}
 	@Override
 	public void repaint(){

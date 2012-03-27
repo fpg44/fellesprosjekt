@@ -559,7 +559,14 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if(e.getSource() == calendar){
+			if(e.getSource() == notifBox){		
+				System.out.println("null???????????????????????");
+				if(((Notification)notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
+					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
+					System.out.println("howhowhowhwohw null????????");
+				}
+			}
+			else if(e.getSource() == calendar){
 				if(e.getButton() == MouseEvent.BUTTON3){
 					if(e.isPopupTrigger()){
 						popup.show(calendar, e.getX(), e.getY());
@@ -569,13 +576,7 @@ public class MainFrame extends JPanel{
 				
 				resizing();
 			}
-			if(e.getSource() == notifBox){		
-				System.out.println("null???????????????????????");
-				if(((Notification)notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
-					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
-					System.out.println("howhowhowhwohw null????????");
-				}
-			}
+
 		}
 	}
 

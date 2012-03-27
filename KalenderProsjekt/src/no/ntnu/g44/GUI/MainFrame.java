@@ -123,7 +123,7 @@ public class MainFrame extends JPanel{
 		//		popup.add(item4);
 
 		notifBox.addActionListener(new ListeningClass());
-		notifBox.setModel(m);
+//		notifBox.setModel(m);
 		notifBox.setRenderer(new NotificationListCellRenderer());
 
 		setLayout(null);
@@ -399,10 +399,18 @@ public class MainFrame extends JPanel{
 	//	}
 	
 	public void notificationFuck(){
-		m.removeAllElements();
-
+//		m.removeAllElements();
+		notifBox.removeAllItems();
+		
 		for(Notification n : Main.currentProject.getNotificationList()){
-			m.addElement(n);
+			notifBox.addItem(n);
+		}
+		
+		if(notifBox.getItemCount() == 0){
+			notifBox.setEnabled(false);
+		}
+		else{
+			notifBox.setEnabled(true);
 		}
 //		
 //		if(m.getSize() == 0){
@@ -433,14 +441,14 @@ public class MainFrame extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			if(e.getSource() == notifBox && m.getSize() > 0 && m.getSelectedItem() != null){
+			if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
 				if(!Main.currentProject.getNotificationList().isEmpty()){
 					System.out.println("NÅ SKJER DET!");
 					
 					if(((Notification)m
 							.getSelectedItem())
 							.getType() == NotificationType.EVENT_INVITATION){
-						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)m.getSelectedItem()).getEventID()));
+						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
 					}
 				}
 			}

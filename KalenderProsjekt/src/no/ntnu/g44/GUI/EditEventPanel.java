@@ -80,7 +80,7 @@ public class EditEventPanel extends JPanel {
 		this.originalEvent = originalEvent;
 		
 		ownerLabel = new JLabel("Arranged by");
-		ownerNameLabel = new JLabel(originalEvent.getEventOwner().toString());
+		ownerNameLabel = new JLabel(originalEvent.getEventOwner().getName());
 		fromLabel = new JLabel("From");
 		fromDateField = new JTextField(originalEvent.getEventStartTime()
 				.toString());

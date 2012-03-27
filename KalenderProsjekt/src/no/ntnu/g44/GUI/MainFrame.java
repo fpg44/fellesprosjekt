@@ -122,9 +122,28 @@ public class MainFrame extends JPanel{
 		popup.add(item3);
 		//		popup.add(item4);
 
-		notifBox.addActionListener(new ListeningClass());
+//		notifBox.addActionListener(new ListeningClass());
 //		notifBox.setModel(m);
 		notifBox.setRenderer(new NotificationListCellRenderer());
+		notifBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("ACTION COMMAND: " + e.getActionCommand());
+				if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
+					if(!Main.currentProject.getNotificationList().isEmpty()){
+						System.out.println("NÅ SKJER DET!");
+						
+						if(((Notification)notifBox
+								.getSelectedItem())
+								.getType() == NotificationType.EVENT_INVITATION){
+							EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
+						}
+					}
+				}
+				
+			}
+		});
 
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
@@ -396,18 +415,7 @@ public class MainFrame extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			System.out.println("ACTION COMMAND: " + e.getActionCommand());
-			if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
-				if(!Main.currentProject.getNotificationList().isEmpty()){
-					System.out.println("NÅ SKJER DET!");
-					
-					if(((Notification)notifBox
-							.getSelectedItem())
-							.getType() == NotificationType.EVENT_INVITATION){
-						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
-					}
-				}
-			}
+			
 			
 			if(e.getSource() == item1){
 				newEvent();

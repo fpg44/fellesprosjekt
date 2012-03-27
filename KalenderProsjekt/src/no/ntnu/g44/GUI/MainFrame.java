@@ -404,14 +404,14 @@ public class MainFrame extends JPanel{
 		for(Notification n : Main.currentProject.getNotificationList()){
 			m.addElement(n);
 		}
-		
-		if(m.getSize() == 0){
-			notifBox.setEditable(false);
-		}
-		else{
-			notifBox.setEditable(true);
-		}
-		
+//		
+//		if(m.getSize() == 0){
+//			notifBox.setEditable(false);
+//		}
+//		else{
+//			notifBox.setEditable(true);
+//		}
+//		
 		/*
 		//Checks if the notifbox has more items
 		boolean hasMoreItems = notifBox.getItemCount() > 0;

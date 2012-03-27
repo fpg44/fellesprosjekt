@@ -107,6 +107,7 @@ public class EventInvitationPanel extends AbstractPanelClass {
 					
 				}
 //				closeWindow();
+				Main.currentMainFrame.notificationFuck();
 				frame.dispose();
 				
 			}
@@ -130,6 +131,7 @@ public class EventInvitationPanel extends AbstractPanelClass {
 				}
 				
 //				closeWindow();
+				Main.currentMainFrame.notificationFuck();
 				frame.dispose();
 			}
 			else if (e.getSource() == cancelButton) {

@@ -124,25 +124,9 @@ public class MainFrame extends JPanel{
 		popup.add(item3);
 		//		popup.add(item4);
 
-//		notifBox.addActionListener(new ListeningClass());
+		notifBox.addMouseListener(listener);
 		notifBox.setRenderer(new NotificationListCellRenderer());
-		notifBox.addItemListener(new ItemListener() {
-			
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
-					if(!Main.currentProject.getNotificationList().isEmpty()){
-						
-						if(((Notification)notifBox
-								.getSelectedItem())
-								.getType() == NotificationType.EVENT_INVITATION){
-							EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
-						}
-					}
-				}
-				
-			}
-		});
+
 
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
@@ -564,6 +548,7 @@ public class MainFrame extends JPanel{
 			if (e.getSource() == newEvent) {
 				newEvent();
 			}
+			
 
 		}
 		@Override
@@ -600,6 +585,16 @@ public class MainFrame extends JPanel{
 						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
 					}
 					 */
+				}
+				if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
+					if(!Main.currentProject.getNotificationList().isEmpty()){
+						
+						if(((Notification)notifBox
+								.getSelectedItem())
+								.getType() == NotificationType.EVENT_INVITATION){
+							EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
+						}
+					}
 				}
 				resizing();
 			}

@@ -31,6 +31,7 @@ public class AttendanceStatus {
 	}
 
 	public void setStatus(AttendanceStatusType status) {
+		pcs.firePropertyChange("status", this.status, status);
 		this.status = status;
 	}
 

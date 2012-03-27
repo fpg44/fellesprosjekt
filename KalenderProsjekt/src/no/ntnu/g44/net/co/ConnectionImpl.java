@@ -184,6 +184,7 @@ public class ConnectionImpl extends AbstractConnection {
 	public void send(String msg) throws ConnectException, IOException {
 
 		KtnDatagram datagram = constructDataPacket(msg);
+		System.out.println("Making new datagram with sequence number " + nextSequenceNo + " got " + datagram.getSeq_nr());
 		KtnDatagram ack;
 		KtnDatagram potentialReack = null;
 		do{

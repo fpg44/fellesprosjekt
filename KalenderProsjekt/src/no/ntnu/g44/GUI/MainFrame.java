@@ -425,9 +425,10 @@ public class MainFrame extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			if(e.getSource() == notifBox){
+			if(e.getSource() == notifBox && notifBox.getItemCount() > 0){
 				if(!Main.currentProject.getNotificationList().isEmpty()){
 					System.out.println("NÅ SKJER DET!");
+					
 					if(((Notification)notifBox
 							.getSelectedItem())
 							.getType() == NotificationType.EVENT_INVITATION){

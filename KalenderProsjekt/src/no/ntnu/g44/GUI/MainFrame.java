@@ -442,7 +442,7 @@ public class MainFrame extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-				
+			System.out.println("ACTION COMMAND: " + e.getActionCommand());
 			if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
 				if(!Main.currentProject.getNotificationList().isEmpty()){
 					System.out.println("NÅ SKJER DET!");

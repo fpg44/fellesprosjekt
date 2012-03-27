@@ -398,7 +398,6 @@ public class MainFrame extends JPanel{
 	
 	public void notificationFuck(){
 		notifBox.removeAllItems();
-		notifBox.addItem(null);
 
 		for(Notification n : Main.currentProject.getNotificationList()){
 			notifBox.addItem(n);

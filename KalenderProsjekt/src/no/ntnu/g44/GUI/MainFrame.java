@@ -106,7 +106,7 @@ public class MainFrame extends JPanel{
 				WEEK_NUMBER = calendar.getWeekNumber();
 				if(currentWeekNumber == 0)currentWeekNumber = WEEK_NUMBER;
 				resizing();
-//				notificationFuck();
+				//				notificationFuck();
 			}
 		}, 0, 1000);
 
@@ -361,11 +361,11 @@ public class MainFrame extends JPanel{
 
 	public void notificationFuck(){
 		notifBox.removeAllItems();
-		
+
 		for(Notification n : Main.currentProject.getNotificationList()){
 			notifBox.addItem(n);
 		}
-		
+
 		if(notifBox.getItemCount() == 0){
 			notifBox.addItem(new Notification(0, NotificationType.NO_NOTIFICATION, ""));
 			notifBox.setEnabled(false);
@@ -385,7 +385,7 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			if(e.getSource() == item1){
 				newEvent();
 			}
@@ -535,7 +535,7 @@ public class MainFrame extends JPanel{
 			if (e.getSource() == newEvent) {
 				newEvent();
 			}
-			
+
 
 		}
 		@Override
@@ -573,14 +573,9 @@ public class MainFrame extends JPanel{
 					}
 					 */
 				}
-				if(e.getSource() == notifBox){
-					if(!Main.currentProject.getNotificationList().isEmpty()){
-						
-						if(((Notification)notifBox
-								.getSelectedItem())
-								.getType() == NotificationType.EVENT_INVITATION){
-							EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
-						}
+				if(e.getSource() == notifBox && notifBox.getItemCount() >= 0){					
+					if(((Notification)notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
+						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
 					}
 				}
 				resizing();

@@ -434,6 +434,9 @@ public class MainFrame extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 
 			if(e.getSource() == notifBox && m.getSize() > 0 && m.getSelectedItem() != null){
+				
+				System.out.println("m.getSize() SIER : " + m.getSize());
+				
 				if(!Main.currentProject.getNotificationList().isEmpty()){
 					System.out.println("NÅ SKJER DET!");
 					

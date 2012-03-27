@@ -137,7 +137,7 @@ public class Client {
 	private void parseInput(String message) throws IOException, ParseException, ParsingException {
 
 		if(message.startsWith("insert notification")){
-			message = message.replaceFirst("notification", "");
+			message = message.replaceFirst("insert notification", "");
 			Notification notif = xmlSerializer.toNotification(message);
 			Main.currentProject.addNotification(notif, false);
 		}

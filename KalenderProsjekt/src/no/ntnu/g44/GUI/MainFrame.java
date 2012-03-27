@@ -380,7 +380,10 @@ public class MainFrame extends JPanel{
 		//			notifBox.addItem(n);
 		//		}
 		aModel.removeAllElements();
+		int count = aModel.getSize() -1;
+		String not = "You have " + count + " notifications";
 		notifBox.addItem(new Notification(0, NotificationType.NO_NOTIFICATION, ""));
+		aModel.getElementAt(0).getType().setText(not);
 		for(Notification n : Main.currentProject.getNotificationList()){
 			aModel.addElement(n);
 		}

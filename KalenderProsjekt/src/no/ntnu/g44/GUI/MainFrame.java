@@ -130,7 +130,10 @@ public class MainFrame extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(e.getActionCommand());
-				if(((Notification)aModel.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
+				if((Notification)
+						aModel.getSelectedItem()!= null && ((Notification)
+						aModel.getSelectedItem())
+						.getType() == NotificationType.EVENT_INVITATION){
 					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)aModel.getSelectedItem()).getEventID()));
 					notifBox.setSelectedIndex(0);
 				}

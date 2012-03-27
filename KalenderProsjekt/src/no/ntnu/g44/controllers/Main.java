@@ -26,7 +26,7 @@ public class Main {
 		if(usenet){
 			try {
 				
-				client = new Client("78.91.8.175", 5545);
+				client = new Client("78.91.9.98", 5545);
 				currentProject = client.getProject();
 				client.startListenin();//Start listening for server pushes after we've gotten the project.
 			} catch (IOException | ParseException | ParsingException e) {

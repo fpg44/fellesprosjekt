@@ -402,16 +402,15 @@ public class MainFrame extends JPanel{
 		for(Notification n : Main.currentProject.getNotificationList()){
 			notifBox.addItem(n);
 		}
-		System.out.println(notifBox.getItemCount());
+		System.out.println("ANTALL ELEMENTER I LISTEN: " + notifBox.getItemCount());
 		System.out.println("ER DEN TOM? " + (notifBox.getItemCount() > 0));
-		/*
 		
+		/*
 		//Checks if the notifbox has more items
-		boolean isEmpty = notifBox.getItemCount() > 0;
-		System.out.println("ER DEN TOM : " + isEmpty);
+		boolean hasMoreItems = notifBox.getItemCount() > 0;
 		
 		//If the box is empty, it should not be enabled
-		if (isEmpty) {
+		if (hasMoreItems) {
 			notifBox.setEnabled(false);
 		}
 		*/

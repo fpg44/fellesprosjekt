@@ -9,15 +9,11 @@ import java.awt.Paint;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Timer;
@@ -124,9 +120,47 @@ public class MainFrame extends JPanel{
 		popup.add(item3);
 		//		popup.add(item4);
 
-		notifBox.addMouseListener(listener);
+//		notifBox.addMouseListener(listener);
 		notifBox.setRenderer(new NotificationListCellRenderer());
 		notifBox.setModel(aModel);
+		notifBox.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if(e.getSource() == aModel){		
+					System.out.println("null???????????????????????");
+					if(((Notification)aModel.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
+						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)aModel.getSelectedItem()).getEventID()));
+						System.out.println("howhowhowhwohw null????????");
+					}
+				}
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 
 		setLayout(null);
@@ -564,14 +598,9 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if(e.getSource() == aModel){		
-				System.out.println("null???????????????????????");
-				if(((Notification)aModel.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
-					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)aModel.getSelectedItem()).getEventID()));
-					System.out.println("howhowhowhwohw null????????");
-				}
-			}
-			else if(e.getSource() == calendar){
+			System.out.println(e.getID());
+			
+			if(e.getSource() == calendar){
 				if(e.getButton() == MouseEvent.BUTTON3){
 					if(e.isPopupTrigger()){
 						popup.show(calendar, e.getX(), e.getY());

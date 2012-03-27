@@ -33,7 +33,7 @@ public class Server{
 
 
 	public static void main(String[] args) {
-		new Server(5545,"localhost","3306","project","root","");
+		new Server(5545,"localhost","3306","project","root","admin");
 		//		new Server(5545, "mysql.stud.ntnu.no", "3306", "andereld_fp_gr44",
 		//				"andereld_fp_gr44", "gruppe44");
 	}

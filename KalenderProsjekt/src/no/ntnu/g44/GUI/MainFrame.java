@@ -564,7 +564,7 @@ public class MainFrame extends JPanel{
 		}
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if(e.getSource() == notifBox){		
+			if(e.getSource() == aModel){		
 				System.out.println("null???????????????????????");
 				if(((Notification)aModel.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
 					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)aModel.getSelectedItem()).getEventID()));

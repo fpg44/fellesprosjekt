@@ -9,6 +9,8 @@ import java.awt.Paint;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -123,16 +125,13 @@ public class MainFrame extends JPanel{
 		//		popup.add(item4);
 
 //		notifBox.addActionListener(new ListeningClass());
-//		notifBox.setModel(m);
 		notifBox.setRenderer(new NotificationListCellRenderer());
-		notifBox.addActionListener(new ActionListener() {
+		notifBox.addItemListener(new ItemListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("ACTION COMMAND: " + e.getActionCommand());
+			public void itemStateChanged(ItemEvent e) {
 				if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
 					if(!Main.currentProject.getNotificationList().isEmpty()){
-						System.out.println("NÅ SKJER DET!");
 						
 						if(((Notification)notifBox
 								.getSelectedItem())
@@ -415,7 +414,18 @@ public class MainFrame extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			
+//			System.out.println("ACTION COMMAND: " + e.getActionCommand());
+//			if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
+//				if(!Main.currentProject.getNotificationList().isEmpty()){
+//					System.out.println("NÅ SKJER DET!");
+//					
+//					if(((Notification)notifBox
+//							.getSelectedItem())
+//							.getType() == NotificationType.EVENT_INVITATION){
+//						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
+//					}
+//				}
+//			}
 			
 			if(e.getSource() == item1){
 				newEvent();

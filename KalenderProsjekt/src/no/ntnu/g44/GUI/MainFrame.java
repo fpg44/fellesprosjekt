@@ -435,7 +435,6 @@ public class MainFrame extends JPanel{
 						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
 					}
 				}
-//				notifBox.setSelectedIndex(0);
 			}
 			
 			if(e.getSource() == item1){

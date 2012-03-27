@@ -9,6 +9,8 @@ import java.awt.Paint;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -120,48 +122,22 @@ public class MainFrame extends JPanel{
 		popup.add(item3);
 		//		popup.add(item4);
 
-//		notifBox.addMouseListener(listener);
+		//		notifBox.addMouseListener(listener);
 		notifBox.setRenderer(new NotificationListCellRenderer());
 		notifBox.setModel(aModel);
-		notifBox.addMouseListener(new MouseListener() {
-			
+		notifBox.addActionListener(new ActionListener() {
+
 			@Override
-			public void mouseReleased(MouseEvent e) {
-				if(e.getSource() == aModel){		
-					System.out.println("null???????????????????????");
-					if(((Notification)aModel.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
-						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)aModel.getSelectedItem()).getEventID()));
-						System.out.println("howhowhowhwohw null????????");
-					}
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(e.getActionCommand());
+				if(((Notification)aModel.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
+					EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)aModel.getSelectedItem()).getEventID()));
+					notifBox.setSelectedIndex(0);
 				}
 				
 			}
-			
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
 		});
-
+		
 
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
@@ -395,18 +371,18 @@ public class MainFrame extends JPanel{
 
 
 	public void notificationFuck(){
-//		notifBox.removeAllItems();
-//
-//		for(Notification n : Main.currentProject.getNotificationList()){
-//			notifBox.addItem(n);
-//		}
+		//		notifBox.removeAllItems();
+		//
+		//		for(Notification n : Main.currentProject.getNotificationList()){
+		//			notifBox.addItem(n);
+		//		}
 		aModel.removeAllElements();
+		notifBox.addItem(new Notification(0, NotificationType.NO_NOTIFICATION, ""));
 		for(Notification n : Main.currentProject.getNotificationList()){
 			aModel.addElement(n);
 		}
 
 		if(notifBox.getItemCount() == 0){
-			notifBox.addItem(new Notification(0, NotificationType.NO_NOTIFICATION, ""));
 			notifBox.setEnabled(false);
 		}
 		else{
@@ -599,15 +575,15 @@ public class MainFrame extends JPanel{
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			System.out.println(e.getID());
-			
+
 			if(e.getSource() == calendar){
 				if(e.getButton() == MouseEvent.BUTTON3){
 					if(e.isPopupTrigger()){
 						popup.show(calendar, e.getX(), e.getY());
 					}
 				}
-				
-				
+
+
 				resizing();
 			}
 

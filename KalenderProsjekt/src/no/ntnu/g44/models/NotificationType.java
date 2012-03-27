@@ -5,7 +5,7 @@ public enum NotificationType {
 	EVENT_CHANGED("Event changed"),
 	EVENT_CANCELLED("Event cancelled"),
 	PARTICIPANT_DECLINED("Participant declined"),
-	NO_NOTIFICATION("No new notifications");
+	NO_NOTIFICATION("Notifications");
 	
 	private String msg;
 	
@@ -15,5 +15,8 @@ public enum NotificationType {
 	
 	public String getMsg(){
 		return msg;
+	}
+	public void setText(String msg){
+		this.msg = msg;
 	}
 }

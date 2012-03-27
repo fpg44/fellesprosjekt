@@ -8,8 +8,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -54,9 +57,8 @@ public class Login {
 							return;
 						}
 					}
-					Main.onLogin(new Person("fooBar", "foo"));
-					ramme.dispose();
-				}
+					JOptionPane.showMessageDialog(null, "Wrong username or password");
+					}
 			}
 			@Override
 			public void keyReleased(KeyEvent arg0) {
@@ -84,7 +86,15 @@ public class Login {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Main.onLogin(new Person("fooBar", "foo"));
+				for(int i = 0; i < Main.currentProject.getPersonCount(); i++){
+					if(navnField.getText().equals(Main.currentProject.getPerson(i).getUsername())){
+						Main.onLogin(Main.currentProject.getPerson(i));
+						ramme.dispose();
+						return;
+					}
+				}
+				JOptionPane.showMessageDialog(null, "Wrong username or password");
+
 			}
 		});
 		panel.add(loginButt);

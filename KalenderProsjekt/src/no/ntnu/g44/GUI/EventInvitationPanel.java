@@ -27,7 +27,6 @@ public class EventInvitationPanel extends AbstractPanelClass {
 		frame = new JFrame();
 		panel = new JPanel();
 		frame.getContentPane().add(panel);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		init(event);
 		setPanelLayout();

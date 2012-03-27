@@ -106,7 +106,7 @@ public class MainFrame extends JPanel{
 				WEEK_NUMBER = calendar.getWeekNumber();
 				if(currentWeekNumber == 0)currentWeekNumber = WEEK_NUMBER;
 				resizing();
-//				notificationFuck();
+				//				notificationFuck();
 			}
 		}, 0, 1000);
 
@@ -124,25 +124,9 @@ public class MainFrame extends JPanel{
 		popup.add(item3);
 		//		popup.add(item4);
 
-//		notifBox.addActionListener(new ListeningClass());
+		notifBox.addMouseListener(listener);
 		notifBox.setRenderer(new NotificationListCellRenderer());
-		notifBox.addItemListener(new ItemListener() {
-			
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
-					if(!Main.currentProject.getNotificationList().isEmpty()){
-						
-						if(((Notification)notifBox
-								.getSelectedItem())
-								.getType() == NotificationType.EVENT_INVITATION){
-							EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
-						}
-					}
-				}
-				
-			}
-		});
+
 
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
@@ -219,6 +203,7 @@ public class MainFrame extends JPanel{
 		//add(personnelList);
 		//add(calendarPersons);
 		resizing();
+		notificationFuck();
 	}
 	@Override
 	public void repaint(){
@@ -376,11 +361,11 @@ public class MainFrame extends JPanel{
 
 	public void notificationFuck(){
 		notifBox.removeAllItems();
-		
+
 		for(Notification n : Main.currentProject.getNotificationList()){
 			notifBox.addItem(n);
 		}
-		
+
 		if(notifBox.getItemCount() == 0){
 			notifBox.addItem(new Notification(0, NotificationType.NO_NOTIFICATION, ""));
 			notifBox.setEnabled(false);
@@ -401,19 +386,6 @@ public class MainFrame extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-//			System.out.println("ACTION COMMAND: " + e.getActionCommand());
-//			if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
-//				if(!Main.currentProject.getNotificationList().isEmpty()){
-//					System.out.println("NÅ SKJER DET!");
-//					
-//					if(((Notification)notifBox
-//							.getSelectedItem())
-//							.getType() == NotificationType.EVENT_INVITATION){
-//						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
-//					}
-//				}
-//			}
-			
 			if(e.getSource() == item1){
 				newEvent();
 			}
@@ -564,6 +536,7 @@ public class MainFrame extends JPanel{
 				newEvent();
 			}
 
+
 		}
 		@Override
 		public void mouseEntered(MouseEvent e) {
@@ -599,6 +572,11 @@ public class MainFrame extends JPanel{
 						JOptionPane.showMessageDialog(null, "Let me know when you are certain.");
 					}
 					 */
+				}
+				if(e.getSource() == notifBox && notifBox.getItemCount() >= 0){					
+					if(((Notification)notifBox.getSelectedItem()).getType() == NotificationType.EVENT_INVITATION){
+						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
+					}
 				}
 				resizing();
 			}

@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -75,7 +76,7 @@ public class MainFrame extends JPanel{
 	JButton todayButton = new JButton(" Today ");
 	JButton nextArrow = new JButton(" > > ");
 	CalendarPanel calendar = new CalendarPanel();
-
+	DefaultComboBoxModel m = new DefaultComboBoxModel();
 	JMenuItem newAction;
 	JMenuItem logoutAction;
 	JMenuItem exitAction;
@@ -122,6 +123,7 @@ public class MainFrame extends JPanel{
 		//		popup.add(item4);
 
 		notifBox.addActionListener(new ListeningClass());
+		notifBox.setModel(m);
 		notifBox.setRenderer(new NotificationListCellRenderer());
 
 		setLayout(null);
@@ -397,11 +399,17 @@ public class MainFrame extends JPanel{
 	//	}
 	
 	public void notificationFuck(){
-		notifBox.removeAllItems();
-		notifBox.addItem(null);
+		m.removeAllElements();
 
 		for(Notification n : Main.currentProject.getNotificationList()){
-			notifBox.addItem(n);
+			m.addElement(n);
+		}
+		
+		if(m.getSize() == 0){
+			notifBox.setEditable(false);
+		}
+		else{
+			notifBox.setEditable(true);
 		}
 		
 		/*
@@ -424,24 +432,15 @@ public class MainFrame extends JPanel{
 		public void mouseMoved(MouseEvent e) { }
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			/*
-			if (notifBox.getSelectedItem() == null) {
-				System.out.println("NÅ SKAL DEN VÆRE NULL!!!!");
-			}
-			*/
-			if (notifBox.getItemCount() == 0) {
-				notifBox.setEnabled(false);
-				System.out.println("LISTEN ER TOM");
-			}
 
-			if(e.getSource() == notifBox && notifBox.getItemCount() > 0 && notifBox.getSelectedItem() != null){
+			if(e.getSource() == m && m.getSize() > 0 && m.getSelectedItem() != null){
 				if(!Main.currentProject.getNotificationList().isEmpty()){
 					System.out.println("NÅ SKJER DET!");
-					notifBox.setEnabled(true);
-					if(((Notification)notifBox
+					
+					if(((Notification)m
 							.getSelectedItem())
 							.getType() == NotificationType.EVENT_INVITATION){
-						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)notifBox.getSelectedItem()).getEventID()));
+						EventInvitationPanel eip = new EventInvitationPanel(Main.currentProject.getEventById(((Notification)m.getSelectedItem()).getEventID()));
 					}
 				}
 			}

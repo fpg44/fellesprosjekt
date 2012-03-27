@@ -402,6 +402,8 @@ public class MainFrame extends JPanel{
 		for(Notification n : Main.currentProject.getNotificationList()){
 			notifBox.addItem(n);
 		}
+		System.out.println(notifBox.getItemCount());
+		System.out.println("ER DEN TOM? " + (notifBox.getItemCount() > 0));
 		/*
 		
 		//Checks if the notifbox has more items

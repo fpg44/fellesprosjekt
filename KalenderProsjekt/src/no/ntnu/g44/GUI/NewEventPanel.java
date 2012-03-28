@@ -463,9 +463,8 @@ public class NewEventPanel extends JPanel {
 												event.getEventID(),
 												AttendanceStatusType.ATTENDING),
 												true);
-							} catch (ParseException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
+							} catch (ParseException ex) {
+								ex.printStackTrace();
 							}
 						} else {
 							try {
@@ -474,9 +473,8 @@ public class NewEventPanel extends JPanel {
 												event.getEventID(),
 												AttendanceStatusType.UNANSWERED),
 												true);
-							} catch (ParseException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
+							} catch (ParseException ex) {
+								ex.printStackTrace();
 							}							
 						}
 					} catch (ConnectException ex) {

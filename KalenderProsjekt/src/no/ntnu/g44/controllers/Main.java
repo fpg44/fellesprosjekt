@@ -9,7 +9,6 @@ import no.ntnu.g44.gui.MainFrame;
 import no.ntnu.g44.models.Person;
 import no.ntnu.g44.models.Project;
 import no.ntnu.g44.serverAndSession.Client;
-import no.ntnu.g44.serverAndSession.ClientWithoutKTN;
 import no.ntnu.g44.serverAndSession.FileStorage;
 import nu.xom.ParsingException;
 

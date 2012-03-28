@@ -42,6 +42,7 @@ import no.ntnu.g44.components.NotificationListCellRenderer;
 import no.ntnu.g44.controllers.Main;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
+import no.ntnu.g44.models.Event;
 import no.ntnu.g44.models.Notification;
 import no.ntnu.g44.models.NotificationType;
 import no.ntnu.g44.models.Person;
@@ -329,7 +330,11 @@ public class MainFrame extends JPanel{
 	public void deleteEvent(){
 		if(calendar.getSelectedEvent() != null){
 			if(JOptionPane.showConfirmDialog(null, "Are you uncertain?") == JOptionPane.NO_OPTION){
-				calendar.getSelectedEvent().expired = true;
+//				calendar.getSelectedEvent().expired = true;
+				Event temp = Main.currentProject.getEventById(calendar.getSelectedEvent().getEventID());
+				Main.currentProject.removeEvent(temp);
+				temp.expired = true;
+				Main.currentProject.addEvent(temp, true);
 			}
 			else{
 				JOptionPane.showMessageDialog(null, "Let me know when you are certain.");

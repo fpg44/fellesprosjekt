@@ -122,12 +122,13 @@ public class EventInfoPanel extends JPanel{
 	     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 	         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 	         
-//	         c.setBackground(Main.currentProject.getColor(event, (Person) value));
+	         AttendanceStatus status = Main.currentProject.getStatus(
+	        		 event.getEventID(), ((Person) value).getUsername());
 	         
-	         AttendanceStatus status = Main.currentProject.getStatus(event.getEventID(), ((Person)value).getUsername());
-	         AttendanceStatusType statusType = status.getStatus();
-	         c.setBackground(AttendanceStatusType.getColor(statusType));
-//	         AttendanceStatusType.getColor(Main.currentProject.getAttendanceStatusList().get(2).getStatus());
+	         if (status != null)
+	        	 c.setBackground(AttendanceStatusType.getColor(
+	        			 status.getStatus()));
+	         
 	         return c;
 	     }
 	}

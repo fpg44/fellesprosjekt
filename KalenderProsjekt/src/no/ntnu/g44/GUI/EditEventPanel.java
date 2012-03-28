@@ -190,12 +190,17 @@ public class EditEventPanel extends JPanel {
 		public Component getListCellRendererComponent(
 				JList<? extends Person> list, Person value, int index,
 				boolean isSelected, boolean cellHasFocus) {
+			
 			AttendanceStatus status = Main.currentProject.getStatus(
 					originalEvent.getEventID(), value.getUsername());
-			Color color = AttendanceStatusType.getColor(status.getStatus());
+
 			JLabel personLabel = new JLabel(value.toString());
-			personLabel.setBackground(color);
-			personLabel.setOpaque(true);
+			
+			if (status != null) {
+				personLabel.setBackground(
+						AttendanceStatusType.getColor(status.getStatus()));
+				personLabel.setOpaque(true);
+			}
 			
 			return personLabel;
 		}

@@ -243,14 +243,21 @@ public class Project implements PropertyChangeListener {
 					for(Person person : event.getParticipants()){
 						if(!person.getUsername().equals(event.getEventOwner().getUsername())){
 							Main.client.newNotification(xmlSerializer.notificationToXml(
-									new Notification(event.getEventID(), NotificationType.EVENT_INVITATION, person.getUsername())));						
+									new Notification(event.getEventID(), NotificationType.EVENT_INVITATION, person.getUsername())));	
+
 						}
 					}
 				}
 				//If only XML to file is being used
 				else{
 					String cuPath = new File(".").getAbsolutePath();
-					storage.save(new URL("file://"+cuPath+"/project.xml"), this);					
+					storage.save(new URL("file://"+cuPath+"/project.xml"), this);
+
+					for(Person person : event.getParticipants()){
+						if(!person.getUsername().equals(event.getEventOwner().getUsername())){
+							Main.currentProject.addNotification(new Notification(event.getEventID(), NotificationType.EVENT_INVITATION, person.getUsername()), true);
+						}
+					}
 				}
 			}
 		} catch (IOException | ParseException e) {
@@ -262,7 +269,7 @@ public class Project implements PropertyChangeListener {
 		roomList.add(room);
 		room.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("room", null, room);
-		
+
 	}
 
 	public void addNotification(Notification notification, boolean save) throws ConnectException, IOException, ParseException{
@@ -403,27 +410,27 @@ public class Project implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		propChangeSupp.firePropertyChange(event);
-		
-//		
-//		
-//		if(event.getPropertyName().equals("notificationType")){
-//			try {
-//				
-//				//Notifies the client about the updates
-//				Main.client.updateNotification(xmlSerializer.notificationToXml((Notification)event.getSource()));
-//		
-//			} catch (ConnectException e) {
-//			
-//				e.printStackTrace();
-//			
-//			} catch (IOException e) {
-//				
-//				e.printStackTrace();
-//			}
-//		}
-//		else if(event.getPropertyName().equals("notification")){
-////			Main.currentMainFrame.checkForNewNotifications();
-//		}
+
+		//		
+		//		
+		//		if(event.getPropertyName().equals("notificationType")){
+		//			try {
+		//				
+		//				//Notifies the client about the updates
+		//				Main.client.updateNotification(xmlSerializer.notificationToXml((Notification)event.getSource()));
+		//		
+		//			} catch (ConnectException e) {
+		//			
+		//				e.printStackTrace();
+		//			
+		//			} catch (IOException e) {
+		//				
+		//				e.printStackTrace();
+		//			}
+		//		}
+		//		else if(event.getPropertyName().equals("notification")){
+		////			Main.currentMainFrame.checkForNewNotifications();
+		//		}
 	}
 
 	/**
@@ -508,7 +515,7 @@ public class Project implements PropertyChangeListener {
 	public int generateID(){
 		return generateID.nextInt(999999999) + 1;
 	}
-	
+
 	public Notification getNotification(int event_id){
 		for(Notification n : notificationList){
 			if(n.getEventID() == event_id){
@@ -527,11 +534,19 @@ public class Project implements PropertyChangeListener {
 		}
 		return notifications;
 	}
-	
-	public void updateAttendanceStatus(AttendanceStatus status) throws ConnectException, IOException{
-		Main.client.updateAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
+
+	public void updateAttendanceStatus(AttendanceStatus status) throws ConnectException, IOException, ParseException{
+		if(Main.usenet){
+			Main.client.updateAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));			
+		}
+		else{
+			AttendanceStatus temp = getStatus(status.getEventID(), status.getUsername());
+			
+			removeAttendanceStatus(temp);
+			addAttendanceStatus(status, false);
+		}
 	}
-	
+
 	public Notification getNotificationByID(int notificationID){
 		for(Notification n : notificationList){
 			if(n.getNotificationID() == notificationID){

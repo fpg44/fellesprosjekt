@@ -52,7 +52,14 @@ public class XmlSerializer {
 			Element element = personToXml(aPerson);
 			root.appendChild(element);
 		}
-
+		
+		Iterator<Room> roomIt = aProject.roomIterator();
+		while(roomIt.hasNext()){
+			Room room = roomIt.next();
+			Element element = roomToXml(room);
+			root.appendChild(element);
+		}
+		
 		Iterator<Event> eventIt = aProject.eventIterator();
 		while (eventIt.hasNext()) {
 			Event event = eventIt.next();
@@ -67,12 +74,7 @@ public class XmlSerializer {
 			root.appendChild(element);
 		}
 
-		Iterator<Room> roomIt = aProject.roomIterator();
-		while(roomIt.hasNext()){
-			Room room = roomIt.next();
-			Element element = roomToXml(room);
-			root.appendChild(element);
-		}
+
 
 		Iterator<AttendanceStatus> attendanceStatusIt = aProject.attendanseStaturIterator();
 		while(attendanceStatusIt.hasNext()){
@@ -282,6 +284,10 @@ public class XmlSerializer {
 			}
 			element.appendChild(participants);
 		}
+		Element save = new Element("save");
+		save.appendChild(String.valueOf(event.expired));
+		element.appendChild(save);
+		
 		return element;
 	}
 
@@ -410,6 +416,7 @@ public class XmlSerializer {
 		String roomString = "";
 		String owner_username = "";
 		Date eventStartDate = null, eventEndDate = null;
+		boolean save = false;
 
 		Element element = eventElement.getFirstChildElement("event-id");
 		if (element != null) {
@@ -453,7 +460,20 @@ public class XmlSerializer {
 				participants.add(children.get(i).getValue());				
 			}
 		}
-		return new Event(id, title, owner_username, participants, eventStartDate, eventEndDate, location, roomString);
+		
+		element = eventElement.getFirstChildElement("save");
+			if(element != null){
+				String temp = element.getValue();
+				if(temp.equals("true")){
+					save = true;
+				}
+				else if(temp.equals("false")){
+					save = false;
+				}
+			}
+			Event lol = new Event(id, title, owner_username, participants, eventStartDate, eventEndDate, location, roomString);
+			lol.expired = save;
+		return lol;
 	}
 
 	private Person assemblePerson(Element personElement) throws ParseException {

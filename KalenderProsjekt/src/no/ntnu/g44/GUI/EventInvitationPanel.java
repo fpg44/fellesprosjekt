@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.text.ParseException;
 import java.util.Date;
 import no.ntnu.g44.controllers.*;
 
@@ -104,6 +105,9 @@ public class EventInvitationPanel extends AbstractPanelClass {
 					
 					e1.printStackTrace();
 					
+				} catch (ParseException ef) {
+					// TODO Auto-generated catch block
+					ef.printStackTrace();
 				}
 //				closeWindow();
 				Main.currentMainFrame.notificationFuck();
@@ -127,6 +131,9 @@ public class EventInvitationPanel extends AbstractPanelClass {
 					e1.printStackTrace();
 				} catch (IOException e1) {
 					e1.printStackTrace();
+				} catch (ParseException ef) {
+					// TODO Auto-generated catch block
+					ef.printStackTrace();
 				}
 				
 //				closeWindow();

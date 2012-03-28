@@ -628,9 +628,11 @@ public class NewEventPanel extends JPanel {
 						 oldEvent.getEventID(), ((Person) value).getUsername());
 				 
 				 // status will be null for persons not invited to the old event
-				 if (status != null)
+				 if (status != null) {
 					 setBackground(AttendanceStatusType.getColor(
 							 status.getStatus()));
+					 setOpaque(true);
+				 }
 			 }
 
 			return this;

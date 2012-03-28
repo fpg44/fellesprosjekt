@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -456,17 +457,27 @@ public class NewEventPanel extends JPanel {
 						// initialize to AttendanceStatusType.UNANSWERED
 						if (person.getUsername().equals(
 								event.getEventOwnerString())) {
-							Main.currentProject.addAttendanceStatus(
-									new AttendanceStatus(person.getUsername(),
-											event.getEventID(),
-											AttendanceStatusType.ATTENDING),
-											true);
+							try {
+								Main.currentProject.addAttendanceStatus(
+										new AttendanceStatus(person.getUsername(),
+												event.getEventID(),
+												AttendanceStatusType.ATTENDING),
+												true);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 						} else {
-							Main.currentProject.addAttendanceStatus(
-									new AttendanceStatus(person.getUsername(),
-											event.getEventID(),
-											AttendanceStatusType.UNANSWERED),
-											true);							
+							try {
+								Main.currentProject.addAttendanceStatus(
+										new AttendanceStatus(person.getUsername(),
+												event.getEventID(),
+												AttendanceStatusType.UNANSWERED),
+												true);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}							
 						}
 					} catch (ConnectException ex) {
 						ex.printStackTrace();

@@ -40,7 +40,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultCaret;
 
 import no.ntnu.g44.controllers.Main;
-//import no.ntnu.g44.models.AttendanceHelper;
 import no.ntnu.g44.models.AttendanceStatus;
 import no.ntnu.g44.models.AttendanceStatusType;
 import no.ntnu.g44.models.Event;
@@ -55,8 +54,8 @@ public class NewEventPanel extends JPanel {
 	// information about the event--the left side of our prototype
 	private JPanel eventInformationPanel;
 	private JLabel ownerLabel;
-	private JLabel eventOwnerName;			// the person organizing the event
-	private Person eventOwner;
+	private JLabel eventOwnerName;
+	private Person eventOwner;				// the person organizing the event
 	private JLabel eventStartLabel;
 	private JSpinner eventStartTime;
 	private SpinnerDateModel startTimeModel;
@@ -624,10 +623,15 @@ public class NewEventPanel extends JPanel {
 
 			setText(value.toString());
 			
-			 if (oldEvent != null && !isSelected)
-				 setBackground(AttendanceStatusType.getColor(Main.currentProject
-						 .getStatus(oldEvent.getEventID(), ((Person) value)
-								 .getUsername()).getStatus()));
+			 if (oldEvent != null && !isSelected) {
+				 AttendanceStatus status =  Main.currentProject.getStatus(
+						 oldEvent.getEventID(), ((Person) value).getUsername());
+				 
+				 // status will be null for persons not invited to the old event
+				 if (status != null)
+					 setBackground(AttendanceStatusType.getColor(
+							 status.getStatus()));
+			 }
 
 			return this;
 		}

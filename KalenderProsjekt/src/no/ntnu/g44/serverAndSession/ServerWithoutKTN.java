@@ -51,7 +51,9 @@ public class ServerWithoutKTN {
 		try {
 			dbHandler = new DatabaseHandler();
 			dbHandler.connectToDatabase(databaseIP, databasePORT, databaseName, databaseUsername, databasePassword);
+			System.out.println("S: database fetched");
 			server = new ServerSocket(PORT);
+			System.out.println("S: server created");
 			
 		} catch (Exception e1) {
 			
@@ -67,6 +69,7 @@ public class ServerWithoutKTN {
 				while(!stop){
 					try{
 						connections.add(new ConnectionToAClient(server.accept()));
+						System.out.println("S: connected to new client");
 					}catch(Exception e){
 						e.printStackTrace();
 					}
@@ -143,14 +146,20 @@ public class ServerWithoutKTN {
 	
 	private void tryPacketParse(Socket con) throws ConnectException, IOException, ValidityException, ParseException, ParsingException {
 
+//		System.out.println("S: client is talking to server");
 		br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+//		while(!br.ready()){
+//		}
+		System.out.println("S: packet received.. but there is nothing to read in the next line");
 		String message = br.readLine();
 		PrintWriter pw = new PrintWriter(con.getOutputStream());
-
+		
+		System.out.println("message from received packet: " + message);
+		
 		//This is the parser part where you read the incomming string and chooses what to do
 		if(message.equals("get all")){
 			pw.write(xmlSerializer.toXml(getDataFromDatabase()).toXML());
-			
+			System.out.println("S: project sent to client");
 		}
 		else if(message.startsWith("insert event")){
 			notifyOnlineListeners(message, con);

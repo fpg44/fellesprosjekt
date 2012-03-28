@@ -106,12 +106,17 @@ public class ClientWithoutKTN {
 	public void startListenin(){
 		reciever.start();
 	}
-	public Project getProject() throws ConnectException, IOException, ValidityException, ParseException, ParsingException{
+	public Project getProject() throws ConnectException, IOException, ValidityException, ParseException, ParsingException, InterruptedException{
 
 		pw.write("get all");
-		while(br.readLine().isEmpty()){}
+		System.out.println("C: requested the project from the server");
+		
+		while(!br.ready()){
+			Thread.sleep(1000);
+			System.out.println("lol " + connection.getInetAddress());
+		}
 		String xml = br.readLine();
-
+		System.out.println("C: project received!");
 		return new XmlSerializer().toProject(new Builder().build(new ByteArrayInputStream(xml.getBytes("utf-8"))));
 	}
 
@@ -119,7 +124,7 @@ public class ClientWithoutKTN {
 		while(recieving){
 			try {
 
-				while(br.readLine().isEmpty()){}
+				while(br.ready()){}
 
 				parseInput(br.readLine());
 			} catch (IOException e) {

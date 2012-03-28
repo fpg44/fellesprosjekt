@@ -199,6 +199,5 @@ public class EditEventPanel extends JPanel {
 			
 			return personLabel;
 		}
-		
 	}
 }

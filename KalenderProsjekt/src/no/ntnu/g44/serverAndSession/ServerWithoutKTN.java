@@ -236,7 +236,7 @@ public class ServerWithoutKTN {
 		}
 	}
 	
-	protected Project getDataFromDatabase() throws ConnectException, IOException{
+	protected Project getDataFromDatabase() throws ConnectException, IOException, ParseException{
 		project = new Project();
 
 		ArrayList<Person> persons = dbHandler.getPersons();

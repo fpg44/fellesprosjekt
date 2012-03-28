@@ -262,9 +262,10 @@ public class Project implements PropertyChangeListener {
 		roomList.add(room);
 		room.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("room", null, room);
+		
 	}
 
-	public void addNotification(Notification notification, boolean save) throws ConnectException, IOException{
+	public void addNotification(Notification notification, boolean save) throws ConnectException, IOException, ParseException{
 		notificationList.add(notification);
 		notification.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("notification", null, notification);
@@ -272,15 +273,23 @@ public class Project implements PropertyChangeListener {
 		if(Main.usenet && save){
 			Main.client.newNotification(xmlSerializer.notificationToXml(notification));
 		}
+		else{
+			String cuPath = new File(".").getAbsolutePath();
+			storage.save(new URL("file://"+cuPath+"/project.xml"), this);					
+		}
 	}
 
-	public void addAttendanceStatus(AttendanceStatus status, boolean save) throws ConnectException, IOException{
+	public void addAttendanceStatus(AttendanceStatus status, boolean save) throws ConnectException, IOException, ParseException{
 		attendanceStatusList.add(status);
 		status.addPropertyChangeListener(this);
 		propChangeSupp.firePropertyChange("status", null, status);
 
 		if(Main.usenet && save){
 			Main.client.newAttendanceStatus(xmlSerializer.attendanceStatusToXml(status));
+		}
+		else{
+			String cuPath = new File(".").getAbsolutePath();
+			storage.save(new URL("file://"+cuPath+"/project.xml"), this);					
 		}
 	}
 

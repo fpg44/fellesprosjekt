@@ -21,7 +21,7 @@ public class Main {
 
 	//Set to 'true' when you want to use A1 and A2 from the KTN-part of the assigment.
 	//'False' indicates that you want to use xml instead of database.
-	public static final boolean usenet = true;
+	public static final boolean usenet = false;
 	/**
 	 * @param args
 	 */

@@ -236,8 +236,9 @@ public class Server{
 
 	/**
 	 * @return returns a project file with all information from the database
+	 * @throws ParseException 
 	 */
-	protected Project getDataFromDatabase() throws ConnectException, IOException{
+	protected Project getDataFromDatabase() throws ConnectException, IOException, ParseException{
 		project = new Project();
 
 		ArrayList<Person> persons = dbHandler.getPersons();

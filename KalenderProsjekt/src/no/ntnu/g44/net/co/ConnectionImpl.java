@@ -218,10 +218,6 @@ public class ConnectionImpl extends AbstractConnection {
 		while(true){
 			KtnDatagram datagram = receivePacket(false);
 			//TODO TEMP FIX
-			sendAck(datagram, false);
-			return (String) datagram.getPayload();
-			
-			/*
 			if(datagram.getSeq_nr() < nextExpectedSeqNr){
 				nextSequenceNo--;
 				sendAck(datagram,false);
@@ -235,7 +231,7 @@ public class ConnectionImpl extends AbstractConnection {
 				nextExpectedSeqNr++;
 				sendAck(datagram, false);
 				return (String) datagram.getPayload();
-			}*/
+			}
 		}
 	}
 

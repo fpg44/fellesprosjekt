@@ -186,7 +186,6 @@ public class ConnectionImpl extends AbstractConnection {
 		KtnDatagram datagram = constructDataPacket(msg);
 		KtnDatagram ack;
 		KtnDatagram potentialReack = null;
-		int tries = 5;
 		do{
 			ack = sendDataPacketWithRetransmit(datagram);
 			
@@ -198,7 +197,7 @@ public class ConnectionImpl extends AbstractConnection {
 				}
 			}
 			
-		}while( tries-- > 0 && ack == null|| !validAck(datagram, ack) /*|| !isValid(ack)*/);
+		}while(ack == null || !validAck(datagram, ack) );
 
 		nextExpectedSeqNr++; //for the ack.
 
@@ -219,15 +218,21 @@ public class ConnectionImpl extends AbstractConnection {
 			if(datagram.getSeq_nr() < nextExpectedSeqNr){
 				nextSequenceNo--;
 				sendAck(datagram,false);
-				System.out.println("Reacking old packet.");
+				System.err.println("Reacking old packet.");
 				continue;
 			}else if(!isValidAndExpectedSeq(datagram)){
-				System.out.println("Recieved an invalid packet. Thrown away.");
+				System.err.println("Recieved an invalid packet. Thrown away.");
 				continue; //Throw away this packet!
 			}else{
 				System.out.println("Got a valid packet!");
 				nextExpectedSeqNr++;
-				sendAck(datagram, false);
+				try{
+					sendAck(datagram, false);
+				}catch(Exception e){
+					e.printStackTrace();
+					//Sometimes there is an exception here probably caused by the framework.
+					//if the ack is not sent, we will reack later anyway, a dropped packet 
+				}
 				return (String) datagram.getPayload();
 			}
 		}

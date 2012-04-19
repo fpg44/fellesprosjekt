@@ -43,14 +43,14 @@ public class TestCoClient {
       conn.connect(addr, 5555);
       // send two messages to server
       
-      for(int i = 1; i <= 20; i++){
+      for(int i = 1; i <= 100; i++){
     	  conn.send("Client: Message "+i);
-//    	  try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+    	  try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
       }
       // write a message in the log and close the connection
       Log.writeToLog("Client is now closing the connection!",

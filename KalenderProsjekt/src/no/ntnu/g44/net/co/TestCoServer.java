@@ -59,8 +59,10 @@ public class TestCoServer {
       System.out.println("SERVER TEST FINISHED");
       Log.writeToLog("TEST SERVER FINISHED","TestServer");
       System.out.println("Results: ");
+      Log.writeToLog("Results: ", "TestServer");
       for (String s :results){
     	  System.out.println(s);
+    	  Log.writeToLog(s, "TestServer");
       }
     }
     catch (IOException e){

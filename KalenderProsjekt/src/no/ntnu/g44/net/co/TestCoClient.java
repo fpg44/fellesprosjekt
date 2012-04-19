@@ -42,17 +42,24 @@ public class TestCoClient {
       addr = InetAddress.getLocalHost();
       conn.connect(addr, 5555);
       // send two messages to server
-      conn.send("Client: Hello Server! Are you there?");
-      conn.send("Client: Hi again!");
-      conn.send("Client: More data!");
-      conn.send("Client: Message 4");
       
-      for(int i = 5; i <= 20; i++){
+      for(int i = 1; i <= 20; i++){
     	  conn.send("Client: Message "+i);
+//    	  try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
       }
       // write a message in the log and close the connection
       Log.writeToLog("Client is now closing the connection!",
 		     "TestApplication");
+//      try {
+//		Thread.sleep(450);
+//	} catch (InterruptedException e) {
+//		e.printStackTrace();
+//	}
       conn.close();
     }
 

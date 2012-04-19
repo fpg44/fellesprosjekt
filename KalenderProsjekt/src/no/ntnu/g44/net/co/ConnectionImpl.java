@@ -184,7 +184,6 @@ public class ConnectionImpl extends AbstractConnection {
 	public void send(String msg) throws ConnectException, IOException {
 
 		KtnDatagram datagram = constructDataPacket(msg);
-		System.out.println("Making new datagram with sequence number " + nextSequenceNo + " got " + datagram.getSeq_nr());
 		KtnDatagram ack;
 		KtnDatagram potentialReack = null;
 		int tries = 5;
@@ -199,7 +198,7 @@ public class ConnectionImpl extends AbstractConnection {
 				}
 			}
 			
-		}while( tries-- > 0 && ack == null/*|| !validAck(datagram, ack) /*|| !isValid(ack)*/);
+		}while( tries-- > 0 && ack == null|| !validAck(datagram, ack) /*|| !isValid(ack)*/);
 
 		nextExpectedSeqNr++; //for the ack.
 
@@ -217,7 +216,6 @@ public class ConnectionImpl extends AbstractConnection {
 	public String receive() throws ConnectException, IOException {
 		while(true){
 			KtnDatagram datagram = receivePacket(false);
-			//TODO TEMP FIX
 			if(datagram.getSeq_nr() < nextExpectedSeqNr){
 				nextSequenceNo--;
 				sendAck(datagram,false);
@@ -351,15 +349,21 @@ public class ConnectionImpl extends AbstractConnection {
 	 */
 	@Override
 	protected boolean isValid(KtnDatagram packet) {
+		System.out.println("Calculated checksum "+packet.calculateChecksum());
+		System.out.println("Given checksum "+packet.getChecksum());
+		System.out.println("getSrc_addr  "+packet.getSrc_addr());
+		System.out.println("remoteAddress "+remoteAddress);
+		System.out.println("getSrc_port "+packet.getSrc_port());
+		System.out.println("remote port"+remotePort);
 		return (packet.calculateChecksum() == packet.getChecksum())
-				&& (packet.getSrc_addr() == remoteAddress) //To get those ghost packets!
+				&& (packet.getSrc_addr().equals(remoteAddress)) //To get those ghost packets!
 				&& (packet.getSrc_port() == remotePort);
 		//Should we check sequence number here?! NO! As we use this in connect before we know what sequencenr to check
 	}
 
 	private boolean isValidAndExpectedSeq(KtnDatagram packet){
 		System.out.println("seq nr: " +packet.getSeq_nr()+" next expected nr: " + nextExpectedSeqNr);
-		return packet.getSeq_nr() == nextExpectedSeqNr ;//&& isValid(packet);
+		return packet.getSeq_nr() == nextExpectedSeqNr && isValid(packet);
 	}
 
 

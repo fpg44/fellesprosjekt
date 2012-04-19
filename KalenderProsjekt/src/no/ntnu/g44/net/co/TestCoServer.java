@@ -8,6 +8,7 @@ package no.ntnu.g44.net.co;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.g44.net.co.Connection;
@@ -30,7 +31,7 @@ public class TestCoServer {
    * Program Entry Point.
    */
   public static void main (String args[]){
-
+	  ArrayList<String> results  = new ArrayList<String>();
     // Create log
     Log log = new Log();
     Log.setLogName("Server");
@@ -47,6 +48,7 @@ public class TestCoServer {
 	  String msg = conn.receive();
 	  Log.writeToLog("Message got through to server: " + msg,
 			 "TestServer");
+	  results.add(msg);
 	}
       } catch (EOFException e){
 	Log.writeToLog("Got close request (EOFException), closing.",
@@ -56,6 +58,10 @@ public class TestCoServer {
 
       System.out.println("SERVER TEST FINISHED");
       Log.writeToLog("TEST SERVER FINISHED","TestServer");
+      System.out.println("Results: ");
+      for (String s :results){
+    	  System.out.println(s);
+      }
     }
     catch (IOException e){
       e.printStackTrace();
